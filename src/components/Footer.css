@@ -1,0 +1,41 @@
+
+
+.Footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background-color:#4C0033;
+    background-size: contain;
+    display: flex;
+    width: 100%;
+    margin-top: -10px;
+    margin-left: -10px;
+   padding-right: 20px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+  }
+
+ul {
+    list-style-type: none;
+    overflow: hidden;
+
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 10px 8px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #111;
+  }
