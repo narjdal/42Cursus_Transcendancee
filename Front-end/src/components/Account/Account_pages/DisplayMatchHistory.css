@@ -1,0 +1,40 @@
+.winner-div> button > span {
+color:#1cb380;;
+}
+.loser-div > button > span {
+    color:#a40221
+}
+.Match-History {
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 1px solid grey;
+  
+}
+.History-Table{
+    width: 100%;
+    margin: 0 auto;
+    height:300 px;
+    overflow-y: scroll;
+}
+.History-Table  td {
+    width: 100%;
+    color: white;
+    justify-content: space-between;
+  flex-direction: column;
+}
+
+.History-Table  th {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    color: white;
+}
+.avatar1{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 2px solid #1d4999;
+    filter: drop-shadow(0 0 8px #1d4999);
+    float :left;
+    overflow: hidden;
+  }

@@ -1,0 +1,154 @@
+.Forms{
+
+}
+.DmHeader{
+  background-color: black;
+  width: 100%;
+  flex: 1;
+  background-color: #3e3c61;
+  position: relative;
+  padding: 10px;
+  height: 50px;
+
+}
+.DmBox {
+    display: grid;
+
+    background: rgb(233, 229, 229);
+    border-radius: 5px;
+    height:250px;
+    width:200;
+    overflow-y: scroll;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+.SecondBox {
+  display: grid;
+  grid-column-start: 2;
+  grid-column-end: 9;
+  grid-row-start: 1;
+  grid-row-end: 190;
+  background:red;
+  border-radius: 5px;
+  height:250px;
+  width:200;
+  overflow-y: scroll;
+  position: fixed;
+  bottom: 0;
+  left: 20vh;
+
+}
+
+.ThirdBox {
+  display: grid;
+  grid-column-start: 2;
+  grid-column-end: 9;
+  grid-row-start: 1;
+  grid-row-end: 190;
+  background:purple;
+  border-radius: 5px;
+  height:250px;
+  width:200;
+  overflow-y: scroll;
+  position: fixed;
+  bottom: 0;
+  left: 34vh;
+
+}
+.DmHeader  > span{
+  color: white;
+
+}
+.self {
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+  .self .msg {
+    order: 1;
+    border-bottom-right-radius: 0px;
+    box-shadow: 1px 2px 0px #d4d4d4;
+  }
+  .self .avatar {
+    order: 2;
+  }
+  .self .avatar:after {
+    content: "";
+    position: relative;
+    display: inline-block;
+    bottom: 19px;
+    right: 0px;
+    width: 0px;
+    height: 0px;
+    border: 5px solid #fff;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    box-shadow: 0px 2px 0px #d4d4d4;
+  }
+  .DmForm {
+    background: white;
+    min-width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
+  }
+  .DmForn p {
+    font-size: 0.8rem;
+    margin: 0 0 0.2rem 0;
+    color: rgb(81, 84, 255);
+  }
+  .DmForn img {
+    position: relative;
+    display: block;
+    width: 450px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px #eee;
+    transition: all 0.4s cubic-bezier(0.565, -0.26, 0.255, 1.41);
+    cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  .DmBar{
+    position: fixed;
+    left : 72px;
+    background-color: #1d4999;
+    padding: 10px;
+    color: white;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+
+    bottom :0;
+    width: 100px;
+  }
+
+  .SecondDmBar{
+    position: fixed;
+    left : 170px;
+    background-color: red;
+    padding: 10px;
+    color: white;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+
+    bottom :0;
+    width: 100px;
+  }
+
+  .ThirdDmBar{
+    position: fixed;
+    left : 270px;
+    background-color: purple;
+    padding: 10px;
+    color: white;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    border-color: white;
+    bottom :0;
+    width: 100px;
+  }

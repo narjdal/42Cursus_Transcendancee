@@ -1,0 +1,80 @@
+
+  
+  .login-card {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    margin: 0 20px;
+    padding: 70px 30px 44px;
+    border-radius: 1.25rem;
+    background: #004e92;
+    text-align: center;
+  }
+  .label{
+    float:left;
+  }
+  
+  @media (width >= 500px) {
+    .login-card {
+      margin: 0;
+      width: 400px;
+    }
+  }
+  .login-card > span {
+    color: white;
+  }
+  
+  .login-card > button > span {
+    color: white;
+  }
+  
+  .login-card > h2 {
+    font-size: 36px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    color: white;
+  }
+  
+  .login-card > h3 {
+    color: grey;
+    margin: 0 0 30px;
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  
+
+  .avatar{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    border: 2px solid #1d4999;
+    filter: drop-shadow(0 0 8px #1d4999);
+    float :left;
+    overflow: hidden;
+  }
+
+  .AccountTwoFa-form  > button{
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    height: 35px;
+    width: 100%;
+    border: 0;
+    padding: 0 16px;
+    border-radius: 0.5rem;
+    font-family: "Euclid Circular A";
+    color: #f7f7f7;
+    background: #216ce7;
+    cursor: pointer;
+  }
+
+  .AccountButtons > button.has-border {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    margin-bottom: 1rem;
+  }
+
+  .AccountButtons > button > span {
+    color: #f9f9f9;
+  }

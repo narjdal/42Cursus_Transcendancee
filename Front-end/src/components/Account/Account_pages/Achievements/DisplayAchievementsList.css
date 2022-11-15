@@ -1,0 +1,13 @@
+.AchievementsList{
+    height: 100px;
+background-color: #00111c;
+      color:white;
+}
+.AchievementsList li {
+    display: inline-block;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.965);
+    margin-bottom: 1rem;
+}
+.Achievements-container{
+}

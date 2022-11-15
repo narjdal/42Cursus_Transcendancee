@@ -1,0 +1,16 @@
+.Achievements-card {
+    position: relative;
+    z-index: 3;
+    background: #00111c;
+    text-align: center;
+    overflow-y: scroll;
+    height: 600px;
+    margin-left: auto;
+  }
+  .locked-div > button > span {
+    color:grey;
+}
+
+.unlocked-div > button > span {
+  color: #1052b9;
+}
