@@ -1,122 +1,121 @@
-import Sketch from 'react-p5';
 import p5Types from 'p5';
-import pong from './Pong'
+import Sketch from 'react-p5';
+import Pong from './Pong';
 
-//import hit from './assets/soundshit.mp3'
+export default function Game(props:any) {
+  const width = props.width;
+  const height = props.height;
+  const radius = Math.sqrt(width * width + height * height) * 0.028;
+  const padle_height = height / 4;
+  const padle_width = width / 60;
+  let player_left_y:number = 0;
+  let player_right_y:number = 0;
+  let pong:Pong = new Pong("mochegri", "ia");
 
+  let start:boolean = false;
+  let btn_start:any = null;
 
-const _hit = new Audio();
-const _wall = new Audio();
-const _left_scor = new Audio();
-const _right_scor = new Audio();
+  const hit__ = require('./assets/sounds_hit.mp3');
+  const win__ = require('./assets/win.mp3');
+  const lose__ = require('./assets/lose.mp3');
+  const wall = require('./assets/wall.mp3');
+  const hit = new Audio(hit__);
+  const win = new Audio(win__);
+  const lose = new Audio(lose__);
+  const wall_sound = new Audio(wall);
 
-function update_data(_data:any, width:number, height:number):object{
-	return {
-		player_left: {y:(_data.player_left.y * height), score:_data.player_left.score},
-		player_right: {y:(_data.player_right.y * height), score:_data.player_right.score},
-		ball: {x:(_data.ball.x * width), y:(_data.ball.y * height)},
-		music_id:_data.music_id, still_playing:_data.still_playing
-	};
-}
+  const setup = (p5: p5Types, canvasParentRef: Element) => {
+    let ctx = p5.createCanvas(width, height).parent(canvasParentRef);
+    btn_start = p5.createButton('Start');
+    btn_start.position(ctx.position().x + width / 3, ctx.position().y + height / 3);
+    btn_start.mousePressed(start_func);
+    btn_start.size(width / 3, height / 3);
+    btn_start.style("font-family", "Bodoni");
+    btn_start.style("font-size", width / 20 + "px");
+    btn_start.style("background-color", "gray");
+    p5.frameRate(60);
+  }
 
-export default function Game(props:any){
-	let new_game = new pong();
-	let bagrounad_img:any;
-	let ball_img:any;
-	let player_left_img:any;
-	let player_right_img:any;
-	let playe_img:any;
+  let start_func = () => {
+    start = true;
+    btn_start.hide();
+  }
 
-	let overBox:boolean = false;
-	let locked:boolean = false;
-	let yOffset:number = 0.0;
-	let data:any;
-	let start:boolean;
+   const preload = (p5: p5Types) =>  {
+  }
 
-	const setup = (p5: p5Types, canvasParentRef: Element) => {
-		let cnv = p5.createCanvas(props.width, props.height).parent( canvasParentRef,);
-		cnv.id('pong_canvas');
-		bagrounad_img = p5.loadImage("./images/assets/baground_table.jpg'");
-		ball_img = p5.loadImage("./images/assets/ball.png");
-		player_left_img = p5.loadImage("'./images/assets/player_red.png");
-		player_right_img = p5.loadImage("./images/assets/player_green.png");
-		playe_img = p5.loadImage("./images/assets/play.gif");
+  const draw = (p5: p5Types) => {
+    if (start === false){
+      p5.background("slategray");
+      p5.textSize(width / 30);  
+      p5.fill("black");
+      p5.text("mouse for player_1", width / 10 , height  * 8 / 10);
+      p5.text("key-up, key-down for player_2", width / 10, height * 9 / 10);
+    }
+    else{
+      p5.fill(0, 40, 77);
+      p5.rect(0, 0, width, height);
+  
+      //score
+      let data = pong.update(player_left_y / height, player_right_y / height);
+      p5.fill(77, 166, 255);
+      p5.textSize(width / 15);
+      p5.text(data.player_left.score , width / 4, height / 8);
+      p5.text(data.player_right.score, width * 3 / 4, height / 8);
+      p5.textSize(width / 20);
+      p5.text(data.player_left.id, width * 3 / 16, height * 2 / 8);
+      p5.text(data.player_right.id, width * 11 / 16, height * 2 / 8);
+      for (let i = 1; i <= 10; i++) {
+        p5.rect(width / 2 - width/75 , i * height / 8, width/150, height / 20);
+      }
+  
+      //ball
+      p5.fill(179, 240, 255);
+      p5.circle(data.ball.x * width, data.ball.y * height, radius);
+  
+      // player_position = p5.mouseY;
+      if (p5.keyIsDown(p5.UP_ARROW) && player_right_y > 0) {
+        player_right_y -= 10;
+      }
+      if (p5.keyIsDown(p5.DOWN_ARROW) && player_right_y < height - padle_height) {
+        player_right_y += 10;
+      }
+      if (p5.mouseY > 0 && p5.mouseY < height - padle_height) {
+        player_left_y = p5.mouseY;
+      }
+      //player_left
+      p5.fill(102, 181, 255);
+      p5.rect(0, data.player_left.y * height, padle_width, padle_height);
+    
+      //player_right
+      p5.fill(77, 77, 255 );
+      p5.rect(width - padle_width, data.player_right.y * height, padle_width, padle_height);
 
-		_hit.src = './images/sounds_hit.mp3';
-		_wall.src = './images/sounds_wall.mp3';
-		_left_scor.src = './images/sounds_userScore.mp3';
-		_right_scor.src = './images/sounds_comScore.mp3';
-		data = new_game.data_to_render();
-		data = update_data(data, props.width, props.height);
-	};
+      if (data.still_playing === false) {
+        p5.noLoop();
+      }
+      if (data.music === "hit") {
+        hit.play();
+      }
+      if (data.music === "mochegri") {
+        win.play();
+      }
+      if (data.music === "ia") {
+        lose.play();
+      }
+      if (data.music === "wall") {
+        wall_sound.play();
+      }
+    }
+    //background
+    
+  };
 
-	const draw = (p5: p5Types) => {
-		if (p5.mouseX > 0 - props.width / 60
-				&& p5.mouseX < 0 + props.width / 60
-				&& p5.mouseY > data.player_left.y - props.height / 4
-				&& p5.mouseY < data.player_left.y + props.height / 4)
-			overBox = true;
-		else
-			overBox = false;
-		if (!start)
-			p5.image(playe_img, 0, 0, props.width, props.height);
-		else{
-			if (data.still_playing){
-				new_game.update();
-				data = new_game.data_to_render();
-				data = update_data(data, props.width, props.height);
-			}
-			else
-			{
-				p5.textSize(64);
-				p5.text("Game Over", props.width / 3, props.height / 2);
-				p5.noLoop();
-			}
-			p5.image(bagrounad_img, 0, 0, props.width, props.height);	
-			p5.image(player_left_img, 0, data.player_left.y, props.width / 60,
-			props.height / 4);
-			p5.image(player_right_img, props.width - props.width / 60,
-				data.player_right.y, props.width / 60, props.height / 4);
-			p5.fill(51, 102, 255);
-			for (let i = 0; i <= props.height ; i += props.height / 27)
-				p5.rect(props.width * 0.48 , i, props.width * 0.02, props.height * 0.025);
-			p5.image(ball_img, data.ball.x - props.width / 60,
-				data.ball.y - props.height / 40, props.width / 30, props.height / 20);
-			p5.textSize(32);
-			p5.textFont("75px fantasy");
-			p5.fill(230, 236, 255);
-			p5.text(new_game.player_left.score.toString(), props.width / 4, props.height / 6);
-			p5.text(new_game.player_right.score.toString(), props.width * 3 / 4, props.height / 6);
-			//if (data.music_id === 1)
-			//	_hit.play();
-			//else if (data.music_id === 2)
-			//	_wall.play();
-			//else if (data.music_id === 3)
-			//	_left_scor.play();
-			//else if (data.music_id === 4)
-			//	_right_scor.play();
-		}
-	}
-	const mousePressed = (p5: p5Types) => {
-		locked = (overBox) ? true : false;
-		yOffset = p5.mouseY - data.player_left.y;
-
-	}
-	const mouseDragged = (p5: p5Types) => {
-		if (locked && p5.mouseY > 0 && p5.mouseY < props.height)
-			new_game.set_player((p5.mouseY - yOffset) / props.height);
-	}
-	const mouseReleased = (p5: p5Types) => {
-		locked = false;
-		if (!start){
-			p5.loop();
-			start = true;
-		}
-	}
-	return (
-		<div className='game'>
-			<Sketch className={"ttt"} setup={setup} draw={draw} mousePressed={mousePressed}
-				mouseDragged={mouseDragged} mouseReleased={mouseReleased} />
-		</div>
-	);
+  return (
+    <div className="Game">
+      	<Sketch className={"ping_pong_game"} setup={setup} draw={draw}
+        preload={preload}
+			/>
+    </div>
+  );
 }

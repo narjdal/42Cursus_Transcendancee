@@ -11,6 +11,8 @@ const Login = () => {
   const [User42,SetUser42] = useState([]);
   const [authenticated, setauthenticated] = useState("");
   const [getCode,SetgetCode] = useState("");
+  const [wantsLogin,setWantsLogin] = useState(false);
+
     const navigate = useNavigate();
     const navigateAccount = () => {
         // 👇️ navigate to /contacts
@@ -38,98 +40,97 @@ async function LogUserToBackend  (post) {
 const HandleSubmit = (e) => {
   e.preventDefault();
 }
-async function  HandleRef  ()  {
+
+async function  HandleRef  (e)  {
+  e.preventDefault();
 
   console.log("Inside handle ref => ");
-  const auth =   await axios.get('http://localhost:9000/login/auth42')
 
 
-    if(auth.data)
-    {
-      console.log("Respons received from backend ! " + auth.data.page);
-      window.location.href = auth.data.page;
-      }
-  // window.location.href = data.page;
-  // e.preventDefault();
-  // const code = new URLSearchParams(window.location.search).get("code");
-  // if (code)
-  // {
-  //   const post = { code:code};
-  //   console.log("POST  REQUEST => " + JSON.stringify(post) );
-  
+  // const auth =   await 
+  const endpoint = 'http://localhost:5000/auth/signup'
+  console.log(" this endpoint " + endpoint)
+  fetch(endpoint,{mode:'no-cors'})
+  .then((response) => {
+console.log("response Isghouia backend " + JSON.stringify(response));
+  })
 
-  // }
-  // navigate('/');
-  // console.log("Inside Code : " + code);
 }
 
 useEffect(() => {
-  
-try {
 
-const code = new URLSearchParams(window.location.search).get("code");
-if(code)
-
-{
-  SetgetCode(code);
-navigate('/');
-}
-if(getCode)
+  if(wantsLogin)
   {
-    // code = getCode;
-    const code = getCode;
-  const post = { code:getCode};
-  console.log("POST  REQUEST => " + JSON.stringify(post) );
-console.log("PRINTING THE CODE ... " + code);
-  LogUserToBackend(post)
-  .then((resp) => {
-    // console.log(" the resp is => " + JSON.stringify(resp));
-    setauthenticated("true");
-    setuser(resp);
-    const {UserId ,usual_full_name , nickname,image_url} = resp;
-    localStorage.setItem("user",JSON.stringify(resp));
-    localStorage.setItem("authenticated", "true");
-    // const myNickname = JSON.stringify(nickname);
+    // HandleRef();
+  }
+},[wantsLogin])
+// useEffect(() => {
+  
+// try {
 
-    console.log("LOGGIN IN ...UseEffect Login.tsx : " + UserId + "   " + usual_full_name + " " + image_url + " " + nickname);
-    if(nickname  )
-    {
-    console.log("Existing nickname Redirecting to Account directly ..." + nickname);
-    navigateAccount();
-    }
-    else
-    {
-    navigate('/Account_infos')
-    console.log(" No Existing nickname Redirecting to Account Infos " );
+// const code = new URLSearchParams(window.location.search).get("code");
+// if(code)
+
+// {
+//   SetgetCode(code);
+// navigate('/');
+// }
+// if(getCode)
+//   {
+//     // code = getCode;
+//     const code = getCode;
+//   const post = { code:getCode};
+//   console.log("POST  REQUEST => " + JSON.stringify(post) );
+// console.log("PRINTING THE CODE ... " + code);
+//   LogUserToBackend(post)
+//   .then((resp) => {
+//     // console.log(" the resp is => " + JSON.stringify(resp));
+//     setauthenticated("true");
+//     setuser(resp);
+//     const {UserId ,usual_full_name , nickname,image_url} = resp;
+//     localStorage.setItem("user",JSON.stringify(resp));
+//     localStorage.setItem("authenticated", "true");
+//     // const myNickname = JSON.stringify(nickname);
+
+//     console.log("LOGGIN IN ...UseEffect Login.tsx : " + UserId + "   " + usual_full_name + " " + image_url + " " + nickname);
+//     if(nickname  )
+//     {
+//     console.log("Existing nickname Redirecting to Account directly ..." + nickname);
+//     navigateAccount();
+//     }
+//     else
+//     {
+//     navigate('/Account_infos')
+//     console.log(" No Existing nickname Redirecting to Account Infos " );
 
       
-    }
-  })
-}
-else {
-  console.log("No code ! ");
-}
+//     }
+//   })
+// }
+// else {
+//   console.log("No code ! ");
+// }
 
-      // console.log(value);
-// fetch('/api/authentification/oauth2/School42',
+//       // console.log(value);
+// // fetch('/api/authentification/oauth2/School42',
+// // {
+// // method: "POST",
+// // body :JSON.stringify({code:code})
+// // })
+// // .then (response => {
+// //   if(response.ok)
+// //   {
+// //   console.log("RESPONSE  OK => ",response)
+// //     return response.json;
+// //   }
+// //   console.log("RESPONSE => ",response)
+// // })
+// }
+// catch (e)
 // {
-// method: "POST",
-// body :JSON.stringify({code:code})
-// })
-// .then (response => {
-//   if(response.ok)
-//   {
-//   console.log("RESPONSE  OK => ",response)
-//     return response.json;
-//   }
-//   console.log("RESPONSE => ",response)
-// })
-}
-catch (e)
-{
-  alert(e)
-}
-},[ new URLSearchParams(window.location.search).get("code")])
+//   alert(e)
+// }
+// },[ new URLSearchParams(window.location.search).get("code")])
   
  // const client = oauth2::Client.new(UID,SECRET,site:"https://api.intra.42.fr");
   const [user, setuser] = useState<any>("");
@@ -213,10 +214,12 @@ const HandleTempoLogin = () => {
          <h2>Login</h2>
       <h3>Login Using 42  </h3>
       <button  type="button" onClick={HandleRef} > Login 42</button>
-      <a onClick={HandleRef} href="https://api.intra.42.fr/oauth/authorize?client_id=8d53476d0b35503b5132e8298c0c72b3b9a338afc65ab471d6a11eaefdf2437a&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F&response_type=code">
-    Login
+      {/* <button onClick={(e) => setWantsLogin(true)}> BB</button> */}
+     <a href ="http://localhost:5000/auth/signup" onClick={(e) => setWantsLogin(true)}>Login Backend
+      {/* <button href={"https://localhost/api/authentication/oauth2/school42"}
+          className="px-4 bg-gray-400 whitespace-nowrap hover:bg-gray-500"
+        > </button> */}
         </a>
-        <br/>
       <button  type="submit" onClick={HandleTempoLogin}> Login Dummy Account</button>
       </div>
     </div>
