@@ -1,60 +1,23 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import {Routes, Route, useNavigate} from 'react-router-dom';
-import person from "../users/users.json"
+import { useNavigate} from 'react-router-dom';
 import ProfilePicUpload from '../Account/ProfilePicUpload';
 import UpdateNickname from '../Account/UpdateNickname';
 import './Account.css'
 import Login from '../login/login';
-import axios from 'axios';
 
 const Account = () => {
   const navigate = useNavigate();
   const [isUpdating, setIsUpdating] = useState(false);
     const [Updated, setisUpdated] = useState(false);
   const [authenticated, setauthenticated] = useState("");
-  const [loggeduser, setuser] = useState(null);
 	 const [user42,SetUser42] = useState <any>([]);
   const [showradiotwofa,Setradiotwofa] = useState(false);
   const [twoFa,setTwoFa] = useState(false);
   const [TwoFaDisable,setTwoFaDisable] = useState(false);
-  const [value, setValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
  
-  async function FetchProfilePic (id) {
 
-    // ]
-  const loggeduser = localStorage.getItem("user");
-
-  if(loggeduser)
-{
-  var Current_User = JSON.parse(loggeduser);
-	const text = ("http://localhost:9000/GetUserPicture");
-  console.log("Api get Link :  =>  " + text);
-  
-  const response = await axios.get("http://localhost:9000/GetUserPicture",{
-  headers: {
-    userId:id,
-   filename: "USA copy-f146.JPG",
-   destination:"./upload/"
-
-  }
-  }
-  )
-  const {nickname ,UserId,image_url} = response.data;
-  console.log("The response is " + JSON.stringify(response.data));
-
-    
-  // 	onUploadProgress: progressEvent => {
-  // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
-  // 	},
-  // });
-  
-  // 	}
-    return response.data;
-}
-
-  }
   useEffect(() => {
 
     const authenticated = localStorage.getItem("authenticated");
@@ -68,9 +31,8 @@ const Account = () => {
     {
 
       var Current_User = JSON.parse(loggeduser);
-      const {UserId} = Current_User
+      // const {UserId} = Current_User
       console.log("=>>>>> FROM THE ACCOUNT " + loggeduser   + Current_User.nickname + Current_User.UserId)
-      FetchProfilePic(UserId)
   //     .then((resp) => {
   //       console.log("NIGGA WHAT");
   // console.log("where is the response " + resp) 
@@ -108,6 +70,10 @@ const Account = () => {
      }
      const HandleTwoFactor = () => {
       Setradiotwofa(!showradiotwofa);
+      if(!showradiotwofa)
+      {
+        setErrorMessage("An Error occured");
+      }
       // Here Request to GET Two FA if enable or not Ou je lai deja
     }
     const HandleTwoFa = () => {
@@ -181,7 +147,7 @@ const Account = () => {
 <>
 <div className='body'>
       <div className='login-card'>
-		  <img className="avatar" src={user42.image_url} />
+		  <img className="avatar" src={user42.image_url} alt="avatar" />
       <span> Welcome to your Dashboard  {user42.nickname} !  </span>
       <button type="button" className='has-border' onClick={HandleTwoFactor}>  
       <span className="icon material-symbols-outlined">

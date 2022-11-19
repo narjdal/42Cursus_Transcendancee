@@ -3,13 +3,7 @@
   float: left;
 
 }
-.TempoNav-container > button > img {
-width: 24px;
-height: 24px;
-justify-content: space-between;
 
-
-}
 .TempoNav-container > button > span {
 color: #f9f9f9;
 
@@ -21,13 +15,13 @@ color: #f9f9f9;
 }
 .TempoNav {
     background:linear-gradient(to right, #1d4999 , #2c3e50);
-    display: flex;
-justify-content: space-between;
+    display: inline-block;
+    position: absolute;
     width: 100%;
-    align-items: center;
     top: 0;
+    overflow: hidden;
     left: 0;
-    position: fixed;
+
   }
 
 ul {
@@ -67,10 +61,20 @@ ul {
     color: #f9f9f9;
   }
   
-  button {
+  .TempoNav-container button {
+    display: inline-block;
     background: transparent;
-    border: 0;
-    padding: 0;
+    padding: 10px 50px;
+    align-items: center;
+
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .TempoNav-container button  span{
+    display: flex;
+    gap: 25px;
+  color: #1e90fe;
+    
     cursor: pointer;
   }
   
@@ -108,4 +112,12 @@ ul {
 
 
   
-  
+  .avatarGame{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #1d4999;
+    filter: drop-shadow(0 0 8px #1d4999);
+    float :left;
+    overflow: hidden;
+  }

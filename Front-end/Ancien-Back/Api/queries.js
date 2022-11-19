@@ -179,7 +179,8 @@ console.log("Inside Upadte User ! " + nickname);
         id : id,
         nickname: nickname,
         db_response : 'User modified with ID: ',
-        file_path:""
+        file_path:"",
+        image_url:"http://localhost:9000/upload/Accountlogo.jpeg"
       }
       response.status(200).send(responseobject);
     }

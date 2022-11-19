@@ -96,8 +96,9 @@ return (
        <th>Status </th>
    </tr>
    <tr>
-   <td> <img src={props.user.ProfilePic} 
+   <td> <img src={props.user.image_url} 
    height="20"
+   className="avatar1"
    onClick={handleClick} /></td>
     {OpenMsg ? (
                     <td> 
@@ -108,7 +109,7 @@ return (
               ) : (
                 <td></td>
               )}
-   <td> <Link style={{color:'white'}} to={`/users/${props.user._id}`} >{props.user.name}</Link></td> 
+   <td> <Link style={{color:'white'}} to={`/users/${props.user.id}`} >{props.user.name}</Link></td> 
   {props.user.isActive ? (
                  <td>  
                     <div className="icon-div">

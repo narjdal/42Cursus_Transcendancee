@@ -7,10 +7,9 @@
   .wrapper {
     height: 100%;
   }
-  
+/*   
   @keyframes rotate {
     100% {
-      background-position: 15% 50%;
     }
   }
   
@@ -25,7 +24,7 @@
     font-family: "Euclid Circular A";
     color: #000;
     animation: rotate 6s infinite alternate linear;
-  }
+  } */
   
   @media (width >= 500px) {
     body {

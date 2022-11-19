@@ -11,7 +11,7 @@ export class UserController {
 
   @Get(':id')
   public getUser(@Param('id', ParseIntPipe) id: number): Promise<User> {
-    console.log("inside Get User with id ")
+    console.log("inside Get User  |User Controller  "+ id)
     return this.service.getUser(id);
   }
 

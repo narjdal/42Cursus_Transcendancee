@@ -89,7 +89,7 @@ body.open .sidebar-burger {
 }
 
 .sidebar-header {
-  color:white;
+  color: #1e90fe;
   gap: 5px;
 }
 .sidebar-menu > button  > span{
@@ -98,7 +98,7 @@ body.open .sidebar-burger {
 
 .sidebar-menu > button.has-border {
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.12);
   margin-bottom: 1rem;
 }
 
@@ -108,5 +108,6 @@ body.open .sidebar-burger {
 }
 
 .sidebar-menu > button > span {
-  color: #f9f9f9;
+  color: #1e90fe;
+
 }

@@ -1,21 +1,18 @@
-import react from 'react';
 import { useState } from "react";
-import person from '../users/users.json'
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import './ProfilePicUpload.css'
 import axios from 'axios';
-import { text } from 'stream/consumers';
+// import { text } from 'stream/consumers';
 // https://stackoverflow.com/questions/23427384/get-form-data-in-reactjs
 const OneTimeProfilePicUpload = () => {
 	const [selectedFile, setSelectedFile] = useState<any>([null]);
 	const [nickName, setNickName] = useState("");
 	const [loaded,setLoaded] = useState(0);
-	const [avatar,SetAvatar] = useState <any>([]);
-	const [value, setValue] = useState("");
+	// const [value, setValue] = useState("");
 	const [isFilePicked, setIsFilePicked] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 	const navigate = useNavigate();
-	const [UpdateUser,SetUpdateUser] = useState <any>([]);
+	// const [UpdateUser,SetUpdateUser] = useState <any>([]);
     const navigateAccount = () => {
         // 👇️ navigate to /contacts
         navigate('/Account');
@@ -30,7 +27,7 @@ const OneTimeProfilePicUpload = () => {
 	const changeHandler = (event) => {
 
 		setSelectedFile(event.target.files[0]);
-		if (isFilePicked == "true")
+		if (isFilePicked === "true")
 		{
 			setIsFilePicked("false");
 		}
@@ -41,9 +38,11 @@ const OneTimeProfilePicUpload = () => {
         event.preventDefault()
 	};
 
-	const handleChange = (e) => {
-		setValue(e.target.value);
-	  };
+	// const handleChange = (e) => {
+
+	// 	// setValue(e.target.value);
+	  
+	// };
 	
 
 	  async function UploadData (post)
@@ -91,23 +90,23 @@ const response = await axios.post("http://localhost:9000/upload", form)
 	}
 }
 
-async function fetchProfilePicture(id,image_url,destination,filename)
-{
+// async function fetchProfilePicture(id,image_url,destination,filename)
+// {
 
-	const text = "http://localhost:9000/GetUserPicture?id=" + id +"&path=" + image_url;
-	const response =  await axios.get(text,{
-		headers:{
-			userId:id,
-			mypath:image_url,
-			destination:destination,
-			filename:filename
-		}
-	})
-	console.log("text is => " + text);
-	// Weir Response Here 
-	// console.log("resp => " + response.data);
-	return response.data;
-}
+// 	const text = "http://localhost:9000/GetUserPicture?id=" + id +"&path=" + image_url;
+// 	const response =  await axios.get(text,{
+// 		headers:{
+// 			userId:id,
+// 			mypath:image_url,
+// 			destination:destination,
+// 			filename:filename
+// 		}
+// 	})
+// 	console.log("text is => " + text);
+// 	// Weir Response Here 
+// 	// console.log("resp => " + response.data);
+// 	return response.data;
+// }
 
 
 		// const loggeduser  = localStorage.getItem("user");
@@ -124,12 +123,12 @@ async function fetchProfilePicture(id,image_url,destination,filename)
 		formData.append('file', selectedFile);
         formData.append('nickname',nickName);
 		console.log("The User ID => " + UserId)
-        formData.append('userId',UserId);
+        formData.append('id',UserId);
 
         console.log("Handle Submission : "+ nickName.length)
         if(nickName.length > 0 )
 		{
-		if (!isFilePicked  || isFilePicked =="false")
+		if (!isFilePicked  || isFilePicked ==="false")
 		{
 
 			const post = {nickname:nickName};
@@ -141,6 +140,8 @@ async function fetchProfilePicture(id,image_url,destination,filename)
 				const test  = JSON.stringify(resp);
 				console.log("The Resp is => " +  test + " The Nicknamne => " + resp.nickname);
 				console.log("Logged User   " + loggedUser );
+				localStorage.setItem("user","");
+				localStorage.setItem("user",test);
 				const UserObject = JSON.parse(JSON.stringify(loggedUser));
 				navigate("/Account");
 				// if(!UserObject.nickname)
@@ -172,9 +173,9 @@ async function fetchProfilePicture(id,image_url,destination,filename)
 			UploadDataWithProfilePicture(formData)
 			.then((resp) => 
 			{
-				const {UserId,image_url,destination,filename,nickname} = resp;
+				// const {UserId,image_url,destination,filename,nickname} = resp;
 				const test  = JSON.stringify(resp);
-				console.log("The Resp is => " +  test + " => " + nickname);
+				console.log("The Resp is => " +  test + " => " + resp.nickname);
 				localStorage.setItem("user","");
 				localStorage.setItem("user",test);
 				navigateAccount();
@@ -271,7 +272,6 @@ async function fetchProfilePicture(id,image_url,destination,filename)
 			)}
 				<button type ="submit" onClick={handleSubmission}>Submit</button>
                 {errorMessage && <div className="error"> {errorMessage} </div>}
-				<div> {Math.round(loaded)}  </div>
       </form>
 	  </div>
 		</div>

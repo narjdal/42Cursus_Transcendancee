@@ -13,10 +13,13 @@ import { userInfo } from 'os';
 import { response } from 'express';
 import { createReadStream } from 'fs';
 import { join } from 'path';
+import { UsersModule } from './users/users.module';
+import { UsersService } from './users/users.service';
+import { UserController } from './users/users.controller';
 @Controller()
 
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly UsersService: UsersService) {}
 
   // @UseGuards(LocalAuthGuard)
   // @Post('auth/login')
@@ -46,40 +49,72 @@ export class AppController {
       })
       )
     async uploadSingleFileWithPost(@UploadedFile() file:any, @Body() body:any) {
-     console.log("Currently Uploading new infos of the following user => " + body.userId)
+     console.log("Currently Uploading new infos of the following user => " + body.userId + body.id)
       console.log(file);
       console.log("filename in the backend is  located at => "  + file.path)
       console.log(file.filename);
       console.log(body.nickname);
+      const Savior = {
+        id:body.id,
+        name:body.nickname,
+        image_url:body.image_url,
+        isActive :"TOSET",
+        id42 : "50",
+
+      }
+      const response = {
+        id:body.id,
+        nickname:body.nickname,
+        image_url:body.image_url,
+        isActive :"TOSET",
+        id42:"50"
+      }
       // Here => Update Database Set new Nickname and new Path to File 
       //  Then Return new Users infos 
+     const image_url = "http://localhost:9000/upload/" + file.filename;
+      const User = await this.UsersService.setAvatar(Savior,image_url,body.id);
+      console.log("User With the database db updated => "
+      + User.id +" STR => " + JSON.stringify(User));
+    //   return response;
       return {
-
-        UserId:body.userId,
+        UserId:body.id,
+        id:body.id,
         nickname:body.nickname,
         // isUsersInfosModified:"true",
         filename:file.filename,
         destination:file.destination,
         // image_url:file
-        image_url: "http://localhost:9000/upload/" + file.filename
+        image_url: image_url
             }
       // console.log(body.favoriteColor);
     }
     // @Controller("/hello")
     @Get("/GetUserPicture")
     // Picture are served staticly from the server 
-     FetchUserPicture(@Request() req:any, @Headers() headers:any) /** : StreamableFile */{
+    async  FetchUserPicture(@Request() req:any, @Headers() headers:any) /** : StreamableFile */{
       // const id = headers.userId;
       const path = headers.mypath;
       // const filename = headers.filename;
       // const destination = headers.destination;
-      const {userid,filename,destination} = req.headers;
+      const {userid,filename,destination,id} = req.headers;
       console.log("ID OF USER => " +userid)
       console.log("inside Get User Picture By id ! " + " ID is => "  + headers.userid);
       // console.log("filename is " + filename  + " dest => " + destination)
       // const User42 = this.UserService.findOneById(userid);
-      console.log("ID OF USER => " +userid)
+      console.log("ID OF USER => " +userid + " Testing with  id  " + 1)
+    const Userfromdb = await this.UsersService.getUser(2);
+     const parsedUser = JSON.stringify(Userfromdb);
+     console.log("PARSED USER => " + parsedUser )
 
+      return  parsedUser
+    //  const {id,image_url,id42,name} = 
+
+    //  const UserObject = JSON.parse(parsedUser)
+
+    //  console.log("User from DB is => "  +parsedUser + " ID "  + UserObject.id  + " image_url" + UserObject.image_url + " id42" + UserObject.id42) ;
+        // this.UsersController.getUser(userid);
+      // this.appService
+      // this.appService.getUser(id);
       return {
         UserId:userid,
         nickname:"testgg",
@@ -155,12 +190,12 @@ export class AppController {
         page:'https://api.intra.42.fr/oauth/authorize?client_id=8d53476d0b35503b5132e8298c0c72b3b9a338afc65ab471d6a11eaefdf2437a&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F&response_type=code',
       }
     }
-    @Get('/')
-    getHello(): string 
-    {
-      return this.appService.getHello();
-      // return this.getHello();
-    }
+    // @Get('/')
+    // getHello(): string 
+    // {
+    //   // return this.appService.getHello();
+    //   // return this.getHello();
+    // }
   // @UseGuards(JwtAuthGuard)
   // @Get('profile')
   // getProfile(@Request() req:any) {

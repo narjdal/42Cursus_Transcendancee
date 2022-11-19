@@ -4,7 +4,7 @@ import {useEffect} from "react";
 import './Navbar.css'
 import person from "./users/users.json"
 import ContactList from './Friendlist/ContactList';
-
+import axios from 'axios';
 // TODO :
 // Request to Backend pour avoir la FriendList 
 // Add Post request to Backend pour Ajouter un ami / Bloquer un ami 
@@ -13,6 +13,8 @@ function Navbar() {
     const [click,setClick]= useState(false);
   const [isShown,setIsShown] = useState(false);
   const[user42,setUser42] = useState <any >([]);
+  const[friends,setFriends] = useState <any >([]);
+
     const [button, setButton] = useState(true);
     const [authenticated, setauthenticated] = useState("");
     const [sideBar,setSideBar] = useState(true);
@@ -72,6 +74,31 @@ function Navbar() {
             window.location.reload();
         }
     };
+
+    async function FetchUserInfo (id) {
+
+      // ]
+    const loggeduser = localStorage.getItem("user");
+  
+    if(loggeduser)
+  {
+    var Current_User = JSON.parse(loggeduser);
+    const text = ("http://localhost:9000/GetUserPicture");
+    console.log("Api get Link :  =>  " + text);
+    
+    const response = await axios.get("http://localhost:9000/GetUserPicture",{
+    headers: {
+      userId:id
+    }
+    }
+    )
+    const {nickname ,UserId,image_url,id42} = response.data;
+    console.log("The Friends are " + JSON.stringify(response.data));
+  //   response.data.forEach( result => {
+      return response.data;
+  }
+  
+    }
       useEffect(() => {
         const authenticated = localStorage.getItem("authenticated");
     const loggeduser = localStorage.getItem("user");
@@ -82,7 +109,17 @@ function Navbar() {
         }
         if(loggeduser)
         {
+          var Current_User = JSON.parse(loggeduser);
+          const {UserId} = Current_User
+          console.log("Fetching Friends of this User " + UserId);
           setUser42(JSON.parse(localStorage.getItem("user")!))
+      FetchUserInfo(2)
+      .then((resp) => {
+        console.log("resp => " + resp[0].id);
+        setFriends(resp);
+        console.log("user42.image_url" + user42.image_url)
+      })
+          
           // var Current_User = JSON.parse(loggeduser!);
           // console.log("=>>>>> FROM THE NAVBAR " + loggeduser   + Current_User.nickname + Current_User.UserId)
           // setUser42(Current_User);
@@ -110,11 +147,12 @@ function Navbar() {
                     className="sidebar-burger"
                     onClick={toggleSidebar}
                   ></button>
-                  <img src={user42.image_url}   className="sidebar-logo" />            
+                  <img src={user42.image_url}   className="avatar1" />            
                <span> {user42.nickname}</span> 
                 </header>
                 <nav className="sidebar-menu">
-                  <button type="button" onClick={navigateHome} >
+                  
+                  <button type="button" onClick={navigateHome} className="has-border" >
                     <span className="icon material-symbols-outlined">
                 Home 
       </span>
@@ -163,7 +201,7 @@ function Navbar() {
                       <div className='Contact'>
                         <span>
                         
-                        <ContactList contacts={person} />
+                        <ContactList contacts={friends} />
                         </span>
                       </div>
                      )}

@@ -41,8 +41,8 @@ const MessageList = (props) => {
         <div className="MsgHistory">
         {UserId == props.user.userId ? (
        <div className='YourMessages'>  
-       <img src={image_url} height="25"/>     
-    You :{props.user.msg}
+       <img src={props.user.image_url} className="avatar1" />     
+    <span>{props.user.msg} </span>
         
     <span className="time-right">11:00</span>
         </div>
@@ -50,7 +50,7 @@ const MessageList = (props) => {
         <div className="MsgHistory">
     <div className='OthersMessages'>
         
-    <Link style={{color:'grey'}} to={`/users/${props.user.userId}`} >{props.user.username}</Link>
+    <span><Link style={{color:'grey'}} to={`/users/${props.user.userId}`} >{props.user.username}</Link> </span>
            
            <p onClick={HandleRightClick} onContextMenu={HandleRightClick} > {props.user.msg} </p>
            {ShowActionsButtons ? (

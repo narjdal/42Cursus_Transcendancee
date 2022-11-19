@@ -7,24 +7,28 @@
     margin-right: auto;
     border-bottom: 1px solid grey;
     color: white;
+    margin: 0 auto;
+
     
   }
-  .table{
-    margin: 0 auto;
-  }
-  td:hover {background-color: coral;}
 
-  td {
+ .center td:hover {background-color: coral;
+  transform: scale(1.2);
+}
+
+.center td {
     margin-top: 100px;
     background-color: #004e92;
     color: white;
     justify-content: center;
+transition: transform .2s;
+
   }
   
 .box {
 overflow-x: auto;
 }
-.th{
+.center .h{
     margin-left: auto;
     margin-right: auto;
     padding-top: 20px;

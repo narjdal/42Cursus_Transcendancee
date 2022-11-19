@@ -21,11 +21,11 @@
     }
   }
   .login-card > span {
-    color: white;
+    color: #004e92;;
   }
   
   .login-card > button > span {
-    color: white;
+    color: #1e90fe;
   }
   
   .login-card > h2 {
@@ -76,5 +76,5 @@
   }
 
   .AccountButtons > button > span {
-    color: #f9f9f9;
+    color: #1e90fe;
   }

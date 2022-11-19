@@ -58,13 +58,15 @@ async function UploadPicture(selectedFile)
     {
         const formData = new FormData();
 		const UserObject  = JSON.parse(localStorage.getItem("user")!);
-		const {UserId,nickname,image_url} = UserObject
+		const {id,nickname,image_url} = UserObject
 
 	
 	formData.append('file', selectedFile);
 	formData.append('nickname',nickname);
-	// console.log("The User ID => " + UserId)
-	formData.append('userId',UserId);
+	formData.append('name',nickname);
+
+	console.log("The User  => " + JSON.stringify(UserObject))
+	formData.append('id',id);
 	formData.append('image_url',image_url)
 
 	// const MyForm = [

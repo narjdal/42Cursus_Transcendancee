@@ -33,21 +33,21 @@ const DisplayMatchHistory = (props) => {
         <tbody>
    <tr>
     <th></th>
-    <th>   <div className='loser-div'>
+    <th>   <div className='neutral-div'>
       <button type="button" className='has-border' >
       <span className="icon material-symbols-outlined">
      {"person"}        </span> 
       </button>
       </div></th>
     <th>
-   <div className='loser-div'>
+   <div className='neutral-div'>
       <button type="button" className='has-border' >
       <span className="icon material-symbols-outlined">
      {"stadia_controller"}        </span> 
       </button>
       </div>
    </th>
-   <th>   <div className='loser-div'>
+   <th>   <div className='neutral-div'>
       <button type="button" className='has-border' >
       <span className="icon material-symbols-outlined">
      {"person"}        </span> 
@@ -65,12 +65,13 @@ const DisplayMatchHistory = (props) => {
 <td>
     {props.match.finalScore}
 </td>
-<td>
-<td> <Link style={{color:'white'}} to={`/users/${props.match.P2UserId}`} >{props.match.P2nickname}</Link></td> 
+
+<td> <Link style={{color:'#1e90fe'}} to={`/users/${props.match.P2UserId}`} >{props.match.P2nickname}</Link>
 </td>
 
 
 <td>
+    
    <img src = {props.match.P2image_url}  className="avatar"/>
 </td>
     </tr>

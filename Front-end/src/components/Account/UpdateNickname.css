@@ -20,10 +20,8 @@
     align-items: center;
     height: 50px;
     width: 100%;
-    border: 0;
     padding: 0 16px;
-    border-radius: 0.5rem;
-    
+    border: 0;
     font-family: "Euclid Circular A";
     color: #f7f7f7;
     background: #216ce7;
@@ -107,3 +105,58 @@
       translate: 0 0;
     }
   }
+  
+  .ProfilePic-textBox {
+    position: relative;
+    font-family: "Euclid Circular A";
+  }
+  
+  .ProfilePic-textBox :is(label, span) {
+    position: absolute;
+    top: 70%;
+    translate: 0 -50%;
+    pointer-events: none;
+    color: #888888;
+    transition: 0.3s;
+  }
+  
+  .ProfilePic-textBox > label {
+    left: 10px;
+    translate: 0 -50%;
+    padding: 4px 8px;
+  }
+  
+  .ProfilePic-textBox > span {
+    right: 16px;
+    font-size: 28px;
+  }
+  
+  .ProfilePic-textBox > input {
+    height: 56px;
+    width: 100%;
+
+    padding: 30px 30px 30px;
+    border: 2px solid #888888;
+    border-radius: 8px;
+    outline: none;
+    background: white;
+    color: black;
+    font-family: inherit;
+    font-size: 16px;
+  }
+  
+  .ProfilePic-textBox > :is(input:focus, .has-value) {
+    border-color: #216ce7;
+  }
+  
+  .ProfilePic-textBox > :is(input:focus, .has-value) ~ span {
+    color: #216ce7;
+  }
+  
+  .ProfilePic-textBox > :is(input:focus, .has-value) ~ label {
+    background: #216ce7;
+    color: rgba(255, 255, 255, 0.75);
+    translate: 0 -46px;
+  }
+
+  

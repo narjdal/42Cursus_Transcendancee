@@ -15,7 +15,7 @@ function TempoNav() {
     const [click,setClick]= useState(false);
   const [isShown,setIsShown] = useState(false);
     const [authenticated, setauthenticated] = useState("");
-    const navigate = useNavigate();
+    // const navigate  useNavigate();
   const [user42,SetUser42] = useState <any>([]);
     
     const loggedInUser = localStorage.getItem("authenticated");
@@ -62,34 +62,79 @@ function TempoNav() {
   //  const {UserId,usual_full_name} = user42;
 
   }, []);
+
+  const navigate = useNavigate();
   const navigateHome = () => {
-    // 👇️ navigate to /contacts
-    console.log("NAVIGATE TO HOME ");
-    navigate('/');
-  };
-  const navigateAccount = () => {
-    // 👇️ navigate to /contacts
-    navigate('/Account');
-  };
-  const navigateChatRooms = () => {
-    // 👇️ navigate to /contacts
-    navigate('/Landing');
-  };
-  const navigateLeaderBoard = () => {
-    // 👇️ navigate to /contacts
-    navigate('/LeaderBoard');
-  };
-  const navigatePlay = () => {
-    // 👇️ navigate to /contacts
-    navigate('/Pong');
-  };
+      // 👇️ navigate to /contacts
+      console.log("NAVIGATE TO HOME ");
+      navigate('/');
+    };
+    const navigateAccount = () => {
+      // 👇️ navigate to /contacts
+      navigate('/Account');
+    };
+    const navigateChatRooms = () => {
+      // 👇️ navigate to /contacts
+      navigate('/Landing');
+    };
+    const navigateLeaderBoard = () => {
+      // 👇️ navigate to /contacts
+      navigate('/LeaderBoard');
+    };
+    const navigatePlay = () => {
+      // 👇️ navigate to /contacts
+      navigate('/Pong');
+    };
     return (
     <nav className='TempoNav'>
-    <img src='/images/ping-pong_1f3d3.png' height="35"/>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         <div className='TempoNav-container'>
-        <button type="button" onClick={navigateHome} className="has-border">
-                    <img src="/images/icon-home.svg" />
+        <button type="button" onClick={navigateHome} >
+                    <span className="icon material-symbols-outlined">
+                Home 
+      </span>
                   </button>
+                  <button type="button" onClick={navigateAccount} className="has-border">
+                    <span className="icon material-symbols-outlined">
+     {"manage_accounts"} 
+      </span>
+                  </button>
+                  <button type="button" onClick={navigatePlay}>
+                <span className="icon material-symbols-outlined">
+     {"videogame_asset"} 
+      </span>
+                  </button>
+        
+                  <button type="button" onClick={navigateLeaderBoard} className="has-border">
+                    <span className="icon material-symbols-outlined">
+     {"LeaderBoard"} 
+      </span>
+                  </button>
+              
+                  <button type="button" onClick={navigateChatRooms}>
+                    <span className="icon material-symbols-outlined">
+     {"Groups"}  
+      </span>
+                  </button>
+  
+                      <button type="button" className='has-border' onClick={handleFriendClick}>
+                    <span className="icon material-symbols-outlined">
+     {"People"}  
+      </span>
+      
+                      </button>
+                      <button type="button" onClick={LogUserOut} style={{bottom:0}}>
+                    <span className="icon material-symbols-outlined">
+     {"logout"} 
+      </span>
+      </button>
+                      <img src={user42.image_url} className="avatarGame"/>
+                      </div>
+        {/* <button type="button" onClick={navigateHome} >
+                    <span className="icon material-symbols-outlined">
+                Home 
+      </span>
+      </button>
                   <button type="button" onClick={navigateAccount} className="has-border">
                     <img src="./images/icon-accounts.svg" />
                   </button>
@@ -110,7 +155,7 @@ function TempoNav() {
     </div>
     <button type="button" className='has-border' onClick={handleFriendClick}><img src="/images/Chaticon.png" height="35"/>
                     <span> Social</span>
-                      </button>
+                      </button> */}
                      {isShown && ( 
                         
                       //Show the friendlist only if button is pressed

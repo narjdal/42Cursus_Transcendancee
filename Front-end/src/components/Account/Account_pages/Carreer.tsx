@@ -43,7 +43,7 @@ if (loggeduser)
         <>
            <div className='body'>
       <div className='carreer-card'>
-      
+        <h3>Game History  </h3>
       <span>{MatchHistory.map(c => < DisplayMatchHistory  key = {c.MatchId} match ={c} />)}</span>
       </div>
       </div>
