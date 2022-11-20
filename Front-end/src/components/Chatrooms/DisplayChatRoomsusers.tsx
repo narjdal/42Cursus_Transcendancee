@@ -23,20 +23,26 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
    height="20" 
    className='avatar1'/>
    </td>
-   <td> <Link style={{color:'white'}} to={`/users/${props.user.id}`} >{props.user.name}</Link></td> 
+   <td>
+     <Link style={{color:'white'}} to={`/users/${props.user.id}`} >{props.user.name}</Link>
+     </td> 
+  <td>
    <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>
     <span className="icon material-symbols-outlined">
      {"People"}  
       </span>
 
       </button>
-      
+      </td>
+      <td>
       <button type="button" id="ss" className='ButtonSocial-block' onClick={HandleBlock}>
     <span className="icon material-symbols-outlined">
      {"block"}  
       </span>
 
-      </button>    
+      </button> 
+      </td>
+
    </tr>
    </tbody>
    </table>

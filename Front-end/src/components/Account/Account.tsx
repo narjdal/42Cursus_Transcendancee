@@ -23,7 +23,6 @@ const Account = () => {
     const authenticated = localStorage.getItem("authenticated");
   const loggeduser = localStorage.getItem("user");
     console.log("NavBar : Is User  auth ?  " + authenticated);
-    
     if (authenticated === "true") {
       setauthenticated(authenticated);
     }
@@ -31,13 +30,7 @@ const Account = () => {
     {
 
       var Current_User = JSON.parse(loggeduser);
-      // const {UserId} = Current_User
       console.log("=>>>>> FROM THE ACCOUNT " + loggeduser   + Current_User.nickname + Current_User.UserId)
-  //     .then((resp) => {
-  //       console.log("NIGGA WHAT");
-  // console.log("where is the response " + resp) 
-
-  //     })
       SetUser42(Current_User);
 
     }

@@ -5,6 +5,8 @@ import './Navbar.css'
 import person from "./users/users.json"
 import ContactList from './Friendlist/ContactList';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
 // TODO :
 // Request to Backend pour avoir la FriendList 
 // Add Post request to Backend pour Ajouter un ami / Bloquer un ami 
@@ -71,6 +73,9 @@ function Navbar() {
           console.log("=>>>>> FROM THE NAVBAR  LOGOUT "   + Current_User.nickname + Current_User.UserId)
 
             // navigate("/");
+          // Remove Cookie On Log Out 
+           Cookies.remove('auth-cookie')
+
             window.location.reload();
         }
     };
@@ -113,12 +118,12 @@ function Navbar() {
           const {UserId} = Current_User
           console.log("Fetching Friends of this User " + UserId);
           setUser42(JSON.parse(localStorage.getItem("user")!))
-      FetchUserInfo(2)
-      .then((resp) => {
-        console.log("resp => " + resp[0].id);
-        setFriends(resp);
-        console.log("user42.image_url" + user42.image_url)
-      })
+      // FetchUserInfo(2)
+      // .then((resp) => {
+      //   console.log("resp => " + resp[0].id);
+      //   setFriends(resp);
+      //   console.log("user42.image_url" + user42.image_url)
+      // })
           
           // var Current_User = JSON.parse(loggeduser!);
           // console.log("=>>>>> FROM THE NAVBAR " + loggeduser   + Current_User.nickname + Current_User.UserId)

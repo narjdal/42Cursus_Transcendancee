@@ -41,14 +41,14 @@ const HandleSubmit = (e) => {
   e.preventDefault();
 }
 
-async function  HandleRef  (e)  {
-  e.preventDefault();
+async function  HandleRef  ()  {
+  // e.preventDefault();
 
   console.log("Inside handle ref => ");
 
 
   // const auth =   await 
-  const endpoint = 'http://localhost:5000/auth/signup'
+  const endpoint = 'http://localhost:5000/auth/redirect'
   console.log(" this endpoint " + endpoint)
   fetch(endpoint,{mode:'no-cors'})
   .then((response) => {
@@ -61,8 +61,17 @@ useEffect(() => {
 
   if(wantsLogin)
   {
+    console.log("WANTS LOGIN IS TRUEEE")
+    localStorage.setItem("wantslogin","true");
     // HandleRef();
   }
+  // const previous = localStorage.getItem("wantslogin");
+  // if (previous === "true")
+  // {
+  //   console.log("GOOD")
+  //   HandleRef();
+
+  // }
 },[wantsLogin])
 // useEffect(() => {
   
