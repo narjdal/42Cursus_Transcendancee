@@ -1,41 +1,42 @@
 
   
-  .login-card {
+  .Account-card {
     position: relative;
     z-index: 3;
-    width: 100%;
-    margin: 0 20px;
-    padding: 70px 30px 44px;
+    max-width: 70vh;
+    padding: 30px 30px 44px;
     border-radius: 1.25rem;
     background: #004e92;
     text-align: center;
+    
+    
   }
   .label{
     float:left;
   }
   
   @media (width >= 500px) {
-    .login-card {
+    .Account-card {
       margin: 0;
       width: 400px;
     }
   }
-  .login-card > span {
+  .Account-card > span {
     color: #004e92;;
   }
   
-  .login-card > button > span {
+  .Account-card > button > span {
     color: #1e90fe;
   }
   
-  .login-card > h2 {
+  .Account-card > h2 {
     font-size: 36px;
     font-weight: 600;
     margin: 0 0 12px;
     color: white;
   }
   
-  .login-card > h3 {
+  .Account-card > h3 {
     color: grey;
     margin: 0 0 30px;
     font-weight: 500;

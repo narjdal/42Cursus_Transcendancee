@@ -139,7 +139,7 @@ const Account = () => {
       {authenticated === "true" ? (
 <>
 <div className='body'>
-      <div className='login-card'>
+      <div className='Account-card'>
 		  <img className="avatar" src={user42.image_url} alt="avatar" />
       <span> Welcome to your Dashboard  {user42.nickname} !  </span>
       <button type="button" className='has-border' onClick={HandleTwoFactor}>  

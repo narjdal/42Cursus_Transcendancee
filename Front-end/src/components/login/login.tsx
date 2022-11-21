@@ -218,18 +218,20 @@ const HandleTempoLogin = () => {
   return (
     <div className='body'>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
+  
        <div className="login-card">
-         <h2>Login</h2>
-      <h3>Login Using 42  </h3>
-      <button  type="button" onClick={HandleRef} > Login 42</button>
+      {/* <h3>Login Using 42  </h3> */}
+      {/* <button  type="button" onClick={HandleRef} > Login 42</button> */}
       {/* <button onClick={(e) => setWantsLogin(true)}> BB</button> */}
-     <a href ="http://localhost:5000/auth/signup" onClick={(e) => setWantsLogin(true)}>Login Backend
+     <a href ="http://localhost:5000/auth/signup" onClick={(e) => setWantsLogin(true)}>
+      <span>
+      Login
+        </span> 
       {/* <button href={"https://localhost/api/authentication/oauth2/school42"}
           className="px-4 bg-gray-400 whitespace-nowrap hover:bg-gray-500"
         > </button> */}
         </a>
-      <button  type="submit" onClick={HandleTempoLogin}> Login Dummy Account</button>
+      {/* <button  type="submit" onClick={HandleTempoLogin}> Login Dummy Account</button> */}
       </div>
     </div>
   )

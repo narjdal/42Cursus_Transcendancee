@@ -65,7 +65,6 @@ SetOpenDmBox(!OpenDmBox);
        onChange={event => setMsg(event.target.value)}
        value={Msg || ""}
        />
-
        </form>
        </div>
             ) : (

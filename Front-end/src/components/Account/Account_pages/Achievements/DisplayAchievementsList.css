@@ -5,18 +5,20 @@ border-right: 3px solid #2a4fa6;
 border-top: 3px solid #2a4fa6;
 
 /* background-image: url("../../../../../public/images/"); */
-background-image: url("../../../../../public/images/Meteor.svg");
+background-image: url("../../../../../public/images/Achievements_background.jpeg");
 background-repeat: no-repeat;
 background-size: cover;
 animation: rotate 6s infinite alternate linear;
 transition: transform .2s;
-color:white;
+color:lightblue;
 }
 .AchievementsList:hover{
     transform: scale(1.2);
 }
 .AchievementsList li {
     display: inline-block;
+    justify-content: center;
+    align-items: center;
     padding-bottom: 1rem;
     margin-bottom: 1rem;
 }

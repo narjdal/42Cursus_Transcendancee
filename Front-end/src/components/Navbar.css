@@ -13,8 +13,40 @@ button {
   cursor: pointer;
 }
 
+.sidebar button i {
+  position: relative;
+  font-size: 28px;
+  transition: 0.2s;
+}
 
+.sidebar button:hover > span {
+  background: #f2f2f2;
+}
 
+.sidebar button:hover > span :is(i, img) {
+  scale: 1.05;
+}
+
+.sidebar button > span > span {
+  transition: 0.3s;
+}
+
+.sidebar button i > .em-notifs {
+  display: block;
+  height: 10px;
+  width: 10px;
+  border-radius: 10px;
+  position: absolute;
+  top: 2px;
+  right: -1px;
+  border: 1px solid #ffffff;
+  background: #ff2f40;
+  color: #f9f9f9;
+  font-size: 12px;
+  font-family: BlinkMacSystemFont;
+  font-style: normal;
+}
+/* NOTIF CSS ABOVE  */
 
 .sidebar {
   position: absolute;
@@ -75,6 +107,15 @@ body.open .sidebar-burger {
   display: grid;
 }
 
+.avatarsidebar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #1d4999;
+  filter: drop-shadow(0 0 8px #1d4999);
+  float :left;
+  overflow: hidden;
+}
 .sidebar-menu > button {
   display: flex;
   gap: 25px;

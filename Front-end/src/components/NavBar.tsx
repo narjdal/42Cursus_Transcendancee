@@ -16,7 +16,7 @@ function Navbar() {
   const [isShown,setIsShown] = useState(false);
   const[user42,setUser42] = useState <any >([]);
   const[friends,setFriends] = useState <any >([]);
-
+  const[notifs,setNotifs] = useState<any>([]);
     const [button, setButton] = useState(true);
     const [authenticated, setauthenticated] = useState("");
     const [sideBar,setSideBar] = useState(true);
@@ -136,7 +136,7 @@ function Navbar() {
       // console.log("PATHNAME => " + location.pathname)
     return (
         <nav>
-          <div>{(location.pathname === "/Pong" || location.pathname=== "/Account_infos")  ? (
+          <div>{( location.pathname=== "/Account_infos")  ? (
            <div>
             </div> 
           ):(
@@ -152,7 +152,8 @@ function Navbar() {
                     className="sidebar-burger"
                     onClick={toggleSidebar}
                   ></button>
-                  <img src={user42.image_url}   className="avatar1" />            
+                  
+                  <img src={user42.image_url}   className="avatarsidebar" />            
                <span> {user42.nickname}</span> 
                 </header>
                 <nav className="sidebar-menu">
@@ -198,6 +199,22 @@ function Navbar() {
       Social
       </span>
                       </button>
+                      <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+
+    <button type="button" className='has-border'>
+    <span>
+ 
+    <i   className="uil uil-heart"  >
+
+<div className={`${notifs  ? "em-notifs" : ""}`}>
+      </div>
+      </i>
+       <span> TODO   </span>
+    </span>
+  </button>
                      {isShown && ( 
                         
                       //Show the friendlist only if button is pressed

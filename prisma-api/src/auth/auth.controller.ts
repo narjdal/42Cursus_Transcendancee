@@ -46,6 +46,32 @@ export class AuthController {
 		// response.redirect("http::localhost:3000/");
 		// return user;
 	}
+
+
+// 	@Get('/redirect')
+// 	@UseGuards(AuthGuard('42'))
+// 	async login(@Req() request, @Res() response) {
+
+// 		const user =  await this.authService.findORcreate(request.user);
+
+// 		console.log(user); // affiche uer 
+
+// 		const token = await this.authService.getJwtToken(user);
+
+// 		const secretData = {
+// 			token,
+// 			refreshToken: '',
+// 		}
+
+// 		response.cookie(process.env.AUTHCOOKIE, secretData, {httpOnly:true,});
+// 		// response.status(200).send(user);
+// 		// response.redirect("http::localhost:5000/player/myprofile")
+// 		return response.status(302).redirect(`http://localhost:5000/player/myprofile`,
+// );
+
+// 		// return user;
+// 	}
+// }
 }
 
 // @Get('/redirect')

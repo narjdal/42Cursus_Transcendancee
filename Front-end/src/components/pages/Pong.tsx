@@ -5,7 +5,6 @@ import './PongPage.css'
 const Pong = () => {
   return (
     <>
-      <TempoNav/>
     <div className='game-canvas'>
       <Game width = "400" height="400" />
       </div>

@@ -18,12 +18,12 @@
     display: grid;
     place-items: center;
     margin: 0;
-    background-image: url("../../../public/images/background.svg");
+    background-image: url("../../../public/images/Polygon-10s-603px.svg");
     background-repeat: no-repeat;
     background-size: cover;
     font-family: "Euclid Circular A";
     color: grey;
-    animation: rotate 4s infinite alternate linear;
+    animation: rotate 6s infinite alternate linear;
   }
   
   @media (width >= 500px) {
@@ -37,14 +37,11 @@
     /* width: 100%; */
     top: 0;
     display: inline-block;
-    width: 50%;
+    max-width: 30%;
+    overflow-x: scroll;
+    /* width: 30%; */
     z-index: 10;
-    border-top: 10px solid lightskyblue;
-    border-bottom: 10px solid lightskyblue;
-
-    /* text-align: center;
-justify-content: center;
-flex-direction: column; */
+    border-right: 10px solid lightskyblue;
 
     height: 300px;
     overflow: hidden;
@@ -57,21 +54,23 @@ flex-direction: column; */
   .ChatRoomBox-card {
     position: relative;
     z-index: 3;
+    /* background-color: darkblue; */
+    background: rgba(0, 0, 199, .5);
+    /* min-width: 100%; */
     width: 100%;
+    /* max-width: %; */
+    /* min-width: none; */
+    /* max-width: 70%; */
     margin: 0 0px;
-    padding: 70px 0px 70px ;
+    padding: 20px 0px 0px ;
     border-radius: 1.25rem;
-    height: 70vh;
+    min-height: 40vh;
     display: flex;
     border-top: 3px solid #1e90fe;
     border-bottom: 3px solid #1e90fe;
     border-left: 3px solid #1e90fe;
     border-right: 3px solid #1e90fe;
     color : white;
-    background-image: url("../../../public/images/pattern.svg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    animation: rotate 6s infinite alternate linear;
     justify-content: center;
     flex-direction: column;
     text-align: center;
@@ -83,15 +82,18 @@ flex-direction: column; */
 
   .History-Box {
     position: relative;
-    border-top: 10px solid lightskyblue;
     
-    border-bottom: 10px solid lightskyblue;
-
+    background-image: url("../../../public/images/chatroombackground.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    animation: rotate 6s infinite alternate linear;
     /* background: white; */
     /* width: 25em; */
     /* color: */
-    width: 50%;
-    float:right;
+    /* max-width: 70%; */
+    width: 70%;
+    /* float:right; */
+    /* overflow: hidden; */
     /* margin-right: ; */
     /* display: flex; */
     /* flex-direction: column; */
@@ -111,8 +113,9 @@ flex-direction: column; */
     /* padding-left: 100px; */
     /* margin-left: 12em; */
     /* align-items: left; */
-
-    height: 300px;
+    /* color: blue; */
+    /* height: 300px; */
+    max-height: 300px;
     overflow-y: scroll;
   }
   .label{

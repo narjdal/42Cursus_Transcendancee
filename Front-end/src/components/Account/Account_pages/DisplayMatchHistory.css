@@ -14,11 +14,10 @@ color:#1cb380;;
     border-left: 3px solid #1e90fe;
     border-right: 3px solid #1e90fe;
 
-    background-image: url("../../../../public/images/Meteor.svg");
+    background-image: url("../../../../public/images/achiev_back.jpeg");
     background-repeat: no-repeat;
     background-size: cover;
     animation: rotate 6s infinite alternate linear;
-    
 
   
 }
@@ -31,9 +30,10 @@ color:#1cb380;;
 .History-Table  td {
     color: #1e90fe;
     font-size: large;
-border-top: 2px solid #1e90fe;
 
+/* border-top: 2px solid #1e90fe; */
 
+/* border-right: 2px solid grey; */
 
 }
 
@@ -41,6 +41,7 @@ border-top: 2px solid #1e90fe;
 .History-Table  th {
 
     color: #1e90fe;
+/* border-top: 2px solid #1e90fe; */
 
 
 }

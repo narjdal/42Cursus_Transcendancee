@@ -47,12 +47,13 @@ const MessageList = (props) => {
     <span className="time-right">11:00</span>
         </div>
             ):(
-        <div className="MsgHistory">
+ <div className="OthersHistory">
     <div className='OthersMessages'>
+
+ <Link style={{color:'purple',float:'left'}} to={`/users/${props.user.userId}`} >{props.user.username}</Link>
+      {props.user.msg}
         
-    <span><Link style={{color:'grey'}} to={`/users/${props.user.userId}`} >{props.user.username}</Link> </span>
-           
-           <p onClick={HandleRightClick} onContextMenu={HandleRightClick} > {props.user.msg} </p>
+           {/* <p onClick={HandleRightClick} onContextMenu={HandleRightClick} > {props.user.msg} </p>
            {ShowActionsButtons ? (
             <div>
             <ChatRoomButton/>
@@ -61,7 +62,7 @@ const MessageList = (props) => {
             <div>
                 
                 </div>
-           )}
+           )} */}
        
             <span className="time-left">11:00</span>
             </div>
