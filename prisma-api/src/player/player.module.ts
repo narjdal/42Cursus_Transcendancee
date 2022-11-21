@@ -6,9 +6,11 @@ import { Module } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { PlayerService } from './player.service';
 import { PlayerController } from './player.controller';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
+import { jwtauthGuard } from 'src/auth/jwt-oauth.guard';
 
 @Module({
-  providers: [PrismaService, PlayerService],
-  controllers: [PlayerController]
+	providers: [JwtStrategy, PrismaService, PlayerService],
+	controllers: [PlayerController]
 })
 export class PlayerModule {}

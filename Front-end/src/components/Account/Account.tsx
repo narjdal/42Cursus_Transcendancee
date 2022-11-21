@@ -140,7 +140,7 @@ const Account = () => {
 <>
 <div className='body'>
       <div className='Account-card'>
-		  <img className="avatar" src={user42.image_url} alt="avatar" />
+		  <img className="avatar" src={user42.avatar} alt="avatar" />
       <span> Welcome to your Dashboard  {user42.nickname} !  </span>
       <button type="button" className='has-border' onClick={HandleTwoFactor}>  
       <span className="icon material-symbols-outlined">

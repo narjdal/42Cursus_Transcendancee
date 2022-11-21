@@ -63,6 +63,7 @@ function Navbar() {
         {   
             localStorage.setItem("authenticated", "false");
             localStorage.setItem("user","");
+            localStorage.setItem("token","");
             setauthenticated("false");
 
         const loggeduser = localStorage.getItem("user");
@@ -75,6 +76,8 @@ function Navbar() {
             // navigate("/");
           // Remove Cookie On Log Out 
            Cookies.remove('auth-cookie')
+          //  Cookies.remove('narjdal')
+
 
             window.location.reload();
         }
@@ -153,7 +156,7 @@ function Navbar() {
                     onClick={toggleSidebar}
                   ></button>
                   
-                  <img src={user42.image_url}   className="avatarsidebar" />            
+                  <img src={user42.avatar}   className="avatarsidebar" />            
                <span> {user42.nickname}</span> 
                 </header>
                 <nav className="sidebar-menu">

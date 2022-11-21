@@ -2,19 +2,41 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
 }
 
 model Player {
-	id Int @id @default(autoincrement())
-	nickname String @unique
-	firstName String
-	lastName String
-	avatar String
-	email String
+    id        Int    @id @default(autoincrement())
+    nickname  String @unique
+    firstName String
+    lastName  String
+    avatar    String
+    email     String @unique
+    wins      Int    @default(0)
+    loses     Int    @default(0)
+
+    // explicit self relation many to many
+    senders   Friendship[] @relation("SendRequest")
+    receivers Friendship[] @relation("ReceiveRequest")
+
+    // explicit relation many to many
+}
+
+// https://www.prisma.io/docs/guides/database/troubleshooting-orm/help-articles/working-with-many-to-many-relations
+// https://www.prisma.io/docs/concepts/components/prisma-schema/relations/self-relations#relational-databases
+
+model Friendship {
+    status     String
+    date       DateTime @default(now())
+    sender     Player   @relation("SendRequest", fields: [senderId], references: [id])
+    senderId   Int
+    receiver   Player   @relation("ReceiveRequest", fields: [receiverId], references: [id])
+    receiverId Int
+
+    @@id([senderId, receiverId])
 }

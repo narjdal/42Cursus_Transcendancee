@@ -26,56 +26,27 @@ import { getCookies } from './utils/utils';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import jwt from 'jwt-decode'
-
+import { login } from './cookies/AuthProvider';
+import getProfile from './utils/fetchProfile'
+import { useState } from 'react';
 const App = () => {
-  // const cookies = new Cookies();
-  // const navigate = useNavigate();
-  // function warningNotification (){
-  //    addNotification({
-  //     title: 'Warning',
-  //     subtitle: 'Please fill it',
-  //     message: 'You have to enter name',
-  //     theme: 'red',
-  //     closeButton:"X",
-  //   })
-  // };
-  
-  // function successNotification (){
-  //   addNotification({
-  //     title: 'Success',
-  //     subtitle: 'You have successfully submitted',
-  //     message: 'Welcome to GeeksforGeeks',
-  //     theme: 'light',
-  //     closeButton:"X",
-  //     backgroundTop:"green",
-  //     backgroundBottom:"yellowgreen"
-  //   })
-  // };
-  
-  // function handleSubmit(e){
-  //   e.preventDefault();
-  //   if(name === "")
-  //     warningNotification();
-  //   else
-  //     successNotification()
-  // }
-  
-  
-  const test =  getCookies('user');
+ const  accessToken = "ss";
+  // let getuser = getProfile();
+//  setIsLogged(getProfile());
+const HandleProfile = () => {
+console.log("INSIDE HANDLE PROFILE");
+getProfile();
 
- const accessToken = Cookies.get('auth-cookie')
-//  const tt = JSON.parse(accessToken);
-// const user = tt.user;
-
-// let accessToken;
-  
- if(!accessToken)
+}
+// setIsLogged()
+ if(localStorage.getItem("authenticated") === "false")
  {
-  console.log("NO ACCESS TOKEN PROVIDED SORRY");
+  console.log("You are not logged in.");
   return (
     <>
     <Router>
-      <Login/>
+     <button onClick={HandleProfile}> <Login />
+     </button>
       
     </Router>
     </>
@@ -83,12 +54,13 @@ const App = () => {
  }
  else
  {
-const user = jwt(accessToken)
-// console.log(" ACCESS TOKEN =>   " + accessToken + "TEST =>   " + test);
-console.log("USER JWT => " + JSON.stringify(user));
-
-  localStorage.setItem("authenticated","true");
-  localStorage.setItem("user",JSON.stringify(user));
+// const user = jwt(accessToken)
+// const {nickname} = test;
+// login(accessToken);
+const user = localStorage.getItem("user");
+console.log(" User Object  =>   " +  user )
+// console.log("USER JWT => " + JSON.stringify(user));
+  // localStorage.setItem("token",accessToken)
   return (
     <div className="App">
         {/* <link rel="stylesheet" href="toruskit.blobz/blobz.min.css" />
