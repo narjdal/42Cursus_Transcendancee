@@ -2,8 +2,10 @@ import './App.css';
 import Navbar from './components/NavBar';
 import TempoNavbar from './components/TempoNav/NavbarGame';
 import Login from './components/login/login';
-import Footer from './components/Footer'
 import React from 'react';
+import {Notification} from 'react-notifications'
+// import {addNotification} from 'react-notifications';
+  import {iNotification} from 'react-notifications-component'
 import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
 import Home from './components/pages/HomePage';
 import Pong from './components/pages/Pong';
@@ -28,6 +30,37 @@ import jwt from 'jwt-decode'
 const App = () => {
   // const cookies = new Cookies();
   // const navigate = useNavigate();
+  // function warningNotification (){
+  //    addNotification({
+  //     title: 'Warning',
+  //     subtitle: 'Please fill it',
+  //     message: 'You have to enter name',
+  //     theme: 'red',
+  //     closeButton:"X",
+  //   })
+  // };
+  
+  // function successNotification (){
+  //   addNotification({
+  //     title: 'Success',
+  //     subtitle: 'You have successfully submitted',
+  //     message: 'Welcome to GeeksforGeeks',
+  //     theme: 'light',
+  //     closeButton:"X",
+  //     backgroundTop:"green",
+  //     backgroundBottom:"yellowgreen"
+  //   })
+  // };
+  
+  // function handleSubmit(e){
+  //   e.preventDefault();
+  //   if(name === "")
+  //     warningNotification();
+  //   else
+  //     successNotification()
+  // }
+  
+  
   const test =  getCookies('user');
 
  const accessToken = Cookies.get('auth-cookie')

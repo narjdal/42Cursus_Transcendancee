@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import { useState,useEffect } from "react";
 import person from '../users/users.json'
@@ -17,7 +17,7 @@ const ChatRoomBox = (props) => {
   const [Updated, setisUpdated] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
   const[friends,setFriends] = useState <any >([]);
-
+  const [userQuery,setUserQuery] = useState("");
   const [user42,SetUser42] = useState<any>([])
   const [UserAdmin,SetUserAdmin] = useState(false);
 
@@ -135,6 +135,15 @@ const SendMessage = (e) => {
 const HandleFetchedFriend = (e) => {
   e.preventDefault();
 }
+
+//-----------------------//
+//Filter User List 
+// const FilteredUsers =  useMemo (() => {
+  const FilteredUsers = person.filter(person => {
+  // Here A changer : person with friends from backend , 
+  //filter nickname not name 
+   return person.name.toLowerCase().includes(userQuery.toLowerCase());
+})
 return (
   <div className='body'>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
@@ -150,14 +159,14 @@ return (
           type="text"
           className ="AddUserInput"
           placeholder="Find a user"
-          onChange={event => setUserFetched(event.target.value)}
-       value={userfetched || ""}
+          onChange={event => setUserQuery(event.target.value)}
+       value={userQuery || ""}
         />
         </div>
   </div>
   </div>
 
-        {friends.map(c => < DisplayChatRoomusers key = {c.id} user = {c} />)}
+    {FilteredUsers.map(c => < DisplayChatRoomusers key = {c.id} user = {c} />)}
   </div>
       <div className='History-Box'> 
      
@@ -181,8 +190,8 @@ return (
 </div>
       
       {UserAdmin ? ( 
-          <div>
-             <input type="text"
+          <div className='ChatRoom-InputBox'>
+      <input type="text"
        className={`${BanUser ? "has-value" : ""}`}
        id="textbox"
        onChange={event => SetBanUser(event.target.value)}

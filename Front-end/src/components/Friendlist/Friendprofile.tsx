@@ -10,7 +10,7 @@ const Friendprofile = () => {
   const [userState,setUserState] = useState<any>([]);
   //We send the Id as the params of the Link , 
   //ICi request Au Backend Avec l'ID de l'user demander stocker les infos dans const user 
-  const user = person.find((x) => x._id === params.id);
+  const user = person.find((x) => x.id === params.id);
 
   if (!user) {
       // TODO: 404

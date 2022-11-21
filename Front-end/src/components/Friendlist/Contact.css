@@ -57,3 +57,7 @@
 .Scrollable-DmWindow{
     overflow-y: scroll;
 }
+.Contact-table td p {
+  overflow-x: scroll;
+  max-width: 20vh;
+}

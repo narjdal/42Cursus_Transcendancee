@@ -1,6 +1,7 @@
 import react from 'react'
 import { useState } from 'react'; 
 import { Link } from 'react-router-dom';
+import './DisplayChatRoomsusers.css'
 // import blobz from 'blobz.css'
 const DisplayChatRoomusers = (props) => {
     const handleFriendClick  = (e) => {
@@ -13,18 +14,20 @@ const DisplayChatRoomusers = (props) => {
 console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
     return (
         <>
-<div className="Contact-HELP"> 
-    <table className="Contact-table">
+<div className="ChatRoom-HELP"> 
+    <table className="ChatRoom-table">
         <tbody>
     <tr>
    </tr>
    <tr>
    <td> <img src={props.user.image_url!} 
    height="20" 
-   className='avatar1'/>
+   className='avatarsidebar'/>
    </td>
    <td>
-     <Link style={{color:'white'}} to={`/users/${props.user.id}`} >{props.user.name}</Link>
+     <Link style={{color:'white'}} to={`/users/${props.user.id}`} >
+    <p>{props.user.name}</p>
+        </Link>
      </td> 
   <td>
    <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>

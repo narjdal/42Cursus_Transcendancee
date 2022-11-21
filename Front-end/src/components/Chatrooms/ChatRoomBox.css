@@ -37,12 +37,10 @@
     /* width: 100%; */
     top: 0;
     display: inline-block;
-    max-width: 30%;
+    max-width: 45%;
     overflow-x: scroll;
     /* width: 30%; */
     z-index: 10;
-    border-right: 10px solid lightskyblue;
-
     height: 300px;
     overflow: hidden;
     overflow-y: scroll;
@@ -86,12 +84,12 @@
     background-image: url("../../../public/images/chatroombackground.webp");
     background-repeat: no-repeat;
     background-size: cover;
-    animation: rotate 6s infinite alternate linear;
+    animation: rotate 2s infinite alternate linear;
     /* background: white; */
     /* width: 25em; */
     /* color: */
     /* max-width: 70%; */
-    width: 70%;
+    
     /* float:right; */
     /* overflow: hidden; */
     /* margin-right: ; */
