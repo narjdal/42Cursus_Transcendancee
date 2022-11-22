@@ -3,12 +3,23 @@ import BLoggin from '../login/login';
 import { useEffect, useState } from "react";
 import Top from '../Top/Top.json';
 import TopComponent from '../Top/TopComponent';
-
+import SearchBar from '../users/SearchBar'
+import DisplayMatchHistory from '../Account/Account_pages/DisplayMatchHistory';
 import './HomePage.css'
 
 const Home = () => {
   const [authenticated, setauthenticated] = useState("");
+  const loggeduser = localStorage.getItem("user");
+if (loggeduser)
+{
+    var Current_User = JSON.parse(loggeduser);
+    
+}
 
+  const MatchHistory = [
+    {MatchId:0,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"10-8",winner:true},
+    {MatchId:1,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"12-8",winner:false},
+];
 
   useEffect(() => {
     const authenticated = localStorage.getItem("authenticated");
@@ -24,7 +35,11 @@ const Home = () => {
     return (
       
   <div>  {loggedInUser == "true" ? (
-        <div className='Top3'>
+
+    <>
+          <SearchBar/>
+
+                <div className='Top3'>
           <div className="box">
           <table className='center'>
             <tbody>
@@ -139,7 +154,14 @@ const Home = () => {
   
   </p>  
             </div>
+
+
+            <div className='carreer-card'>
+        <h3> Global History  </h3>
+      <span>{MatchHistory.map(c => < DisplayMatchHistory  key = {c.MatchId} match ={c} />)}</span>
+      </div>
       
+            </>
       ) : (
         <div className="soloLogin">
       <BLoggin/>

@@ -2,7 +2,7 @@ import './App.css';
 import Navbar from './components/NavBar';
 import TempoNavbar from './components/TempoNav/NavbarGame';
 import Login from './components/login/login';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Notification} from 'react-notifications'
 // import {addNotification} from 'react-notifications';
   import {iNotification} from 'react-notifications-component'
@@ -33,26 +33,46 @@ import { useNavigate,useLocation} from 'react-router-dom';
 const App = () => {
  const  accessToken = "ss";
  const [isLogged,setIslogged]  =  useState(false);
-  // let getuser = getProfile();
-//  setIsLogged(getProfile());
-const HandleProfile = (e) => {
-  e.preventDefault();
+ const [trylogin,settrylogin]  =  useState(false);
+
+useEffect (() => {
+  if(localStorage.getItem("authenticated") === "true")
+  {
+    console.log("Loggin the user" );
+    setIslogged(true);
+  }
+    if(localStorage.getItem("trylogin") === "true")
+    {
+       HandleProfile();
+      console.log("trylogin is  true");
+    }
+    
+
+ 
+
+    
+
+
+},[trylogin])
+async function HandleProfile  () {
+
 console.log("INSIDE HANDLE PROFILE");
-getProfile();
-if(localStorage.getItem("authenticated") === "true")
-{
-  setIslogged(!isLogged);
-}
+  await getProfile()
+  .then((response) => {
+    console.log("Handle Profile response is => " + response)
+    settrylogin(!trylogin);
+  })
+
 
 }
-// setIsLogged()
+
  if(!isLogged)
  {
   console.log("You are not logged in.");
   return (
     <>
     <Router>
-     <button onClick={HandleProfile}> <Login />
+     <button onClick={(e) => localStorage.setItem("trylogin","true")}> <Login />
      </button>
       
     </Router>

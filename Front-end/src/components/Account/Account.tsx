@@ -32,7 +32,7 @@ const Account = () => {
       var Current_User = JSON.parse(loggeduser);
       console.log("=>>>>> FROM THE ACCOUNT " + loggeduser   + Current_User.nickname + Current_User.UserId)
       SetUser42(Current_User);
-
+      
     }
     // console.log("I am navigating =>>> ");
     // navigate('/Account');
@@ -141,7 +141,7 @@ const Account = () => {
 <div className='body'>
       <div className='Account-card'>
 		  <img className="avatar" src={user42.avatar} alt="avatar" />
-      <span> Welcome to your Dashboard  {user42.nickname} !  </span>
+        Welcome to your Dashboard  {user42.nickname} ! 
       <button type="button" className='has-border' onClick={HandleTwoFactor}>  
       <span className="icon material-symbols-outlined">
      {"Lock"}  2FA      </span> 

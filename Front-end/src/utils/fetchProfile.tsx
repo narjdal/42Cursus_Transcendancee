@@ -21,13 +21,13 @@ await fetch(endpoint,{
     console.log("The response is => " + JSON.stringify(json))
   localStorage.setItem("authenticated","true");
   localStorage.setItem("user",JSON.stringify(json));
-
+  localStorage.setItem("trylogin","false");
   
-    return true;
+    return json;
 })
 .catch((error) => {
     console.log("An error occured : " + error)
-    return false;
+    return error;
 })
 
 }
