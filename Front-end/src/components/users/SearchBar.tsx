@@ -51,7 +51,8 @@ console.log("Waiting for the backend endpoint ...");
     console.log("inside Handle fetch user" + userQuery)
   if(!userQuery)
   {
-    setErrorMessage("An Error Occured ! ");
+    setErrorMessage("An Error Occured ! ")
+    setDisplay(false);
   }
   else
   {
@@ -59,6 +60,10 @@ console.log("Waiting for the backend endpoint ...");
 setDisplay(true);
   }
 };
+const HandleChange  = (e) => {
+    setUserQuery(e.target.value);
+    setDisplay(false);
+}
 
 return (
     <>
@@ -68,7 +73,7 @@ return (
           type="text"
           className ="AddUserInput"
           placeholder="Find a user"
-          onChange={event => setUserQuery(event.target.value)}
+          onChange={HandleChange}
        value={userQuery || ""}
         />
    
