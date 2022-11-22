@@ -110,7 +110,6 @@ function Navbar() {
       useEffect(() => {
         const authenticated = localStorage.getItem("authenticated");
     const loggeduser = localStorage.getItem("user");
-        // console.log("NavBar : Is User  auth ?  " + authenticated);
       
         if (authenticated == "true") {
           setauthenticated(authenticated);
@@ -118,8 +117,8 @@ function Navbar() {
         if(loggeduser)
         {
           var Current_User = JSON.parse(loggeduser);
-          const {UserId} = Current_User
-          console.log("Fetching Friends of this User " + UserId);
+          const {id} = Current_User
+          console.log("Fetching Friends of this User " + id);
           setUser42(JSON.parse(localStorage.getItem("user")!))
       // FetchUserInfo(2)
       // .then((resp) => {

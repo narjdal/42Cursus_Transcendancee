@@ -25,6 +25,13 @@
 
 
   }
+  .Contact-table td p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 5em; 
+    height: 1.2em; 
+    white-space: nowrap;
+  }
 .icon-div >  button > span {
     color: #1cb380;
   }

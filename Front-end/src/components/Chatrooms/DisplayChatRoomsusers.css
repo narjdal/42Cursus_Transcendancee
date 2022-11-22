@@ -5,8 +5,11 @@
     color: blue;
 }
 .ChatRoom-table td p {
-    width: 18vh;
+    text-overflow: ellipsis;
     overflow: hidden;
+    width: 5em; 
+    height: 1.2em; 
+    white-space: nowrap;
 }
 
 
