@@ -24,22 +24,29 @@ import './AppStyle.css'
 import Social from './components/Account/Account_pages/Social/Social'
 import { getCookies } from './utils/utils';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 import jwt from 'jwt-decode'
 import { login } from './cookies/AuthProvider';
 import getProfile from './utils/fetchProfile'
 import { useState } from 'react';
+import { useNavigate,useLocation} from 'react-router-dom';
+
 const App = () => {
  const  accessToken = "ss";
+ const [isLogged,setIslogged]  =  useState(false);
   // let getuser = getProfile();
 //  setIsLogged(getProfile());
-const HandleProfile = () => {
+const HandleProfile = (e) => {
+  e.preventDefault();
 console.log("INSIDE HANDLE PROFILE");
 getProfile();
+if(localStorage.getItem("authenticated") === "true")
+{
+  setIslogged(!isLogged);
+}
 
 }
 // setIsLogged()
- if(localStorage.getItem("authenticated") === "false")
+ if(!isLogged)
  {
   console.log("You are not logged in.");
   return (
