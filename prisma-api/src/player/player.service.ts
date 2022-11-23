@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
+import { stat } from 'fs';
+import { networkInterfaces } from 'os';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -173,74 +175,74 @@ export class PlayerService {
         // owner create a room 
         // while creating the room create a member type(permission) and set it to owner
 
-            const room = await this.prisma.chatRoom.create({
-                data:
-                {
-                    is_dm: false,
-                    name: nameOfRoom,
+        const room = await this.prisma.chatRoom.create({
+            data:
+            {
+                is_dm: false,
+                name: nameOfRoom,
 
-                    all_members: {
-                        create: [
-                            {
-                                statusMember: "owner",
-                                //muted_until:new Date(),
-                                // player:  {
-                                //     connect:{
-                                //        id: me.id,
-                                //     }
-                                // },
-                                muted_until: new Date(),
-                                playerId: me.id
-                                // connect && include 
-                            },
-                        ],
-                    },
+                all_members: {
+                    create: [
+                        {
+                            statusMember: "owner",
+                            // muted_until:new Date(),
+                            // player:  {
+                            //     connect:{
+                            //        id: me.id,
+                            //     }
+                            // },
+                            until: new Date(),
+                            playerId: me.id
+                            // connect && include 
+                        },
+                    ],
                 },
-            })
-            return room;
-        }
+            },
+        })
+        return room;
+    }
 
-        // if type == DM
+    // if type == DM
     async createDMRoom(user: any, friendname: string) {
         const sender = await this.findPlayer(user);
         const receiver = await this.prisma.player.findUnique({
             where: { nickname: friendname }
         });
-            const room = await this.prisma.chatRoom.create({
-                data:
-                {
-                    all_members: {
-                        create: [
-                            {
-                                statusMember: "member",
-                                //muted_until:new Date(),
-                                // player:  {
-                                //     connect:{
-                                //        id: me.id,
-                                //     }
-                                // },
-                                muted_until: new Date(),
-                                playerId: sender.id
-                                // connect && include 
-                            },
-                            {
-                                statusMember: "member",
-                                //muted_until:new Date(),
-                                // player:  {
-                                //     connect:{
-                                //        id: me.id,
-                                //     }
-                                // },
-                                muted_until: new Date(),
-                                playerId: receiver.id
-                                // connect && include 
-                            },
-                        ],
-                    },
+        const room = await this.prisma.chatRoom.create({
+            data:
+            {
+                all_members: {
+                    create: [
+                        {
+                            statusMember: "member",
+                            //muted_until:new Date(),
+                            // player:  {
+                            //     connect:{
+                            //        id: me.id,
+                            //     }
+                            // },
+                            until: new Date(),
+                            playerId: sender.id
+                            // connect && include 
+                        },
+                        {
+                            statusMember: "member",
+                            //muted_until:new Date(),
+                            // player:  {
+                            //     connect:{
+                            //        id: me.id,
+                            //     }
+                            // },
+                            until: new Date(),
+                            playerId: receiver.id
+                            // connect && include 
+                        },
+                    ],
                 },
-            })
-            return room;
-}
+            },
+        })
+        return room;
+    }
 
 
     //get all messages of a room
@@ -248,9 +250,11 @@ export class PlayerService {
         const me = await this.findPlayer(user);
 
         const messages = await this.prisma.message.findMany({
-            where: { playerId: me.id },
-            include: {
-                all_messages: true,
+            where: {
+                AND: [
+                    { playerId: me.id },
+                    { roomId: id_room },
+                ]
             },
         })
         return messages;
@@ -258,18 +262,58 @@ export class PlayerService {
 
     async getMessagesOfRoom(user: any, id_room) {
         const me = await this.findPlayer(user);
-        const room = await this.prisma.chatRoom.findUnique({
-            where: { id: id_room },
+
+        // 1- get the permission of this player in this room
+        const status = await this.prisma.permission.findFirst({
+            where: {
+                AND: [
+                    { playerId: me.id },
+                    { roomId: id_room },
+                ]
+            }
+        })
+
+        // 1- if user is banned, send all msgs before the time of banning
+        // ==>  status.createdAt
+        // where { message.createdAT {lt: status.createdAt} }
+        if (status.statusMember === "banned") {
+            return null; // lt
+        }
+
+        // else member is not banned, show all messages
+        const result = await this.prisma.chatRoom.findMany({
             include: {
-                all_messages: true,
+                // Select all members that are not blocked asc desc
+                all_messages: // Permission
+                {
+                    where: {
+                        createdAt: {
+                            lt: nw
+                        },
+                        AND:{
+                            sender: {
+                                in: 
+                            }
+                        }
+                    },
+                    orderBy: {
+                        createdAt: 'asc' 
+                     }
+                    // where: {
+                    //     statusMember: {
+                    //         not: "block",
+                    //     }
+                    // },
+                },
+                // all_messages: {
+                //     orderBy: {
+                //         createdAt: 'asc',
+                //     },
+                // },
             },
         })
 
-        // 1- if user is banned
-
-        // 2- else
-
-        return room;
+        return result;
     }
 
     //send message

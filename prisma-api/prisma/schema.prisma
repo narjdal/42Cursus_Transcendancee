@@ -38,7 +38,7 @@ model ChatRoom {
     is_public Boolean @default(true)
     password String?
     all_members Permission[] @relation("PermissionOfmember")
-    all_messages Message[] @relation("ThisRoom")
+    all_messages Message[] @relation("ThisRoom") // one to many
 
 }
 
@@ -47,7 +47,7 @@ model Permission {
     statusMember String
     is_banned Boolean @default(false)
     is_muted Boolean @default(false)
-    muted_until DateTime
+    until DateTime
 
     player     Player   @relation("PermissionInRoom", fields: [playerId], references: [id])
     playerId   Int
@@ -66,7 +66,7 @@ model Message {
     roomId Int
 
     msg String
-    create_at DateTime @default(now())
+    createdAt DateTime @default(now())
 
 }
 
