@@ -3,10 +3,10 @@ import Navbar from './components/NavBar';
 import TempoNavbar from './components/TempoNav/NavbarGame';
 import Login from './components/login/login';
 import React, { useEffect } from 'react';
-import {Notification} from 'react-notifications'
+import { Notification } from 'react-notifications'
 // import {addNotification} from 'react-notifications';
-  import {iNotification} from 'react-notifications-component'
-import {BrowserRouter as Router,Route,Routes} from 'react-router-dom';
+import { iNotification } from 'react-notifications-component'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/pages/HomePage';
 import Pong from './components/pages/Pong';
 import LeaderBoard from './components/pages/LeaderBoard';
@@ -15,9 +15,9 @@ import AboutUs from './components/pages/AboutUs';
 import HowToPlay from './components/pages/HowToPlay';
 import { Landing } from './components/Chatrooms/Landing';
 import { ChatRoom } from './components/Chatrooms/ChatRoom';
-import  Friendprofile  from './components/Friendlist/Friendprofile';
+import Friendprofile from './components/Friendlist/Friendprofile';
 import Pseudo from './components/Account/Account_infos';
-import  CreateRoom  from './components/Chatrooms/CreateRoom';
+import CreateRoom from './components/Chatrooms/CreateRoom';
 import Carreer from './components/Account/Account_pages/Carreer';
 import Achievements from './components/Account/Account_pages/Achievements/Achievements'
 import './AppStyle.css'
@@ -28,68 +28,57 @@ import jwt from 'jwt-decode'
 import { login } from './cookies/AuthProvider';
 import getProfile from './utils/fetchProfile'
 import { useState } from 'react';
-import { useNavigate,useLocation} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const App = () => {
- const  accessToken = "ss";
- const [isLogged,setIslogged]  =  useState(false);
- const [trylogin,settrylogin]  =  useState(false);
+  const accessToken = "ss";
+  const [isLogged, setIslogged] = useState(false);
+  const [trylogin, settrylogin] = useState(false);
 
-useEffect (() => {
-  if(localStorage.getItem("authenticated") === "true")
-  {
-    console.log("Loggin the user" );
-    setIslogged(true);
-  }
-    if(localStorage.getItem("trylogin") === "true")
-    {
-       HandleProfile();
+  useEffect(() => {
+    if (localStorage.getItem("authenticated") === "true") {
+      console.log("Loggin the user");
+      setIslogged(true);
+    }
+    if (localStorage.getItem("trylogin") === "true") {
+      HandleProfile();
       console.log("trylogin is  true");
     }
-    
+  }, [trylogin])
+  async function HandleProfile() {
 
- 
-
-    
-
-
-},[trylogin])
-async function HandleProfile  () {
-
-console.log("INSIDE HANDLE PROFILE");
-  await getProfile()
-  .then((response) => {
-    console.log("Handle Profile response is => " + response)
-    settrylogin(!trylogin);
-  })
+    console.log("INSIDE HANDLE PROFILE");
+    await getProfile()
+      .then((response) => {
+        console.log("Handle Profile response is => " + response)
+        settrylogin(!trylogin);
+      })
 
 
-}
+  }
 
- if(!isLogged)
- {
-  console.log("You are not logged in.");
-  return (
-    <>
-    <Router>
-     <button onClick={(e) => localStorage.setItem("trylogin","true")}> <Login />
-     </button>
-      
-    </Router>
-    </>
-  )
- }
- else
- {
-// const user = jwt(accessToken)
-// const {nickname} = test;
-// login(accessToken);
-const user = localStorage.getItem("user");
-console.log(" User Object  =>   " +  user )
-// console.log("USER JWT => " + JSON.stringify(user));
-  // localStorage.setItem("token",accessToken)
-  return (
-    <div className="App">
+  if (!isLogged) {
+    console.log("You are not logged in.");
+    return (
+      <>
+        <Router>
+          <button onClick={(e) => localStorage.setItem("trylogin", "true")}> <Login />
+          </button>
+
+        </Router>
+      </>
+    )
+  }
+  else {
+    // const user = jwt(accessToken)
+    // const {nickname} = test;
+    // login(accessToken);
+    const user = localStorage.getItem("user");
+    console.log(" User Object  =>   " + user)
+    // console.log("USER JWT => " + JSON.stringify(user));
+    // localStorage.setItem("token",accessToken)
+    return (
+      <div className="App">
         {/* <link rel="stylesheet" href="toruskit.blobz/blobz.min.css" />
       <div className="tk-blob">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 747.2 726.7">
@@ -101,30 +90,30 @@ console.log(" User Object  =>   " +  user )
     <path d="M381.4 86.5c43.5 48 77.5 110.3 68.8 168.7-8.6 58.4-59.9 113-114.8 126.7-54.9 13.6-113.4-13.7-176.6-40.6-63.1-27-130.7-53.5-151.5-102.8-20.9-49.2 5.1-121.1 50.3-169.5C102.8 20.7 167.1-3.9 225.9.5c58.8 4.5 111.9 38.1 155.5 86z"></path>
   </svg>
 </div> */}
-      <Router>
-      <Navbar/>
-      <Routes>
-      <Route path='/'  element={<Home />} />
-      <Route path='/Pong' element={<Pong/>} />
-      <Route path='/LeaderBoard' element={<LeaderBoard/>} />
-      <Route path='/Account' element={<Account/>} />
-      <Route path='/Account_infos' element={<Pseudo/>} />
-      <Route path='/AboutUs' element={<AboutUs/>} />
-      <Route path='/HowToPlay' element={<HowToPlay/>} />
-      <Route path="/Landing" element={<Landing />} />
-      <Route path="/room/:id" element={<ChatRoom />} />
-      <Route path="/CreateRoom" element={<CreateRoom />} />
-      <Route path="/users/:id" element={<Friendprofile />} />
-      <Route path="/Carreer" element={<Carreer/>} />
-      <Route path="/Achievements" element={<Achievements/>} />
-      <Route path="/Social" element={<Social/>} />
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/Pong' element={<Pong />} />
+            <Route path='/LeaderBoard' element={<LeaderBoard />} />
+            <Route path='/Account' element={<Account />} />
+            <Route path='/Account_infos' element={<Pseudo />} />
+            <Route path='/AboutUs' element={<AboutUs />} />
+            <Route path='/HowToPlay' element={<HowToPlay />} />
+            <Route path="/Landing" element={<Landing />} />
+            <Route path="/room/:id" element={<ChatRoom />} />
+            <Route path="/CreateRoom" element={<CreateRoom />} />
+            <Route path="/users/:id" element={<Friendprofile />} />
+            <Route path="/Carreer" element={<Carreer />} />
+            <Route path="/Achievements" element={<Achievements />} />
+            <Route path="/Social" element={<Social />} />
 
-    
-      </Routes>
-      </Router>
-    </div>
-  );
- }
+
+          </Routes>
+        </Router>
+      </div>
+    );
+  }
 }
 
 export default App;

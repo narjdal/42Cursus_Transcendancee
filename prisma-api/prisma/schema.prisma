@@ -26,19 +26,19 @@ model Player {
     
     chat_rooms Permission[] @relation("PermissionInRoom")
 
-    messages Message[] @relation("SendMsg")
+    all_messages Message[] @relation("SendMsg")
     // explicit relation many to many
 }
 
 model ChatRoom {
     id Int    @id @default(autoincrement())
     createdAt  DateTime   @default(now())
-    is_dm   Boolean @default(true)
+    is_dm   Boolean @default(true) // type ==> enum [DM, ROOM]
     name String?
     is_public Boolean @default(true)
     password String?
     all_members Permission[] @relation("PermissionOfmember")
-    messages Message[] @relation("ThisRoom")
+    all_messages Message[] @relation("ThisRoom")
 
 }
 
