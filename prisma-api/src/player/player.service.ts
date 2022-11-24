@@ -113,6 +113,26 @@ export class PlayerService {
         return friendship;
     }
 
+    // 5- delete
+    async deleteFriendship(data: any, friendname: string) {
+        const me = await this.findPlayer(data);
+        const howa = await this.prisma.player.findUnique({
+            where: { nickname: friendname },
+        });
+
+
+        const friendship = await this.prisma.friendship.delete({
+            where: {
+                senderId_receiverId: {
+                    senderId: howa.id,
+                    receiverId: me.id
+                }
+            },
+        })
+
+        return friendship;
+    }
+
     // ana user, check if this nickname is my friend 
     async getFriend(data: any, login: string) {
         const me = await this.findPlayer(data);
@@ -274,26 +294,27 @@ export class PlayerService {
         })
 
         const blocked_list = await this.prisma.friendship.findMany({
-            where:{
-                    AND:[
-                        {status: "block"},
-                        {
-                            OR:[
-                                {
-                                    senderId: me.id,
-                                },
-                                {
-                                    receiverId: me.id,
-                                },
-                            ]
-                        },
-                    ],
-        }})
+            where: {
+                AND: [
+                    { status: "block" },
+                    {
+                        OR: [
+                            {
+                                senderId: me.id,
+                            },
+                            {
+                                receiverId: me.id,
+                            },
+                        ]
+                    },
+                ],
+            }
+        })
         // foreach vs map https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
-        const blockedId = blocked_list.map (user => {
-                if (user.receiverId == me.id)
-                    return user.senderId
-                return user.receiverId
+        const blockedId = blocked_list.map(user => {
+            if (user.receiverId == me.id)
+                return user.senderId
+            return user.receiverId
         })
 
         // 1- if user is banned, send all msgs before the time of banning
@@ -303,25 +324,25 @@ export class PlayerService {
             const result = await this.prisma.message.findMany({
                 where:
                 {
-                   AND: [
-                    {
-                        roomId: id_room,
-                    },
-                    {
-                        NOT:{
-                            senderId : {
-                                // in : blockedId
-                                in :  blockedId
-                            },
-                            // playerId: blocked_list,
+                    AND: [
+                        {
+                            roomId: id_room,
                         },
-                    },
-                    {
-                        createdAt: {
-                            lte: status.until
-                        }
-                    },
-                   ], 
+                        {
+                            NOT: {
+                                senderId: {
+                                    // in : blockedId
+                                    in: blockedId
+                                },
+                                // playerId: blocked_list,
+                            },
+                        },
+                        {
+                            createdAt: {
+                                lte: status.until
+                            }
+                        },
+                    ],
                 },
                 orderBy:
                 {
@@ -338,20 +359,20 @@ export class PlayerService {
         const result = await this.prisma.message.findMany({
             where:
             {
-               AND: [
-                {
-                    roomId: id_room,
-                },
-                {
-                    NOT:{
-                        senderId : {
-                            // in : blockedId
-                            in :  blockedId
-                        },
-                        // playerId: blocked_list,
+                AND: [
+                    {
+                        roomId: id_room,
                     },
-                },
-               ], 
+                    {
+                        NOT: {
+                            senderId: {
+                                // in : blockedId
+                                in: blockedId
+                            },
+                            // playerId: blocked_list,
+                        },
+                    },
+                ],
             },
             orderBy:
             {
@@ -403,6 +424,41 @@ export class PlayerService {
         })
         return messageSent;
     }
+
+
+
+    //send message to other player 2:05 delete
+    // async sendMessage(user: any, message: string, friendname: string) {
+    //     const me = await this.findPlayer(user);
+    //     const friend = await this.prisma.player.findUnique({
+    //         where: { nickname: friendname }
+    //     });
+    //     const room = await this.prisma.chatRoom.findFirst({
+    //         where: {
+    //             all_members: {
+    //                 some: {
+    //                     playerId: me.id
+    //                 }
+    //             },
+    //             all_members: {
+    //                 some: {
+    //                     playerId: friend.id
+    //                 }
+    //             }
+    //         }
+    //     })
+    //     if (room) {
+    //         const messageSent = await this.prisma.message.create({
+    //             data: {
+    //                 msg: message,
+    //                 senderId: me.id,
+    //                 roomId: room.id
+    //             }
+    //         })
+    //         return messageSent;
+    //     }
+    // }
+
 
     // 2- Send a message
 
@@ -502,7 +558,7 @@ export class PlayerService {
     // 1- Create a chat room : done
     // 2- send a msg in this chat room :  pending
     // 3- add new member to this chat room : pending
-    
+
     /*
     // 4- leave channel // delete the player from the permision
     // 5- add member to list admins // change status of member to admins

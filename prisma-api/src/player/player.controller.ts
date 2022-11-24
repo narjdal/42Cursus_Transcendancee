@@ -3,140 +3,201 @@ import { Response } from 'express';
 import { PlayerService } from './player.service';
 import { AuthGuard } from '@nestjs/passport';
 import { userInfo } from 'os';
+import { resourceUsage } from 'process';
 
 @Controller('player')
 @UseGuards(AuthGuard('jwt'))
 export class PlayerController {
-    constructor(private readonly playerService: PlayerService) {}
-    @Get('myprofile')
-	async login(@Req() request, @Res() response) {
+    constructor(private readonly playerService: PlayerService) { }
+    @Get('myprofile') // localhost:3000/account 
+    async login(@Req() request, @Res() response) {
         console.log("MY PROFILE");
-        const user =  await this.playerService.findPlayer(request.user.nickname);
+        const user = await this.playerService.findPlayer(request.user.nickname);
         response.set({
-            'Access-Control-Allow-Origin' : 'http://localhost:3000'
-                 }
-            )
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
         response.status(200).send(user);
         return user;
-
-		//return user;
     }
 
     // This is for guetting player profile
     @Get(':id')
-	async getProfile(@Param() login: string ,@Req() request, @Res() response) {
+    async getProfile(@Param() login: string, @Req() request, @Res() response) {
         console.log("Profile of another Player");
-        const user =  await this.playerService.findPlayer(login);
+        const user = await this.playerService.findPlayer(login['id']);
         response.set({
-            'Access-Control-Allow-Origin' : 'http://localhost:3000'
-                 }
-            )
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
         response.status(200).send(user);
         return user;
 
-		//return user;
+        //return user;
     }
 
-        // 5- list of friends
-        @Get('/listOfFriends')
-        async GetListOfFriends(@Req() request, @Res() response) {
-            console.log("List of Friends");
-            const friends =  await this.playerService.getAllFriends(request.user);
-    
-            response.set({
-                'Access-Control-Allow-Origin' : 'http://localhost:3000'
-                     }
-                )
-            response.status(200).send(friends);
-            //return friends;      
+    // 5- list of friends
+    @Get('/listOfFriends')
+    async GetListOfFriends(@Req() request, @Res() response) {
+        console.log("List of Friends");
+        const friends = await this.playerService.getAllFriends(request.user);
+
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
-
-
-        // --------------------------------------------------------------------------------//
-    //1- create
-    @Get('/createFriendshipmlabrayj')
-    async CreateFriendship(@Req() request, @Res() response) {
-        console.log("Check if Friend");
-        const friend =  await this.playerService.createFriendship(request.user, "mlabrayj");
-        response.status(200).send(friend);
-        //return friend;
+        )
+        response.status(200).send(friends);
+        return friends;
     }
 
-    @Get('/createFriendshipisghioua')
-    async CreateFriendshipto(@Req() request, @Res() response) {
+    @Get('/statusFriendship/:id')
+    async checkStatusFriendship(@Param() login: string, @Req() request, @Res() response) {
         console.log("Check if Friend");
-        const friend =  await this.playerService.createFriendship(request.user, "isghioua");
-        response.status(200).send(friend);
-        //return friend;
-    }
-    // 2- accept
-    @Get('/acceptFriendshipmlabrayj')
-    async AcceptFriend(@Req() request, @Res() response) {
-        console.log("Check if Friend");
-        const friend =  await this.playerService.acceptFriendship(request.user, "mlabrayj");
-        response.status(200).send(friend);
-        //return friend;
-    }
+        const membership = await this.playerService.getFriend(request.user, login['id']);
 
-    @Get('/acceptFriendshipisghioua')
-    async AcceptFriendto(@Req() request, @Res() response) {
-        console.log("Check if Friend");
-        const friend =  await this.playerService.acceptFriendship(request.user, "isghioua");
-        response.status(200).send(friend);
-        //return friend;
-    }
+        let choices;
 
-    // 3- check if friend
-    @Get('/checkisghioua')
-    async CheckFriendship(@Req() request, @Res() response) {
-        console.log("Check if Friend");
-        const friend =  await this.playerService.getFriend(request.user, "isghioua");
-        
-        if (friend && friend.status === "friend") // condition
+        if (!membership) {
+            choices = "addFriend";
+        }
+        else if (membership && membership.status === "friend") // condition
         {
-            console.log("isghioua is my friend");
+            choices = "blockFriend";
         }
-        else
-            console.log("isghioua is not my friend");
-
-            response.set({
-                'Access-Control-Allow-Origin' : 'http://localhost:3000'
-                     }
-                )
-        response.status(200).send(friend);
-        return friend;
-    }
-
-    @Get('/checkmlabrayj')
-    async CheckFriendshipto(@Req() request, @Res() response) {
-        console.log("Check if Friend");
-        const friend =  await this.playerService.getFriend(request.user, "mlabrayj");
-
-        if (friend && friend.status === "friend") // condition
+        else if (membership && membership.status === "blocked" && membership.senderId === request.user.id) // condition
         {
-            console.log("mlabrayj is my friend");
+            choices = "unblockFriend";
         }
-        else
-            console.log("mlabrayj is not my friend");
-        response.status(200).send(friend);
-        return friend;
+        else if (membership && membership.status === "pending" && membership.senderId === request.user.id) // condition
+        {
+            choices = "pendingFriend";
+        }
+        else if (membership && membership.status === "pending" && membership.receiverId === request.user.id) // condition
+        {
+            choices = ["acceptFriend", "refuseFriend"];
+        }
+        else {
+            choices = "";
+        }
+
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(choices);
+        return choices;
     }
 
-    // 4- block friend
-    @Get('/blockmlabrayj')
-    async BlockFriendship(@Req() request, @Res() response) {
-        console.log("Check if Friend");
-        const friend =  await this.playerService.blockFriendship(request.user, "mlabrayj");
+    @Get('/requestFriendship/:id')
+    async RequestFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("Request Friendship");
+        const friend = await this.playerService.createFriendship(request.user, login['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
         response.status(200).send(friend);
-        //return friend;
     }
 
-    @Get('/blockisghioua')
-    async BlockFriendshipto(@Req() request, @Res() response) {
-        console.log("Check if Friend");
-        const friend =  await this.playerService.blockFriendship(request.user, "isghioua");
+    @Get('/acceptFriendship/:id')
+    async AcceptFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("Accept Friendship");
+        const friend = await this.playerService.acceptFriendship(request.user, login['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
         response.status(200).send(friend);
-        //return friend;
     }
-       // ---------------------------------------------------------------// 
+
+    @Get('/refuseFriendship/:id')
+    async RefuseFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("Refuse Friendship");
+        const friend = await this.playerService.deleteFriendship(request.user, login['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(friend);
+    }
+
+    @Get('/blockFriendship/:id')
+    async BlockFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("Block Friendship");
+        const friend = await this.playerService.blockFriendship(request.user, login['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(friend);
+    }
+
+    @Get('/unblockFriendship/:id')
+    async UnblockFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("Unblock Friendship");
+        const friend = await this.playerService.unblockFriendship(request.user, login['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(friend);
+    }
+
+    //endpoint for banning member
+    // @Post('/ban')
+    // async banMember(@Req() request, @Res() response) {
+    //     console.log("Ban Member");
+    //     const ban =  await this.playerService.banMember(request.user);
+
+    //     response.set({
+    //         'Access-Control-Allow-Origin' : 'http://localhost:3000'
+    //                 }
+    //             )
+    //     response.status(200).send(ban);
+    //     //return ban;
+    // }
+
+    // //endpoint for muting member
+    // @Post('/mute')
+    // async muteMember(@Req() request, @Res() response) {
+    //     console.log("Mute Member");
+    //     const mute =  await this.playerService.muteMember(request.user);
+
+    //     response.set({
+    //         'Access-Control-Allow-Origin' : 'http://localhost:3000'
+    //                 }
+    //             )
+    //     response.status(200).send(mute);
+    //     //return mute;
+    // }
+
+    // //endpoint for leaving a room
+    // @Post('/leaveRoom')
+    // async leaveRoom(@Req() request, @Res() response) {
+    //     console.log("Leave Room");
+    //     const leave =  await this.playerService.leaveRoom(request.user);
+
+    //     response.set({
+    //         'Access-Control-Allow-Origin' : 'http://localhost:3000'
+    //                 }
+    //             )
+    //     response.status(200).send(leave);
+    //     //return leave;
+    // }
+
+    // //endpoint for setting a member as admin
+    // @Post('/setAdmin')
+    // async setAdmin(@Req() request, @Res() response) {
+    //     console.log("Set Admin");
+    //     const admin =  await this.playerService.setAdmin(request.user);
+
+    //     response.set({
+    //         'Access-Control-Allow-Origin' : 'http://localhost:3000'
+    //                 }
+    //             )
+    //     response.status(200).send(admin);
+    //     //return admin;
+    // }
+
+
 }

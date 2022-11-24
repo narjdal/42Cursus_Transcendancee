@@ -4383,6 +4383,78 @@
               "font": "script",
               "textAlign": "middle"
             }
+          },
+          "2cdbf760-7269-4386-1cfb-c08ff3b43e72": {
+            "id": "2cdbf760-7269-4386-1cfb-c08ff3b43e72",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 133,
+            "point": [
+              627.66,
+              6355.44
+            ],
+            "size": [
+              206,
+              231.84
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "f4c98aa7-2c8b-4fdc-18e9-1f8c262360ae": {
+            "id": "f4c98aa7-2c8b-4fdc-18e9-1f8c262360ae",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 134,
+            "point": [
+              659.0999999999999,
+              6295.38
+            ],
+            "rotation": 0,
+            "text": "Messages:",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "c9f0f733-f017-48de-1ca5-ce0f650c41d9": {
+            "id": "c9f0f733-f017-48de-1ca5-ce0f650c41d9",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 135,
+            "point": [
+              673.88,
+              6387.58
+            ],
+            "rotation": 0,
+            "text": "sender, \nreciver,\ncontent,\ndate now",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1.4569565217391338,
+              "font": "script",
+              "textAlign": "middle"
+            }
           }
         },
         "bindings": {
