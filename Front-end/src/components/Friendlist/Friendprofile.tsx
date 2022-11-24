@@ -445,6 +445,8 @@ async function ExecuteRelationship ()
    <h3>Lose</h3> 
     <h2>{userState.loses}</h2>
     
+   
+      <br/>
     {relation === "Blocked" ? (
       <>
          <button type="button" className='button-displayuser' >  
@@ -458,6 +460,15 @@ async function ExecuteRelationship ()
       <>
       {relation === "AcceptOrRefuse" ? (
 <>
+<button type="button" className='' >  
+      <span className="icon material-symbols-outlined">
+     {"History"}  
+      </span> 
+      <Link style={{color:'blue'}} to={`/Carreer/${userState.nickname}`} >
+   <span>  {userState.nickname} Carreer </span>
+    </Link>
+      </button>
+      <br/>
 <h2>{userState.nickname} want to be your friend ! </h2>
 <button type="button" className='button-displayuser' onClick={HandleAcceptFriendRequest}>  
          <span className="icon material-symbols-outlined">
@@ -474,6 +485,15 @@ async function ExecuteRelationship ()
 </>
       ) : (
         <>
+                 <button type="button" className='' >  
+      <span className="icon material-symbols-outlined">
+     {"History"}  
+      </span> 
+      <Link style={{color:'blue'}} to={`/Carreer/${userState.nickname}`} >
+   <span>  {userState.nickname} Carreer </span>
+    </Link>
+      </button>
+      <br/>
                 <button type="button" className='button-displayuser' onClick={HandleAction}>  
          <span className="icon material-symbols-outlined">
      {icons}  
