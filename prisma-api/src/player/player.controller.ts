@@ -13,6 +13,7 @@ export class PlayerController {
     async login(@Req() request, @Res() response) {
         console.log("MY PROFILE");
         const user = await this.playerService.findPlayer(request.user.nickname);
+
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
@@ -28,12 +29,10 @@ export class PlayerController {
         const user = await this.playerService.findPlayer(login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }
-        )
+        })
+
         response.status(200).send(user);
         return user;
-
-        //return user;
     }
 
     // 5- list of friends
@@ -55,29 +54,29 @@ export class PlayerController {
         console.log("Check if Friend");
         const membership = await this.playerService.getFriend(request.user, login['id']);
 
-        let choices;
+        let choices: Array<String> = [];
 
         if (!membership) {
-            choices = "addFriend";
+            choices = ['addFriend'];
         }
         else if (membership && membership.status === "friend") // condition
         {
-            choices = "blockFriend";
+            choices = ['blockFriend'];
         }
         else if (membership && membership.status === "blocked" && membership.senderId === request.user.id) // condition
         {
-            choices = "unblockFriend";
+            choices = ['unblockFriend'];
         }
         else if (membership && membership.status === "pending" && membership.senderId === request.user.id) // condition
         {
-            choices = "pendingFriend";
+            choices = ['pendingFriend'];
         }
         else if (membership && membership.status === "pending" && membership.receiverId === request.user.id) // condition
         {
-            choices = ["acceptFriend", "refuseFriend"];
+            choices = ['acceptFriend', 'refuseFriend'];
         }
         else {
-            choices = "";
+            choices = [''];
         }
 
         response.set({
@@ -85,6 +84,7 @@ export class PlayerController {
         }
         )
         response.status(200).send(choices);
+        console.log(choices);
         return choices;
     }
 
@@ -142,62 +142,54 @@ export class PlayerController {
         )
         response.status(200).send(friend);
     }
+// ---------------------------------- CONTROLLER Permission in room ---------------------------------- //
 
     //endpoint for banning member
-    // @Post('/ban')
-    // async banMember(@Req() request, @Res() response) {
+    // @Get('/banMember')
+    // async banMember(@Param() login: string, @Req() request, @Res() response) {
     //     console.log("Ban Member");
-    //     const ban =  await this.playerService.banMember(request.user);
-
+    //     const ban = await this.playerService.banMember(request.user, login['id']);
     //     response.set({
-    //         'Access-Control-Allow-Origin' : 'http://localhost:3000'
-    //                 }
-    //             )
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //         }
+    //     )
     //     response.status(200).send(ban);
-    //     //return ban;
     // }
 
     // //endpoint for muting member
-    // @Post('/mute')
-    // async muteMember(@Req() request, @Res() response) {
+    // @Get('/muteMember')
+    // async muteMember(@Param() login: string, @Req() request, @Res() response) {
     //     console.log("Mute Member");
-    //     const mute =  await this.playerService.muteMember(request.user);
-
+    //     const mute = await this.playerService.muteMember(request.user, login['id']);
     //     response.set({
-    //         'Access-Control-Allow-Origin' : 'http://localhost:3000'
-    //                 }
-    //             )
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //         }
+    //     )
     //     response.status(200).send(mute);
-    //     //return mute;
     // }
 
-    // //endpoint for leaving a room
-    // @Post('/leaveRoom')
-    // async leaveRoom(@Req() request, @Res() response) {
-    //     console.log("Leave Room");
-    //     const leave =  await this.playerService.leaveRoom(request.user);
 
+    // //endpoint for leaving a room
+    // @Get('/leaveRoom')
+    // async leaveRoom(@Param() login: string, @Req() request, @Res() response) {
+    //     console.log("Leave Room");
+    //     const leave = await this.playerService.leaveRoom(request.user, login['id']);
     //     response.set({
-    //         'Access-Control-Allow-Origin' : 'http://localhost:3000'
-    //                 }
-    //             )
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //         }
+    //     )
     //     response.status(200).send(leave);
-    //     //return leave;
     // }
 
     // //endpoint for setting a member as admin
-    // @Post('/setAdmin')
-    // async setAdmin(@Req() request, @Res() response) {
+    // @Get('/setAdmin')
+    // async setAdmin(@Param() login: string, @Req() request, @Res() response) {
     //     console.log("Set Admin");
-    //     const admin =  await this.playerService.setAdmin(request.user);
-
+    //     const admin = await this.playerService.setAdmin(request.user, login['id']);
     //     response.set({
-    //         'Access-Control-Allow-Origin' : 'http://localhost:3000'
-    //                 }
-    //             )
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //         }
+    //     )
     //     response.status(200).send(admin);
-    //     //return admin;
     // }
-
-
 }

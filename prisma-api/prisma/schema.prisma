@@ -92,3 +92,6 @@ model Friendship {
     @@id([senderId, receiverId])
 }
 
+//message 2 route set message / get message ==> dm
+//dossier membershp && messages
+//messgae / rooms /  membership

@@ -11,7 +11,7 @@ export class AuthController {
 	@Get('/signup')
 	@UseGuards(AuthGuard('42'))
 	async authentication() {
-		console.log("trying to auth")
+		// console.log("trying to auth")
 	}
 
 // 	@Get('/redirect')
@@ -54,7 +54,7 @@ export class AuthController {
 
 		const user =  await this.authService.findORcreate(request.user);
 
-		console.log(user); // affiche uer 
+		// console.log(user); // affiche uer 
 
 		const token = await this.authService.getJwtToken(user);
 

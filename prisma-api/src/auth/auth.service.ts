@@ -9,7 +9,7 @@ export class AuthService {
     
     async findORcreate(data: any) {
         
-    console.log("inside find or create auth services")
+    // console.log("inside find or create auth services")
 
         const player = await this.prisma.player.findUnique({
             where: { nickname: data.nickname }

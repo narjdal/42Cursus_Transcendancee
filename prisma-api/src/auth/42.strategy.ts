@@ -27,7 +27,7 @@ export class OauthStrategy extends PassportStrategy(Strategy, '42') {
     	throw new UnauthorizedException("user does not exist");
     // else
     // console.log(profile);
-    console.log("inside validate")
+    // console.log("inside validate")
     return profile;
   }
 }
