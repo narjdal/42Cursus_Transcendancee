@@ -24,11 +24,34 @@ if(loggeduser)
     name:Current_User.name,
     nickname:Current_User.nickname,
     avatar:Current_User.avatar,
-    relation:"pending",
-    sender:"notme"
+    relation:"",
+    sender:""
   }
   )
-  setUsertoShow(newUser);
+     
+let endpoint = 'http://localhost:5000/player/?id=';
+// endpoint = endpoint + userQuery;
+console.log(" this endpoint   " + endpoint)
+
+
+await fetch((`http://localhost:5000/player/${userQuery}`),{
+    // mode:'no-cors',
+    method:'get',
+    credentials:"include"
+})
+
+
+.then((response) => response.json())
+.then(json => {
+    console.log("The response is => " + JSON.stringify(json))
+    setUsertoShow(json);
+    return json;
+})
+.catch((error) => {
+  console.log("An error occured : " + error)
+  setErrorMessage("An error occured! User not found ! ");
+  return error;
+})
 
 console.log("Waiting for the backend endpoint ...");
   // console.log("Fetching Friends of this User " + id);
