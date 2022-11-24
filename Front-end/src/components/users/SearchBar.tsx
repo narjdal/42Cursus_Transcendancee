@@ -45,13 +45,14 @@ await fetch((`http://localhost:5000/player/${userQuery}`),{
 .then(json => {
     console.log("The response is => " + JSON.stringify(json))
   setErrorMessage(""); 
-
+  // localStorage.setItem("usertoshow",JSON.stringify(json));
     setUsertoShow(json);
     return json;
 })
 .catch((error) => {
   console.log("An error occured : " + error)
   setUsertoShow([])
+  // localStorage.setItem("usertoshow","");
   setErrorMessage("An error occured! User not found ! ");
   return error;
 })

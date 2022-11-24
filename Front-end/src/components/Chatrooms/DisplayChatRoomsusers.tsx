@@ -61,14 +61,15 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
       </span>
 
       </button>
-      <p> {errorMessage && <div className="error"> {errorMessage} </div>}  </p>
-
       <button type="button" id="ss" className='ButtonSocial-block' onClick={HandleBlock}>
     <span className="icon material-symbols-outlined">
      {"block"}  
       </span>
 
       </button> 
+      <p> {errorMessage && <div className="error"> {errorMessage} </div>}  </p>
+
+   
 </>
 ) : (
     <>

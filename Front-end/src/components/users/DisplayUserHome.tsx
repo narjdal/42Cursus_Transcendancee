@@ -152,21 +152,12 @@ useEffect(() => {
    className="avataruser"
      />
      </li>
-    {props.usertoshow.relation === "blocked" && props.usertoshow.sender !== "me" ? (
-       <div className="blockednickname">
-       <h1>{props.usertoshow.nickname}</h1>
-       </div>
-        ):(
-        <>
      <li>
-        <Link style={{color:'white'}} to={`/users/${props.usertoshow.id}`} >
+        <Link style={{color:'white'}} to={`/users/${props.usertoshow.nickname}`} >
    <p> {props.usertoshow.nickname} </p>
     </Link>
     </li>
-        </>
-    )}
-    <li>
-        {props.usertoshow.relation ==="pending" && props.usertoshow.sender !== "me" ? (
+        {/* {props.usertoshow.relation ==="pending" && props.usertoshow.sender !== "me" ? (
             <>
                  <button type="button" className='button-displayuser' onClick={HandleAcceptFriend}>  
          <span className="icon material-symbols-outlined">
@@ -194,9 +185,8 @@ useEffect(() => {
       </li>
       </ul>
             </>
-        )}
+        )} */}
 
-      </li>
       </ul>
       </div>
         </>

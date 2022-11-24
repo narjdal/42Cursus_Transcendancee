@@ -103,7 +103,7 @@ const App = () => {
             <Route path="/Landing" element={<Landing />} />
             <Route path="/room/:id" element={<ChatRoom />} />
             <Route path="/CreateRoom" element={<CreateRoom />} />
-            <Route path="/users/:id" element={<Friendprofile />} />
+            <Route path="/users/:nickname" element={<Friendprofile />} />
             <Route path="/Carreer" element={<Carreer />} />
             <Route path="/Achievements" element={<Achievements />} />
             <Route path="/Social" element={<Social />} />
