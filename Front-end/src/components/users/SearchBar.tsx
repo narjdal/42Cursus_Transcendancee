@@ -44,16 +44,19 @@ await fetch((`http://localhost:5000/player/${userQuery}`),{
 .then((response) => response.json())
 .then(json => {
     console.log("The response is => " + JSON.stringify(json))
+  setErrorMessage(""); 
+
     setUsertoShow(json);
     return json;
 })
 .catch((error) => {
   console.log("An error occured : " + error)
+  setUsertoShow([])
   setErrorMessage("An error occured! User not found ! ");
   return error;
 })
 
-console.log("Waiting for the backend endpoint ...");
+// console.log("Waiting for the backend endpoint ...");
   // console.log("Fetching Friends of this User " + id);
 
 }
