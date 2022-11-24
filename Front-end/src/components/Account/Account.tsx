@@ -4,6 +4,7 @@ import { useNavigate} from 'react-router-dom';
 import ProfilePicUpload from '../Account/ProfilePicUpload';
 import UpdateNickname from '../Account/UpdateNickname';
 import './Account.css'
+import { Link } from 'react-router-dom';
 import Login from '../login/login';
 import DisplayAchievementsList from './Account_pages/Achievements/DisplayAchievementsList';
 import DisplayMatchHistory from './Account_pages/DisplayMatchHistory';
@@ -229,10 +230,13 @@ const minihistory = [
       <span>{AchievementsList.map(c => < DisplayAchievementsList  key = {c.AchievementsId} AchievementsList ={c} />)}</span>
             </div>
             <div className='LastMatch-card'>
-            <button type="button" className='' onClick={HandleMatchHistory}>  
+            <button type="button" className='' >  
       <span className="icon material-symbols-outlined">
-     {"History"}   See All Game History 
+     {"History"}  
       </span> 
+      <Link style={{color:'blue'}} to={`/Carreer/${user42.nickname}`} >
+   <span> See All </span>
+    </Link>
       </button>
       <span>{minihistory.map(c => < DisplayMatchHistory  key = {c.MatchId} match ={c} />)}</span>
 

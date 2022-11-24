@@ -3,6 +3,7 @@ import person from '../users/users.json'
 import { Link, useParams } from 'react-router-dom';
 import { useState } from "react";
 import './Friendprofile.css'
+import { Location } from 'react-router-dom';
 
 const Friendprofile = () => {
   const params = useParams();
@@ -12,11 +13,141 @@ const Friendprofile = () => {
   const [icons,setIcons] = useState("");
   const [msg,setMsg] = useState("");
   const [action,setAction] = useState("");
+  const [choice,setChoice] = useState("");
+  localStorage.setItem("choice","");
+  localStorage.setItem("action2","");
   //We send the Id as the params of the Link , 
   //ICi request Au Backend Avec l'ID de l'user demander stocker les infos dans const user 
 
+  async function AcceptRelationship () 
+  {
+  
+       let  endpoint = "http://localhost:5000/player/acceptFriendship/"
+
+    console.log("AcceptRelationship  => " + endpoint + " \n user:" + params.nickname)
+  //  setAction("");
+    endpoint = endpoint + params.nickname;
+    await fetch((endpoint
+      ),{
+          // mode:'no-cors',
+          method:'get',
+          credentials:"include"
+      })
+      
+      
+      .then((response) => response.json())
+      .then(json => {
+        console.log("The response is => " + JSON.stringify(json))
+        if(json.ok)
+        window.location.reload();
+        setErrorMessage(""); 
+          return json;
+      })
+      .catch((error) => {
+        console.log("An error occured : " + error)
+        setErrorMessage("An error occured! Can't Accept Relationship    ! ");
+        return error;
+      })
+  
+  }
+  
+
+
+
+async function RefuseRelationship () 
+{
+
+  
+       let endpoint = "http://localhost:5000/player/refuseFriendship/"
+ 
+  console.log("RefuseRelationship  => " + endpoint + " \n user" + params.nickname)
+//  setAction("");
+  endpoint = endpoint + params.nickname;
+  await fetch((endpoint
+    ),{
+        // mode:'no-cors',
+        method:'get',
+        credentials:"include"
+    })
+    
+    
+    .then((response) => response.json())
+    .then(json => {
+      console.log("The response is => " + JSON.stringify(json))
+      if(json.ok)
+      window.location.reload();
+      setErrorMessage(""); 
+        return json;
+    })
+    .catch((error) => {
+      console.log("An error occured : " + error)
+      setErrorMessage("An error occured! Can't Refuse Relationship    ! ");
+      return error;
+    })
+
+}
+
 async function ExecuteRelationship () 
 {
+  let endpoint;
+  let execute = localStorage.getItem("action2");
+  console.log("Execute final " + action);
+  switch(action)
+  {
+    case "addFriend":
+      {
+         endpoint = "http://localhost:5000/player/requestFriendship/"
+        break;
+        }
+        case "blockFriend":
+      {
+         endpoint = "http://localhost:5000/player/blockFriendship/"
+         break;
+     
+        }
+      case "Accept":
+      {
+       endpoint = "http://localhost:5000/player/acceptFriendship/"
+       break;
+     
+      }
+      case "Refuse":
+      {
+        endpoint = "http://localhost:5000/player/refuseFriendship/"
+        break;
+    
+      }
+      case "unblockFriend":
+        {
+          endpoint ="http://localhost:5000/player/unblockFriendship/";
+        break;
+        }
+    
+  }
+  console.log("ExecuteRelationship  => " + endpoint + " \n action" + execute)
+//  setAction("");
+  endpoint = endpoint + params.nickname;
+  await fetch((endpoint
+    ),{
+        // mode:'no-cors',
+        method:'get',
+        credentials:"include"
+    })
+    
+    
+    .then((response) => response.json())
+    .then(json => {
+      console.log("The response is => " + JSON.stringify(json))
+      if(json.ok)
+      window.location.reload();
+      setErrorMessage(""); 
+        return json;
+    })
+    .catch((error) => {
+      console.log("An error occured : " + error)
+      setErrorMessage("An error occured! Can't update Relationship    ! ");
+      return error;
+    })
 
 }
 
@@ -42,66 +173,90 @@ async function ExecuteRelationship ()
         credentials:"include"
     })
     
-
-       // await fetch((endpoint + new URLSearchParams({
-    //   login:nicknametofetch
-    // }))
-
     
     
     .then((response) => response.json())
     .then(json => {
-        console.log("The response is => " + JSON.stringify(json))
-      setIcons("sentiment_very_dissatisfied")
-     setMsg("error");
-     setAction("error")
-     
-
-      switch(json.choices)
-   {
-    case "addFriend":
-     {
-      console.log("ww khello")
-      setIcons("people")
-     setMsg("AddFriend");
-     setAction("Add");
-      return setRelation("addFriend");
-     }  
-
-    case "blockFriend":
-      
-    {  
-      setIcons("block")
-     setMsg("block");
-     setAction("block")
-      return setRelation("blockFriend");}
-      case"unblockFriend":
-
-      {
-     setMsg("unblock");
-        setAction("unblock")
-      setIcons("unblock")
-
-        return setRelation("unblockFriend");
-      }
-      case "pendingFriend":
-       { 
-      setIcons("people")
-      setMsg("pending ...")
-      setAction("pending")
-      return setRelation("pendingFriend")
-      }
-      case"acceptFriend":
-      {
-     setMsg("Accept");
-      setIcons("people")
-      setAction("Accept");
-        return setRelation("accept");
-      }
-    case "":
-     { setRelation("error");}
-     }
+      console.log("The response is => " + JSON.stringify(json))
+      setErrorMessage(""); 
+      // localStorage.setItem("usertoshow",JSON.stringify(json));
+  localStorage.setItem("choice",json);
+      // setRelation(json);
+      // setChoice(json);
         return json;
+      // setRelation("AcceptOrRefuse");
+    //  if(json)
+    //  {
+    //  console.log("The Relationship is => " + json)
+    //   setRelation(JSON.stringify(json));
+    //   setChoice(json);
+    //   setRelation(json);
+    //  }
+   
+  //     if (resp === "AddFriend")
+  //     {
+  //       console.log("GGS");
+  //     }
+  //     switch(JSON.stringify(json))
+  //  {
+  //   case "AddFriend":
+  //    {
+  //     console.log("ww khello")
+  //     setIcons("people")
+  //    setMsg("AddFriend");
+  //    setAction("Add");
+  //    setRelation("addFriend");
+  //    break;
+  //    }  
+
+  //   case "blockFriend":
+      
+  //   {  
+  //     setIcons("block")
+  //    setMsg("block");
+  //    setAction("block")
+  //      setRelation("blockFriend");
+  //    break;
+    
+  //   }
+      
+  //      case"unblockFriend":
+
+  //     {
+  //    setMsg("unblock");
+  //       setAction("unblock")
+  //     setIcons("unblock")
+
+  //        setRelation("unblockFriend");
+  //    break;
+
+  //     }
+  //     case "pendingFriend":
+  //      { 
+  //     setIcons("people")
+  //     setMsg("pending ...")
+  //     setAction("pending")
+  //      setRelation("pendingFriend")
+  //    break;
+
+  //     }
+  //     case"acceptFriend":
+  //     {
+  //   //  setMsg("Accept");
+  //     // setIcons("people")
+  //     // setAction("");
+  //        setRelation("AcceptOrRefuse");
+  //    break;
+
+  //     }
+  //   default:
+
+  //    {
+  //     console.log("ERROR DEFAULT" + json) 
+  //     setRelation("error");
+  //    break;
+  //   }
+  //    }
     })
     .catch((error) => {
       console.log("An error occured : " + error)
@@ -131,7 +286,7 @@ async function ExecuteRelationship ()
     
     .then((response) => response.json())
     .then(json => {
-        console.log("The response is => " + JSON.stringify(json))
+        // console.log("The response is => " + JSON.stringify(json))
       setErrorMessage(""); 
       // localStorage.setItem("usertoshow",JSON.stringify(json));
        
@@ -150,24 +305,120 @@ async function ExecuteRelationship ()
 
     };
     
-  useEffect(() => {
+    async function SetRelationInfos  ()  {
 
+
+      await FetchRelationship()
+      .then(() => {
+        // console.log("relation is " + relation + "choice is "  + choice);
+        // if(choice === "AddFriend")
+        // {
+        //   console.log("ww khello")
+        //       setIcons("people")
+        //      setMsg("AddFriend");
+        //      setAction("Add");
+        //      setRelation("addFriend");
+        // }
+
+      })
+      const tt = localStorage.getItem("choice");
+      console.log("TT is " + tt + " the action is "  + action);
+      if ( tt === "addFriend")
+      {
+        // console.log("ww khello")
+      setIcons("people")
+     setMsg("AddFriend");
+     setAction("addFriend");
+     setRelation("addFriend");
+    //  ExecuteRelationship("AddFriend");
+    localStorage.setItem("action","addFriend");
+
+    }
+    if ( tt === "blockFriend")
+    {
+         setIcons("block")
+     setMsg("Block friend ");
+     setAction("blockFriend")
+       setRelation("blockFriend");
+      localStorage.setItem("action","blockFriend");
+
+    //  ExecuteRelationship("BlockFriend");
+    }
+    if ( tt === "unblockFriend")
+    {
+      setMsg("Unblock this user.");
+        setAction("unblockFriend")
+      setIcons("block")
+         setRelation("unblockFriend");
+      localStorage.setItem("action","unblockFriend");
+
+    //  ExecuteRelationship("Unblock");
+
+    }
+    if ( tt === "pendingFriend")
+    {
+      setMsg("Waiting for the user to accept ...");
+        setAction("pending")
+      setIcons("hourglass_top")
+         setRelation("pending");
+      localStorage.setItem("action","pending");
+
+    }
+    if ( tt === "acceptFriend" || tt === "refuseFriend")
+    {
+      setRelation("AcceptOrRefuse");
+    }
+     if ( tt === "Blocked")
+    {
+      setAction("none");
+      setRelation("Blocked");
+      localStorage.setItem("action","none");
+    }
+    else{
+      // setMsg("An error o");
+      // setAction("noaction");
+      // setRelation("error");
+      // localStorage.setItem("action","noaction");
+
+    }
+      // if(localStorage.getItem("choice"))
+    };
+  useEffect(() => {
+     FetchUserInfos();
+
+    SetRelationInfos();
     // FetchUserInfos();
-    FetchUserInfos();
-    FetchRelationship();
-    console.log("relation is " + relation);
+   
+    // ExecuteRelationship();
   },[])
 
 
   const HandleAction = (e) => {
     e.preventDefault();
 
-    console.log("the action is " + action);
+    // const execute = localStorage.getItem("action")
+    console.log("Executing this command =>   " + action);
     if(action !== "error")
     ExecuteRelationship();
     else
     console.log("Error ! can't execute action.");
  
+  }
+
+  const HandleRefuseFriendRequest  = (e) => {
+    e.preventDefault();
+    setAction("Refuse");
+    // localStorage.setItem("action","Refuse");
+    // ExecuteRelationship();
+    RefuseRelationship();
+  }
+
+  const HandleAcceptFriendRequest = (e) => {
+    e.preventDefault();
+    console.log("Accepting the request ...");
+    setAction("Accept")
+    AcceptRelationship();
+
   }
   if (!userState) {
       // TODO: 404
@@ -179,10 +430,11 @@ async function ExecuteRelationship ()
     }
     else
   {
-    console.log("B4" + userState['nickname'] + params.nickname);
+    // console.log("B4" + userState['nickname'] + params.nickname);
   return (
     <div className='FriendProfile'>
     {errorMessage && <div className="error"> {errorMessage} </div>}
+   
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <img src={userState.avatar} height="80"/>
   <h2>{userState.nickname}</h2>
@@ -193,19 +445,45 @@ async function ExecuteRelationship ()
    <h3>Lose</h3> 
     <h2>{userState.loses}</h2>
     
-    {relation === "error" ? (
+    {relation === "Blocked" ? (
       <>
-       <h2><button className='FriendProfileButtons'>Remove Friend (TODO)</button></h2>
-  <h3><button  className='FriendProfileButtons'>Match History :  (TODO)</button></h3>
+         <button type="button" className='button-displayuser' >  
+         <span className="icon material-symbols-outlined">
+     {"sentiment_very_dissatisfied"}  
+      </span>
+      <span> You are blocked !    </span>
+      </button>
       </>
-    ) : (
+    ) :  (
       <>
-           <button type="button" className='button-displayuser' onClick={HandleAction}>  
+      {relation === "AcceptOrRefuse" ? (
+<>
+<h2>{userState.nickname} want to be your friend ! </h2>
+<button type="button" className='button-displayuser' onClick={HandleAcceptFriendRequest}>  
+         <span className="icon material-symbols-outlined">
+     {"Favorite"}  
+      </span>
+      <span>Accept</span>
+      </button>  
+          <button type="button" className='button-displayuser' onClick={HandleRefuseFriendRequest}>  
+         <span className="icon material-symbols-outlined">
+     {"Cancel"}  
+      </span>
+      <span>Refuse</span>
+      </button>
+</>
+      ) : (
+        <>
+                <button type="button" className='button-displayuser' onClick={HandleAction}>  
          <span className="icon material-symbols-outlined">
      {icons}  
       </span>
       <span>{msg}</span>
       </button>
+        </>
+
+      )}
+      
       </>
     )}
   

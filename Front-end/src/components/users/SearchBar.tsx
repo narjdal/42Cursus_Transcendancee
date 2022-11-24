@@ -6,6 +6,7 @@ const SearchBar = () => {
   const [errorMessage, setErrorMessage] = useState("");
     const [usertoShow,setUsertoShow] = useState<any>([]);
     const[display,setDisplay] = useState(false);
+    const [allgood,setAllgood] = useState(false);
 
 
 
@@ -46,12 +47,14 @@ await fetch((`http://localhost:5000/player/${userQuery}`),{
     console.log("The response is => " + JSON.stringify(json))
   setErrorMessage(""); 
   // localStorage.setItem("usertoshow",JSON.stringify(json));
-    setUsertoShow(json);
+    setAllgood(true);
+  setUsertoShow(json);
     return json;
 })
 .catch((error) => {
   console.log("An error occured : " + error)
   setUsertoShow([])
+  setAllgood(false);
   // localStorage.setItem("usertoshow","");
   setErrorMessage("An error occured! User not found ! ");
   return error;
@@ -111,7 +114,14 @@ return (
         </div>
          {display ? ( 
             <>
+         {allgood ? (
+         <>
          <DisplayUserHome  usertoshow={usertoShow} /> 
+         </>
+         ): (
+         <>
+         </>
+         )} 
        </>
          ): (
             <>

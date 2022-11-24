@@ -110,8 +110,8 @@ return (
                 <td></td>
               )}
    <td> 
-    <Link style={{color:'white'}} to={`/users/${props.user.id}`} >
-   <p> {props.user.name} </p>
+   <Link style={{color:'white'}} to={`/users/${props.user.nickname}`} >
+   <p> {props.user.nickname} </p>
     </Link>
     </td> 
   {props.user.isActive ? (

@@ -171,7 +171,7 @@ return (
   </div>
   </div>
 
-    {FilteredUsers.map(c => < DisplayChatRoomusers key = {c.id} user = {c} />)}
+    {FilteredUsers.map(c => < DisplayChatRoomusers key = {c.id} user = {c} isadmin ={"true"} />)}
   </div>
       <div className='History-Box'> 
      

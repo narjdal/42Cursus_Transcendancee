@@ -1,6 +1,8 @@
 import react from 'react';
 import { useState } from "react";
 import './CreateRoom.css'
+import person from '../users/users.json'
+
 const CreateRoom = () => {
     
     const [RoomName,setRoomName] = useState("");

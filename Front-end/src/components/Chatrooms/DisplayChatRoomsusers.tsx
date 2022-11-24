@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './DisplayChatRoomsusers.css'
 // import blobz from 'blobz.css'
-const DisplayChatRoomusers = (props) => {
+const DisplayChatRoomusers = (props,roomownnership) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [action,setAction] = useState(false);
-    const [isAdmin,setIsAdmin] = useState("");
+    const [isAdmin,setIsAdmin] = useState(JSON.stringify(roomownnership));
+//   console.log("isADmin" + JSON.stringify(isAdmin))
     const handleFriendClick  = (e) => {
         e.preventDefault();
         //if() Request to Add Friend , if already : 
@@ -44,9 +45,6 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
 {isAdmin === "true"  ? (
 <>
 
-</>
-) : (
-<>
 <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleShowAction}>
     <span className="icon material-symbols-outlined">
      {"Settings"}  
@@ -75,6 +73,9 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
     <>
     </>
 )}
+</>
+) : (
+<>
 
 </>
 )}
