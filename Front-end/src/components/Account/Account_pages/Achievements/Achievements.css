@@ -3,14 +3,11 @@
     z-index: 3;
     text-align: center;
     overflow-y: scroll;
-    height: 600px;
-    margin-left: auto;
+    height: 10vh;
     
   }
   .locked-div > button > span {
     color:red;
-    right: 0;
-    position: inherit;
 }
 
 .unlocked-div > button > span {

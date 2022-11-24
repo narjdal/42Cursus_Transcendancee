@@ -3,26 +3,20 @@
   .Account-card {
     position: relative;
     z-index: 3;
-    max-width: 70vh;
-    padding: 30px 30px 44px;
+    max-width: 100%;
+    top: 0;
+    padding: 30px 15px 15px;
     border-radius: 1.25rem;
     background: #004e92;
     text-align: center;
+    overflow: hidden;
+    overflow-y: scroll;
     
     
-  }
-  .label{
-    float:left;
   }
   
-  @media (width >= 500px) {
-    .Account-card {
-      margin: 0;
-      width: 400px;
-    }
-  }
   .Account-card > span {
-    color: #004e92;;
+    color: #004e92;
   }
   
   .Account-card > button > span {
@@ -79,3 +73,36 @@
   .AccountButtons > button > span {
     color: #1e90fe;
   }
+
+  .intra-card{
+    padding: 30px 30px 44px;
+    height: 30vh;
+    width:  100%;
+    background-color: grey;
+    display: flex;
+    overflow-y: scroll;
+  }
+
+  .last-Achievements-card{
+    z-index: 10;
+    width:  60%;
+    position: relative;
+    background-color: white;
+    overflow-y: scroll;
+    float: left;
+    }
+
+    .last-Achievements-card span{
+      overflow: contain;
+
+    }
+
+    .LastMatch-card{
+      position: relative;
+      height: 20vh;
+      width: 40%;
+      border-left:  10px solid grey;
+      float: right;
+      overflow-y: scroll;
+      background-color: white;
+    }

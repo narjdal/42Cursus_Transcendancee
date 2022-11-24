@@ -3,18 +3,41 @@ import {Link} from'react-router-dom';
 import { useState ,useEffect} from "react";
 
 import './DisplayUserHome.css'
+import { isImportOrExportSpecifier } from "typescript";
 
 const DisplayUserHome = (props) => {
+    const [errorMessage, setErrorMessage] = useState("");
+    const [currentUser,setCurrentUser] = useState<any>([]);
+   const [icon,setCorrectIcon] = useState("");
+   const [msg,setMsg] = useState("");
+    const[action,setAction] = useState("");
 
     async function ExecuteFriendship (action:string) {
 
-        console.log("Executing Friendship   Infos     => " + props.user.nickname + " is being " + action + "(you are sender)");
+        console.log("Executing Friendship   Infos     => " + props.usertoshow.nickname + " is being  : " + action + "  Sender : " + props.usertoshow.sender);
 
 
         // const auth =   await 
-        const endpoint = 'http://localhost:5000/player/myprofile'
-        console.log(" this endpoint " + endpoint)
-        
+       
+let endpoint = 'http://localhost:5000/player/checkisghioua?nickname=';
+endpoint = endpoint + props.usertoshow.nickname + "?action=" + action;
+console.log(" this endpoint ( TODO ) " + endpoint)
+
+await fetch(endpoint,{
+    // mode:'no-cors',
+    method:'get',
+    credentials:"include"
+})
+
+.then((response) => { 
+    console.log("the response is " + JSON.stringify(response));;
+return response;
+  })
+.catch((error) => {
+  console.log("An error occured : " + error)
+  setErrorMessage("An error occured!");
+  return error;
+})
         // await fetch(endpoint,{
         //     // mode:'no-cors',
         //     method:'get',
@@ -36,60 +59,146 @@ const DisplayUserHome = (props) => {
         // })
     }
 
-    const HandleAddFriend = (e) => {
+    const HandleAction = (e) => {
         e.preventDefault();
-        console.log("Add this person ..." + props.user.nickname)
-        ExecuteFriendship("Add");
+        // console.log("Executing actions for this person ..." + props.usertoshow.nickname +  " FS : " + props.usertoshow.friendship)
+
+
+        ExecuteFriendship(action);
     }
     const HandleBlockFriend = (e) => {
         e.preventDefault();
         console.log("Blocking this person ..." + props.user.nickname)
-        ExecuteFriendship("block");
+        ExecuteFriendship("Block");
    
     }
+    const HandleAcceptFriend = (e) => {
+        e.preventDefault();
+        console.log ( "inside Accept friendship !");
+        ExecuteFriendship("accept");
+    };
 
+    const HandleRefuseFriend = (e) => {
+        e.preventDefault();
+        console.log ( "inside refuse friendship !");
+        ExecuteFriendship("refuse");
+    }
+useEffect(() => {
+   const user =  localStorage.getItem("user");
+   if(user)
+   {
+   const current = JSON.parse(user);
+   setCurrentUser(current);
+   console.log("the relation is : " + props.usertoshow.relation + " sender is : " + props.usertoshow.sender);
+   if( props.usertoshow.relation === "friend")
+   {
+    console.log("hello");
+    setCorrectIcon("Block");
+    setMsg("Block User")
+    setAction("Block")
+   }
+  else if(props.usertoshow.relation === "blocked" && props.usertoshow.sender === "me")
+   {
+    console.log("blocked by me  ! Should display Unblock ");
+    setCorrectIcon("lock_open");
+    setMsg("Unblock")
+    setAction("unblock");
+   }
+   else if(props.usertoshow.relation === "blocked" && props.usertoshow.sender !== "me")
+   {
+    console.log("I am blocked !  Should display You are blocked ");
+    setCorrectIcon("sentiment_very_dissatisfied");
+    setMsg("You are blocked ");
+    setAction("youareblocked");
+
+   }
+  else  if(props.usertoshow.relation === "pending" && props.usertoshow.sender === "me")
+   {
+    console.log("Pending ... ! Sender is me   Should display Pending  ");
+    setCorrectIcon("hourglass_bottom");
+    setMsg("Pending ... ");
+
+    setAction("pending");
+   }
+   else  if(props.usertoshow.relation === "pending" && props.usertoshow.sender !== "me")
+   {
+    console.log("Pending ... ! Sender is not me    Should display Accept or Refuse !   ");
+    // setCorrectIcon("hourglass_bottom");
+    // setMsg("Pending ... ");
+
+    // setAction("pending");
+   }
+    else
+    {
+        console.log("not friend ! Should display Add ");
+   setCorrectIcon("people");
+   setMsg("Add")
+   setAction("Add");
+
+    }
+//    if(props.user.)
+   }
+
+},[])
     return (
         <>
-        <div className="Contact-HELP"> 
-    <table className="Contact-table">
-        <tbody>
-    <tr>
-<th>
-    <th>
-        <th>
-            Name
-        </th>
-    </th>
-</th>
-   </tr>
-   <td> <img src={props.user.avatar} 
-   className="avatar1"
+        {errorMessage && <div className="error"> {errorMessage} </div>}
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+        <div className="display-user-container"> 
+<ul>
+   <li>
+   <img src={props.usertoshow.avatar} 
+   className="avataruser"
      />
-     </td>
-     <td> 
-    <Link style={{color:'white'}} to={`/users/${props.user.id}`} >
-   <p> {props.user.nickname} </p>
+     </li>
+    {props.usertoshow.relation === "blocked" && props.usertoshow.sender !== "me" ? (
+       <div className="blockednickname">
+       <h1>{props.usertoshow.nickname}</h1>
+       </div>
+        ):(
+        <>
+     <li>
+        <Link style={{color:'white'}} to={`/users/${props.usertoshow.id}`} >
+   <p> {props.usertoshow.nickname} </p>
     </Link>
-    </td> 
-    <div className="icon-off-div">
-    <button type="button" className='has-border' onClick={HandleAddFriend}>
-      <span className="icon material-symbols-outlined">
-     {"person"}  
-      </span> 
-      <span> Add </span>
+    </li>
+        </>
+    )}
+    <li>
+        {props.usertoshow.relation ==="pending" && props.usertoshow.sender !== "me" ? (
+            <>
+                 <button type="button" className='button-displayuser' onClick={HandleAcceptFriend}>  
+         <span className="icon material-symbols-outlined">
+     {"Favorite"}  
+      </span>
+      <span>Accept</span>
+      </button>  
+          <button type="button" className='button-displayuser' onClick={HandleRefuseFriend}>  
+         <span className="icon material-symbols-outlined">
+     {"Cancel"}  
+      </span>
+      <span>Refuse</span>
       </button>
-
-
-      <button type="button" className='has-border' onClick={HandleBlockFriend}>
-      <span className="icon material-symbols-outlined">
-     {"circle"}  
-      </span> 
-      <span> Block </span>
+            </>
+        ) : (
+            <>
+            <ul>
+            <li>
+                <button type="button" className='button-displayuser' onClick={HandleAction}>  
+         <span className="icon material-symbols-outlined">
+     {icon}  
+      </span>
+      <span>{msg}</span>
       </button>
+      </li>
+      </ul>
+            </>
+        )}
+
+      </li>
+      </ul>
       </div>
-        </tbody>
-        </table>
-        </div>
         </>
     )
 }

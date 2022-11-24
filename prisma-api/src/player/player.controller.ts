@@ -60,13 +60,18 @@ export class PlayerController {
     async CheckFriendship(@Req() request, @Res() response) {
         console.log("Check if Friend");
         const friend =  await this.playerService.getFriend(request.user, "isghioua");
-
+        
         if (friend && friend.status === "friend") // condition
         {
             console.log("isghioua is my friend");
         }
         else
             console.log("isghioua is not my friend");
+
+            response.set({
+                'Access-Control-Allow-Origin' : 'http://localhost:3000'
+                     }
+                )
         response.status(200).send(friend);
         return friend;
     }
@@ -109,6 +114,10 @@ export class PlayerController {
         console.log("List of Friends");
         const friends =  await this.playerService.getAllFriends(request.user);
 
+        response.set({
+            'Access-Control-Allow-Origin' : 'http://localhost:3000'
+                 }
+            )
         response.status(200).send(friends);
         //return friends;      
     }

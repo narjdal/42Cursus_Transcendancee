@@ -51,6 +51,7 @@ function Navbar() {
       };
       const handleFriendClick = event => {
         // Toggle Shown state
+        event.preventDefault();
         setIsShown(current => !current);
   
          };
@@ -83,7 +84,7 @@ function Navbar() {
         }
     };
 
-    async function FetchUserInfo (id) {
+    async function FetchUserInfo (nickname) {
 
       // ]
     const loggeduser = localStorage.getItem("user");
@@ -91,22 +92,31 @@ function Navbar() {
     if(loggeduser)
   {
     var Current_User = JSON.parse(loggeduser);
-    const text = ("http://localhost:9000/GetUserPicture");
-    console.log("Api get Link :  =>  " + text);
+    const text = ("http://localhost:5000/player/listOfFriends");
+    console.log("Api Fetch Link :  =>  " + text);
     
-    const response = await axios.get("http://localhost:9000/GetUserPicture",{
-    headers: {
-      userId:id
+
+    await fetch(text,{
+      // mode:'no-cors',
+      method:'get',
+      credentials:"include"
+  })
+  
+  .then((response) => response.json())
+  .then(json => {
+      console.log("The response is => " + JSON.stringify(json))
+    setFriends(json);
+  
+      return json;
+  })
+  .catch((error) => {
+      console.log("An error occured : " + error)
+      return error;
+  })
+
     }
-    }
-    )
-    const {nickname ,UserId,image_url,id42} = response.data;
-    console.log("The Friends are " + JSON.stringify(response.data));
-  //   response.data.forEach( result => {
-      return response.data;
   }
   
-    }
       useEffect(() => {
         const authenticated = localStorage.getItem("authenticated");
     const loggeduser = localStorage.getItem("user");
@@ -118,14 +128,16 @@ function Navbar() {
         {
           var Current_User = JSON.parse(loggeduser);
           const {id} = Current_User
-          console.log("Fetching Friends of this User " + id);
+          console.log("Fetching Friends of this User " + Current_User.nickname);
           setUser42(JSON.parse(localStorage.getItem("user")!))
-      // FetchUserInfo(2)
+
+      FetchUserInfo(Current_User.nickname)
       // .then((resp) => {
       //   console.log("resp => " + resp[0].id);
       //   setFriends(resp);
       //   console.log("user42.image_url" + user42.image_url)
       // })
+
           
           // var Current_User = JSON.parse(loggeduser!);
           // console.log("=>>>>> FROM THE NAVBAR " + loggeduser   + Current_User.nickname + Current_User.UserId)
@@ -133,7 +145,7 @@ function Navbar() {
         }
       //  const {UserId,usual_full_name} = user42;
 
-      },[ localStorage.getItem("user")]);
+      },[ localStorage.getItem("user"),isShown]);
       const location = useLocation();
       // console.log("PATHNAME => " + location.pathname)
     return (
@@ -225,7 +237,7 @@ function Navbar() {
                       <div className='Contact'>
                         <span>
                         
-                        <ContactList contacts={person} />
+                        <ContactList contacts={friends} />
                         </span>
                       </div>
                      )}

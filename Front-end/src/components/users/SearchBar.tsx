@@ -6,28 +6,30 @@ const SearchBar = () => {
   const [errorMessage, setErrorMessage] = useState("");
     const [usertoShow,setUsertoShow] = useState<any>([]);
     const[display,setDisplay] = useState(false);
+
+
+
   async function FetchUserInfos ()  {
-
-
 console.log("Fetching User Profile  Infos  Home Page  => " + userQuery);
 
-const endpoint = 'http://localhost:5000/player/myprofile'
-console.log(" this endpoint ( TODO ) " + endpoint)
 
-// await fetch(endpoint,{
-//     // mode:'no-cors',
-//     method:'get',
-//     credentials:"include"
-// })
-
-// .then((response) => response.json())
-// .then(json => {
     const loggeduser = localStorage.getItem("user");
 if(loggeduser)
 {
   var Current_User = JSON.parse(loggeduser);
   const {id} = Current_User
-setUsertoShow(Current_User);
+  // Here Create the User Infos for testing purpose change the relation && sender 
+  const newUser = ({
+    id:Current_User.id,
+    name:Current_User.name,
+    nickname:Current_User.nickname,
+    avatar:Current_User.avatar,
+    relation:"pending",
+    sender:"notme"
+  }
+  )
+  setUsertoShow(newUser);
+
 console.log("Waiting for the backend endpoint ...");
   // console.log("Fetching Friends of this User " + id);
 
@@ -82,7 +84,7 @@ return (
         </div>
          {display ? ( 
             <>
-         <DisplayUserHome  user={usertoShow} /> 
+         <DisplayUserHome  usertoshow={usertoShow} /> 
        </>
          ): (
             <>

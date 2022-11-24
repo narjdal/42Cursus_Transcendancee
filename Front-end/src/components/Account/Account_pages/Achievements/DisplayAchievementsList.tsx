@@ -22,7 +22,7 @@ const DisplayAchievementsList = (props) => {
   {props.AchievementsList.unlock ? (
 <>
 <div className='unlocked-div'>
-<img  className='avatar' src={props.AchievementsList.image_url} height="30"/> 
+<img  className='avatar1' src={props.AchievementsList.image_url} /> 
 <span>{props.AchievementsList.name} </span> 
 <span>{props.AchievementsList.description} </span>
     
@@ -35,7 +35,7 @@ const DisplayAchievementsList = (props) => {
   ):(
 <>
 <div className='locked-div'>
-<img  className='avatar' src={props.AchievementsList.image_url} height="30"/> 
+<img  className='avatar1' src={props.AchievementsList.image_url} /> 
 <span>{props.AchievementsList.name} </span> 
 <span>{props.AchievementsList.description} </span> 
     

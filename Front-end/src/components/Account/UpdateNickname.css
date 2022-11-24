@@ -18,9 +18,8 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    height: 50px;
+    height: 20px;
     width: 100%;
-    padding: 0 16px;
     border: 0;
     font-family: "Euclid Circular A";
     color: #f7f7f7;
@@ -123,7 +122,6 @@
   .ProfilePic-textBox > label {
     left: 10px;
     translate: 0 -50%;
-    padding: 4px 8px;
   }
   
   .ProfilePic-textBox > span {
@@ -132,10 +130,10 @@
   }
   
   .ProfilePic-textBox > input {
-    height: 56px;
+    height: 20px;
     width: 100%;
 
-    padding: 30px 30px 30px;
+    padding: 10px 20px 20px;
     border: 2px solid #888888;
     border-radius: 8px;
     outline: none;
