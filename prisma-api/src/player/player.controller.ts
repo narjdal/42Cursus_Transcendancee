@@ -142,6 +142,32 @@ export class PlayerController {
         )
         response.status(200).send(friend);
     }
+
+    //using socket to block messages from banned users
+
+    // @Post('/sendmessage/:id')
+    // async SendMessage(@Req() request, @Res() response) {
+    //     console.log("Send Message");
+        
+    //     // if user is banned, he can't send message
+    //     const status = await. this.playerService.getPermissions(request.user, i);
+    //     const status = await this.prisma.permision.findFirst({
+    //         where: {
+    //             AND: [
+    //                 { playerId: me.id },
+    //                 { roomId: id_room },
+    //             ]
+    //         }
+    //     });
+
+    //     const message = await this.playerService.sendMessage(request.user, +login, request.body.message);
+    //     response.set({
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //     }
+    //     )
+    //     response.status(200).send(message);
+    // }
+
 // ---------------------------------- CONTROLLER Permission in room ---------------------------------- //
 
     //endpoint for banning member
