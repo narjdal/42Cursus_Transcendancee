@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Request, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, Req, Request, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { PlayerService } from './player.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -11,7 +11,7 @@ export class PlayerController {
     @Get('myprofile')
 	async login(@Req() request, @Res() response) {
         console.log("MY PROFILE");
-        const user =  await this.playerService.findPlayer(request.user);
+        const user =  await this.playerService.findPlayer(request.user.nickname);
         response.set({
             'Access-Control-Allow-Origin' : 'http://localhost:3000'
                  }
@@ -22,6 +22,37 @@ export class PlayerController {
 		//return user;
     }
 
+    // This is for guetting player profile
+    @Get(':id')
+	async getProfile(@Param() login: string ,@Req() request, @Res() response) {
+        console.log("Profile of another Player");
+        const user =  await this.playerService.findPlayer(login);
+        response.set({
+            'Access-Control-Allow-Origin' : 'http://localhost:3000'
+                 }
+            )
+        response.status(200).send(user);
+        return user;
+
+		//return user;
+    }
+
+        // 5- list of friends
+        @Get('/listOfFriends')
+        async GetListOfFriends(@Req() request, @Res() response) {
+            console.log("List of Friends");
+            const friends =  await this.playerService.getAllFriends(request.user);
+    
+            response.set({
+                'Access-Control-Allow-Origin' : 'http://localhost:3000'
+                     }
+                )
+            response.status(200).send(friends);
+            //return friends;      
+        }
+
+
+        // --------------------------------------------------------------------------------//
     //1- create
     @Get('/createFriendshipmlabrayj')
     async CreateFriendship(@Req() request, @Res() response) {
@@ -107,19 +138,5 @@ export class PlayerController {
         response.status(200).send(friend);
         //return friend;
     }
-
-    // 5- list of friends
-    @Get('/listOfFriends')
-    async GetListOfFriends(@Req() request, @Res() response) {
-        console.log("List of Friends");
-        const friends =  await this.playerService.getAllFriends(request.user);
-
-        response.set({
-            'Access-Control-Allow-Origin' : 'http://localhost:3000'
-                 }
-            )
-        response.status(200).send(friends);
-        //return friends;      
-    }
-        
+       // ---------------------------------------------------------------// 
 }

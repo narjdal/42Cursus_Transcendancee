@@ -8,10 +8,10 @@ import { PrismaService } from 'src/prisma.service';
 export class PlayerService {
     constructor(private prisma: PrismaService) { }
 
-    async findPlayer(data: any) {
+    async findPlayer(login: string) {
 
         const player = await this.prisma.player.findUnique({
-            where: { nickname: data.nickname }
+            where: { nickname: login }
         });
 
         if (!player)
