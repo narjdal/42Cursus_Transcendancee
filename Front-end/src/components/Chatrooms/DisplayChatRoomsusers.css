@@ -7,14 +7,14 @@
 .ChatRoom-table td p {
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 5em; 
-    height: 1.2em; 
+    width: 5em;
+    color: blue;
     white-space: nowrap;
 }
 
 
 .ChatRoom-table td > .ButtonSocial-Unfriend span{
-color: white;
+color: blue;
 }
 
 .ButtonSocial-block span {

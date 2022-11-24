@@ -4,13 +4,24 @@ import { Link } from 'react-router-dom';
 import './DisplayChatRoomsusers.css'
 // import blobz from 'blobz.css'
 const DisplayChatRoomusers = (props) => {
+    const [errorMessage, setErrorMessage] = useState("");
+    const [action,setAction] = useState(false);
+    const [isAdmin,setIsAdmin] = useState("");
     const handleFriendClick  = (e) => {
-
+        e.preventDefault();
+        //if() Request to Add Friend , if already : 
+        setErrorMessage("You are alredy friend !");
+        
     };
     const HandleBlock = (e) => {
-
+        e.preventDefault();
     }
     
+    const HandleShowAction = (e) => {
+        e.preventDefault();
+        setAction(!action);
+        // Here request to know which button to display 
+    }
 console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
     return (
         <>
@@ -30,20 +41,45 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
         </Link>
      </td> 
   <td>
+{isAdmin === "true"  ? (
+<>
+
+</>
+) : (
+<>
+<button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleShowAction}>
+    <span className="icon material-symbols-outlined">
+     {"Settings"}  
+      </span>
+      </button>
+
+{action ? (
+<>
    <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>
     <span className="icon material-symbols-outlined">
-     {"People"}  
+     {"people"}  
       </span>
 
       </button>
-      </td>
-      <td>
+      <p> {errorMessage && <div className="error"> {errorMessage} </div>}  </p>
+
       <button type="button" id="ss" className='ButtonSocial-block' onClick={HandleBlock}>
     <span className="icon material-symbols-outlined">
      {"block"}  
       </span>
 
       </button> 
+</>
+) : (
+    <>
+    </>
+)}
+
+</>
+)}
+
+
+      
       </td>
 
    </tr>
@@ -52,6 +88,8 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
    </div>
         </>
 
+
+       
     )
 }
 export default DisplayChatRoomusers;

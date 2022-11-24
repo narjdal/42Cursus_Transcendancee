@@ -237,7 +237,7 @@ function Navbar() {
                       <div className='Contact'>
                         <span>
                         
-                        <ContactList contacts={person} />
+                        <ContactList contacts={friends} />
                         </span>
                       </div>
                      )}

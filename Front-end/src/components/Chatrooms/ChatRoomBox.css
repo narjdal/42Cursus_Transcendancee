@@ -35,13 +35,15 @@
     position: relative;
     float :left;
     /* width: 100%; */
+    background-color: grey;
     top: 0;
     display: inline-block;
-    max-width: 45%;
+    /* max-width: 45%; */
     overflow-x: scroll;
     /* width: 30%; */
     z-index: 10;
-    height: 300px;
+    /* height: 300px; */
+    height: 15em;
     overflow: hidden;
     overflow-y: scroll;
   }
@@ -50,26 +52,29 @@
     border: 100px;
   }
   .ChatRoomBox-card {
-    position: relative;
+    /* position: relative; */
+    /* width: 20em; */
+    min-width: 20em;
     z-index: 3;
     /* background-color: darkblue; */
-    background: rgba(108, 122, 137, .5);
+    background-color: whitesmoke;
     /* min-width: 100%; */
-    width: 100%;
+    /* width: 100%; */
     /* max-width: %; */
+    max-width: 80em;
     /* min-width: none; */
     /* max-width: 70%; */
     margin: 0 0px;
     padding: 20px 0px 0px ;
     border-radius: 1.25rem;
+    /* height: 40vh; */
     min-height: 40vh;
     display: flex;
     border-top: 3px solid #1e90fe;
     border-bottom: 3px solid #1e90fe;
     border-left: 3px solid #1e90fe;
     border-right: 3px solid #1e90fe;
-    color : white;
-    justify-content: center;
+    color : darkblue;
     flex-direction: column;
     text-align: center;
     align-items: left;

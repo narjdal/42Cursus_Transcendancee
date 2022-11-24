@@ -1,10 +1,12 @@
 import { chatRooms } from './ChatRoomData.js';
 import {Link} from'react-router-dom';
 import {Routes, Route, useNavigate} from 'react-router-dom';
+import { useState } from 'react';
 
 import './Landing.css'
 function Landing() {
     const navigate = useNavigate();
+    const [BackendRooms,setChatRooms] = useState<any>([]);
     const HandleClick = (e) => {
         navigate('/CreateRoom')
     };

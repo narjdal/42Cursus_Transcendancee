@@ -8,6 +8,7 @@ import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import axios from 'axios';
 //https://codeburst.io/tutorial-how-to-build-a-chat-app-with-react-native-and-backend-9b24d01ea62a
 const ChatRoomBox = (props) => {
+
   const users = [{ username: "Jane", password: "testpassword" ,ChatRoomBox: ""}];
   const [inputMsg,SetInputMsg] = useState("");
   const [userfetched,setUserFetched] = useState("");
@@ -21,20 +22,20 @@ const ChatRoomBox = (props) => {
   const [user42,SetUser42] = useState<any>([])
   const [UserAdmin,SetUserAdmin] = useState(false);
 
-  const MsgHistory = [
-    {id:0,userId:1,username:"narjdal",msg:"salut"},
-    {id:1,userId:1,username:"narjdal",msg:"ca  va ?"},
-    {id:2,userId:2,username:"test",msg:"oui et toi "},
-    {id:3,userId:1,username:"narjdal",msg:"on fait une game "},
-    {id:4,userId:2,username:"test",msg:"vasy "},
-    {id:7,userId:3,username:"user3",msg:"Just joined"},
-    {id:6,userId:3,username:"user3",msg:"Hi"},
-    {id:8,userId:3,username:"user3",msg:" ss"},
-    {id:10,userId:3,username:"user3",msg:"oo"},
-    {id:11,userId:3,username:"user3",msg:"oo"},
-    {id:12,userId:3,username:"user3",msg:"oo"},
-    {id:13,userId:3,username:"user3",msg:"oo"},
 
+  const HandleBlock = (e) => {
+    e.preventDefault();
+    console.log("Handle Ban Click !" + BanUser);
+
+  }
+  const handleFriendClick  = (e) => {
+    e.preventDefault();
+    console.log("Handle Mute Click !" + BanUser);
+  };
+  
+    const[chatroomUsers,Setchatroomusers] = useState<any>([]);
+  const MsgHistory = [
+    {id:1,userId:3},
   ];
 //GEt Request to Backend to get Message History of the room 
 var MsgList =[...MsgHistory];
@@ -132,6 +133,10 @@ const SendMessage = (e) => {
 
 }
 
+
+const HandleLeaveRoom = (e) => {
+  e.preventDefault();
+}
 const HandleFetchedFriend = (e) => {
   e.preventDefault();
 }
@@ -171,8 +176,15 @@ return (
       <div className='History-Box'> 
      
       {MsgList.map(c => < MessageList  key = {c.id} user ={c} />)}
+ 
+      
       </div>
-  
+      <button type="button" onClick={HandleLeaveRoom} style={{bottom:0}}>
+                    <span className="icon material-symbols-outlined">
+     {"logout"} 
+      </span>
+      <span> Leave Room</span>
+                  </button>
   <form className='ChatRoom-Input-form' onSubmit={HandleInputMsg}>
     <div className='ChatRoom-InputBox'>
       <input type="text"
@@ -190,14 +202,25 @@ return (
 </div>
       
       {UserAdmin ? ( 
-          <div className='ChatRoom-InputBox'>
+      <div className='admin-buttons'>
       <input type="text"
        className={`${BanUser ? "has-value" : ""}`}
        id="textbox"
        onChange={event => SetBanUser(event.target.value)}
        value={BanUser || ""}
        /> 
-      <label htmlFor="textbox"> Ban : </label>
+      <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>
+    <span className="icon material-symbols-outlined">
+     {"Mic_Off"}  
+      </span>
+
+      </button>
+      <button type="button" id="ss" className='ButtonSocial-block' onClick={HandleBlock}>
+    <span className="icon material-symbols-outlined">
+     {"block"}  
+      </span>
+
+      </button> 
       </div>
       ) : (
         <div>
