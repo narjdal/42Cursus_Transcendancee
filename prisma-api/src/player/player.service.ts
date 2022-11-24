@@ -252,7 +252,7 @@ export class PlayerService {
         const messages = await this.prisma.message.findMany({
             where: {
                 AND: [
-                    { playerId: me.id },
+                    { senderId: me.id },
                     { roomId: id_room },
                 ]
             },
@@ -273,46 +273,95 @@ export class PlayerService {
             }
         })
 
+        const blocked_list = await this.prisma.friendship.findMany({
+            where:{
+                    AND:[
+                        {status: "block"},
+                        {
+                            OR:[
+                                {
+                                    senderId: me.id,
+                                },
+                                {
+                                    receiverId: me.id,
+                                },
+                            ]
+                        },
+                    ],
+        }})
+        // foreach vs map https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+        const blockedId = blocked_list.map (user => {
+                if (user.receiverId == me.id)
+                    return user.senderId
+                return user.receiverId
+        })
+
         // 1- if user is banned, send all msgs before the time of banning
         // ==>  status.createdAt
         // where { message.createdAT {lt: status.createdAt} }
         if (status.statusMember === "banned") {
-            return null; // lt
-        }
-
-        // else member is not banned, show all messages
-        const result = await this.prisma.chatRoom.findMany({
-            include: {
-                // Select all members that are not blocked asc desc
-                all_messages: // Permission
+            const result = await this.prisma.message.findMany({
+                where:
                 {
-                    where: {
-                        createdAt: {
-                            lt: nw
+                   AND: [
+                    {
+                        roomId: id_room,
+                    },
+                    {
+                        NOT:{
+                            senderId : {
+                                // in : blockedId
+                                in :  blockedId
+                            },
+                            // playerId: blocked_list,
                         },
-                        AND:{
-                            sender: {
-                                in: 
-                            }
+                    },
+                    {
+                        createdAt: {
+                            lte: status.until
                         }
                     },
-                    orderBy: {
-                        createdAt: 'asc' 
-                     }
-                    // where: {
-                    //     statusMember: {
-                    //         not: "block",
-                    //     }
-                    // },
+                   ], 
                 },
-                // all_messages: {
-                //     orderBy: {
-                //         createdAt: 'asc',
-                //     },
-                // },
+                orderBy:
+                {
+                    createdAt: 'asc',
+                },
+                select: {
+                    msg: true,
+                    senderId: true,
+                }
+            })
+            return result;
+        }
+        // else
+        const result = await this.prisma.message.findMany({
+            where:
+            {
+               AND: [
+                {
+                    roomId: id_room,
+                },
+                {
+                    NOT:{
+                        senderId : {
+                            // in : blockedId
+                            in :  blockedId
+                        },
+                        // playerId: blocked_list,
+                    },
+                },
+               ], 
             },
+            orderBy:
+            {
+                createdAt: 'asc',
+            },
+            select: {
+                msg: true,
+                senderId: true,
+            }
         })
-
         return result;
     }
 
@@ -329,7 +378,7 @@ export class PlayerService {
         const messageSent = await this.prisma.message.create({
             data: {
                 msg: message,
-                playerId: me.id,
+                senderId: me.id,
                 roomId: room_id
             }
         })
@@ -348,7 +397,7 @@ export class PlayerService {
         const messageSent = await this.prisma.message.create({
             data: {
                 msg: message,
-                playerId: me.id,
+                senderId: me.id,
                 roomId: room_id
             }
         })
@@ -450,13 +499,17 @@ export class PlayerService {
     //     return friends;
     // }  
 
-    // 2- send a msg in this chat room 
-    // 3- add new member to this chat room 
+    // 1- Create a chat room : done
+    // 2- send a msg in this chat room :  pending
+    // 3- add new member to this chat room : pending
+    
+    /*
     // 4- leave channel // delete the player from the permision
-    // 5- add member to list admins
-    // 6- ban member if admin or owner
+    // 5- add member to list admins // change status of member to admins
+    // 6- ban member if admin or owner // 
     // 7- mute member if u are admin or owner
     // 8- create a password to channel or delete password if is owner
+    */
 
-    // 9- get messages_history
+    // 9- get messages_history :done
 }

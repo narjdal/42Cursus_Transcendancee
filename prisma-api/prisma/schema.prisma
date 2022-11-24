@@ -59,8 +59,8 @@ model Permission {
 
 model Message {
     id Int @id @default(autoincrement())
-    sender Player @relation("SendMsg", fields: [playerId], references: [id])
-    playerId Int
+    sender Player @relation("SendMsg", fields: [senderId], references: [id])
+    senderId Int
 
     room ChatRoom @relation("ThisRoom", fields: [roomId], references: [id])
     roomId Int
