@@ -117,7 +117,7 @@ export class PlayerController {
     @Get('/refuseFriendship/:id')
     async RefuseFriendship(@Param() login: string, @Req() request, @Res() response) {
         console.log("Refuse Friendship");
-        const friend = await this.playerService.deleteFriendship(request.user, login['id']);
+        const friend = await this.playerService.refuseFriendship(request.user, login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }

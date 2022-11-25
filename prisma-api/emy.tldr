@@ -4549,6 +4549,100 @@
               "font": "script",
               "textAlign": "middle"
             }
+          },
+          "0b9f5157-ccb2-44ea-3caa-152643ec259d": {
+            "id": "0b9f5157-ccb2-44ea-3caa-152643ec259d",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 140,
+            "point": [
+              337.89,
+              5432.28
+            ],
+            "size": [
+              474,
+              327.24
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "b919a239-bcdc-499d-0300-f92abcd64c41": {
+            "id": "b919a239-bcdc-499d-0300-f92abcd64c41",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 141,
+            "point": [
+              376.24,
+              5473.37
+            ],
+            "rotation": 0,
+            "text": "1- get all friends",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "6db31233-d33a-48fc-28de-45af7b19a861": {
+            "id": "6db31233-d33a-48fc-28de-45af7b19a861",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 142,
+            "point": [
+              357.36,
+              5530.15
+            ],
+            "rotation": 0,
+            "text": "2- get all members dial room [id_owner, id_admins, id_members/me]",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "d21d7920-88e9-4f78-2c21-a4e892875cbd": {
+            "id": "d21d7920-88e9-4f78-2c21-a4e892875cbd",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 143,
+            "point": [
+              356.73,
+              5579.67
+            ],
+            "rotation": 0,
+            "text": "3- ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
           }
         },
         "bindings": {

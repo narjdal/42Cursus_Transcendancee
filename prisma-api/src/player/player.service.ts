@@ -322,6 +322,25 @@ export class PlayerService {
         return friendship;
     }
 
+    async refuseFriendship(data: any, friendname: string) {
+        const me = await this.findPlayer(data.nickname);
+        const howa = await this.prisma.player.findUnique({
+            where: { nickname: friendname },
+        });
+
+
+        const friendship = await this.prisma.friendship.delete({
+            where: {
+                senderId_receiverId: {
+                    senderId: howa.id,
+                    receiverId: me.id
+                }
+            },
+        })
+
+        return friendship;
+    }
+
     // --------------------------------------------------------------//
 
     // ------------------------ Chat --------------------
