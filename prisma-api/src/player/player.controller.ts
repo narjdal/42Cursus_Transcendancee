@@ -75,8 +75,8 @@ export class PlayerController {
         {
             choices = ['acceptFriend', 'refuseFriend'];
         }
-        else {
-            choices = [''];
+        else { // f (membership && membership.status === "blocked" && membership.receiverId === request.user.id) // condition
+            choices = ['YourBlocked']; // walou hia block
         }
 
         response.set({

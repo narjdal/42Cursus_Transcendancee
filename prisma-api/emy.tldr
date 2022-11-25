@@ -4455,6 +4455,56 @@
               "font": "script",
               "textAlign": "middle"
             }
+          },
+          "05638de0-cb66-4d10-0f2e-3acae0628b75": {
+            "id": "05638de0-cb66-4d10-0f2e-3acae0628b75",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 136,
+            "point": [
+              291.31,
+              3548.48
+            ],
+            "size": [
+              1016.98,
+              311.67
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "c4a49c49-8cf3-4832-22d6-8b7b7e5713d1": {
+            "id": "c4a49c49-8cf3-4832-22d6-8b7b7e5713d1",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 137,
+            "point": [
+              343.66,
+              3586.85
+            ],
+            "rotation": 0,
+            "text": "1- getfriendProfile/getPermission/:id ==> status block",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
           }
         },
         "bindings": {
