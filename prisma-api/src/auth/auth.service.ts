@@ -8,6 +8,8 @@ export class AuthService {
         private jwtService:JwtService) {}
     
     async findORcreate(data: any) {
+
+        console.log(data);
         
     // console.log("inside find or create auth services")
 

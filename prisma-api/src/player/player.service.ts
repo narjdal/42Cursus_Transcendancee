@@ -89,7 +89,7 @@ export class PlayerService {
             data: {
                 senderId: sender.id,
                 receiverId: receiver.id,
-                status: "pending"
+                status: "Pending"
             }
         })
 
@@ -112,7 +112,7 @@ export class PlayerService {
             },
             // and status === friend
             data: {
-                status: "friend"
+                status: "Friend"
             }
         })
 
@@ -164,8 +164,8 @@ export class PlayerService {
         const friendship = await this.prisma.friendship.update({
             where: {
                 senderId_receiverId: {
-                    senderId: howa.id,
-                    receiverId: me.id
+                    senderId: me.id,
+                    receiverId: howa.id
                 }
             },
             // and status === friend
@@ -190,8 +190,8 @@ export class PlayerService {
         const friendship = await this.prisma.friendship.delete({
             where: {
                 senderId_receiverId: {
-                    senderId: howa.id,
-                    receiverId: me.id
+                    senderId: me.id,
+                    receiverId: howa.id
                 }
             },
         })

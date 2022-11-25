@@ -16,7 +16,7 @@ export class OauthStrategy extends PassportStrategy(Strategy, '42') {
             'nickname': 'login',
             'firstName': 'first_name',
             'lastName': 'last_name',
-            'avatar': 'image_url',
+            'avatar': 'image.link',
             'email': 'email',
         }
     });
@@ -26,8 +26,9 @@ export class OauthStrategy extends PassportStrategy(Strategy, '42') {
     if (!profile)
     	throw new UnauthorizedException("user does not exist");
     // else
-    // console.log(profile);
+    //console.log(profile);
     // console.log("inside validate")
+    console.log(profile);
     return profile;
   }
 }

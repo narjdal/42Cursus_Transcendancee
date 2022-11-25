@@ -23,7 +23,7 @@ export class PlayerController {
     }
 
     // This is for guetting player profile
-    @Get(':id')
+    @Get('/profile/:id')
     async getProfile(@Param() login: string, @Req() request, @Res() response) {
         console.log("Profile of another Player");
         const user = await this.playerService.findPlayer(login['id']);
@@ -59,24 +59,28 @@ export class PlayerController {
         if (!membership) {
             choices = ['addFriend'];
         }
-        else if (membership && membership.status === "friend") // condition
+        else if (membership && membership.status === "Friend") // condition
         {
             choices = ['blockFriend'];
         }
-        else if (membership && membership.status === "blocked" && membership.senderId === request.user.id) // condition
+        else if (membership && membership.status === "Block" && membership.senderId === request.user.id) // condition
         {
             choices = ['unblockFriend'];
         }
-        else if (membership && membership.status === "pending" && membership.senderId === request.user.id) // condition
+        else if(membership && membership.status === "Block" && membership.receiverId === request.user.id) // condition
+        {
+            choices = ['YourBlocked']; // walou hia block
+        }
+        else if (membership && membership.status === "Pending" && membership.senderId === request.user.id) // condition
         {
             choices = ['pendingFriend'];
         }
-        else if (membership && membership.status === "pending" && membership.receiverId === request.user.id) // condition
+        else if (membership && membership.status === "Pending" && membership.receiverId === request.user.id) // condition
         {
             choices = ['acceptFriend', 'refuseFriend'];
         }
         else { // f (membership && membership.status === "blocked" && membership.receiverId === request.user.id) // condition
-            choices = ['YourBlocked']; // walou hia block
+            choices = ['']; // walou hia block
         }
 
         response.set({
@@ -135,7 +139,7 @@ export class PlayerController {
     @Get('/unblockFriendship/:id')
     async UnblockFriendship(@Param() login: string, @Req() request, @Res() response) {
         console.log("Unblock Friendship");
-        const friend = await this.playerService.unblockFriendship(request.user, login['id']);
+        const friend = await this.playerService.deleteFriendship(request.user, login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
