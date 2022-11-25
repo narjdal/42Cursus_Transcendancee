@@ -5,7 +5,7 @@ import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import person from '../users/users.json'
 
 const ChatRoomButton = () => {
-
+  const[friends,setFriends] = useState <any >([]);
 const [username, setUsername] = useState("");
 const HandleBanUser = () => {
 
@@ -16,7 +16,16 @@ const HandleMuteUser = () => {
 const HandleBlockUser = () => {
 
 };
+useEffect(() => {
+  const loggeduser = localStorage.getItem("user");
 
+  if(loggeduser)
+{
+  var Current_User = JSON.parse(loggeduser);
+  const {id} = Current_User
+  console.log("Fetching Friends of this User " + Current_User.nickname);
+}
+})
 const FilteredUsers = person.filter(person => {
     // Here A changer : person with friends from backend , 
     //filter nickname not name 
@@ -40,7 +49,6 @@ const FilteredUsers = person.filter(person => {
 <>
 </>
         )}
-        <button type ="submit" > <img src ="/images/Add.png" className="FriendAddIcon" height="30"/></button>
             <button onClick={HandleBanUser} className="ChatRoomButtons"  > Ban  an user  : </button>
             <button  onClick={HandleMuteUser}className='ChatRoomButtons' > Mute an  user  :  </button>
             <button  onClick={HandleBlockUser}className='ChatRoomButtons'> Add as Admin User   : </button>

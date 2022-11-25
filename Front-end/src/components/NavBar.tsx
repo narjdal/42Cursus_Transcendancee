@@ -13,6 +13,7 @@ import Cookies from 'js-cookie';
 
 function Navbar() {
     const [click,setClick]= useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [isShown,setIsShown] = useState(false);
   const[user42,setUser42] = useState <any >([]);
   const[friends,setFriends] = useState <any >([]);

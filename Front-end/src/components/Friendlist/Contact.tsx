@@ -96,7 +96,7 @@ return (
        <th>Status </th>
    </tr>
    <tr>
-   <td> <img src={props.user.image_url} 
+   <td> <img src={props.user.avatar} 
    height="20"
    className="avatar1"
    onClick={handleClick} /></td>

@@ -17,6 +17,7 @@ const ContactList = (props) =>
     const [user, setUser] = useState(null);
     const [err, setErr] = useState(false);
     const [user42,SetUser42] = useState<any>([])
+    const [contacts ,setContacts] = useState <any>([]);
     useEffect(() => {
         const loggeduser = localStorage.getItem("user");
     
@@ -25,6 +26,7 @@ const ContactList = (props) =>
           var Current_User = JSON.parse(loggeduser);
           console.log("=>>>>> FROM THE ContactList "   + Current_User.nickname + Current_User.UserId)
           SetUser42(Current_User);
+          setContacts(props.contacts);
         }
     // localStorage.setItem("DmCount",Dmcount.toString());
 
@@ -105,7 +107,9 @@ const ContactList = (props) =>
       {user42 && (
         <div className="userChat" onClick={handleSelect}>
           <div className="userChatInfo">
-          <span>{props.contacts.map(c => < Contact  key = {c.name} user ={c} />)}</span>
+       
+            <span>{contacts.map(c => < Contact  key = {c.nickname} user ={c} />)}</span>
+
           </div>
         </div>
       )}
