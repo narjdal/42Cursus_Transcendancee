@@ -91,7 +91,7 @@ model Friendship {
     receiverId Int
     @@unique([senderId, receiverId])
 
-    @@id([senderId, receiverId])
+   @@id([senderId, receiverId])
 }
 
 //message 2 route set message / get message ==> dm

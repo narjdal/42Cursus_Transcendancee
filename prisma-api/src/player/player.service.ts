@@ -127,43 +127,32 @@ export class PlayerService {
             where: { nickname: friendname },
         });
 
-        const friendship = await this.prisma.friendship.update({
+        // awal haja an howwa sender w ana receiver
+        const friendship = await this.prisma.friendship.updateMany({
 
            where:{
-
-                senderId_receiverId:{
-                    senderId:howa.id,
-                    receiverId:me.id
+            OR: [
+                {
+                    senderId: me.id,
+                    receiverId: howa.id,
                 },
-                
+
+                {
+                    senderId: howa.id,
+                    receiverId: me.id,
+                }
+            ]
+            
            },
             // and status === friend
             data: {
                 status: "Block",
                 senderId: me.id,
                 receiverId: howa.id,
-            }
+            },
+            
         })
-        if(friendship === null){
-            const friendship = await this.prisma.friendship.update({
-
-                where:{
-     
-                     senderId_receiverId:{
-                         receiverId:howa.id,
-                         senderId:me.id
-                     },
-                     
-                },
-                 // and status === friend
-                 data: {
-                     status: "Block",
-                     senderId: me.id,
-                     receiverId: howa.id,
-                 }
-             })
-        
-    }return friendship;
+    return friendship;
 }
     // 4- unblock
     async unblockFriendship(data: any, friendname: string) {
