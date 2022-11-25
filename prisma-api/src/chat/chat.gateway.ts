@@ -7,6 +7,7 @@ import {
   import { MessagesService } from './chat.service';
   import { CreateMessageDto } from './dto/create-message.dto';
   import { Server, Socket } from 'socket.io';
+import { arrayBuffer } from 'stream/consumers';
   
   
   @WebSocketGateway({
@@ -25,16 +26,16 @@ import {
     @SubscribeMessage('createMessage')
     async createMessage(
         @ConnectedSocket() client: Socket,
-        ...args: any[]
+        @MessageBody() createMessageDto: CreateMessageDto,
     ) {
         // get token
         // args[0].token || client.handshake.headers.authorization
 
         // get sent DM
         const data = {
-            roomId: args[0].roomId,
-            senderId: args[0].sender,
-            message: args[0].msg,
+            roomId: createMessageDto.roomId,
+            senderId: createMessageDto.senderId,
+            message: createMessageDto.message,
         }
 
         // insert DM into DB
@@ -46,6 +47,11 @@ import {
         console.log('');
         console.log('');
         console.log('');
+        this.server.emit('message', result);
+    }
+    handleConnection(client: Socket, ...args: any[]) {
+        console.log('client connected');
+
     }
   }
   
