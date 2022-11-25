@@ -128,25 +128,43 @@ export class PlayerService {
         });
 
         const friendship = await this.prisma.friendship.update({
-            where: {
-                    
+
+           where:{
+
+                senderId_receiverId:{
+                    senderId:howa.id,
+                    receiverId:me.id
+                },
+                
+           },
+            // and status === friend
+            data: {
+                status: "Block",
                 senderId: me.id,
                 receiverId: howa.id,
-                
-            },
-           
-            // and status === friend
-            // data: {
-            //     status: "Block",
-            //     senderId: me.id,
-            //     receiverId: howa.id,
-            // }
+            }
         })
+        if(friendship === null){
+            const friendship = await this.prisma.friendship.update({
 
-        // if (friendship) ==> status = friend
-        return friendship;
-    }
-
+                where:{
+     
+                     senderId_receiverId:{
+                         receiverId:howa.id,
+                         senderId:me.id
+                     },
+                     
+                },
+                 // and status === friend
+                 data: {
+                     status: "Block",
+                     senderId: me.id,
+                     receiverId: howa.id,
+                 }
+             })
+        
+    }return friendship;
+}
     // 4- unblock
     async unblockFriendship(data: any, friendname: string) {
         const me = await this.findPlayer(data.nickname);

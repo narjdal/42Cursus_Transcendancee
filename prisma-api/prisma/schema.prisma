@@ -82,7 +82,7 @@ model Message {
 // https://www.prisma.io/docs/concepts/components/prisma-schema/relations/self-relations#relational-databases
 
 model Friendship {
-    id Int @id @default(autoincrement())
+   //id Int @id @default(autoincrement())
     status     String
     date       DateTime @default(now())
     sender     Player   @relation("SendRequest", fields: [senderId], references: [id])
@@ -91,7 +91,7 @@ model Friendship {
     receiverId Int
     @@unique([senderId, receiverId])
 
-    // @@id([senderId, receiverId])
+    @@id([senderId, receiverId])
 }
 
 //message 2 route set message / get message ==> dm
