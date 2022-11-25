@@ -21,9 +21,9 @@ export class PlayerService {
         return player;
     }
 
-    // ------------------ 1- Get Friend  ------------------
+    // ------------------ Get list of freiends ------------------
 
-    async getAllFriends(data: any) {
+    async getAllFriendships(data: any) {
         const me = await this.findPlayer(data.nickname);
 
         const friends = await this.prisma.friendship.findMany({
@@ -31,17 +31,165 @@ export class PlayerService {
                 OR: [
                     {
                         senderId: me.id,
+                        status: "Friend",
                     },
 
                     {
                         receiverId: me.id,
+                        status: "Friend",
+                    }
+                ]
+            },
+        })
+        
+        const friendsId = friends.map(user => {
+            if (user.receiverId == me.id)
+                return user.senderId
+            return user.receiverId
+        })
+
+        // console.log(friendsId);
+
+        return friendsId;
+    }
+
+
+    async getAllFriends(data: any) {
+        const me = await this.findPlayer(data.nickname);
+
+        console.log("ana get all friends method"); 
+        const friendsId = await this.getAllFriendships(data); // friend 
+
+        // console.log(friendsId);
+
+        const friends = await this.prisma.player.findMany({
+            where: {
+                id:
+                {
+                    in: friendsId,
+                },
+            },
+        })
+        console.log(friends);
+        return friends;
+    }
+    // 2 - list of friends that we can add to the chat room
+    async getListOfFriendsToAddinThisRoom(data: any, room_id: number) {
+        console.log("getListOfFriendsToAddinThisRoom");
+        const me = await this.findPlayer(data.nickname);
+
+        // 1- Get all members of this room
+        const members = await this.prisma.chatRoom.findUnique({
+            where: { id: room_id },
+            select: {
+                all_members: {
+                    select: {
+                        playerId: true
+                    }
+                }
+            }
+        })
+ 
+        console.log(members);
+        console.log("-------------------------------------");
+        // 2- Get all friends that we can add to this room
+        const friends = await this.prisma.friendship.findMany({
+            where: {
+                OR: [
+                    {
+                        senderId: me.id,
+                        status: "friend"
+                    },
+                    {
+                        receiverId: me.id,
+                        status: "friend"
                     }
                 ]
             }
         })
-
         return friends;
     }
+
+     // 2 - list of friends that we can add to the chat room
+     async getListOfFriendsToUpgradeAdmininThisRoom(data: any, room_id: number) {
+        const me = await this.findPlayer(data.nickname);
+        const friends = await this.prisma.friendship.findMany({
+        where: {
+            OR: [
+            {
+                senderId: me.id,
+                status: "friend"
+            },
+            {
+                receiverId: me.id,
+                status: "friend"
+            }
+            ]
+        }
+        })
+        return friends;
+    }
+    // 2 - list of friends that we can add to the chat room
+    async getListOfFriendsToMuteinThisRoom(data: any, room_id: number) {
+        const me = await this.findPlayer(data.nickname);
+        const friends = await this.prisma.friendship.findMany({
+        where: {
+            OR: [
+            {
+                senderId: me.id,
+                status: "friend"
+            },
+            {
+                receiverId: me.id,
+                status: "friend"
+            }
+            ]
+        }
+        })
+        return friends;
+    }
+
+     // 2 - list of friends that we can add to the chat room
+     async getListOfFriendsToUnmuteinThisRoom(data: any, room_id: number) {
+        const me = await this.findPlayer(data.nickname);
+        const friends = await this.prisma.friendship.findMany({
+        where: {
+            OR: [
+            {
+                senderId: me.id,
+                status: "friend"
+            },
+            {
+                receiverId: me.id,
+                status: "friend"
+            }
+            ]
+        }
+        })
+        return friends;
+    }
+
+    // 2 - list of friends that we can add to the chat room
+    async getListOfFriendsToBaninThisRoom(data: any, room_id: number) {
+        const me = await this.findPlayer(data.nickname);
+        const friends = await this.prisma.friendship.findMany({
+            where: {
+                OR: [
+                    {
+                        senderId: me.id,
+                        status: "friend"
+                    },
+                    {
+                        receiverId: me.id,
+                        status: "friend"
+                    }
+                ]
+            }
+        })
+        return friends;
+    }
+
+    // ------------------ 1- Get Friend  ------------------
 
     // ana user, check if this nickname is my friend 
     async getFriend(data: any, login: string) {
@@ -155,31 +303,6 @@ export class PlayerService {
     return friendship;
 }
     // 4- unblock
-    async unblockFriendship(data: any, friendname: string) {
-        const me = await this.findPlayer(data.nickname);
-        const howa = await this.prisma.player.findUnique({
-            where: { nickname: friendname },
-        });
-
-        const friendship = await this.prisma.friendship.update({
-            where: {
-                senderId_receiverId: {
-                    senderId: me.id,
-                    receiverId: howa.id
-                }
-            },
-            // and status === friend
-            data: {
-                status: "Friend",
-                senderId: me.id,
-                receiverId: howa.id,
-            }
-        })
-        // if (friendship) ==> status = friend
-        return friendship;
-    }
-
-    // 5- delete
     async deleteFriendship(data: any, friendname: string) {
         const me = await this.findPlayer(data.nickname);
         const howa = await this.prisma.player.findUnique({
@@ -585,29 +708,6 @@ export class PlayerService {
 
     // 1- Create a chat room : done
     // 2- send a msg in this chat room :  pending
-
-    // 2 - list of friends that we can add to the chat room
-    async listOfFriendsToAdd(data: any, room_id: number) {
-        const me = await this.findPlayer(data.nickname);
-        const friends = await this.prisma.friendship.findMany({
-            where: {
-                OR: [
-                    {
-                        senderId: me.id,
-                        status: "friend"
-                    },
-                    {
-                        receiverId: me.id,
-                        status: "friend"
-                    }
-                ]
-            }
-        })
-
-
-        return friends;
-    }
-
 
     // 3- add new member to this chat room : pending
 

@@ -4527,6 +4527,28 @@
               "font": "script",
               "textAlign": "middle"
             }
+          },
+          "584674c7-313b-4883-0052-aa96d4d12074": {
+            "id": "584674c7-313b-4883-0052-aa96d4d12074",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 139,
+            "point": [
+              -71.95000000000002,
+              6778.15
+            ],
+            "rotation": 0,
+            "text": "list of friends - list of members",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
           }
         },
         "bindings": {
