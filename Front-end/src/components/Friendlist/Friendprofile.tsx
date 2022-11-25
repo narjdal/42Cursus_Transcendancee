@@ -268,9 +268,9 @@ const Friendprofile = () => {
 
     const loggeduser = localStorage.getItem("user");
     if (loggeduser) {
-      let endpoint = 'http://localhost:5000/player/?id=';
+      let endpoint = 'http://localhost:5000/player/profile/?id=';
       console.log(" this endpoint   " + endpoint)
-      await fetch((`http://localhost:5000/player/${params.nickname}`), {
+      await fetch((`http://localhost:5000/player/profile/${params.nickname}`), {
         // mode:'no-cors',
         method: 'get',
         credentials: "include"

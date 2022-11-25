@@ -31,12 +31,12 @@ if(loggeduser)
   }
   )
      
-let endpoint = 'http://localhost:5000/player/?id=';
+let endpoint = 'http://localhost:5000/player/profile/?id=';
 // endpoint = endpoint + userQuery;
 console.log(" this endpoint   " + endpoint)
 
 
-await fetch((`http://localhost:5000/player/${userQuery}`),{
+await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
     // mode:'no-cors',
     method:'get',
     credentials:"include"

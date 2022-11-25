@@ -90,53 +90,53 @@ useEffect(() => {
    {
    const current = JSON.parse(user);
    setCurrentUser(current);
-   console.log("the relation is : " + props.usertoshow.relation + " sender is : " + props.usertoshow.sender);
-   if( props.usertoshow.relation === "friend")
-   {
-    console.log("hello");
-    setCorrectIcon("Block");
-    setMsg("Block User")
-    setAction("Block")
-   }
-  else if(props.usertoshow.relation === "blocked" && props.usertoshow.sender === "me")
-   {
-    console.log("blocked by me  ! Should display Unblock ");
-    setCorrectIcon("lock_open");
-    setMsg("Unblock")
-    setAction("unblock");
-   }
-   else if(props.usertoshow.relation === "blocked" && props.usertoshow.sender !== "me")
-   {
-    console.log("I am blocked !  Should display You are blocked ");
-    setCorrectIcon("sentiment_very_dissatisfied");
-    setMsg("You are blocked ");
-    setAction("youareblocked");
+//    console.log("the relation is : " + props.usertoshow.relation + " sender is : " + props.usertoshow.sender);
+//    if( props.usertoshow.relation === "friend")
+//    {
+//     console.log("hello");
+//     setCorrectIcon("Block");
+//     setMsg("Block User")
+//     setAction("Block")
+//    }
+//   else if(props.usertoshow.relation === "blocked" && props.usertoshow.sender === "me")
+//    {
+//     console.log("blocked by me  ! Should display Unblock ");
+//     setCorrectIcon("lock_open");
+//     setMsg("Unblock")
+//     setAction("unblock");
+//    }
+//    else if(props.usertoshow.relation === "blocked" && props.usertoshow.sender !== "me")
+//    {
+//     console.log("I am blocked !  Should display You are blocked ");
+//     setCorrectIcon("sentiment_very_dissatisfied");
+//     setMsg("You are blocked ");
+//     setAction("youareblocked");
 
-   }
-  else  if(props.usertoshow.relation === "pending" && props.usertoshow.sender === "me")
-   {
-    console.log("Pending ... ! Sender is me   Should display Pending  ");
-    setCorrectIcon("hourglass_bottom");
-    setMsg("Pending ... ");
+//    }
+//   else  if(props.usertoshow.relation === "pending" && props.usertoshow.sender === "me")
+//    {
+//     console.log("Pending ... ! Sender is me   Should display Pending  ");
+//     setCorrectIcon("hourglass_bottom");
+//     setMsg("Pending ... ");
 
-    setAction("pending");
-   }
-   else  if(props.usertoshow.relation === "pending" && props.usertoshow.sender !== "me")
-   {
-    console.log("Pending ... ! Sender is not me    Should display Accept or Refuse !   ");
-    // setCorrectIcon("hourglass_bottom");
-    // setMsg("Pending ... ");
+//     setAction("pending");
+//    }
+//    else  if(props.usertoshow.relation === "pending" && props.usertoshow.sender !== "me")
+//    {
+//     console.log("Pending ... ! Sender is not me    Should display Accept or Refuse !   ");
+//     // setCorrectIcon("hourglass_bottom");
+//     // setMsg("Pending ... ");
 
-    // setAction("pending");
-   }
-    else
-    {
-        console.log("not friend ! Should display Add ");
-   setCorrectIcon("people");
-   setMsg("Add")
-   setAction("Add");
+//     // setAction("pending");
+//    }
+//     else
+//     {
+//         console.log("not friend ! Should display Add ");
+//    setCorrectIcon("people");
+//    setMsg("Add")
+//    setAction("Add");
 
-    }
+//     }
 //    if(props.user.)
    }
 
