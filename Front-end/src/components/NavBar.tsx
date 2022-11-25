@@ -92,7 +92,7 @@ function Navbar() {
     if(loggeduser)
   {
     var Current_User = JSON.parse(loggeduser);
-    const text = ("http://localhost:5000/player/listOfFriends");
+    const text = ("http://localhost:5000/player/profile/listOfFriends");
     console.log("Api Fetch Link :  =>  " + text);
     
 
