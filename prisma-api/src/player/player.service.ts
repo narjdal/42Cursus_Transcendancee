@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { stat } from 'fs';
 import { networkInterfaces } from 'os';
@@ -15,9 +15,11 @@ export class PlayerService {
                 nickname: login
             }
         });
-
-        if (!player)
-            return null;
+        
+        if (!player) {
+            throw new NotFoundException()
+            // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
+        }
         return player;
     }
 
@@ -53,7 +55,6 @@ export class PlayerService {
         return friendsId;
     }
 
-
     async getAllFriends(data: any) {
         const me = await this.findPlayer(data.nickname);
 
@@ -73,41 +74,90 @@ export class PlayerService {
         console.log(friends);
         return friends;
     }
-    // 2 - list of friends that we can add to the chat room
-    async getListOfFriendsToAddinThisRoom(data: any, room_id: number) {
-        console.log("getListOfFriendsToAddinThisRoom");
-        const me = await this.findPlayer(data.nickname);
 
-        // 1- Get all members of this room
-        const members = await this.prisma.chatRoom.findUnique({
-            where: { id: room_id },
+    async getAllMembersOfThisRoom(data: any, room_id: number) {
+        const me = await this.findPlayer(data.nickname);
+        const room = await this.prisma.chatRoom.findFirst({
+            where: {
+                id: room_id
+            },
             select: {
                 all_members: {
                     select: {
                         playerId: true
-                    }
-                }
-            }
+                    },
+                    where: {
+                        playerId: {
+                            not: me.id
+                        },
+                    },
+                },
+            },
         })
- 
-        console.log(members);
-        console.log("-------------------------------------");
-        // 2- Get all friends that we can add to this room
-        const friends = await this.prisma.friendship.findMany({
+        return room.all_members.map(user => user.playerId);
+    }
+    
+    // 2 - list of friends that we can add to the chat room
+    async getListOfFriendsToAddinThisRoom(data: any, room_id: number) {
+        console.log("getListOfFriendsToAddinThisRoom");
+
+        const me = await this.findPlayer(data.nickname);
+
+        // 1- Get all members of this room except me
+        const membersId = await this.getAllMembersOfThisRoom(data, room_id);
+        // console.log(membersId);
+
+        // 2- Get all friends
+        const friendships = await this.prisma.friendship.findMany({
             where: {
                 OR: [
                     {
                         senderId: me.id,
-                        status: "friend"
+                        status: "Friend",
+                        NOT: {
+                            receiverId: {
+                                in: membersId,
+                            },
+                        },
                     },
+
                     {
                         receiverId: me.id,
-                        status: "friend"
+                        status: "Friend",
+                        NOT: {
+                            senderId: {
+                                in: membersId,
+                            },
+                        },
                     }
                 ]
-            }
+            },
+
         })
-        return friends;
+        
+        const friendsId = friendships.map(user => {
+            if (user.receiverId == me.id)
+                return user.senderId
+            return user.receiverId
+        })
+        // const friendsId = await this.getAllFriendships(data); // friend 
+        // console.log(friendsId);
+
+        // 3- Get all friends that are not members of this room
+        // const friendsToAdd = friends.filter(friend => {
+        //     return !members.some(member => member.playerId == friend)
+        // })
+
+        const listFriendsToadd = await this.prisma.player.findMany({
+            where: {
+                id: 
+                {
+                    in: friendsId,
+                },
+            },
+        })
+        
+        return listFriendsToadd;
     }
 
      // 2 - list of friends that we can add to the chat room
@@ -200,6 +250,10 @@ export class PlayerService {
             where: { nickname: login }
         });
 
+        if (!friend) {
+            throw new NotFoundException()
+            // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
+        }
         // suppose friend exist in the database
         // now I have to check if this user is my friend or not
         // where me: sender or receiver && friend sender or receiver
@@ -232,6 +286,9 @@ export class PlayerService {
         const receiver = await this.prisma.player.findUnique({
             where: { nickname: friendname }
         });
+        if (!receiver) {
+            throw new NotFoundException("Receiver not found");
+        }
 
         const friends = await this.prisma.friendship.create({
             data: {
