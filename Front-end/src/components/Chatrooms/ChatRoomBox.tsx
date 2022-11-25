@@ -203,24 +203,13 @@ return (
       
       {UserAdmin ? ( 
       <div className='admin-buttons'>
-      <input type="text"
+      {/* <input type="text"
        className={`${BanUser ? "has-value" : ""}`}
        id="textbox"
        onChange={event => SetBanUser(event.target.value)}
        value={BanUser || ""}
-       /> 
-      <button type="button" id="ss" className='ButtonSocial-mute' onClick={handleFriendClick}>
-    <span className="icon material-symbols-outlined">
-     {"Mic_Off"}  
-      </span>
-
-      </button>
-      <button type="button" id="ss" className='ButtonSocial-block' onClick={HandleBlock}>
-    <span className="icon material-symbols-outlined">
-     {"block"}  
-      </span>
-
-      </button> 
+       />  */}
+    
       </div>
       ) : (
         <div>

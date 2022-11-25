@@ -7,10 +7,10 @@ import person from '../users/users.json'
 const ChatRoomButton = () => {
 
 const [username, setUsername] = useState("");
-const HandleAddFriend = () => {
+const HandleBanUser = () => {
 
 };
-const HandleInviteGame = () => {
+const HandleMuteUser = () => {
 
 };
 const HandleBlockUser = () => {
@@ -41,9 +41,13 @@ const FilteredUsers = person.filter(person => {
 </>
         )}
         <button type ="submit" > <img src ="/images/Add.png" className="FriendAddIcon" height="30"/></button>
-            <button onClick={HandleAddFriend} className="ChatRoomButtons"  > Add as friend : </button>
-            <button  onClick={HandleInviteGame}className='ChatRoomButtons' > Invite to play a game  : </button>
-            <button  onClick={HandleBlockUser}className='ChatRoomButtons'> Block User   : </button>
+            <button onClick={HandleBanUser} className="ChatRoomButtons"  > Ban  an user  : </button>
+            <button  onClick={HandleMuteUser}className='ChatRoomButtons' > Mute an  user  :  </button>
+            <button  onClick={HandleBlockUser}className='ChatRoomButtons'> Add as Admin User   : </button>
+            <button type="button" id="ss" className='ButtonSocial-mute' onClick={HandleMuteUser}>
+
+
+      </button> 
         </div>
     );
 }

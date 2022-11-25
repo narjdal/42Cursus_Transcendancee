@@ -39,9 +39,10 @@ function ChatRoom() {
             <h2>{room.title}</h2>
             <h2><ChatRoomBox room={room}
             /></h2>
-            <ChatRoomButton/>
+         
             {UserOwnsRooms ? (
                 <div>
+                     <ChatRoomButton/>
                   <AdminChatRoomDashboard/>
                     </div>
             ) : (

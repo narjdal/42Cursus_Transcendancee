@@ -9,7 +9,6 @@ background-repeat: no-repeat;
 background-size: cover;
 animation: rotate 6s infinite alternate linear;
 transition: transform .2s; */
-height: 30%;
 background-color: lightgrey;
 color: darkslateblue;
 }
@@ -20,4 +19,5 @@ color: darkslateblue;
     display: inline-block;
 }
 .Achievements-container{
+    background-color: white;
 }

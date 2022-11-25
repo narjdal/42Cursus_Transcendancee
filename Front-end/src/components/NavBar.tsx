@@ -31,11 +31,11 @@ function Navbar() {
     const navigateHome = () => {
         // 👇️ navigate to /contacts
         console.log("NAVIGATE TO HOME ");
-        navigate('/');
+        navigate('/Home');
       };
       const navigateAccount = () => {
         // 👇️ navigate to /contacts
-        navigate('/Account');
+        navigate('/');
       };
       const navigateChatRooms = () => {
         // 👇️ navigate to /contacts

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import DisplayUserHome from "./DisplayUserHome";
 
 const SearchBar = () => {
@@ -7,7 +8,7 @@ const SearchBar = () => {
     const [usertoShow,setUsertoShow] = useState<any>([]);
     const[display,setDisplay] = useState(false);
     const [allgood,setAllgood] = useState(false);
-
+const navigate = useNavigate();
 
 
   async function FetchUserInfos ()  {
@@ -90,6 +91,7 @@ await fetch((`http://localhost:5000/player/${userQuery}`),{
   {
     FetchUserInfos();
 setDisplay(true);
+  // window.location.reload();
   }
 };
 const HandleChange  = (e) => {

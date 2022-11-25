@@ -1,5 +1,5 @@
 import React from "react";
-import {Link} from'react-router-dom';
+import {Link, Navigate, useNavigate} from'react-router-dom';
 import { useState ,useEffect} from "react";
 
 import './DisplayUserHome.css'
@@ -11,6 +11,7 @@ const DisplayUserHome = (props) => {
    const [icon,setCorrectIcon] = useState("");
    const [msg,setMsg] = useState("");
     const[action,setAction] = useState("");
+    const navigate = useNavigate();
 
     async function ExecuteFriendship (action:string) {
 
@@ -140,6 +141,10 @@ useEffect(() => {
    }
 
 },[])
+const Reload = (e) => {
+    e.preventDefault();
+        window.location.href= ('/users/' + props.usertoshow.nickname)
+}
     return (
         <>
         {errorMessage && <div className="error"> {errorMessage} </div>}
@@ -153,8 +158,8 @@ useEffect(() => {
      />
      </li>
      <li>
-        <Link style={{color:'white'}} to={`/users/${props.usertoshow.nickname}`} >
-   <p> {props.usertoshow.nickname} </p>
+    <Link style={{color:'white'}} to={`/users/${props.usertoshow.nickname}`} >
+   <p>   <button onClick={Reload}>  {props.usertoshow.nickname}  </button>  </p>
     </Link>
     </li>
         {/* {props.usertoshow.relation ==="pending" && props.usertoshow.sender !== "me" ? (

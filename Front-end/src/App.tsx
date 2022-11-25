@@ -75,6 +75,7 @@ const App = () => {
     // login(accessToken);
     const user = localStorage.getItem("user");
     console.log(" User Object  =>   " + user)
+    // window.location.href = "http::/localhost:3000/Account";
     // console.log("USER JWT => " + JSON.stringify(user));
     // localStorage.setItem("token",accessToken)
     return (
@@ -93,10 +94,10 @@ const App = () => {
         <Router>
           <Navbar />
           <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<Account />} />
             <Route path='/Pong' element={<Pong />} />
             <Route path='/LeaderBoard' element={<LeaderBoard />} />
-            <Route path='/Account' element={<Account />} />
+            <Route path='/Home' element={<Home />} />
             <Route path='/Account_infos' element={<Pseudo />} />
             <Route path='/AboutUs' element={<AboutUs />} />
             <Route path='/HowToPlay' element={<HowToPlay />} />

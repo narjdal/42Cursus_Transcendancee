@@ -37,9 +37,9 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
    className='avatarsidebar'/>
    </td>
    <td>
-     <Link style={{color:'white'}} to={`/users/${props.user.id}`} >
-    <p>{props.user.name}</p>
-        </Link>
+   <Link style={{color:'white'}} to={`/users/${props.user.nickname}`} >
+   <p> {props.user.nickname} </p>
+    </Link>
      </td> 
   <td>
 {isAdmin === "true"  ? (

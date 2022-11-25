@@ -13,10 +13,9 @@ const DisplayAchievementsList = (props) => {
     console.log("inside Achievements     DDD");
     return (
         <>
-  
+            <div className='Achievements-container'>
         <ul className='AchievementsList'>
         
-            <div className='Achievements-container'>
             <li>
             
   {props.AchievementsList.unlock ? (
@@ -47,8 +46,8 @@ const DisplayAchievementsList = (props) => {
 </>
   )}
 </li>
-             </div>
         </ul>
+        </div>
 
        
         </>

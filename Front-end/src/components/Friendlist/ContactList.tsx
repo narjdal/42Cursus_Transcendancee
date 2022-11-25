@@ -3,6 +3,8 @@ import React from "react";
 import Contact from "./Contact";
 import { useState ,useEffect} from "react";
 import './ContactList.css'
+import SearchBar from '../users/SearchBar'
+
 
 const ContactList = (props) => 
 {
@@ -85,19 +87,20 @@ const ContactList = (props) =>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         
              <div className="search">
-      <div className="searchForm">
+      {/* <div className="searchForm">
         <input
           type="text"
           className ="AddUserInput"
           placeholder="Find a user"
           onChange={event => setUsername(event.target.value)}
        value={username || ""}
-        />
-        <button type="submit" className='has-border' onClick={HandleAddFriend}>  
+        /> */}
+          <SearchBar/>
+        {/* <button type="submit" className='has-border' onClick={HandleAddFriend}>  
       <span className="icon material-symbols-outlined">
      {"person_add"}        </span> 
-      </button>
-      </div>
+      </button> */}
+      {/* </div> */}
       {errorMessage && <div className="error"> {errorMessage} </div>}
       {user42 && (
         <div className="userChat" onClick={handleSelect}>
