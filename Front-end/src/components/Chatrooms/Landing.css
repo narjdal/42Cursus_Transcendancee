@@ -61,19 +61,7 @@
     background: #004e92;
     text-align: center;
   }
-  
-  @media (width >= 700px) {
-    .ChatRooms-card {
-      margin: 0;
-      width: 400px;
-    }
-  }
-  @media (width <= 700px) {
-    .ChatRooms-card {
-      margin: 0;
-      width: 250px;
-    }
-  }
+ 
   
   .ChatRooms-card > h2 {
     font-size: 36px;

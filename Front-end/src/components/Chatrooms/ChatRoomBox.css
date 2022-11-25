@@ -35,13 +35,14 @@
     position: relative;
     float :left;
     /* width: 100%; */
-    background-color: grey;
+    background-color: #7272FF;
     top: 0;
     display: inline-block;
     /* max-width: 45%; */
     overflow-x: scroll;
     /* width: 30%; */
     z-index: 10;
+    width: 7em;
     /* height: 300px; */
     height: 15em;
     overflow: hidden;
@@ -57,7 +58,7 @@
     min-width: 20em;
     z-index: 3;
     /* background-color: darkblue; */
-    background-color: whitesmoke;
+    background-color: grey;
     /* min-width: 100%; */
     /* width: 100%; */
     /* max-width: %; */
@@ -138,7 +139,8 @@
     font-size: 36px;
     font-weight: 600;
     margin: 0 0 12px;
-    color: white;
+    color: blue;
+    background-color: grey;
   }
   
   .ChatRoomBox-card > h3 {

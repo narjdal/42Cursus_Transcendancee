@@ -163,6 +163,7 @@ const minihistory = [
       <div className='Account-card'>
 		  <img className="avatar" src={user42.avatar} alt="avatar" />
         Welcome to your Dashboard  {user42.nickname} ! 
+        <br/>
       <button type="button" className='has-border' onClick={HandleTwoFactor}>  
       <span className="icon material-symbols-outlined">
      {"Lock"}  2FA      </span> 

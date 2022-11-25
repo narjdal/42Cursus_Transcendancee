@@ -40,16 +40,11 @@
     margin: 0 20px;
     padding: 70px 30px 44px;
     border-radius: 1.25rem;
-    background: #fff;
+    background: #216ce7;
     text-align: center;
   }
   
-  @media (width >= 500px) {
-    .CreateRoom-card {
-      margin: 0;
-      width: 400px;
-    }
-  }
+
   
   .CreateRoom-card > h2 {
     font-size: 36px;

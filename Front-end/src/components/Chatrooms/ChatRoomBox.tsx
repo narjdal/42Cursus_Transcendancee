@@ -209,7 +209,7 @@ return (
        onChange={event => SetBanUser(event.target.value)}
        value={BanUser || ""}
        /> 
-      <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>
+      <button type="button" id="ss" className='ButtonSocial-mute' onClick={handleFriendClick}>
     <span className="icon material-symbols-outlined">
      {"Mic_Off"}  
       </span>

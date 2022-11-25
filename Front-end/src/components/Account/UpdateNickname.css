@@ -18,7 +18,8 @@
     overflow: hidden;
     display: flex;
     align-items: center;
-    height: 20px;
+    margin-top: 10px  ;
+    height: 30px;
     width: 100%;
     border: 0;
     font-family: "Euclid Circular A";

@@ -13,16 +13,10 @@ if (loggeduser)
     
 }
     const MatchHistory = [
-        {MatchId:0,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"10-8",winner:true},
-        {MatchId:1,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"12-8",winner:true},
-        {MatchId:2,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50229,P2nickname:"test56",P2image_url:"/images/AccountDefault.png",finalScore:"2-3",winner:false},
-        {MatchId:3,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50231,P2nickname:"test",P2image_url:"/images/AccountDefault.png",finalScore:"10-2",winner:true},
-        {MatchId:4,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50220,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"18-2",winner:true},
-        {MatchId:5,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50225,P2nickname:"test",P2image_url:"/images/AccountDefault.png",finalScore:"25-2",winner:true},
-        {MatchId:6,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:125,P2nickname:"test",P2image_url:"/images/AccountDefault.png",finalScore:"4-20",winner:false},
-        {MatchId:7,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:125,P2nickname:"test",P2image_url:"/images/AccountDefault.png",finalScore:"4-20",winner:false},
-        {MatchId:8,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:125,P2nickname:"test",P2image_url:"/images/AccountDefault.png",finalScore:"4-20",winner:false},
-        {MatchId:9,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:125,P2nickname:"test",P2image_url:"/images/AccountDefault.png",finalScore:"100-20",winner:false},
+        {MatchId:0,userId:50213,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"10-8",winner:true},
+        {MatchId:1,userId:50213,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"12-8",winner:true},
+        {MatchId:2,userId:50213,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50229,P2nickname:"test56",P2image_url:"/images/AccountDefault.png",finalScore:"2-3",winner:false},
+        {MatchId:3,userId:50213,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50231,P2nickname:"test",P2image_url:"/images/AccountDefault.png",finalScore:"10-2",winner:true},
    
     ];
     useEffect(() => {
@@ -44,6 +38,7 @@ if (loggeduser)
            <div className='body'>
       <div className='carreer-card'>
         <h3>Game History  </h3>
+        <h3> To complete ...</h3>
       <span>{MatchHistory.map(c => < DisplayMatchHistory  key = {c.MatchId} match ={c} />)}</span>
       </div>
       </div>

@@ -3,8 +3,10 @@
   .Account-card {
     position: relative;
     z-index: 3;
-    max-width: 100%;
+    max-width: 70%;
     top: 0;
+    margin-left: auto;
+    margin-right: auto;
     padding: 30px 15px 15px;
     border-radius: 1.25rem;
     background: #004e92;
@@ -77,18 +79,24 @@
   .intra-card{
     padding: 30px 30px 44px;
     height: 30vh;
-    width:  100%;
-    background-color: grey;
+    width:  70%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #004e92;
     display: flex;
+    justify-content: center;
     overflow-y: scroll;
   }
 
   .last-Achievements-card{
     z-index: 10;
-    width:  60%;
+    width: 40%;
     position: relative;
     background-color: white;
     overflow-y: scroll;
+    overflow-x: scroll;
+    margin-left: auto;
+    margin-right: auto;
     float: left;
     }
 
@@ -101,8 +109,9 @@
       position: relative;
       height: 20vh;
       width: 40%;
-      border-left:  10px solid grey;
       float: right;
       overflow-y: scroll;
+      margin-left: auto;
+      margin-right: auto;
       background-color: white;
     }

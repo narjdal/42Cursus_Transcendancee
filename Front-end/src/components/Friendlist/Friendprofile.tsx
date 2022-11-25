@@ -485,14 +485,23 @@ async function ExecuteRelationship ()
 </>
       ) : (
         <>
-                 <button type="button" className='' >  
+       
+      {action ? ( 
+<>
+<button type="button" className='' >  
       <span className="icon material-symbols-outlined">
      {"History"}  
       </span> 
-      <Link style={{color:'blue'}} to={`/Carreer/${userState.nickname}`} >
+<Link style={{color:'blue'}} to={`/Carreer/${userState.nickname}`} >
    <span>  {userState.nickname} Carreer </span>
     </Link>
-      </button>
+    </button>
+
+</>
+      ) : (
+        <>
+        </>
+      )}
       <br/>
                 <button type="button" className='button-displayuser' onClick={HandleAction}>  
          <span className="icon material-symbols-outlined">
