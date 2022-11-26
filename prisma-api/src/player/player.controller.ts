@@ -259,10 +259,10 @@ export class PlayerController {
 // ---------------------------------- CONTROLLER Permission in room ---------------------------------- //
 
     // //endpoint for setting a member as admin
-    @Get('/addMember/:id')
-    async addMember(@Param() login: string, @Req() request, @Res() response) {
-        console.log("Set Admin");
-        const admin = await this.playerService.addMember(request.user, login['id']);
+    @Get('/addMember/:id1/:id2')
+    async addMember(@Param() login: string, @Param() room: number ,@Req() request, @Res() response) {
+        console.log("Add Member");
+        const admin = await this.playerService.addMember(login['id1'], room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -271,10 +271,10 @@ export class PlayerController {
     }
 
     // //endpoint for setting a member as admin
-    @Get('/setAdmin/:id')
-    async setAdmin(@Param() login: string, @Req() request, @Res() response) {
+    @Get('/addMember/:id1/:id2')
+    async setAdmin(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Set Admin");
-        const admin = await this.playerService.setAdmin(request.user, login['id']);
+        const admin = await this.playerService.setAdmin(login['id1'], room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -283,22 +283,27 @@ export class PlayerController {
     }
 
     //endpoint for banning member
-    @Get('/banMember/:id')
-    async banMember(@Param() login: string, @Req() request, @Res() response) {
+    @Get('/banMember/:id1/:id2')
+    async banMember(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Ban Member");
-        const ban = await this.playerService.banMember(request.user, login['id']);
+        // const if_admin await this.playerService.getPermissions(request.user, room['id2']);
+        // if(if_admin === "admin" || if_admin === "owner"){
+        const ban = await this.playerService.banMember(login['id1'], room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
         )
         response.status(200).send(ban);
+    // }
+    //else 
+    //throw error
     }
 
     // //endpoint for muting member
-    @Get('/muteMember/:id')
-    async muteMember(@Param() login: string, @Req() request, @Res() response) {
+    @Get('/muteMember/:id1/:id2')
+    async muteMember(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Mute Member");
-        const mute = await this.playerService.muteMember(request.user, login['id']);
+        const mute = await this.playerService.muteMember(login['id1'], room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -306,10 +311,10 @@ export class PlayerController {
         response.status(200).send(mute);
     }
 
-    @Get('/unmuteMember/:id')
-    async unmuteMember(@Param() login: string, @Req() request, @Res() response) {
+    @Get('/unmuteMember/:id1/:id2')
+    async unmuteMember(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Mute Member");
-        const mute = await this.playerService.unmuteMember(request.user, login['id']);
+        const mute = await this.playerService.unmuteMember(login['id1'], room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -318,10 +323,10 @@ export class PlayerController {
     }
 
     // //endpoint for leaving a room
-    @Get('/leaveRoom/:id')
-    async leaveRoom(@Param() login: string, @Req() request, @Res() response) {
+    @Get('/leaveRoom/:id1/:id2')
+    async leaveRoom(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Leave Room");
-        const leave = await this.playerService.leaveRoom(request.user, login['id']);
+        const leave = await this.playerService.leaveChannel(login['id1'], room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
