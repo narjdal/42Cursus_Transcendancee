@@ -11,27 +11,79 @@ const CreateRoom = () => {
     const [isRoomPublic,setRoomPublic] = useState(false);
     const [isRoomPrivate,setRoomPrivate] = useState(false);
     const [isRoomProtected,setRoomProtected] = useState(false);
-
+    const [roomState,setRoomState] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [user,setUser] = useState([]);
     const HandleRoomPublic = (e) => {
         setRoomPublic(!isRoomPublic);
         setRoomPrivate(false);
         setRoomProtected(false);
+        setRoomState("Public");
+
+
     } 
     const HandleRoomPrivate = (e) => {
         setRoomPrivate(!isRoomPrivate);
         setRoomPublic(false);
         setRoomProtected(false);
+        setRoomState("");
+        setRoomState("Private");
+
+
         
     } 
 
     const HandleRoomProtected = (e) => {
-        console.log("SSSS")
         setRoomProtected(!isRoomProtected);
         setRoomPrivate(false);
         setRoomPublic(false);
+        setRoomState("Protected");
+
     };
+    async function CreateRoom ()  {
+
+        const loggeduser = localStorage.getItem("user");
+  
+        if(loggeduser)
+      {
+        var Current_User = JSON.parse(loggeduser);
+        const text = ("http://localhost:5000/player/createChatRoom/" );
+        console.log("Api Fetch Link :  =>  " + text);
+
+        
+        console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + RoomPassword + " Owner : " + Current_User.nickname);
+        await fetch(`http://localhost:5000/player/createChatRoom/${RoomName}`,{
+          // mode:'no-cors',
+          method:'post',
+          credentials:"include",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(
+              { 
+                roomState: roomState,
+            RoomName: RoomName,
+            RoomPassword: RoomPassword,}
+              )
+      })
+      
+      .then((response) => response.json())
+      .then(json => {
+          console.log("The response is => " + JSON.stringify(json))
+      
+      
+          return json;
+      })
+      .catch((error) => {
+          console.log("An error occured : " + error)
+          return error;
+      })
+    
+        }
+    };
+
+
+
+
+
     const HandleCreateRoom = (e) => {
         const user ="narjdal";
         e.preventDefault();
@@ -42,7 +94,19 @@ const CreateRoom = () => {
         if(RoomPassword && isRoomProtected)
         {
             console.log("Setting a room with pws ! " + RoomPassword);
+            setRoomState("protected");
         }
+         if(isRoomPublic)
+        {
+            console.log("Setting a public room ! ");
+            setRoomState("public");
+        }
+         if(isRoomPrivate)
+        {
+            console.log("Setting a private room ! ");
+            setRoomState("private");
+        }
+        CreateRoom();
         // Here Post Request to Backend , with the Room infos  + creating use infos 
         // fetch(
 		// 	'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',

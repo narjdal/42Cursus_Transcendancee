@@ -4,6 +4,7 @@ import { useState ,useEffect} from "react";
 
 import './DisplayUserHome.css'
 import { isImportOrExportSpecifier } from "typescript";
+import { io } from "socket.io-client";
 
 const DisplayUserHome = (props) => {
     const [errorMessage, setErrorMessage] = useState("");
@@ -12,6 +13,20 @@ const DisplayUserHome = (props) => {
    const [msg,setMsg] = useState("");
     const[action,setAction] = useState("");
     const navigate = useNavigate();
+
+    let socket = io("localhost:5000", {
+        withCredentials: true,
+        forceNew: true,
+        timeout: 10000, //before connect_error and connect_timeout are emitted.
+        transports: ['websocket']
+    });
+
+    const senddMessage = () => {
+        socket.emit("message", {roomId: 1, 
+            sender: 4,
+            msg: "content msg arg[0]",
+        });
+    }
 
     async function ExecuteFriendship (action:string) {
 

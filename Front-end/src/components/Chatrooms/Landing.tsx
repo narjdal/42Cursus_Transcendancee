@@ -126,7 +126,7 @@ async function GetRoomList  ()  {
                          </>   
                         ) : (
                             <>
-                    <Link to={`/room/${room.id}`}>{room.title}</Link>
+                    <Link to={`/room/${room.id}`}>{room.name}</Link>
                             
                             </>
                         )}

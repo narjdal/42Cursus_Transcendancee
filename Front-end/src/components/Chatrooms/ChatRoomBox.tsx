@@ -100,7 +100,7 @@ var MsgList =[...MsgHistory];
     {
       var Current_User = JSON.parse(loggeduser);
       let OwnedDbId = 1; 
-
+      console.log("INSIDE CHATROOMBOX " + props.room.is_dm)
 
         // HERE request to backend to fetch users of the room
       // console.log("=>>>>> FROM THE Chatroom "   + Current_User.nickname + Current_User.UserId + OwnedDbId + "This room Owner Id  is :> " + room.OwnerId)
@@ -136,9 +136,14 @@ const SendMessage = (e) => {
 
 }
 
+async function LeaveRoom () {
+  
+};
 
 const HandleLeaveRoom = (e) => {
   e.preventDefault();
+  console.log("Handle Leave Room Click !" );
+
 }
 const HandleFetchedFriend = (e) => {
   e.preventDefault();
@@ -152,14 +157,19 @@ const HandleFetchedFriend = (e) => {
   //filter nickname not name 
    return person.name.toLowerCase().includes(userQuery.toLowerCase());
 })
+console.log("PROPS IS DM " + props.isDM);
 return (
   <div className='body'>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
     <div className='ChatRoomBox-card'>
-      <h2>{props.room.title}</h2>
       <div className='ChatBox-container'>
-          <div className='Users-container' >
+        {props.room.is_dm ? (
+          <>
+
+          </> ) : (
+            <>
+                   <div className='Users-container' >
           <div className='ChatRoomUsers-container' >
           <div className="search">
       <div className="searchForm">
@@ -170,24 +180,37 @@ return (
           onChange={event => setUserQuery(event.target.value)}
        value={userQuery || ""}
         />
+
+    {FilteredUsers.map(c => < DisplayChatRoomusers key = {c.id} user = {c} isadmin ={"true"} />)}
+
         </div>
   </div>
   </div>
-
-    {FilteredUsers.map(c => < DisplayChatRoomusers key = {c.id} user = {c} isadmin ={"true"} />)}
   </div>
+
+            </>
+          )}
+     
       <div className='History-Box'> 
      
       {MsgList.map(c => < MessageList  key = {c.id} user ={c} />)}
  
       
       </div>
-      <button type="button" onClick={HandleLeaveRoom} style={{bottom:0}}>
+      {props.room.is_dm  ? (
+        <>
+
+        </>
+        ) : (
+          <>
+             <button type="button" onClick={HandleLeaveRoom} style={{bottom:0}}>
                     <span className="icon material-symbols-outlined">
      {"logout"} 
       </span>
       <span> Leave Room</span>
                   </button>
+          </>)}
+   
   <form className='ChatRoom-Input-form' onSubmit={HandleInputMsg}>
     <div className='ChatRoom-InputBox'>
       <input type="text"
