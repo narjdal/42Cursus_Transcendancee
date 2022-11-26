@@ -256,6 +256,17 @@ export class PlayerController {
 
 // ---------------------------------- CONTROLLER Permission in room ---------------------------------- //
 
+    @Get('/createChatRoom/:id')
+    async CreateChatRoom(@Param() nameOfRoom: number, @Req() request, @Res() response) {
+        console.log("Create Chat Room");
+        const room = await this.playerService.createChatRoom(request.user, nameOfRoom['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(room);
+    }
+
     @Get('/listOfRooms')
     async GetListOfRooms(@Req() request, @Res() response) {
     console.log("List of Rooms");
