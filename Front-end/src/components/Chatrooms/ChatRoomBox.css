@@ -42,9 +42,9 @@
     overflow-x: scroll;
     /* width: 30%; */
     z-index: 10;
-    width: 7em;
-    /* height: 300px; */
-    height: 15em;
+    width: 40vh;
+
+    height: 40em;
     overflow: hidden;
     overflow-y: scroll;
   }
@@ -55,7 +55,7 @@
   .ChatRoomBox-card {
     /* position: relative; */
     /* width: 20em; */
-    min-width: 20em;
+
     z-index: 3;
     /* background-color: darkblue; */
     background-color: grey;
@@ -91,6 +91,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     animation: rotate 2s infinite alternate linear;
+    width: 40vh;
     /* background: white; */
     /* width: 25em; */
     /* color: */

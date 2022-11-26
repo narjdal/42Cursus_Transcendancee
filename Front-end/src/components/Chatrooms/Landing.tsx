@@ -1,7 +1,7 @@
 import { chatRooms } from './ChatRoomData.js';
 import {Link} from'react-router-dom';
 import {Routes, Route, useNavigate} from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {Pop} from '../../utils/Popup';
 
 import './Landing.css'
@@ -44,13 +44,57 @@ const [prevRoom,setPrevRoom] = useState("");
         }, 2000);
       }
       }
+async function GetRoomList  ()  {
+
+
+  const loggeduser = localStorage.getItem("user");
+  if(loggeduser)
+  {
+    var Current_User = JSON.parse(loggeduser);
+  const text = "http://localhost:5000/player/listOfRooms"
+    console.log("Api Fetch Link :  =>  " + text);
+    
+
+    await fetch(text,{
+      // mode:'no-cors',
+      method:'get',
+      credentials:"include"
+  })
+  
+  .then((response) => response.json())
+  .then(json => {
+      console.log("The response is => " + JSON.stringify(json))
+    setChatRooms(json);
+  
+      return json;
+  })
+  .catch((error) => {
+      console.log("An error occured : " + error)
+      return error;
+  })
+
+    }
+
+  
+
+}
+
+      useEffect (() =>
+      {
+        const loggeduser = localStorage.getItem("user");
+          if(loggeduser)
+          {
+            const current = JSON.parse(loggeduser);
+            GetRoomList();
+          }
+      },[])
     return (
         <>
         <div className='ChatRooms-card'>
             <h2> Join a ChatRoom </h2>
            <button className='CreateChatRoom-button' onClick={HandleClick}> Create a Chat Room </button>
             <ul className="chat-room-list">
-                {chatRooms.map((room) => (
+                {BackendRooms.map((room) => (
                     <li key={room.id}>
                         {room.password ? (
                          <>
