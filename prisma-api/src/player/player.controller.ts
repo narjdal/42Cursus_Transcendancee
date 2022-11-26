@@ -187,7 +187,10 @@ export class PlayerController {
     @Get('/acceptFriendship/:id')
     async AcceptFriendship(@Param() login: string, @Req() request, @Res() response) {
         console.log("Accept Friendship");
+   
+        // check login exist
         const friend = await this.playerService.acceptFriendship(request.user, login['id']);
+        await this.playerService.createDMRoom(request.user, login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
@@ -256,6 +259,19 @@ export class PlayerController {
 
 // ---------------------------------- CONTROLLER Permission in room ---------------------------------- //
 
+    @Get('/listOfRooms')
+    async GetListOfRooms(@Req() request, @Res() response) {
+        console.log("List of Rooms");
+        const rooms = await this.playerService.getAllRooms(request.user);
+
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(rooms);
+        return rooms;
+    }
+
     @Get('/createChatRoom/:id')
     async CreateChatRoom(@Param() nameOfRoom: number, @Req() request, @Res() response) {
         console.log("Create Chat Room");
@@ -267,17 +283,15 @@ export class PlayerController {
         response.status(200).send(room);
     }
 
-    @Get('/listOfRooms')
-    async GetListOfRooms(@Req() request, @Res() response) {
-    console.log("List of Rooms");
-    const rooms = await this.playerService.getAllRooms(request.user);
-
-    response.set({
-        'Access-Control-Allow-Origin': 'http://localhost:3000'
-    }
-    )
-    response.status(200).send(rooms);
-    return rooms;
+    @Get('/GetRoomById/:id')
+    async GetRoomById(@Param() id_room: number, @Req() request, @Res() response) {
+        console.log("Get Room By Id");
+        const room = await this.playerService.getRoomById(id_room['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(room);
     }
 
     @Get('/Permission/:id') //POST REQUEST
@@ -305,7 +319,7 @@ export class PlayerController {
     }
 
     // //endpoint for setting a member as admin
-    @Get('/addMember/:id1/:id2')
+    @Get('/setAdmin/:id1/:id2')
     async setAdmin(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Set Admin");
         const admin = await this.playerService.setAdmin(login['id1'], room['id2']);
@@ -323,6 +337,22 @@ export class PlayerController {
         // const if_admin await this.playerService.getPermissions(request.user, room['id2']);
         // if(if_admin === "admin" || if_admin === "owner"){
         const ban = await this.playerService.banMember(login['id1'], room['id2']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+            }
+        )
+        response.status(200).send(ban);
+    // }
+    //else 
+    //throw error
+    }
+
+    @Get('/kickMember/:id1/:id2')
+    async kickMember(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
+        console.log("Kick Member");
+        // const if_admin await this.playerService.getPermissions(request.user, room['id2']);
+        // if(if_admin === "admin" || if_admin === "owner"){
+        const ban = await this.playerService.kickMember(login['id1'], room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -360,7 +390,7 @@ export class PlayerController {
     @Get('/leaveRoom/:id1/:id2')
     async leaveRoom(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Leave Room");
-        const leave = await this.playerService.leaveChannel(login['id1'], room['id2']);
+        const leave = await this.playerService.leaveChannel(request.user, room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }

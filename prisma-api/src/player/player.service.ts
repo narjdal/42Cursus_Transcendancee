@@ -484,6 +484,21 @@ export class PlayerService {
 
     // ------------------------------ 3- Chat ---------------------------------------------
 
+// Get room by id
+async getRoomById(room_id: number) {
+    const room = await this.prisma.chatRoom.findUnique({
+        where: {
+            id: +room_id
+        },
+        select: {
+            name: true,
+            is_dm: true,
+        }
+    })
+    return room;
+}
+
+
 // 0- Create a chat room
 
     // function to create a chat room between two players if they are friends
@@ -529,6 +544,7 @@ export class PlayerService {
         const room = await this.prisma.chatRoom.create({
             data:
             {
+                name: friendname,
                 all_members: {
                     create: [
                         {
@@ -790,6 +806,21 @@ export class PlayerService {
         });
     }
 
+// 6- ban member if u are admin or owner
+
+    async kickMember(login: string, room_id: number) {
+        const palyer = await this.findPlayer(login);
+
+        const room = await this.prisma.permission.deleteMany({
+            where: {      
+                AND : [
+                    {playerId: palyer.id},
+                    {roomId: room_id}
+                ],
+
+            },
+        });
+    }
 // 7- mute OR umute member if u are admin or owner
 
     async muteMember(login: any, room_id: number/*, fix_date: Date*/) {
@@ -829,8 +860,8 @@ export class PlayerService {
 
 // 8- leave channel // delete the player from the permision
 
-    async leaveChannel(login: string, room_id: number) {
-        const palyer = await this.findPlayer(login);
+    async leaveChannel(data: any, room_id: number) {
+        const palyer = await this.findPlayer(data.nickname);
 
         const room = await this.prisma.permission.deleteMany({
             where: {      
