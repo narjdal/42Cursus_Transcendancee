@@ -24,11 +24,8 @@ export class OauthStrategy extends PassportStrategy(Strategy, '42') {
 
   async validate(accessToken: String, refreshToken: String, profile: any, cb: any) {
     if (!profile)
-    	throw new UnauthorizedException("user does not exist");
-    // else
-    //console.log(profile);
-    // console.log("inside validate")
-    console.log(profile);
+    	throw new UnauthorizedException("User not found");
+    // console.log(profile);
     return profile;
   }
 }

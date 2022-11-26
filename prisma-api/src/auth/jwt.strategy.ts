@@ -29,8 +29,13 @@ export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
 
     async validate(payload:any){
         // You have to use HTTPExcepiton
-        if(payload === null){
-            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        
+        // if(payload === null){
+        //     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        // }
+
+        if (payload === null) {
+            throw new UnauthorizedException("Token not found");
         }
         return payload;
     }

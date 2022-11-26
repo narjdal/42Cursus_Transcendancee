@@ -7,13 +7,11 @@ export class AuthService {
     constructor(private prisma: PrismaService,
         private jwtService:JwtService) {}
     
-    async findORcreate(data: any) {
+    async findORcreate(data: any)
+    {
 
-        console.log(data);
-        
-    // console.log("inside find or create auth services")
-
-        const player = await this.prisma.player.findUnique({
+        const player = await this.prisma.player.findUnique
+        ({
             where: { nickname: data.nickname }
         });
     
@@ -25,7 +23,8 @@ export class AuthService {
                 firstName : data.firstName,
                 lastName : data.lastName,
                 avatar    : data.avatar,
-                email: data.email,}
+                email: data.email,
+            },
         });
 
         return player;
