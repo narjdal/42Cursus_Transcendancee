@@ -128,7 +128,18 @@ export class PlayerController {
         return friends;
     }
 
+    @Get('/listOfRooms')
+    async GetListOfRooms(@Req() request, @Res() response) {
+        console.log("List of Rooms");
+        const rooms = await this.playerService.getAllRooms(request.user);
 
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(rooms);
+        return rooms;
+    }
 
     // ---------------------------------- Frienships ----------------------------------
 

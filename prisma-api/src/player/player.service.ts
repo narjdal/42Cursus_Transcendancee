@@ -24,6 +24,22 @@ export class PlayerService {
         return player;
     }
 
+    // ------------------- GET list of Rooms -------------------
+    async getAllRooms(data: any) {
+        const me = await this.findPlayer(data.nickname);
+
+        const rooms = await this.prisma.chatRoom.findMany({
+            where: {
+                all_members: {
+                    some: {
+                        playerId: me.id
+                    }
+                }
+            }
+        })
+        return rooms;
+    }
+
     // -------------------------- 1- Get list of friends ------------------
 
     async getFriend(data: any, login: string) {
