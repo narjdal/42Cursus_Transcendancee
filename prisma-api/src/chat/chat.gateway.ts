@@ -31,15 +31,8 @@ import { arrayBuffer } from 'stream/consumers';
         // get token
         // args[0].token || client.handshake.headers.authorization
 
-        // get sent DM
-        const data = {
-            roomId: createMessageDto.roomId,
-            senderId: createMessageDto.senderId,
-            message: createMessageDto.message,
-        }
-
         // insert DM into DB
-        const result = await this.messagesService.createMessage(data);
+        const result = await this.messagesService.createMessage(createMessageDto);
         console.log('');
         console.log('');
         console.log('');
@@ -49,6 +42,9 @@ import { arrayBuffer } from 'stream/consumers';
         console.log('');
         this.server.emit('message', result);
     }
+
+    // @SubscribeMessage('createMessage')
+
     handleConnection(client: Socket, ...args: any[]) {
         console.log('client connected');
 

@@ -14,9 +14,11 @@ export class MessagesService {
   async createMessage(data: CreateMessageDto) {
 
     // user exists
+    console.log('user exists', data);
+    
     const userExists = await this.prisma.player.findUnique({
       where: {
-        id: data.senderId,
+        id: Number(data.senderId),
       },
     });
     if (!userExists) {
@@ -45,5 +47,33 @@ export class MessagesService {
         msg: data.message
       },
     });
+  }
+
+
+  // get messages of dm room
+  async getMessages(friendId: number, userId: number) {
+
+    // check if room exists
+    const roomExists = await this.prisma.chatRoom.findUnique({
+      where: {
+        
+      },
+    });
+    if (!roomExists) {
+      return {
+        error: 'Room does not exist',
+      };
+    }
+
+    // get messages
+    return this.prisma.message.findMany({
+      where: {
+        roomId: friendId,
+      },
+      include: {
+        sender: true,
+      },
+    });
+
   }
 }
