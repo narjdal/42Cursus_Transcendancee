@@ -128,19 +128,6 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listOfRooms')
-    async GetListOfRooms(@Req() request, @Res() response) {
-        console.log("List of Rooms");
-        const rooms = await this.playerService.getAllRooms(request.user);
-
-        response.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }
-        )
-        response.status(200).send(rooms);
-        return rooms;
-    }
-
     // ---------------------------------- Frienships ----------------------------------
 
     @Get('/statusFriendship/:id')
@@ -268,6 +255,31 @@ export class PlayerController {
     // }
 
 // ---------------------------------- CONTROLLER Permission in room ---------------------------------- //
+
+    @Get('/listOfRooms')
+    async GetListOfRooms(@Req() request, @Res() response) {
+    console.log("List of Rooms");
+    const rooms = await this.playerService.getAllRooms(request.user);
+
+    response.set({
+        'Access-Control-Allow-Origin': 'http://localhost:3000'
+    }
+    )
+    response.status(200).send(rooms);
+    return rooms;
+    }
+
+    @Get('/Permission/:id') //POST REQUEST
+    async GetPermission(@Param() id_room: number, @Req() request, @Res() response) {
+        console.log("Get Permission");
+        const permission = await this.playerService.getPermissions(request.user, id_room);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(permission);
+        // return permission;
+    }
 
     // //endpoint for setting a member as admin
     @Get('/addMember/:id1/:id2')
