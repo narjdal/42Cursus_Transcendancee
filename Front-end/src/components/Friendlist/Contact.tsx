@@ -84,7 +84,13 @@ localStorage.setItem("Dmcount",(Dmcount).toString());
 },[Dmcount
 ])
 // console.log("OPENBOX =>>>>>> " + OpenBox);
+const RedirFriendProfile = (e) => {
+    e.preventDefault();
+    window.location.href = "http://localhost:3000/users/" + props.user.nickname;
+    // window.location./// <reference path="" />
+    // ("http://localhost:3000/")
 
+}
 return (
 <div className="Contact-HELP"> 
     <table className="Contact-table">
@@ -110,9 +116,8 @@ return (
                 <td></td>
               )}
    <td> 
-   <Link style={{color:'white'}} to={`/users/${props.user.nickname}`} >
-   <p> {props.user.nickname} </p>
-    </Link>
+  
+   <p> <button onClick={RedirFriendProfile}>{props.user.nickname}</button> </p>
     </td> 
   {props.user.isActive ? (
                  <td>  

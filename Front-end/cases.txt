@@ -1,0 +1,1 @@
+Backend crash when sending a nickname that does not exist in db

@@ -16,6 +16,40 @@ const HandleMuteUser = () => {
 const HandleBlockUser = () => {
 
 };
+
+
+async function FetchUserInfo (nickname) {
+
+  // ]
+const loggeduser = localStorage.getItem("user");
+
+if(loggeduser)
+{
+var Current_User = JSON.parse(loggeduser);
+const text = ("http://localhost:5000/player/listOfFriends");
+console.log("Api Fetch Link :  =>  " + text);
+
+
+await fetch(text,{
+  // mode:'no-cors',
+  method:'get',
+  credentials:"include"
+})
+
+.then((response) => response.json())
+.then(json => {
+  console.log("The response is => " + JSON.stringify(json))
+setFriends(json);
+
+  return json;
+})
+.catch((error) => {
+  console.log("An error occured : " + error)
+  return error;
+})
+
+}
+}
 useEffect(() => {
   const loggeduser = localStorage.getItem("user");
 
@@ -24,19 +58,24 @@ useEffect(() => {
   var Current_User = JSON.parse(loggeduser);
   const {id} = Current_User
   console.log("Fetching Friends of this User " + Current_User.nickname);
+  FetchUserInfo(Current_User.nickname);
 }
-})
-const FilteredUsers = person.filter(person => {
+},[]);
+
+const HandleInviteToRoom = (e) => {
+  e.preventDefault();
+}
+const FilteredUsers = friends.filter(friends => {
     // Here A changer : person with friends from backend , 
     //filter nickname not name 
-     return person.name.toLowerCase().includes(username.toLowerCase());
+     return friends.nickname.toLowerCase().includes(username.toLowerCase());
   })
     return (
         <div className='ChatRoomButtons-container'>
         <input
           type="text"
           className ="AddUserInput"
-          placeholder="Find a user in the chatroom"
+          placeholder="Find a user in your"
           onChange={event => setUsername(event.target.value)}
        value={username || ""}
         />
@@ -49,13 +88,15 @@ const FilteredUsers = person.filter(person => {
 <>
 </>
         )}
-            <button onClick={HandleBanUser} className="ChatRoomButtons"  > Ban  an user  : </button>
-            <button  onClick={HandleMuteUser}className='ChatRoomButtons' > Mute an  user  :  </button>
-            <button  onClick={HandleBlockUser}className='ChatRoomButtons'> Add as Admin User   : </button>
-            <button type="button" id="ss" className='ButtonSocial-mute' onClick={HandleMuteUser}>
+        <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleInviteToRoom}>
+    <span className="icon material-symbols-outlined">
+     {"group_add"}  
+      </span>
+      <span> Add a friend to the chatroom</span>
+      </button>
+           
 
 
-      </button> 
         </div>
     );
 }

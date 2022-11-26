@@ -1,7 +1,8 @@
 .ChatRoomAdminDash-container {
     position:absolute;
-    top: 0px;
-    left:70px;
+    top: 0;
+   right: 0;
+    width: 30vh;
     color: white;
     background-color: #1d4999;
     justify-content: center;

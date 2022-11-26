@@ -36,7 +36,7 @@ const Friendprofile = () => {
 
       .then((response) => response.json())
       .then(json => {
-        console.log("The response is => " + JSON.stringify(json))
+        console.log("The response  => " + JSON.stringify(json))
         if (json.ok)
           window.location.reload();
         setErrorMessage("");
@@ -361,7 +361,7 @@ const Friendprofile = () => {
     }
     if (tt === "YourBlocked") {
       setAction("none");
-      setRelation("Blocked");
+      setRelation("YourBlocked");
       localStorage.setItem("action", "none");
     }
     else {
@@ -415,6 +415,10 @@ const Friendprofile = () => {
     AcceptRelationship();
 
   }
+  const HandleInviteToGame = (e) => {
+    e.preventDefault();
+    console.log("invinting to play a game ...")
+  }
   if (!userState) {
     // TODO: 404
     console.log("ERROR ·404  from Friend Profile ,User Not found" + params.id + params.name);
@@ -427,10 +431,14 @@ const Friendprofile = () => {
     // console.log("B4" + userState['nickname'] + params.nickname);
     return (
       <div className='FriendProfile'>
-        {errorMessage && <div className="error"> {errorMessage} </div>}
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <img src={userState.avatar} height="80" />
+        {errorMessage && <div className="error"> {errorMessage} </div>}
+        {relation === "YourBlocked" ? (
+          <>
+          </>
+        ) : (
+          <>
+       <img src={userState.avatar} height="80" />
         <h2>{userState.nickname}</h2>
         <h3>TotalGames: </h3>
         <h2>{userState.wins}</h2>
@@ -438,6 +446,9 @@ const Friendprofile = () => {
         <h2>{userState.wins}</h2>
         <h3>Lose</h3>
         <h2>{userState.loses}</h2>
+          </>
+        )}
+       
 
 
         <br />
@@ -503,6 +514,14 @@ const Friendprofile = () => {
                   </span>
                   <span>{msg}</span>
                 </button>
+                <br/>
+
+                     <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleInviteToGame}>
+    <span className="icon material-symbols-outlined">
+     {"stadia_controller"}  
+      </span>
+      <span> Play  </span>
+      </button>
               </>
 
             )}

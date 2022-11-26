@@ -56,58 +56,61 @@ var MsgList =[...MsgHistory];
   }
 
 
-  async function FetchUserInfo (id) {
+//   async function FetchUserInfo (id) {
 
-    // ]
-  const loggeduser = localStorage.getItem("user");
+//     // ]
+//   const loggeduser = localStorage.getItem("user");
 
-  if(loggeduser)
-{
-  var Current_User = JSON.parse(loggeduser);
-  const text = ("http://localhost:9000/GetUserPicture");
-  console.log("Api get Link :  =>  " + text);
+//   if(loggeduser)
+// {
+//   var Current_User = JSON.parse(loggeduser);
+//   const text = ("http://localhost:9000/GetUserPicture");
+//   console.log("Api get Link :  =>  " + text);
   
-  const response = await axios.get("http://localhost:9000/GetUserPicture",{
-  headers: {
-    userId:id
-  }
-  }
-  )
-  const {nickname ,UserId,image_url,id42} = response.data;
-  console.log("The Friends are " + JSON.stringify(response.data));
-//   response.data.forEach( result => {
-//     // console.log(result.data.name);
-//     console.log(result.data.id);
-//     console.log(result.data.image_url);
-//     console.log(result.data.id42);
+//   const response = await axios.get("http://localhost:9000/GetUserPicture",{
+//   headers: {
+//     userId:id
+//   }
+//   }
+//   )
+//   const {nickname ,UserId,image_url,id42} = response.data;
+//   console.log("The Friends are " + JSON.stringify(response.data));
+// //   response.data.forEach( result => {
+// //     // console.log(result.data.name);
+// //     console.log(result.data.id);
+// //     console.log(result.data.image_url);
+// //     console.log(result.data.id42);
 
-// })
-    // console.log(" Nickname " + response.data[0].name + " IU => " + response.data[0].image_url  + " |id42 " + response.data[0].id42);
-  // 	onUploadProgress: progressEvent => {
-  // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
-  // 	},
-  // });
+// // })
+//     // console.log(" Nickname " + response.data[0].name + " IU => " + response.data[0].image_url  + " |id42 " + response.data[0].id42);
+//   // 	onUploadProgress: progressEvent => {
+//   // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
+//   // 	},
+//   // });
   
-  // 	}
-    return response.data;
-}
+//   // 	}
+//     return response.data;
+// }
 
-  }
+//   }
   useEffect (() => {
     const loggeduser = localStorage.getItem("user");
 
     if(loggeduser)
     {
       var Current_User = JSON.parse(loggeduser);
-      let OwnedDbId = 1;
+      let OwnedDbId = 1; 
+
+
+        // HERE request to backend to fetch users of the room
       // console.log("=>>>>> FROM THE Chatroom "   + Current_User.nickname + Current_User.UserId + OwnedDbId + "This room Owner Id  is :> " + room.OwnerId)
     //   var help = JSON.parse(room.AdminsIds);
-    FetchUserInfo(2)
-    .then((resp) => {
-      console.log("resp => " + resp[0].id);
-      setFriends(resp);
-      console.log("user42.image_url" + friends.image_url)
-    })
+    // FetchUserInfo(2)
+    // .then((resp) => {
+    //   console.log("resp => " + resp[0].id);
+    //   setFriends(resp);
+    //   console.log("user42.image_url" + friends.image_url)
+    // })
     console.log("=>>> " +props.room.AdminsIds);
 
       if(Current_User.UserId == props.room.AdminsIds)

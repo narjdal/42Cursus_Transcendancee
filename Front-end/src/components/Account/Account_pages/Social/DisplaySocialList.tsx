@@ -58,7 +58,7 @@ if(OpenMsg)
             <li>
         <ul>  </ul>
         <span>{props.Friends.nickname}          </span>
-         <img className="avatar" src={props.Friends.image_url} />
+         <img className="avatar" src={props.Friends.avatar} />
     <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>
     <span className="icon material-symbols-outlined">
      {"People"}  

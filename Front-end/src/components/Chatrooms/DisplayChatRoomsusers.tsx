@@ -23,7 +23,7 @@ const DisplayChatRoomusers = (props,roomownnership) => {
         setAction(!action);
         // Here request to know which button to display 
     }
-console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
+// console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
     return (
         <>
 <div className="ChatRoom-HELP"> 
@@ -32,7 +32,7 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
     <tr>
    </tr>
    <tr>
-   <td> <img src={props.user.image_url!} 
+   <td> <img src={props.user.avatar!} 
    height="20" 
    className='avatarsidebar'/>
    </td>

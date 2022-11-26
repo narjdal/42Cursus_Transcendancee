@@ -1,7 +1,7 @@
 
 
 .ChatRoomButtons-container{
-    position:absolute;top: 0;right:0;
+    position:absolute;top: 0;left:9vh;
     color: white;
     background-color: #1d4999;
     justify-content: center;

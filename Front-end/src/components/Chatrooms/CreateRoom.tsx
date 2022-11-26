@@ -10,17 +10,28 @@ const CreateRoom = () => {
     const [RoomOwner,setRoomOwner] = useState("");
     const [isRoomPublic,setRoomPublic] = useState(false);
     const [isRoomPrivate,setRoomPrivate] = useState(false);
+    const [isRoomProtected,setRoomProtected] = useState(false);
+
     const [errorMessage, setErrorMessage] = useState("");
     const [user,setUser] = useState([]);
     const HandleRoomPublic = (e) => {
         setRoomPublic(!isRoomPublic);
         setRoomPrivate(false);
+        setRoomProtected(false);
     } 
     const HandleRoomPrivate = (e) => {
         setRoomPrivate(!isRoomPrivate);
         setRoomPublic(false);
-
+        setRoomProtected(false);
+        
     } 
+
+    const HandleRoomProtected = (e) => {
+        console.log("SSSS")
+        setRoomProtected(!isRoomProtected);
+        setRoomPrivate(false);
+        setRoomPublic(false);
+    };
     const HandleCreateRoom = (e) => {
         const user ="narjdal";
         e.preventDefault();
@@ -28,6 +39,10 @@ const CreateRoom = () => {
         console.log("Room infos  : " + RoomName+   " Room Password "+ RoomPassword);
     if(RoomName)
     {
+        if(RoomPassword && isRoomProtected)
+        {
+            console.log("Setting a room with pws ! " + RoomPassword);
+        }
         // Here Post Request to Backend , with the Room infos  + creating use infos 
         // fetch(
 		// 	'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',
@@ -51,6 +66,7 @@ const CreateRoom = () => {
 
     }
     } 
+ 
     return (
         <div className="body">
          <div className='CreateRoom-card'>
@@ -77,8 +93,16 @@ const CreateRoom = () => {
        onChange={HandleRoomPrivate}
        />
        Private
+
+       <input type="radio"
+        value ="Protected"
+       placeholder="Room Name " 
+       checked = {isRoomProtected}
+       onChange={HandleRoomProtected}
+       />
+       Protected
        
-       {isRoomPrivate ? (
+       {isRoomProtected ? (
         <input type="text"
         className="form-control" 
         placeholder="Room Password:   " 

@@ -9,7 +9,7 @@ import AdminChatRoomDashboard from './AdminChatRoomDashboard';
 function ChatRoom() {
     const params = useParams();
     const [user42,SetUser42] = useState<any>([])
-    const [UserOwnsRooms,SetUserOwnsRoom] = useState(false);
+    const [userAdmin,SetUserAdmin] = useState(false);
     const room = chatRooms.find((x) => x.id === params.id);
     
     if (!room) {
@@ -21,14 +21,15 @@ function ChatRoom() {
         if(loggeduser)
         {
           var Current_User = JSON.parse(loggeduser);
-          let OwnedDbId = 1;
-          console.log("=>>>>> FROM THE Chatroom "   + Current_User.nickname + Current_User.UserId + OwnedDbId + "This room Owner Id  is :> " + room.OwnerId)
+          const {id} = Current_User;
+                console.log("ID IS " + id);
+          // console.log("=>>>>> FROM THE Chatroom "   + Current_User.nickname + " ID IS =  " +  Current_User.id +  + "This room Owner Id  is :> " + room.OwnerId)
         //   var help = JSON.parse(room.AdminsIds);
           console.log("=>>> " +room.AdminsIds);
 
-          if(Current_User.UserId == room.OwnerId)
+          if(id== room.AdminsIds || id == room.OwnerId)
           {
-          SetUserOwnsRoom(true);
+          SetUserAdmin(true);
           }
         //   var new_User = [...Current_User];
           SetUser42(Current_User);
@@ -39,11 +40,11 @@ function ChatRoom() {
             <h2>{room.title}</h2>
             <h2><ChatRoomBox room={room}
             /></h2>
-         
-            {UserOwnsRooms ? (
-                <div>
                      <ChatRoomButton/>
-                  <AdminChatRoomDashboard/>
+
+            {userAdmin ? (
+                <div>
+                  <AdminChatRoomDashboard room={room}/>
                     </div>
             ) : (
                 <div>
@@ -51,7 +52,7 @@ function ChatRoom() {
                     </div>
             )}
             <div>
-                <li><Link to="/">⬅️ Back to all rooms</Link> </li>
+                <li><Link to="/Landing">⬅️ Back to all rooms</Link> </li>
             </div>
             <div className="messages-container">
                                 {/* TODO */}
