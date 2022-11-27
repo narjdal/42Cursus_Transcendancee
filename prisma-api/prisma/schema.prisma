@@ -43,7 +43,7 @@ model ChatRoom {
 
 model Permission {
     // statusMember     Status @default(MEMBER)
-    statusMember String
+    statusMember String // owner admin member
     is_banned    Boolean  @default(false)
     is_muted     Boolean  @default(false)
     blocked_since     DateTime
@@ -84,7 +84,7 @@ model Message {
 model Friendship {
     //id Int @id @default(autoincrement())
     status     String
-    date       DateTime @default(now())
+    date       DateTime @default(now())  // we don;t need you
     sender     Player   @relation("SendRequest", fields: [senderId], references: [id])
     senderId   Int
     receiver   Player   @relation("ReceiveRequest", fields: [receiverId], references: [id])
