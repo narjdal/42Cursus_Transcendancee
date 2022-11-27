@@ -1,0 +1,4953 @@
+{
+  "document": {
+    "id": "doc",
+    "name": "New Document",
+    "version": 15.5,
+    "pages": {
+      "page": {
+        "id": "page",
+        "name": "Page 1",
+        "childIndex": 1,
+        "shapes": {
+          "9e4afe36-0221-4155-101d-d8bf9a731464": {
+            "id": "9e4afe36-0221-4155-101d-d8bf9a731464",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 1,
+            "point": [
+              -204.6,
+              -342.94
+            ],
+            "size": [
+              861.09,
+              335.84
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "af2e1c01-4e8c-4d7f-25bc-da631619fc23": {
+            "id": "af2e1c01-4e8c-4d7f-25bc-da631619fc23",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 2,
+            "point": [
+              -498.88,
+              -5.22
+            ],
+            "rotation": 0,
+            "text": "1- create chat room ==> set the one who create the chat as an owner ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "4c6796c7-4ae4-4cc9-0f59-19d92c140d75": {
+            "id": "4c6796c7-4ae4-4cc9-0f59-19d92c140d75",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 3,
+            "point": [
+              -498.27,
+              40.18
+            ],
+            "rotation": 0,
+            "text": "2- create a dm ==> when create a dm, when the receiver accept the request of friendship ==> automatically set the receiver and the sender as members of this dm chat room ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "93160033-a635-4e17-1460-1be406976cf2": {
+            "id": "93160033-a635-4e17-1460-1be406976cf2",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 4,
+            "point": [
+              103.14,
+              82.62
+            ],
+            "rotation": 0,
+            "bend": 0.00012176482211709267,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  3.59,
+                  78.19
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  1.8,
+                  39.1
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "96ac79e8-c437-4ea7-26f0-a20e492ca64f": {
+            "id": "96ac79e8-c437-4ea7-26f0-a20e492ca64f",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 5,
+            "point": [
+              -388.29,
+              186.06
+            ],
+            "rotation": 0,
+            "text": "The player can create a new chat room but he can not create a dm ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "fc0bba45-3dd9-448c-2065-442b03e909a2": {
+            "id": "fc0bba45-3dd9-448c-2065-442b03e909a2",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 6,
+            "point": [
+              -390.25,
+              231.31
+            ],
+            "rotation": 0,
+            "text": "The dm is created automatically when the receiver accept the friend request ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "fa2b8de9-94bd-41bd-326b-98fabed005af": {
+            "id": "fa2b8de9-94bd-41bd-326b-98fabed005af",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 7,
+            "point": [
+              -172.49,
+              -309.07
+            ],
+            "size": [
+              349.88,
+              284.05
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "0d26b338-b6ec-4a2a-11d8-f26b2bffa37c": {
+            "id": "0d26b338-b6ec-4a2a-11d8-f26b2bffa37c",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 8,
+            "point": [
+              -156.64,
+              -238.91
+            ],
+            "size": [
+              272.27,
+              40.03
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "ef3b2d6c-a9f3-4f77-2d36-035afab40842": {
+            "id": "ef3b2d6c-a9f3-4f77-2d36-035afab40842",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 9,
+            "point": [
+              -151.75,
+              -238.55
+            ],
+            "rotation": 0,
+            "text": "+ ==> create a pulic room ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "a5373095-36ba-4296-3dfb-25274147c653": {
+            "id": "a5373095-36ba-4296-3dfb-25274147c653",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 10,
+            "point": [
+              -161.69,
+              -176.5
+            ],
+            "size": [
+              297.84,
+              138.71
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "3ea740bd-d448-4d86-3fcf-6b2a17bbc21e": {
+            "id": "3ea740bd-d448-4d86-3fcf-6b2a17bbc21e",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 11,
+            "point": [
+              -140.58,
+              -160.41
+            ],
+            "rotation": 0,
+            "text": "list of dms and chatRooms ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "4daa19d9-ca83-4bfd-058e-f58a78ebad72": {
+            "id": "4daa19d9-ca83-4bfd-058e-f58a78ebad72",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 12,
+            "point": [
+              -93.19,
+              -125.66
+            ],
+            "rotation": 0,
+            "text": "isghioua",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "b940f081-1ec5-4e1f-331d-7aa53116baef": {
+            "id": "b940f081-1ec5-4e1f-331d-7aa53116baef",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 13,
+            "point": [
+              -86.77,
+              -90.3
+            ],
+            "rotation": 0,
+            "text": "les lions",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "938bfba7-cbcf-4ba9-2d46-7f518c5c7b99": {
+            "id": "938bfba7-cbcf-4ba9-2d46-7f518c5c7b99",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 14,
+            "point": [
+              243.18,
+              -251.61
+            ],
+            "size": [
+              346.99,
+              219.24
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "2030c65a-e894-49af-0534-f43ce99fc8f2": {
+            "id": "2030c65a-e894-49af-0534-f43ce99fc8f2",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 15,
+            "point": [
+              306.88,
+              -219.61
+            ],
+            "rotation": 0,
+            "text": "history messages",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "88cf7afb-8132-4617-3fb7-7fd3c2c5f4e7": {
+            "id": "88cf7afb-8132-4617-3fb7-7fd3c2c5f4e7",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 17,
+            "point": [
+              278.82,
+              -95.77
+            ],
+            "size": [
+              298.01,
+              51.76
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "fe8652d2-8044-44e9-37f8-9440dba65953": {
+            "id": "fe8652d2-8044-44e9-37f8-9440dba65953",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 18,
+            "point": [
+              288.82,
+              -84.45
+            ],
+            "rotation": 0,
+            "text": "write and send msg",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "05633ad2-dafb-4101-393b-211019bbcffa": {
+            "id": "05633ad2-dafb-4101-393b-211019bbcffa",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 19,
+            "point": [
+              -485.85,
+              332.36
+            ],
+            "rotation": 0,
+            "text": "HOW TO SEND A MESSAGE ?",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "3e1c1d0c-1580-4b2c-0ff0-11343965c887": {
+            "id": "3e1c1d0c-1580-4b2c-0ff0-11343965c887",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 20,
+            "point": [
+              -466.67,
+              380.82
+            ],
+            "rotation": 0,
+            "text": "1- we need the id_of player who wanna send a msg",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "4c153cb3-ba8b-4c02-3bee-d406217482bc": {
+            "id": "4c153cb3-ba8b-4c02-3bee-d406217482bc",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 21,
+            "point": [
+              -470.79,
+              428.12
+            ],
+            "rotation": 0,
+            "text": "2- the id of the room where 5ona player wanna send this message ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "e657e190-a9f5-45fe-3c54-4f28ad027d12": {
+            "id": "e657e190-a9f5-45fe-3c54-4f28ad027d12",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 22,
+            "point": [
+              -299.49,
+              467.43
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  74.64,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  41.24
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  37.32,
+                  20.62
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "b5fa3d2d-9ba0-4f42-34e1-46c6ad07023c": {
+            "id": "b5fa3d2d-9ba0-4f42-34e1-46c6ad07023c",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 23,
+            "point": [
+              -219.82,
+              466.68
+            ],
+            "rotation": 0,
+            "bend": 0.00007044237463768683,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  28.39,
+                  56.77
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  14.2,
+                  28.39
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "185cdc9b-f4ff-4184-31af-70ac40ae8bc3": {
+            "id": "185cdc9b-f4ff-4184-31af-70ac40ae8bc3",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 24,
+            "point": [
+              -204.69,
+              468.9
+            ],
+            "rotation": 0,
+            "bend": 0.00002766050351543063,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  111.85,
+                  38.76
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  55.93,
+                  19.38
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "f425a50d-12a3-493e-17dc-47af9d515233": {
+            "id": "f425a50d-12a3-493e-17dc-47af9d515233",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 25,
+            "point": [
+              -345.65,
+              524.75
+            ],
+            "rotation": 0,
+            "text": "member",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "5497ff5d-49c0-48b4-31b0-5b5d736e851d": {
+            "id": "5497ff5d-49c0-48b4-31b0-5b5d736e851d",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 26,
+            "point": [
+              -227.41,
+              528.75
+            ],
+            "rotation": 0,
+            "text": "muted",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "681aed34-5444-4391-1788-37c9a81404e4": {
+            "id": "681aed34-5444-4391-1788-37c9a81404e4",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 27,
+            "point": [
+              -100.75,
+              509.22
+            ],
+            "rotation": 0,
+            "text": "banned",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "30a8a1f8-489f-4125-1b50-54dd1547ee38": {
+            "id": "30a8a1f8-489f-4125-1b50-54dd1547ee38",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 28,
+            "point": [
+              -468.01,
+              572.8
+            ],
+            "rotation": 0,
+            "text": "Before writtin new msg the current user, retrieve the old history of msgs : ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "3e75166c-07fa-4b9e-1d07-4b2a1c1782fb": {
+            "id": "3e75166c-07fa-4b9e-1d07-4b2a1c1782fb",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 29,
+            "point": [
+              278.45,
+              476.85
+            ],
+            "size": [
+              763.71,
+              518.77
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "d3240a2e-d8a4-404d-3ebe-7bf5f51c7d7c": {
+            "id": "d3240a2e-d8a4-404d-3ebe-7bf5f51c7d7c",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 30,
+            "point": [
+              453.05,
+              502.38
+            ],
+            "rotation": 0,
+            "text": "1- create a dm",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "6eeca6f9-6221-4c18-1fbc-d9163d85f740": {
+            "id": "6eeca6f9-6221-4c18-1fbc-d9163d85f740",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 31,
+            "point": [
+              451,
+              541.71
+            ],
+            "rotation": 0,
+            "text": "2- retreive old msgs ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "6e79630a-4db5-4fc1-135d-b144527976c2": {
+            "id": "6e79630a-4db5-4fc1-135d-b144527976c2",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 32,
+            "point": [
+              453.45,
+              585.31
+            ],
+            "rotation": 0,
+            "text": "3- add new msg",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "78d44668-6470-42a4-0289-64ff7cc821dc": {
+            "id": "78d44668-6470-42a4-0289-64ff7cc821dc",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 34,
+            "point": [
+              446.59,
+              701.09
+            ],
+            "rotation": 0,
+            "text": "1- create a room ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "de80eb16-9f14-43cb-2dd4-3a72c3c1ecc5": {
+            "id": "de80eb16-9f14-43cb-2dd4-3a72c3c1ecc5",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 35,
+            "point": [
+              443.47,
+              740.57
+            ],
+            "rotation": 0,
+            "text": "2- add new members",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "a4567961-e8c0-4e5f-2717-77ce4ee4e4db": {
+            "id": "a4567961-e8c0-4e5f-2717-77ce4ee4e4db",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 36,
+            "point": [
+              235.71,
+              788.39
+            ],
+            "rotation": 0,
+            "text": "3- retreive old msgs, \n            [in case of banned show only the msgs before the date of banned ] ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "5f9da781-9bfa-44c8-0cc5-826da743a6de": {
+            "id": "5f9da781-9bfa-44c8-0cc5-826da743a6de",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 37,
+            "point": [
+              298.89,
+              845.81
+            ],
+            "rotation": 0,
+            "text": "[ check relations between this user and all member who write a msgs in this room ]",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "42496e68-b559-449a-20ff-db91eac246c0": {
+            "id": "42496e68-b559-449a-20ff-db91eac246c0",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 38,
+            "point": [
+              453.09,
+              883.49
+            ],
+            "rotation": 0,
+            "text": "4- send msg",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "0b8cf225-10a6-4fcd-26b2-25212065bb74": {
+            "id": "0b8cf225-10a6-4fcd-26b2-25212065bb74",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 39,
+            "point": [
+              307.98,
+              915.03
+            ],
+            "rotation": 0,
+            "text": "[ check if you are a simple members that you are not banned or muted]",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "7cb6ca49-c06b-45a7-2ce7-e8f8b592543c": {
+            "id": "7cb6ca49-c06b-45a7-2ce7-e8f8b592543c",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 40,
+            "point": [
+              821.43,
+              534.65
+            ],
+            "rotation": 0,
+            "text": "CASE of DM",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "05940f91-03ee-4267-048d-c3d3cd7b1708": {
+            "id": "05940f91-03ee-4267-048d-c3d3cd7b1708",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 41,
+            "point": [
+              817.9,
+              700.07
+            ],
+            "rotation": 0,
+            "text": "CASE of ROOM",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "5af4eafc-7b93-4d1c-283d-51f44982ae13": {
+            "id": "5af4eafc-7b93-4d1c-283d-51f44982ae13",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 42,
+            "point": [
+              310.31,
+              659.62
+            ],
+            "rotation": 0,
+            "bend": -0.000015073121414398471,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  2.05
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  665.47,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  332.74,
+                  1.02
+                ]
+              }
+            },
+            "decorations": {},
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "56fadbdf-b79f-4d75-2ed6-bad184be3f7a": {
+            "id": "56fadbdf-b79f-4d75-2ed6-bad184be3f7a",
+            "type": "ellipse",
+            "name": "Ellipse",
+            "parentId": "page",
+            "childIndex": 43,
+            "point": [
+              804.43,
+              519.93
+            ],
+            "radius": [
+              81.45999999999992,
+              31.77333333333337
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "4d16ef07-1ce5-412c-3966-610766781725": {
+            "id": "4d16ef07-1ce5-412c-3966-610766781725",
+            "type": "ellipse",
+            "name": "Ellipse",
+            "parentId": "page",
+            "childIndex": 44,
+            "point": [
+              805.45,
+              684.85
+            ],
+            "radius": [
+              88.15999999999997,
+              34.33333333333337
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "83fc48b2-15a3-46a6-2eb9-d08660566b7d": {
+            "id": "83fc48b2-15a3-46a6-2eb9-d08660566b7d",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 45,
+            "point": [
+              201.56,
+              -316.85
+            ],
+            "size": [
+              389.86,
+              52.69
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "0dd8357e-286b-4f15-3bc6-66e83dc297fe": {
+            "id": "0dd8357e-286b-4f15-3bc6-66e83dc297fe",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 46,
+            "point": [
+              216.35,
+              -306.59
+            ],
+            "rotation": 0,
+            "text": "permission :[ban, add, mute, leave ...]",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "13c6ea42-c1d3-461b-0c52-b3d6dc4730d3": {
+            "id": "13c6ea42-c1d3-461b-0c52-b3d6dc4730d3",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 47,
+            "point": [
+              591.42,
+              -288.95
+            ],
+            "rotation": 0,
+            "bend": -0.000056242968027832516,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true,
+                "bindingId": "a8d260e4-e227-4565-1877-5df7eec34a2b"
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  152.71,
+                  1.21
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  76.36,
+                  0.61
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "d69f9d77-82b1-448b-0201-9db1ca8a2f62": {
+            "id": "d69f9d77-82b1-448b-0201-9db1ca8a2f62",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 48,
+            "point": [
+              590.17,
+              -148.95
+            ],
+            "rotation": 0,
+            "bend": -0.000051069386348984247,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  3.39
+                ],
+                "canBind": true,
+                "bindingId": "bb497528-b6bc-4f64-3812-aa97c449c3f8"
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  164.35,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  82.18,
+                  1.7
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "c72050d4-afa5-44c3-2520-42c76b730bb2": {
+            "id": "c72050d4-afa5-44c3-2520-42c76b730bb2",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 49,
+            "point": [
+              -310.38,
+              -131.65
+            ],
+            "rotation": 0,
+            "bend": 0.0000632317893819499,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  148.69,
+                  12.24
+                ],
+                "canBind": true,
+                "bindingId": "22aa3f70-286d-402f-09c0-5d10383368ae"
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  74.35,
+                  6.12
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "2666d209-cd61-4eb6-2c20-45d07464d3d8": {
+            "id": "2666d209-cd61-4eb6-2c20-45d07464d3d8",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 50,
+            "point": [
+              -306.4,
+              -224.46
+            ],
+            "rotation": 0,
+            "bend": -0.000002881849027000494,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  154.65,
+                  2.74
+                ],
+                "canBind": true,
+                "bindingId": "10873cc5-737d-4ec2-3f53-7a4f62d363bd"
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  77.33,
+                  1.37
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "d9073543-c0fd-4e75-06ef-44f009ab3e4c": {
+            "id": "d9073543-c0fd-4e75-06ef-44f009ab3e4c",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 51,
+            "point": [
+              769.35,
+              -317.17
+            ],
+            "rotation": 0,
+            "text": "member admin or owner in case of chat ROOM ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "a1bcb07b-bba7-4fdb-3cf6-10492b7370e6": {
+            "id": "a1bcb07b-bba7-4fdb-3cf6-10492b7370e6",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 52,
+            "point": [
+              -443.71,
+              1528.19
+            ],
+            "size": [
+              2219.32,
+              1351.18
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "b60c9e3d-6297-45ac-3c18-8a4d3cf3ddc0": {
+            "id": "b60c9e3d-6297-45ac-3c18-8a4d3cf3ddc0",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 53,
+            "point": [
+              -397.41,
+              1582.11
+            ],
+            "size": [
+              626.7,
+              1245.78
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "67fe42a9-7439-4b54-345e-e6fe906d486e": {
+            "id": "67fe42a9-7439-4b54-345e-e6fe906d486e",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 54,
+            "point": [
+              325.91,
+              1581.69
+            ],
+            "size": [
+              658.58,
+              1251.52
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "fc82dc75-e01f-4f13-372e-feb0effebed6": {
+            "id": "fc82dc75-e01f-4f13-372e-feb0effebed6",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 55,
+            "point": [
+              1062.31,
+              1584.23
+            ],
+            "size": [
+              658.52,
+              1239.98
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "eae587ba-2330-4cfb-0243-845f79d1245e": {
+            "id": "eae587ba-2330-4cfb-0243-845f79d1245e",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 56,
+            "point": [
+              -305.95,
+              1653.51
+            ],
+            "rotation": 0,
+            "text": "post {\n \n  list_of_categoires categorie[]\n}",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "1120e439-2b30-497f-1055-7a87b829b0fc": {
+            "id": "1120e439-2b30-497f-1055-7a87b829b0fc",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 57,
+            "point": [
+              -273.49,
+              1819.55
+            ],
+            "rotation": 0,
+            "text": "categori {\n \nlist_of_post post[]\n}",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "76b33e97-a4e8-4f6a-1ef5-71ca5eea8dfb": {
+            "id": "76b33e97-a4e8-4f6a-1ef5-71ca5eea8dfb",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 58,
+            "point": [
+              -335.71,
+              2020.53
+            ],
+            "rotation": 0,
+            "text": "post ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "61ac0c5d-f55c-4fac-2190-41483c56f113": {
+            "id": "61ac0c5d-f55c-4fac-2190-41483c56f113",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 59,
+            "point": [
+              -263.35,
+              2006.95
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  41.74
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  78.2,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  39.1,
+                  20.87
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "dc3be3f3-69f3-4173-061a-d587aef5163d": {
+            "id": "dc3be3f3-69f3-4173-061a-d587aef5163d",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 60,
+            "point": [
+              -270.16999999999996,
+              2057.77,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  96.4,
+                  42.74
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  48.2,
+                  21.37
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "e128f850-c974-4282-0dfd-30cac3de9a4c": {
+            "id": "e128f850-c974-4282-0dfd-30cac3de9a4c",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 61,
+            "point": [
+              -261.16999999999996,
+              2065.33,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  47.48,
+                  144.66
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  23.74,
+                  72.33
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "89e5b392-7683-41b5-1e43-a0c1af4062e2": {
+            "id": "89e5b392-7683-41b5-1e43-a0c1af4062e2",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 62,
+            "point": [
+              -379.13,
+              2255.69
+            ],
+            "rotation": 0,
+            "text": "categories ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "da98036d-9777-496b-369f-5fc7948f9545": {
+            "id": "da98036d-9777-496b-369f-5fc7948f9545",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 63,
+            "point": [
+              -245.79,
+              2270.57
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  27.1
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  60.92,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  30.46,
+                  13.55
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "6411bfc7-baf5-44eb-17e3-b3e2fef007b6": {
+            "id": "6411bfc7-baf5-44eb-17e3-b3e2fef007b6",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 64,
+            "point": [
+              -240.76999999999998,
+              2307.81,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  70.42,
+                  72.64
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  35.21,
+                  36.32
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "4536d96b-6870-48ae-1673-36f726d041c0": {
+            "id": "4536d96b-6870-48ae-1673-36f726d041c0",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 65,
+            "point": [
+              -242.70999999999998,
+              2301.99,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  13.16,
+                  170.64
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  6.58,
+                  85.32
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "dc6a3f82-bf1e-467a-213f-0d4e508a21c1": {
+            "id": "dc6a3f82-bf1e-467a-213f-0d4e508a21c1",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 66,
+            "point": [
+              -111.73,
+              2035.19
+            ],
+            "rotation": 0,
+            "text": "id_post ==> list of categories ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "a1f5f379-99bd-404c-13ff-406c8dfe27f4": {
+            "id": "a1f5f379-99bd-404c-13ff-406c8dfe27f4",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 67,
+            "point": [
+              -131.99,
+              2305.73
+            ],
+            "rotation": 0,
+            "text": "id_categories ==> list of posts ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "97f69f55-45af-4c69-2a6a-87bc9289f59b": {
+            "id": "97f69f55-45af-4c69-2a6a-87bc9289f59b",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 68,
+            "point": [
+              392.99,
+              1662.47
+            ],
+            "rotation": 0,
+            "text": "player {\n  \nlist_of_rooms \n}",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "436309ed-29fd-44da-3336-6dfd7b911b83": {
+            "id": "436309ed-29fd-44da-3336-6dfd7b911b83",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 69,
+            "point": [
+              382.07,
+              1816.95
+            ],
+            "rotation": 0,
+            "text": "chat room  {\n \nlist_of_player player[]\n}",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "b4446edb-74fa-4696-2f29-ed5fb7452ecd": {
+            "id": "b4446edb-74fa-4696-2f29-ed5fb7452ecd",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 70,
+            "point": [
+              550.25,
+              1718.13
+            ],
+            "rotation": 0,
+            "text": "chat_room[]",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "917178ed-4197-4e3d-0ce2-59400c8b590f": {
+            "id": "917178ed-4197-4e3d-0ce2-59400c8b590f",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 71,
+            "point": [
+              405.77,
+              2068.55
+            ],
+            "rotation": 0,
+            "text": "player ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "84243372-b7fb-4cf0-33bb-9a28a322ebb1": {
+            "id": "84243372-b7fb-4cf0-33bb-9a28a322ebb1",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 72,
+            "point": [
+              538.27,
+              1992.21
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  100.64
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  75.74,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  37.87,
+                  50.32
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "ff3a75ce-864a-4ece-28d9-5abc67cd319e": {
+            "id": "ff3a75ce-864a-4ece-28d9-5abc67cd319e",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 73,
+            "point": [
+              533.03,
+              2099.15,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  93.22,
+                  4.22
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  46.61,
+                  2.11
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "f1224e69-a669-4bec-3bc8-43e747d74bb5": {
+            "id": "f1224e69-a669-4bec-3bc8-43e747d74bb5",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 74,
+            "point": [
+              547.1300000000001,
+              2102.0299999999997,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  37.86,
+                  96.82
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  18.93,
+                  48.41
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "624187d3-6d8f-4a6c-282c-aef1cebbbd5f": {
+            "id": "624187d3-6d8f-4a6c-282c-aef1cebbbd5f",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 75,
+            "point": [
+              641.05,
+              2077.87
+            ],
+            "rotation": 0,
+            "text": "id_player ==> list of rooms  ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "f08de597-597a-4fdb-08c6-ee091ff15170": {
+            "id": "f08de597-597a-4fdb-08c6-ee091ff15170",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 76,
+            "point": [
+              370.37,
+              2282.39
+            ],
+            "rotation": 0,
+            "text": "chat_room ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "850f3dec-5bce-48e7-2673-9c62f336574c": {
+            "id": "850f3dec-5bce-48e7-2673-9c62f336574c",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 77,
+            "point": [
+              522.37,
+              2248.49
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  55.66
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  54.58,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  27.29,
+                  27.83
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "a965ab45-3fc7-4813-3db5-7900101384a9": {
+            "id": "a965ab45-3fc7-4813-3db5-7900101384a9",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 78,
+            "point": [
+              519.8900000000001,
+              2316.13,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  43.94,
+                  108.1
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  21.97,
+                  54.05
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "75cfca53-bf12-45c0-3fb3-46999c801639": {
+            "id": "75cfca53-bf12-45c0-3fb3-46999c801639",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 79,
+            "point": [
+              540.75,
+              2317.31,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  63.74,
+                  0.4
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  31.87,
+                  0.2
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "0a7745b0-d100-44bf-3014-dd0e80366043": {
+            "id": "0a7745b0-d100-44bf-3014-dd0e80366043",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 80,
+            "point": [
+              626.63,
+              2289.15
+            ],
+            "rotation": 0,
+            "text": "id_room ==> list of players",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "126070a4-2371-471e-2709-2cee125483d3": {
+            "id": "126070a4-2371-471e-2709-2cee125483d3",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 81,
+            "point": [
+              1087.53,
+              1675.23
+            ],
+            "rotation": 0,
+            "text": "message {\n \nchat_room\n}",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "a985b1aa-7cd9-4d7b-33c3-4e6776e748c9": {
+            "id": "a985b1aa-7cd9-4d7b-33c3-4e6776e748c9",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 82,
+            "point": [
+              -370.11,
+              1606.09
+            ],
+            "rotation": 0,
+            "text": "many to many relation btw post and categorie ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "e71888a3-ad83-4026-285f-61794e5b3cf1": {
+            "id": "e71888a3-ad83-4026-285f-61794e5b3cf1",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 83,
+            "point": [
+              375.25,
+              1605.89
+            ],
+            "rotation": 0,
+            "text": "many to many relation btw player and chat room ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "3943c801-d720-40f9-1e3a-2872b61c6423": {
+            "id": "3943c801-d720-40f9-1e3a-2872b61c6423",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 84,
+            "point": [
+              98.17000000000007,
+              3035.8599999999997
+            ],
+            "rotation": 0,
+            "text": "room ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "93b34c62-1a7f-42ca-2571-9c7d0f795b03": {
+            "id": "93b34c62-1a7f-42ca-2571-9c7d0f795b03",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 85,
+            "point": [
+              167.71,
+              3006.1
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  40.66
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  59.46,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  29.73,
+                  20.33
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "63727c8c-5c8b-48d5-3765-a1b0591ce664": {
+            "id": "63727c8c-5c8b-48d5-3765-a1b0591ce664",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 86,
+            "point": [
+              169.14999999999998,
+              3060.26,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  83.08,
+                  1.8
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  41.54,
+                  0.9
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "f8566435-7f97-4273-1618-16f559b82f0a": {
+            "id": "f8566435-7f97-4273-1618-16f559b82f0a",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 87,
+            "point": [
+              176.37,
+              3064.58,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  67.78,
+                  83.04
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  33.89,
+                  41.52
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "67135785-53d6-40d3-0048-5bd0188095c9": {
+            "id": "67135785-53d6-40d3-0048-5bd0188095c9",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 88,
+            "point": [
+              292.15,
+              3048.8999999999996
+            ],
+            "rotation": 0,
+            "text": "list of messages ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "cbccadee-874c-48e8-161f-97b04aea8326": {
+            "id": "cbccadee-874c-48e8-161f-97b04aea8326",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 89,
+            "point": [
+              81.49000000000001,
+              3212.4399999999996
+            ],
+            "rotation": 0,
+            "text": "player ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "9f06dd30-5e55-4e00-0562-729cdeb12b2b": {
+            "id": "9f06dd30-5e55-4e00-0562-729cdeb12b2b",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 90,
+            "point": [
+              179.09,
+              3197.38
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  47.62
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  62.1,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  31.05,
+                  23.81
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "819b8367-855d-4ede-0965-c564527ff84f": {
+            "id": "819b8367-855d-4ede-0965-c564527ff84f",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 91,
+            "point": [
+              174.89,
+              3251.84
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  2.72
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  90.08,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  45.04,
+                  1.36
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "2c5e4759-c259-466a-3b6f-9df8df5ffd23": {
+            "id": "2c5e4759-c259-466a-3b6f-9df8df5ffd23",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 92,
+            "point": [
+              175.71000000000004,
+              3264.46,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  80.2,
+                  61.26
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  40.1,
+                  30.63
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "89d21edc-b290-44d8-3213-88e17180cd33": {
+            "id": "89d21edc-b290-44d8-3213-88e17180cd33",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 93,
+            "point": [
+              319.93,
+              3217.06
+            ],
+            "rotation": 0,
+            "text": "list of messages ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "c01c26f8-3b46-408f-2756-10584995ed00": {
+            "id": "c01c26f8-3b46-408f-2756-10584995ed00",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 94,
+            "point": [
+              742.6700000000001,
+              3141.38
+            ],
+            "rotation": 0,
+            "text": "message",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "6a5c7247-25a4-464d-04c1-d922dd9a45b1": {
+            "id": "6a5c7247-25a4-464d-04c1-d922dd9a45b1",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 95,
+            "point": [
+              574.99,
+              3085.44
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  160.34,
+                  74.64
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  80.17,
+                  37.32
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "69cf6c04-b417-4e0a-29b1-87561a47d36c": {
+            "id": "69cf6c04-b417-4e0a-29b1-87561a47d36c",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 96,
+            "point": [
+              592.43,
+              3174.84
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  148.88,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  99.2
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  74.44,
+                  49.6
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "df5f0e1c-71bc-41e0-3354-228465358a54": {
+            "id": "df5f0e1c-71bc-41e0-3354-228465358a54",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 97,
+            "point": [
+              -35.01,
+              3146.46
+            ],
+            "rotation": 0,
+            "text": "room is related to message by many ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "f2ec3290-049e-4a27-2719-73ab7b15bffb": {
+            "id": "f2ec3290-049e-4a27-2719-73ab7b15bffb",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 98,
+            "point": [
+              16.41,
+              3008.46
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  70.4,
+                  41
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  35.2,
+                  20.5
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "8cea2be6-c2d4-4407-067d-23594f50925c": {
+            "id": "8cea2be6-c2d4-4407-067d-23594f50925c",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 99,
+            "point": [
+              -0.07,
+              3059.86
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  91.64,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  4.78
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  45.82,
+                  2.39
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "f976ec88-7cdf-498a-0898-ac7580de985a": {
+            "id": "f976ec88-7cdf-498a-0898-ac7580de985a",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 100,
+            "point": [
+              8.81,
+              3072.99
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  89.36,
+                  0
+                ],
+                "canBind": true,
+                "bindingId": "ddc673cb-4520-403e-0857-4190c3008aac"
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  54.93
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  44.68,
+                  27.47
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "bdaa98f3-b2eb-41b1-0bd5-b2fa338835be": {
+            "id": "bdaa98f3-b2eb-41b1-0bd5-b2fa338835be",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 101,
+            "point": [
+              9.03,
+              3184.84
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  68.88,
+                  48.52
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  34.44,
+                  24.26
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "54a968b3-c02f-48f3-2524-23aebb49b154": {
+            "id": "54a968b3-c02f-48f3-2524-23aebb49b154",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 102,
+            "point": [
+              -23.99,
+              3240.12
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  101.52,
+                  7.7
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  50.76,
+                  3.85
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "e433e6d1-d474-4b58-2741-f484127b1691": {
+            "id": "e433e6d1-d474-4b58-2741-f484127b1691",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 103,
+            "point": [
+              -20.15,
+              3250.78
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  95.58,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  62.9
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  47.79,
+                  31.45
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "616a919c-2d16-4764-0f0c-3015c55f5df4": {
+            "id": "616a919c-2d16-4764-0f0c-3015c55f5df4",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 104,
+            "point": [
+              398.35,
+              2943.52
+            ],
+            "size": [
+              262.14,
+              97.8
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "30919ba3-20c2-45a0-1e3f-03b1811e6089": {
+            "id": "30919ba3-20c2-45a0-1e3f-03b1811e6089",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 105,
+            "point": [
+              444.05,
+              2979.92
+            ],
+            "rotation": 0,
+            "text": "one to many ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "e3ec9b74-22e7-4009-12d9-5ebcd9bb4823": {
+            "id": "e3ec9b74-22e7-4009-12d9-5ebcd9bb4823",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 106,
+            "point": [
+              -198.15,
+              3218.48
+            ],
+            "rotation": 0,
+            "text": "list_of_rooms",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "bd96716a-22e2-40dd-0214-dd291788282a": {
+            "id": "bd96716a-22e2-40dd-0214-dd291788282a",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 107,
+            "point": [
+              -182.59,
+              3040
+            ],
+            "rotation": 0,
+            "text": "list_of_players ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "92e5a9e3-ec6c-4ed7-1ebf-ebde94812ab3": {
+            "id": "92e5a9e3-ec6c-4ed7-1ebf-ebde94812ab3",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 108,
+            "point": [
+              -322.19,
+              3058.2
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  128.92,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  56.58
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  64.46,
+                  28.29
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "176cc1e1-6e25-4117-11b3-d91820e2003a": {
+            "id": "176cc1e1-6e25-4117-11b3-d91820e2003a",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 109,
+            "point": [
+              -311.79,
+              3189.8
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  105.09,
+                  31.6
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  52.55,
+                  15.8
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "5d8b1ee0-3cb6-4801-3d24-67c7114b7be5": {
+            "id": "5d8b1ee0-3cb6-4801-3d24-67c7114b7be5",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 110,
+            "point": [
+              -532.73,
+              3069.72
+            ],
+            "size": [
+              196.76,
+              265.38
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "04013ac0-ad98-4c44-2e0e-4c288655e016": {
+            "id": "04013ac0-ad98-4c44-2e0e-4c288655e016",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 111,
+            "point": [
+              -504.81,
+              3095.82
+            ],
+            "rotation": 0,
+            "text": "Permission",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "1afdb31b-8ed2-4d87-1912-fdcf1688acd0": {
+            "id": "1afdb31b-8ed2-4d87-1912-fdcf1688acd0",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 112,
+            "point": [
+              -514.35,
+              2995.2200000000003
+            ],
+            "rotation": 0,
+            "text": "explicit many to many",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "2f2cb7a8-2962-4fa0-3394-0300edd65315": {
+            "id": "2f2cb7a8-2962-4fa0-3394-0300edd65315",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 113,
+            "point": [
+              -544.03,
+              2966.44
+            ],
+            "size": [
+              290.42,
+              82.98
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "f750a3b7-c58a-4580-112a-d36f19058bc4": {
+            "id": "f750a3b7-c58a-4580-112a-d36f19058bc4",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 114,
+            "point": [
+              -642.9,
+              4308.13
+            ],
+            "size": [
+              185.08,
+              141.2
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "8ea80f66-7b92-4735-024e-e4013a4046c3": {
+            "id": "8ea80f66-7b92-4735-024e-e4013a4046c3",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 115,
+            "point": [
+              -591.12,
+              4361.67
+            ],
+            "rotation": 0,
+            "text": "chatRoom",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "7fc34e18-9303-41a4-1e46-5e5279d8334a": {
+            "id": "7fc34e18-9303-41a4-1e46-5e5279d8334a",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 116,
+            "point": [
+              -480.8,
+              4239.69
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  10.62,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  52.44
+                ],
+                "canBind": true,
+                "bindingId": "917eebda-ccbd-488f-35be-bef2e38de568"
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  5.31,
+                  26.22
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "63e096ed-e55a-4765-1a2c-ea010f228100": {
+            "id": "63e096ed-e55a-4765-1a2c-ea010f228100",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 117,
+            "point": [
+              -516.92,
+              4135.55
+            ],
+            "size": [
+              249.92,
+              102.92
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "54eb9cc3-1197-4aae-299d-ebc1c434122e": {
+            "id": "54eb9cc3-1197-4aae-299d-ebc1c434122e",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 118,
+            "point": [
+              -434.24,
+              4174.65
+            ],
+            "rotation": 0,
+            "text": "id_player",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "3adc95dd-665a-44c9-36cf-3c2c44d712b1": {
+            "id": "3adc95dd-665a-44c9-36cf-3c2c44d712b1",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 120,
+            "point": [
+              -265.53999999999996,
+              4221.39,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  48.54,
+                  213.16
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  24.27,
+                  106.58
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "b52aa769-2b53-4987-02a4-faaaf30dd728": {
+            "id": "b52aa769-2b53-4987-02a4-faaaf30dd728",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 121,
+            "point": [
+              -245,
+              4442.63
+            ],
+            "size": [
+              247.36,
+              76.58
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "097891b1-2b5c-4cc6-3790-c63c67ea8d65": {
+            "id": "097891b1-2b5c-4cc6-3790-c63c67ea8d65",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 122,
+            "point": [
+              -189.79999999999995,
+              4468.91
+            ],
+            "rotation": 0,
+            "text": "permission",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "3ee36e95-ce04-432c-355b-a80fa4a91dee": {
+            "id": "3ee36e95-ce04-432c-355b-a80fa4a91dee",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 123,
+            "point": [
+              -557.9599999999999,
+              4458.61,
+              0.5
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  0,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  57.36,
+                  391.06
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  28.68,
+                  195.53
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "47d30da5-0c47-4eba-0902-7822462b9176": {
+            "id": "47d30da5-0c47-4eba-0902-7822462b9176",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 124,
+            "point": [
+              -566.02,
+              4891.73
+            ],
+            "size": [
+              373.56,
+              295.62
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "2ee2e2da-622e-4975-2454-6b76ae6b0796": {
+            "id": "2ee2e2da-622e-4975-2454-6b76ae6b0796",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 125,
+            "point": [
+              -512.38,
+              4521.45
+            ],
+            "rotation": 0,
+            "bend": 0,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  329.72,
+                  0
+                ],
+                "canBind": true
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  202.94
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  164.86,
+                  101.47
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "a1f778c0-a9c4-42bc-05bf-22cba722a301": {
+            "id": "a1f778c0-a9c4-42bc-05bf-22cba722a301",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 126,
+            "point": [
+              -481.68,
+              4711.27
+            ],
+            "rotation": 0,
+            "text": "time = now\ntime = last_time",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "e8bde938-6588-4fb2-29d8-87cd59719622": {
+            "id": "e8bde938-6588-4fb2-29d8-87cd59719622",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 127,
+            "point": [
+              -477.96,
+              4989.67
+            ],
+            "rotation": 0,
+            "text": "all_messges",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "a8cc3b9d-7238-4e97-0a49-21b2d289314a": {
+            "id": "a8cc3b9d-7238-4e97-0a49-21b2d289314a",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 128,
+            "point": [
+              -323.3,
+              4598.75
+            ],
+            "rotation": 0,
+            "text": "check if this player is admin owner member \nmuted or banned",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "55163bbe-99ac-4df9-0d40-fdb4f43e0741": {
+            "id": "55163bbe-99ac-4df9-0d40-fdb4f43e0741",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 129,
+            "point": [
+              -563.92,
+              5483.43
+            ],
+            "rotation": 0,
+            "text": "select{ msg }",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "7e15b42b-5006-4927-3f31-77b5a1780a1e": {
+            "id": "7e15b42b-5006-4927-3f31-77b5a1780a1e",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 130,
+            "point": [
+              -701.34,
+              5583.41
+            ],
+            "rotation": 0,
+            "text": "check if sender of msg not blocked   not{ block}",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "6d2451bc-b42f-407c-05e5-52cb70fdbcc3": {
+            "id": "6d2451bc-b42f-407c-05e5-52cb70fdbcc3",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 131,
+            "point": [
+              -577.24,
+              5526.67
+            ],
+            "rotation": 0,
+            "text": "orderBy time ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "3f782db3-5bfc-4430-0ca6-a8995f2ed0ab": {
+            "id": "3f782db3-5bfc-4430-0ca6-a8995f2ed0ab",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 132,
+            "point": [
+              -599.74,
+              5887.21
+            ],
+            "rotation": 0,
+            "text": " ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "2cdbf760-7269-4386-1cfb-c08ff3b43e72": {
+            "id": "2cdbf760-7269-4386-1cfb-c08ff3b43e72",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 133,
+            "point": [
+              627.66,
+              6355.44
+            ],
+            "size": [
+              206,
+              231.84
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "f4c98aa7-2c8b-4fdc-18e9-1f8c262360ae": {
+            "id": "f4c98aa7-2c8b-4fdc-18e9-1f8c262360ae",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 134,
+            "point": [
+              659.0999999999999,
+              6295.38
+            ],
+            "rotation": 0,
+            "text": "Messages:",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "c9f0f733-f017-48de-1ca5-ce0f650c41d9": {
+            "id": "c9f0f733-f017-48de-1ca5-ce0f650c41d9",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 135,
+            "point": [
+              673.88,
+              6387.58
+            ],
+            "rotation": 0,
+            "text": "sender, \nreciver,\ncontent,\ndate now",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1.4569565217391338,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "05638de0-cb66-4d10-0f2e-3acae0628b75": {
+            "id": "05638de0-cb66-4d10-0f2e-3acae0628b75",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 136,
+            "point": [
+              291.31,
+              3548.48
+            ],
+            "size": [
+              1016.98,
+              311.67
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "c4a49c49-8cf3-4832-22d6-8b7b7e5713d1": {
+            "id": "c4a49c49-8cf3-4832-22d6-8b7b7e5713d1",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 137,
+            "point": [
+              343.66,
+              3586.85
+            ],
+            "rotation": 0,
+            "text": "1- getfriendProfile/getPermission/:id ==> status block",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "1769edba-ccd9-4994-3b3d-30ed05dd516f": {
+            "id": "1769edba-ccd9-4994-3b3d-30ed05dd516f",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 138,
+            "point": [
+              261.01,
+              3988.08
+            ],
+            "rotation": 0,
+            "text": " ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "584674c7-313b-4883-0052-aa96d4d12074": {
+            "id": "584674c7-313b-4883-0052-aa96d4d12074",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 139,
+            "point": [
+              -71.95000000000002,
+              6778.15
+            ],
+            "rotation": 0,
+            "text": "list of friends - list of members",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "0b9f5157-ccb2-44ea-3caa-152643ec259d": {
+            "id": "0b9f5157-ccb2-44ea-3caa-152643ec259d",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 140,
+            "point": [
+              337.89,
+              5432.28
+            ],
+            "size": [
+              474,
+              327.24
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "b919a239-bcdc-499d-0300-f92abcd64c41": {
+            "id": "b919a239-bcdc-499d-0300-f92abcd64c41",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 141,
+            "point": [
+              376.24,
+              5473.37
+            ],
+            "rotation": 0,
+            "text": "1- get all friends",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "6db31233-d33a-48fc-28de-45af7b19a861": {
+            "id": "6db31233-d33a-48fc-28de-45af7b19a861",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 142,
+            "point": [
+              357.36,
+              5530.15
+            ],
+            "rotation": 0,
+            "text": "2- get all members dial room [id_owner, id_admins, id_members/me]",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "d21d7920-88e9-4f78-2c21-a4e892875cbd": {
+            "id": "d21d7920-88e9-4f78-2c21-a4e892875cbd",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 143,
+            "point": [
+              356.73,
+              5579.67
+            ],
+            "rotation": 0,
+            "text": "3- ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "e3e3a00d-0010-44d2-261f-536a38d77aed": {
+            "id": "e3e3a00d-0010-44d2-261f-536a38d77aed",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 144,
+            "point": [
+              503.22,
+              7021.74
+            ],
+            "size": [
+              1349,
+              358.27
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "a643b921-6f7c-4629-2210-54327cb5b90b": {
+            "id": "a643b921-6f7c-4629-2210-54327cb5b90b",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 145,
+            "point": [
+              548.9,
+              7082.2
+            ],
+            "rotation": 0,
+            "text": "1-  list of romms [dm and chat room] ==> object[ id_dm: boolean, nameOfRoom, machi DM is owner admin member[ ban muted normal]",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "a16c8fd3-ccf4-4305-04b6-6aa6f06ea4dc": {
+            "id": "a16c8fd3-ccf4-4305-04b6-6aa6f06ea4dc",
+            "type": "arrow",
+            "name": "Arrow",
+            "parentId": "page",
+            "childIndex": 146,
+            "point": [
+              1032.52,
+              7120.2
+            ],
+            "rotation": 0,
+            "bend": 0.000023972760132922837,
+            "handles": {
+              "start": {
+                "id": "start",
+                "index": 0,
+                "point": [
+                  101.99,
+                  0
+                ],
+                "canBind": true,
+                "bindingId": "af1f428a-8f2e-45af-12d3-ff8d9cc15d32"
+              },
+              "end": {
+                "id": "end",
+                "index": 1,
+                "point": [
+                  0,
+                  92.78
+                ],
+                "canBind": true
+              },
+              "bend": {
+                "id": "bend",
+                "index": 2,
+                "point": [
+                  51,
+                  46.39
+                ]
+              }
+            },
+            "decorations": {
+              "end": "arrow"
+            },
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "5fb0eeaa-df08-497e-3014-4112830bc203": {
+            "id": "5fb0eeaa-df08-497e-3014-4112830bc203",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 147,
+            "point": [
+              848.64,
+              7189.41
+            ],
+            "size": [
+              349.64,
+              180.29
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "4e81ed1b-41bb-4183-2e71-8a360030cee9": {
+            "id": "4e81ed1b-41bb-4183-2e71-8a360030cee9",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 148,
+            "point": [
+              862.72,
+              7219.05
+            ],
+            "rotation": 0,
+            "text": "in case of machi dm aka room",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "3e6a2d7c-322b-4e96-0b49-877ff6cd0d71": {
+            "id": "3e6a2d7c-322b-4e96-0b49-877ff6cd0d71",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 149,
+            "point": [
+              778.15,
+              7281.26
+            ],
+            "rotation": 0,
+            "text": "and is member you need to knoow if banned or muted",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "80ed4567-cd7c-48ff-3835-08bd41c6d80b": {
+            "id": "80ed4567-cd7c-48ff-3835-08bd41c6d80b",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 150,
+            "point": [
+              581.05,
+              7160.55
+            ],
+            "rotation": 0,
+            "text": "2- Request",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          }
+        },
+        "bindings": {
+          "a8d260e4-e227-4565-1877-5df7eec34a2b": {
+            "id": "a8d260e4-e227-4565-1877-5df7eec34a2b",
+            "type": "arrow",
+            "fromId": "13c6ea42-c1d3-461b-0c52-b3d6dc4730d3",
+            "toId": "83fc48b2-15a3-46a6-2eb9-d08660566b7d",
+            "handleId": "start",
+            "point": [
+              0.5,
+              0.5
+            ],
+            "distance": 16
+          },
+          "bb497528-b6bc-4f64-3812-aa97c449c3f8": {
+            "id": "bb497528-b6bc-4f64-3812-aa97c449c3f8",
+            "type": "arrow",
+            "fromId": "d69f9d77-82b1-448b-0201-9db1ca8a2f62",
+            "toId": "938bfba7-cbcf-4ba9-2d46-7f518c5c7b99",
+            "handleId": "start",
+            "point": [
+              0.5,
+              0.5
+            ],
+            "distance": 16
+          },
+          "22aa3f70-286d-402f-09c0-5d10383368ae": {
+            "id": "22aa3f70-286d-402f-09c0-5d10383368ae",
+            "type": "arrow",
+            "fromId": "c72050d4-afa5-44c3-2520-42c76b730bb2",
+            "toId": "a5373095-36ba-4296-3dfb-25274147c653",
+            "handleId": "start",
+            "point": [
+              0.5,
+              0.5
+            ],
+            "distance": 16
+          },
+          "10873cc5-737d-4ec2-3f53-7a4f62d363bd": {
+            "id": "10873cc5-737d-4ec2-3f53-7a4f62d363bd",
+            "type": "arrow",
+            "fromId": "2666d209-cd61-4eb6-2c20-45d07464d3d8",
+            "toId": "ef3b2d6c-a9f3-4f77-2d36-035afab40842",
+            "handleId": "start",
+            "point": [
+              0.5,
+              0.5
+            ],
+            "distance": 8
+          },
+          "ddc673cb-4520-403e-0857-4190c3008aac": {
+            "id": "ddc673cb-4520-403e-0857-4190c3008aac",
+            "type": "arrow",
+            "fromId": "f976ec88-7cdf-498a-0898-ac7580de985a",
+            "toId": "3943c801-d720-40f9-1e3a-2872b61c6423",
+            "handleId": "start",
+            "point": [
+              0.5,
+              0.5
+            ],
+            "distance": 8
+          },
+          "917eebda-ccbd-488f-35be-bef2e38de568": {
+            "id": "917eebda-ccbd-488f-35be-bef2e38de568",
+            "type": "arrow",
+            "fromId": "7fc34e18-9303-41a4-1e46-5e5279d8334a",
+            "toId": "f750a3b7-c58a-4580-112a-d36f19058bc4",
+            "handleId": "end",
+            "point": [
+              0.73,
+              0.56
+            ],
+            "distance": 16
+          },
+          "af1f428a-8f2e-45af-12d3-ff8d9cc15d32": {
+            "id": "af1f428a-8f2e-45af-12d3-ff8d9cc15d32",
+            "type": "arrow",
+            "fromId": "a16c8fd3-ccf4-4305-04b6-6aa6f06ea4dc",
+            "toId": "a643b921-6f7c-4629-2210-54327cb5b90b",
+            "handleId": "start",
+            "point": [
+              0.5,
+              0.5
+            ],
+            "distance": 8
+          }
+        }
+      }
+    },
+    "pageStates": {
+      "page": {
+        "id": "page",
+        "selectedIds": [],
+        "camera": {
+          "point": [
+            0,
+            0
+          ],
+          "zoom": 1
+        }
+      }
+    },
+    "assets": {}
+  },
+  "assets": {}
+}
