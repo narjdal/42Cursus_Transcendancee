@@ -46,7 +46,8 @@ model Permission {
     statusMember String
     is_banned    Boolean  @default(false)
     is_muted     Boolean  @default(false)
-    until        DateTime
+    blocked_since     DateTime
+    muted_until       DateTime
 
     player    Player   @relation("PermissionInRoom", fields: [playerId], references: [id])
     playerId  Int

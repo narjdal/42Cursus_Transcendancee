@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Req, Request, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Request, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { PlayerService } from './player.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -272,10 +272,32 @@ export class PlayerController {
         return rooms;
     }
 
-    @Get('/createChatRoom/:id')
-    async CreateChatRoom(@Param() nameOfRoom: number, @Req() request, @Res() response) {
+    @Post('/createChatRoom/:id')
+    async CreatePublicChatRoom(@Body() Body, number, @Req() request, @Res() response) {
         console.log("Create Chat Room");
-        const room = await this.playerService.createChatRoom(request.user, nameOfRoom['id']);
+        const room = await this.playerService.createPublicChatRoom(request.user, Body.name);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(room);
+    }
+
+    @Post('/createChatRoom/:id')
+    async CreatePrivateChatRoom(@Body() Body, number, @Req() request, @Res() response) {
+        console.log("Create Chat Room");
+        const room = await this.playerService.createPrivateChatRoom(request.user, Body.name);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(room);
+    }
+
+    @Post('/createChatRoom/:id')
+    async CreateProtectedChatRoom(@Body() Body, number, @Req() request, @Res() response) {
+        console.log("Create Chat Room");
+        const room = await this.playerService.createProtectedChatRoom(request.user, Body.name, Body.password);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }

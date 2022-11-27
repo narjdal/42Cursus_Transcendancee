@@ -4847,6 +4847,56 @@
               "font": "script",
               "textAlign": "middle"
             }
+          },
+          "3e6919af-a1e1-4b9c-0b7f-ec8ce62aae9a": {
+            "id": "3e6919af-a1e1-4b9c-0b7f-ec8ce62aae9a",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 153,
+            "point": [
+              513.89,
+              8946.68
+            ],
+            "size": [
+              873.94,
+              458.94
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "58680ff2-812d-4ba9-01e7-948497fe0b68": {
+            "id": "58680ff2-812d-4ba9-01e7-948497fe0b68",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 154,
+            "point": [
+              528.86,
+              9022.74
+            ],
+            "rotation": 0,
+            "text": "1- Front socket.io()",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
           }
         },
         "bindings": {

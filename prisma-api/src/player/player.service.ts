@@ -30,11 +30,20 @@ export class PlayerService {
 
         const rooms = await this.prisma.chatRoom.findMany({
             where: {
-                all_members: {
-                    some: {
-                        playerId: me.id
-                    }
-                }
+                OR: [
+                    {
+                        all_members: {
+                            some: {
+                                playerId: me.id
+                            }
+                        },
+                    },
+                    {
+                        is_dm: false,
+                        is_public: true,
+                    },
+                ],
+
             }
         })
         return rooms;
@@ -77,7 +86,7 @@ export class PlayerService {
         return friendship;
     }
 
-    async getAllFriendships(data: any) {
+    async getFriendships(data: any) {
         const me = await this.findPlayer(data.nickname);
 
         const friends = await this.prisma.friendship.findMany({
@@ -109,7 +118,7 @@ export class PlayerService {
         const me = await this.findPlayer(data.nickname);
 
         console.log("ana get all friends method"); 
-        const friendsId = await this.getAllFriendships(data); // friend 
+        const friendsId = await this.getFriendships(data); // friend 
 
         // console.log(friendsId);
 
@@ -502,7 +511,7 @@ async getRoomById(room_id: number) {
 // 0- Create a chat room
 
     // function to create a chat room between two players if they are friends
-    async createChatRoom(user: any, nameOfRoom: string) {
+    async createPublicChatRoom(user: any, nameOfRoom: string) {
         const me = await this.findPlayer(user.nickname);
 
         // owner create a room 
@@ -524,9 +533,73 @@ async getRoomById(room_id: number) {
                             //        id: me.id,
                             //     }
                             // },
-                            until: new Date(),
+                            muted_until: null,
+                            blocked_since: null,
                             playerId: me.id
                             // connect && include 
+                        },
+                    ],
+                },
+            },
+        })
+        return room;
+    }
+
+    async createPrivateChatRoom(user: any, nameOfRoom: string) {
+        const me = await this.findPlayer(user.nickname);
+
+        // owner create a room 
+        // while creating the room create a member type(permission) and set it to owner
+
+        const room = await this.prisma.chatRoom.create({
+            data:
+            {
+                is_dm: false,
+                is_public: false,
+                name: nameOfRoom,
+
+                all_members: {
+                    create: [
+                        {
+                            statusMember: "owner",
+                            // muted_until:new Date(),
+                            // player:  {
+                            //     connect:{
+                            //        id: me.id,
+                            //     }
+                            // },
+                            muted_until: null,
+                            blocked_since: null,
+                            playerId: me.id,
+                            // connect && include 
+                        },
+                    ],
+                },
+            },
+        })
+        return room;
+    }
+
+    async createProtectedChatRoom(user: any, nameOfRoom: string, setpassword: string) {
+        const me = await this.findPlayer(user.nickname);
+
+        // owner create a room 
+        // while creating the room create a member type(permission) and set it to owner
+
+        const room = await this.prisma.chatRoom.create({
+            data:
+            {
+                is_dm: false,
+                name: nameOfRoom,
+                is_public: false,
+
+                all_members: {
+                    create: [
+                        {
+                            statusMember: "owner",   
+                            muted_until: null,
+                            blocked_since: null,
+                            playerId: me.id,
                         },
                     ],
                 },
@@ -555,8 +628,9 @@ async getRoomById(room_id: number) {
                             //        id: me.id,
                             //     }
                             // },
-                            until: new Date(),
-                            playerId: sender.id
+                            muted_until: null,
+                            blocked_since: null,
+                            playerId: sender.id,
                             // connect && include 
                         },
                         {
@@ -567,7 +641,8 @@ async getRoomById(room_id: number) {
                             //        id: me.id,
                             //     }
                             // },
-                            until: new Date(),
+                            muted_until: null,
+                            blocked_since: null,
                             playerId: receiver.id
                             // connect && include 
                         },
@@ -667,7 +742,7 @@ async getRoomById(room_id: number) {
                         },
                         {
                             createdAt: {
-                                lte: status.until
+                                lte: status.blocked_since,
                             }
                         },
                     ],
@@ -760,7 +835,8 @@ async getRoomById(room_id: number) {
         const room = await this.prisma.permission.create({
             data: {
                 statusMember: "member",
-                until: new Date(),
+                muted_until: null,
+                blocked_since: null,
                 playerId: palyer.id,
                 roomId: room_id,
             }
@@ -768,7 +844,7 @@ async getRoomById(room_id: number) {
         return room;
     }
 
-// 5- set member to admin if u are admin or owner
+// 5- set member as admin if u are admin or owner
 
     async setAdmin(login: string, room_id: number) {
         const palyer = await this.findPlayer(login);
@@ -802,6 +878,7 @@ async getRoomById(room_id: number) {
             },
             data: {
                 is_banned: true,
+                blocked_since: new Date(),
             },
         });
     }
@@ -836,7 +913,7 @@ async getRoomById(room_id: number) {
             },
             data: {
                 is_muted: true,
-                // until: fix_date,
+                // muted_until: fix_date,
             },
         });
     }
@@ -854,6 +931,8 @@ async getRoomById(room_id: number) {
             },
             data: {
                 is_muted: false,
+                muted_until: null,
+                blocked_since: null,
             },
         });
     }

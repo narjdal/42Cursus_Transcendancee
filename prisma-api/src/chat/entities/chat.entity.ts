@@ -1,5 +1,12 @@
 export class Message {
-    senderId: number;
-    roomId: number;
-    message: string;
+    name: string;
+    text: string;
 }
+
+
+
+// export class Message {
+//     senderId: number;
+//     roomId: number;
+//     message: string;
+// }
