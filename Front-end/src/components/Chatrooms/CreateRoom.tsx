@@ -60,8 +60,8 @@ const CreateRoom = () => {
           body: JSON.stringify(
               { 
                 roomState: roomState,
-            RoomName: RoomName,
-            RoomPassword: password,}
+            name: RoomName,
+            password: password,}
               )
       })
       

@@ -38,15 +38,27 @@ let endpoint = 'http://localhost:5000/player/profile/?id=';
 console.log(" this endpoint   " + endpoint)
 
 
+try
+{
+
+
 await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
     // mode:'no-cors',
     method:'get',
     credentials:"include"
 })
-
-
-.then((response) => response.json())
-.then(json => {
+.then((response) => 
+{
+  if (response.ok)
+  {
+    return response.json();
+  }
+  else
+  {
+    throw new Error ("User not found !");
+  }
+})
+.then((json) => {
     console.log("The response is => " + JSON.stringify(json))
   setErrorMessage(""); 
   // localStorage.setItem("usertoshow",JSON.stringify(json));
@@ -55,18 +67,36 @@ await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
     console.log("SHOULD RELOAD  ....")
   window.location.reload();
   }
-  setAllgood(true);
-  setUsertoShow(json);
-    return json;
+  if(json.statusCode == "404")
+  {
+    setAllgood(false);
+  setErrorMessage(" User not found ! ");
+  }
+  else
+  {
+    setAllgood(true);
+    setUsertoShow(json);
+      return json;
+  }
+
 })
 .catch((error) => {
-  console.log("An error occured : " + error)
-  setUsertoShow([])
-  setAllgood(false);
-  // localStorage.setItem("usertoshow","");
-  setErrorMessage("An error occured! User not found ! ");
-  return error;
+  console.log(error);
 })
+// .catch((error) => {
+//   console.log("An error occured : " + error)
+//   setUsertoShow([])
+//   setAllgood(false);
+//   // localStorage.setItem("usertoshow","");
+//   setErrorMessage("An error occured! User not found ! ");
+//   return error;
+// })
+}
+
+catch(err)
+{
+    console.log("err try catch" + err);
+}
 
 // console.log("Waiting for the backend endpoint ...");
   // console.log("Fetching Friends of this User " + id);
