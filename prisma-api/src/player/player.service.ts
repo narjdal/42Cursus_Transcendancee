@@ -667,7 +667,7 @@ export class PlayerService {
             where: {
                 AND: [
                     { playerId: user.id },
-                    { roomId: id_room },
+                    { roomId: +id_room },
                 ]
             }
         })
@@ -683,7 +683,7 @@ export class PlayerService {
             where: {
                 AND: [
                     { senderId: me.id },
-                    { roomId: id_room },
+                    { roomId: +id_room },
                 ]
             },
         })
@@ -698,7 +698,7 @@ export class PlayerService {
             where: {
                 AND: [
                     { playerId: me.id },
-                    { roomId: id_room },
+                    { roomId: +id_room },
                 ]
             }
         })
@@ -736,7 +736,7 @@ export class PlayerService {
                 {
                     AND: [
                         {
-                            roomId: id_room,
+                            roomId: +id_room,
                         },
                         {
                             NOT: {
@@ -771,7 +771,7 @@ export class PlayerService {
             {
                 AND: [
                     {
-                        roomId: id_room,
+                        roomId: +id_room,
                     },
                     {
                         NOT: {
@@ -811,7 +811,7 @@ export class PlayerService {
             data: {
                 msg: message,
                 senderId: me.id,
-                roomId: room_id
+                roomId: +room_id
             }
         })
         return messageSent;
@@ -829,7 +829,7 @@ export class PlayerService {
             data: {
                 msg: message,
                 senderId: me.id,
-                roomId: room_id
+                roomId: +room_id
             }
         })
         return messageSent;
@@ -845,7 +845,7 @@ export class PlayerService {
                 muted_until: null,
                 blocked_since: null,
                 playerId: palyer.id,
-                roomId: room_id,
+                roomId: +room_id,
             }
         })
         return room;
@@ -860,7 +860,7 @@ export class PlayerService {
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: room_id }
+                    { roomId: +room_id }
                 ],
 
             },
@@ -879,7 +879,7 @@ export class PlayerService {
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: room_id }
+                    { roomId: +room_id }
                 ],
 
             },
@@ -899,7 +899,7 @@ export class PlayerService {
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: room_id }
+                    { roomId: +room_id }
                 ],
 
             },
@@ -914,7 +914,7 @@ export class PlayerService {
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: room_id }
+                    { roomId: +room_id }
                 ],
 
             },
@@ -932,7 +932,7 @@ export class PlayerService {
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: room_id }
+                    { roomId: +room_id }
                 ],
 
             },
@@ -953,7 +953,7 @@ export class PlayerService {
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: room_id }
+                    { roomId: +room_id }
                 ],
 
             },

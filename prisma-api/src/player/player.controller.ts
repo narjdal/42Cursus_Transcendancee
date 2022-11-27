@@ -320,7 +320,7 @@ export class PlayerController {
     @Get('/Permission/:id') //POST REQUEST
     async GetPermission(@Param() id_room: number, @Req() request, @Res() response) {
         console.log("Get Permission");
-        const permission = await this.playerService.getPermissions(request.user, id_room);
+        const permission = await this.playerService.getPermissions(request.user, +id_room);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
@@ -333,7 +333,7 @@ export class PlayerController {
     @Get('/addMember/:id1/:id2')
     async addMember(@Param() login: string, @Param() room: number ,@Req() request, @Res() response) {
         console.log("Add Member");
-        const admin = await this.playerService.addMember(login['id1'], room['id2']);
+        const admin = await this.playerService.addMember(login['id1'], +room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -345,7 +345,7 @@ export class PlayerController {
     @Get('/setAdmin/:id1/:id2')
     async setAdmin(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Set Admin");
-        const admin = await this.playerService.setAdmin(login['id1'], room['id2']);
+        const admin = await this.playerService.setAdmin(login['id1'], +room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -359,7 +359,7 @@ export class PlayerController {
         console.log("Ban Member");
         // const if_admin await this.playerService.getPermissions(request.user, room['id2']);
         // if(if_admin === "admin" || if_admin === "owner"){
-        const ban = await this.playerService.banMember(login['id1'], room['id2']);
+        const ban = await this.playerService.banMember(login['id1'], +room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -375,7 +375,7 @@ export class PlayerController {
         console.log("Kick Member");
         // const if_admin await this.playerService.getPermissions(request.user, room['id2']);
         // if(if_admin === "admin" || if_admin === "owner"){
-        const ban = await this.playerService.kickMember(login['id1'], room['id2']);
+        const ban = await this.playerService.kickMember(login['id1'], +room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -390,7 +390,7 @@ export class PlayerController {
     @Get('/muteMember/:id1/:id2')
     async muteMember(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Mute Member");
-        const mute = await this.playerService.muteMember(login['id1'], room['id2']);
+        const mute = await this.playerService.muteMember(login['id1'], +room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -401,7 +401,7 @@ export class PlayerController {
     @Get('/unmuteMember/:id1/:id2')
     async unmuteMember(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Mute Member");
-        const mute = await this.playerService.unmuteMember(login['id1'], room['id2']);
+        const mute = await this.playerService.unmuteMember(login['id1'], +room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -413,7 +413,7 @@ export class PlayerController {
     @Get('/leaveRoom/:id1/:id2')
     async leaveRoom(@Param() login: string, @Param() room: number, @Req() request, @Res() response) {
         console.log("Leave Room");
-        const leave = await this.playerService.leaveChannel(request.user, room['id2']);
+        const leave = await this.playerService.leaveChannel(request.user, +room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
