@@ -59,12 +59,12 @@ if(OpenMsg)
         <ul>  </ul>
         <span>{props.Friends.nickname}          </span>
          <img className="avatar" src={props.Friends.avatar} />
-    <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>
+    {/* <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>
     <span className="icon material-symbols-outlined">
      {"People"}  
       </span>
 
-      </button>
+      </button> */}
       
       <button type="button" id="ss" className='ButtonSocial-block' onClick={HandleBlock}>
     <span className="icon material-symbols-outlined">
@@ -74,14 +74,14 @@ if(OpenMsg)
       </button>
 
 
-      <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleOpenMsg}>
+      {/* <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleOpenMsg}>
     <span className="icon material-symbols-outlined">
      {"Chat"}  
-      </span>
+      </span> */}
 
 
-      </button>
-      {OpenMsg ? (
+      {/* </button> */}
+      {/* {OpenMsg ? (
         <li>
             <DmWindow contact = {props.Friends} /> 
             </li>
@@ -89,7 +89,7 @@ if(OpenMsg)
         <li>
 
             </li>
-      )}
+      )} */}
       </li>
       <li>
         
