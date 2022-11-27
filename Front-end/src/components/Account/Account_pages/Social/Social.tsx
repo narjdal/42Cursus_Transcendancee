@@ -2,6 +2,7 @@ import react from 'react'
 import {useState,useEffect} from 'react'
 import './Social.css'
 import DisplaySocial from './DisplaySocialList'
+import { IsAuthOk } from '../../../../utils/utils'
 const Social = () => {
     console.log("INSIDE SOCIAAAAAAL")
     // const FriendsList = [
@@ -34,7 +35,15 @@ const Social = () => {
     .then((response) => response.json())
     .then(json => {
         console.log("The response is => " + JSON.stringify(json))
-      setFriends(json);
+        if(IsAuthOk(json.satusCode) == 1)
+        {
+          window.location.reload();
+        }
+        if(json.statusCode == "404")
+        return;
+        else
+        
+        setFriends(json);
     
         return json;
     })

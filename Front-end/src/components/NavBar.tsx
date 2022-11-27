@@ -72,30 +72,34 @@ console.log(" this endpoint   " + endpoint)
 
 
 await fetch((endpoint),{
-    // mode:'no-cors',
+    mode:'no-cors',
     method:'get',
     credentials:"include"
 })
 
 
-.then((response) => response.json())
-.then(json => {
-    console.log("The response is => " + JSON.stringify(json))
-  setErrorMessage(""); 
-  if (IsAuthOk(json.statusCode) == 1)
-  {
-    console.log("SHOULD RELOAD  ....")
-  window.location.reload();
-  }
-
+.then((response) => {
   localStorage.setItem("authenticated", "false");
-  localStorage.setItem("user","");
-  window.location.reload();
-
-  // localStorage.setItem("usertoshow",JSON.stringify(json));
-
-    return json;
+    localStorage.setItem("user","");
+    window.location.reload();
 })
+// .then(json => {
+//     console.log("The response is => " + JSON.stringify(json))
+//   setErrorMessage(""); 
+//   if (IsAuthOk(json.statusCode) == 1)
+//   {
+//     console.log("SHOULD RELOAD  ....")
+//   window.location.reload();
+//   }
+
+//   localStorage.setItem("authenticated", "false");
+//   localStorage.setItem("user","");
+//   window.location.reload();
+
+//   // localStorage.setItem("usertoshow",JSON.stringify(json));
+
+//     return json;
+// })
 .catch((error) => {
   console.log("An error occured : " + error)
   setErrorMessage("An error occured! User not found ! ");

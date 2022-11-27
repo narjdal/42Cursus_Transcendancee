@@ -64,7 +64,8 @@ async function GetRoomList  ()  {
   .then((response) => response.json())
   .then(json => {
       console.log("The response is => " + JSON.stringify(json))
-    if(IsAuthOk(json.statusCode) == 0)
+    if(IsAuthOk(json.statusCode) == 1)
+    window.location.reload();
       setChatRooms(json);
   
       return json;

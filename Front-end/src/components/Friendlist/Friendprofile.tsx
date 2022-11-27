@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useState } from "react";
 import './Friendprofile.css'
 import { Location } from 'react-router-dom';
+import { IsAuthOk } from '../../utils/utils';
 
 const Friendprofile = () => {
   const params = useParams();
@@ -37,7 +38,7 @@ const Friendprofile = () => {
       .then((response) => response.json())
       .then(json => {
         console.log("The response  => " + JSON.stringify(json))
-        if (json.ok)
+        if (json.ok || IsAuthOk(json) == 1)
           window.location.reload();
         setErrorMessage("");
         return json;

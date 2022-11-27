@@ -29,8 +29,8 @@ async function FetchUserInfo (nickname) {
 // if(loggeduser)
 // {
 // var Current_User = JSON.parse(loggeduser);
-const text = "http://localhost:5000/player/listOfFriends";
-// const text = ("http://localhost:5000/player/listToAddFriend/" + params.id);
+// const text = "http://localhost:5000/player/listOfFriends";
+const text = ("http://localhost:5000/player/listToAddFriend/" + params.id);
 console.log("Api Fetch Link :  =>  " + text);
 
 
@@ -43,11 +43,13 @@ await fetch(text,{
 .then((response) => response.json())
 .then(json => {
   console.log("The response is => " + JSON.stringify(json))
-setFriends(json);
 if(json.statusCode == "500")
 {
   console.log("An error occured in the backend.");
 }
+else
+setFriends(json);
+
 
   return json;
 })

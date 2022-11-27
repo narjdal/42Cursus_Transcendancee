@@ -40,7 +40,7 @@ const CreateRoom = () => {
         setRoomState("Protected");
 
     };
-    async function CreateRoom ()  {
+    async function CreateRoom (password: string)  {
 
         const loggeduser = localStorage.getItem("user");
   
@@ -51,7 +51,7 @@ const CreateRoom = () => {
         console.log("Api Fetch Link :  =>  " + text);
 
         
-        console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + RoomPassword + " Owner : " + Current_User.nickname);
+        console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + password + " Owner : " + Current_User.nickname);
         await fetch(`http://localhost:5000/player/createChatRoom/${RoomName}`,{
           // mode:'no-cors',
           method:'post',
@@ -61,7 +61,7 @@ const CreateRoom = () => {
               { 
                 roomState: roomState,
             RoomName: RoomName,
-            RoomPassword: RoomPassword,}
+            RoomPassword: password,}
               )
       })
       
@@ -95,18 +95,24 @@ const CreateRoom = () => {
         {
             console.log("Setting a room with pws ! " + RoomPassword);
             setRoomState("protected");
+        CreateRoom(RoomPassword);
+
         }
          if(isRoomPublic)
         {
             console.log("Setting a public room ! ");
             setRoomState("public");
+            setRoomPassword("");
+        CreateRoom("");
+
         }
          if(isRoomPrivate)
         {
             console.log("Setting a private room ! ");
             setRoomState("private");
+        CreateRoom("");
+            setRoomPassword("");
         }
-        CreateRoom();
         // Here Post Request to Backend , with the Room infos  + creating use infos 
         // fetch(
 		// 	'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',
@@ -167,7 +173,7 @@ const CreateRoom = () => {
        Protected
        
        {isRoomProtected ? (
-        <input type="text"
+        <input type="password"
         className="form-control" 
         placeholder="Room Password:   " 
         onChange={event => setRoomPassword(event.target.value)}

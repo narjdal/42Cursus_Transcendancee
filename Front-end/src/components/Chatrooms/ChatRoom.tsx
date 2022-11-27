@@ -6,6 +6,7 @@ import ChatRoomBox from './ChatRoomBox'
 import ChatRoomButton from './ChatRoomButtons'
 import { useState ,useEffect} from "react";
 import AdminChatRoomDashboard from './AdminChatRoomDashboard';
+import { IsAuthOk } from '../../utils/utils';
 function ChatRoom() {
     const params = useParams();
   const [errorMessage, setErrorMessage] = useState("");
@@ -39,8 +40,8 @@ async function GetRoomById  ()  {
   
   .then((response) => response.json())
   .then(json => {
+      json.id = params.id;
       console.log("The response Of ChatRoom is  => " + JSON.stringify(json))
-    
       setRoom(json);
       if(json.is_dm == true)
       {
@@ -50,11 +51,12 @@ async function GetRoomById  ()  {
         setAllgood(true)
         setIsDm(true);
       }
-      if(json.statusCode == "500")
+      if(json.statusCode == "500" || IsAuthOk(json.statusCode) == 1)
         {
             console.log("an error occured");
             setErrorMessage("an error occured");
             setAllgood(false)
+            window.location.reload();
         }
 
         else
@@ -83,6 +85,7 @@ useEffect (() =>
           {
             const current = JSON.parse(loggeduser);
             GetRoomById();
+            // HEre ADD contdition if user owner
             SetUserAdmin(true);
           }
       },[])

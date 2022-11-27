@@ -106,15 +106,14 @@ return (
    height="20"
    className="avatar1"
    onClick={handleClick} /></td>
-    {OpenMsg ? (
+    {/* {OpenMsg ? (
                     <td> 
-                             {/* <button
-                onClick={()=> SetOpenMsg(!OpenMsg)}><span>Close</span></button> */}
+                            
                      <DmWindow contact={props.user}/> 
                      </td>
               ) : (
                 <td></td>
-              )}
+              )} */}
    <td> 
   
    <p> <button onClick={RedirFriendProfile}>{props.user.nickname}</button> </p>

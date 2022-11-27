@@ -6,21 +6,23 @@ import './ChatRoomBox.css'
 import MessageList from '../DirectMsg/MessageList';
 import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import axios from 'axios';
+import { IsAuthOk } from '../../utils/utils';
 //https://codeburst.io/tutorial-how-to-build-a-chat-app-with-react-native-and-backend-9b24d01ea62a
 const ChatRoomBox = (props) => {
 
-  const users = [{ username: "Jane", password: "testpassword" ,ChatRoomBox: ""}];
   const [inputMsg,SetInputMsg] = useState("");
-  const [userfetched,setUserFetched] = useState("");
 
   const [BanUser,SetBanUser] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [Updated, setisUpdated] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
-  const[friends,setFriends] = useState <any >([]);
+  const[members,setMembers] = useState <any >([]);
+
   const [userQuery,setUserQuery] = useState("");
   const [user42,SetUser42] = useState<any>([])
   const [UserAdmin,SetUserAdmin] = useState(false);
+  const [allgood,setAllgood] = useState(false);
+
 
 
   const HandleBlock = (e) => {
@@ -93,16 +95,75 @@ var MsgList =[...MsgHistory];
 // }
 
 //   }
-  useEffect (() => {
-    const loggeduser = localStorage.getItem("user");
+async function GetMembers () 
+{
 
-    if(loggeduser)
-    {
-      var Current_User = JSON.parse(loggeduser);
-      let OwnedDbId = 1; 
-      console.log("INSIDE CHATROOMBOX " + props.room.is_dm)
+
+  const loggeduser = localStorage.getItem("user");
+  if(loggeduser)
+  {
+    var Current_User = JSON.parse(loggeduser);
+  const text = "http://localhost:5000/player/listOfMembers/" + props.room.id;
+    console.log("Api Fetch Link :  =>  " + text);
+    
+
+    await fetch(text,{
+      // mode:'no-cors',
+      method:'get',
+      credentials:"include"
+  })
+  
+  .then((response) => response.json())
+  .then(json => {
+      console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json))
+    
+      // setRoom(json);
+      // if(json.is_dm == true)
+      // {
+      //   testRoom.is_dm = true;
+      //   console.log("This is a DM Room");
+      
+      //   setAllgood(true)
+      //   setIsDm(true);
+      // }
+
+      if(json.statusCode == "500" )
+        {
+            console.log("an error occured");
+            setErrorMessage("an error occured");
+            setAllgood(false)
+            if(IsAuthOk(json.statusCode) == 1)
+            window.location.reload();
+        }
+
+        else
+        {
+          setAllgood(true);
+          setMembers(json)
+          console.log("Setting the ChatRooms Members ...");
+          return json;
+        }
+     
+
+  })
+  .catch((error) => {
+      console.log("An error occured : " + error)
+      return error;
+  })
+
+    }
+}
+  useEffect (() => {
+
+
+      console.log("INSIDE CHATROOMBOX Is_DM :  " + props.room.is_dm)
 
         // HERE request to backend to fetch users of the room
+        if(!props.room.is_dm)
+        {
+          console.log("Fethcing members of this chatroom.");
+          GetMembers();
+        }
       // console.log("=>>>>> FROM THE Chatroom "   + Current_User.nickname + Current_User.UserId + OwnedDbId + "This room Owner Id  is :> " + room.OwnerId)
     //   var help = JSON.parse(room.AdminsIds);
     // FetchUserInfo(2)
@@ -110,18 +171,18 @@ var MsgList =[...MsgHistory];
     //   console.log("resp => " + resp[0].id);
     //   setFriends(resp);
     //   console.log("user42.image_url" + friends.image_url)
-    // })
-    console.log("=>>> " +props.room.AdminsIds);
+    // // })
+    // console.log("=>>> " +props.room.AdminsIds);
 
-      if(Current_User.UserId == props.room.AdminsIds)
-      {
-        console.log("User is Admin ! ");
-      SetUserAdmin(true);
-      }
-    //   var new_User = [...Current_User];
-      SetUser42(Current_User);
-    }
-},[localStorage.getItem("user")]);
+    //   if(Current_User.UserId == props.room.AdminsIds)
+    //   {
+    //     console.log("User is Admin ! ");
+    //   SetUserAdmin(true);
+    //   }
+    // //   var new_User = [...Current_User];
+    //   SetUser42(Current_User);
+    
+},[]);
 
 const SendMessage = (e) => {
   e.preventDefault();
@@ -152,10 +213,12 @@ await fetch(text,{
 .then(json => {
   console.log("The response is => " + JSON.stringify(json))
 // 
-if(json.statusCode == "500")
+if(json.statusCode == "500" || IsAuthOk(json.satusCode) == 1)
 {
   setErrorMessage("An error occured in the backend.");
+  window.location.reload();
 }
+
 
   return json;
 })
@@ -217,7 +280,7 @@ return (
   </div>
 
             </>
-          )}
+           )} 
      
       <div className='History-Box'> 
      
@@ -255,20 +318,6 @@ return (
        </label>
 </div>
       
-      {UserAdmin ? ( 
-      <div className='admin-buttons'>
-      {/* <input type="text"
-       className={`${BanUser ? "has-value" : ""}`}
-       id="textbox"
-       onChange={event => SetBanUser(event.target.value)}
-       value={BanUser || ""}
-       />  */}
-    
-      </div>
-      ) : (
-        <div>
-          </div>
-      )}
        <button
       onClick={SendMessage}
       className={isUpdating || Updated ? "sending" : ""}

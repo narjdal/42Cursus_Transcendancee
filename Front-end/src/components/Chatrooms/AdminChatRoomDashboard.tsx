@@ -324,7 +324,7 @@ const HandleRoomPrivate = (e) => {
           <>
             <input type="password"
        className={`${Roompassword ? "has-value" : ""}`}
-	   id="textbox"
+	   id="password"
        onChange={event => setRoompassword(event.target.value)}
        value={Roompassword || ""}
        />
