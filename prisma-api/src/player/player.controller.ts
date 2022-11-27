@@ -272,7 +272,7 @@ export class PlayerController {
         return rooms;
     }
 
-    @Post('/createChatRoom/:id')
+    @Post('/createChatRoom/Public')
     async CreatePublicChatRoom(@Body() Body, number, @Req() request, @Res() response) {
         console.log("Create Chat Room");
         const room = await this.playerService.createPublicChatRoom(request.user, Body.name);
@@ -283,7 +283,7 @@ export class PlayerController {
         response.status(200).send(room);
     }
 
-    @Post('/createChatRoom/:id')
+    @Post('/createChatRoom/Private')
     async CreatePrivateChatRoom(@Body() Body, number, @Req() request, @Res() response) {
         console.log("Create Chat Room");
         const room = await this.playerService.createPrivateChatRoom(request.user, Body.name);
@@ -294,7 +294,7 @@ export class PlayerController {
         response.status(200).send(room);
     }
 
-    @Post('/createChatRoom/:id')
+    @Post('/createChatRoom/Protected')
     async CreateProtectedChatRoom(@Body() Body, number, @Req() request, @Res() response) {
         console.log("Create Chat Room");
         const room = await this.playerService.createProtectedChatRoom(request.user, Body.name, Body.password);
