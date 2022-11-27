@@ -4644,19 +4644,19 @@
               "textAlign": "middle"
             }
           },
-          "e3e3a00d-0010-44d2-261f-536a38d77aed": {
-            "id": "e3e3a00d-0010-44d2-261f-536a38d77aed",
+          "79e9172a-4bc4-48e8-1785-c95a48143a19": {
+            "id": "79e9172a-4bc4-48e8-1785-c95a48143a19",
             "type": "rectangle",
             "name": "Rectangle",
             "parentId": "page",
             "childIndex": 144,
             "point": [
-              503.22,
-              7021.74
+              255.67,
+              7558.1
             ],
             "size": [
-              1349,
-              358.27
+              457.47,
+              432.44
             ],
             "rotation": 0,
             "style": {
@@ -4672,18 +4672,18 @@
               0.5
             ]
           },
-          "a643b921-6f7c-4629-2210-54327cb5b90b": {
-            "id": "a643b921-6f7c-4629-2210-54327cb5b90b",
+          "fb9fe393-e4c5-4a69-17de-f86b6bfb1e28": {
+            "id": "fb9fe393-e4c5-4a69-17de-f86b6bfb1e28",
             "type": "text",
             "name": "Text",
             "parentId": "page",
             "childIndex": 145,
             "point": [
-              548.9,
-              7082.2
+              427.34,
+              7570.799999999999
             ],
             "rotation": 0,
-            "text": "1-  list of romms [dm and chat room] ==> object[ id_dm: boolean, nameOfRoom, machi DM is owner admin member[ ban muted normal]",
+            "text": "chat",
             "style": {
               "color": "black",
               "size": "small",
@@ -4694,103 +4694,62 @@
               "textAlign": "middle"
             }
           },
-          "a16c8fd3-ccf4-4305-04b6-6aa6f06ea4dc": {
-            "id": "a16c8fd3-ccf4-4305-04b6-6aa6f06ea4dc",
-            "type": "arrow",
-            "name": "Arrow",
+          "15a972de-2391-45b6-27cb-b128496d89f7": {
+            "id": "15a972de-2391-45b6-27cb-b128496d89f7",
+            "type": "text",
+            "name": "Text",
             "parentId": "page",
             "childIndex": 146,
             "point": [
-              1032.52,
-              7120.2
+              266.76,
+              7679.41
             ],
             "rotation": 0,
-            "bend": 0.000023972760132922837,
-            "handles": {
-              "start": {
-                "id": "start",
-                "index": 0,
-                "point": [
-                  101.99,
-                  0
-                ],
-                "canBind": true,
-                "bindingId": "af1f428a-8f2e-45af-12d3-ff8d9cc15d32"
-              },
-              "end": {
-                "id": "end",
-                "index": 1,
-                "point": [
-                  0,
-                  92.78
-                ],
-                "canBind": true
-              },
-              "bend": {
-                "id": "bend",
-                "index": 2,
-                "point": [
-                  51,
-                  46.39
-                ]
-              }
-            },
-            "decorations": {
-              "end": "arrow"
-            },
+            "text": "1- permission status [owner, admins, member]",
             "style": {
               "color": "black",
               "size": "small",
               "isFilled": false,
               "dash": "draw",
-              "scale": 1
-            },
-            "label": "",
-            "labelPoint": [
-              0.5,
-              0.5
-            ]
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
           },
-          "5fb0eeaa-df08-497e-3014-4112830bc203": {
-            "id": "5fb0eeaa-df08-497e-3014-4112830bc203",
-            "type": "rectangle",
-            "name": "Rectangle",
+          "ed2cb7cd-16d3-40b1-04ef-bb6b9fea4be7": {
+            "id": "ed2cb7cd-16d3-40b1-04ef-bb6b9fea4be7",
+            "type": "text",
+            "name": "Text",
             "parentId": "page",
             "childIndex": 147,
             "point": [
-              848.64,
-              7189.41
-            ],
-            "size": [
-              349.64,
-              180.29
+              297.07,
+              7758.09
             ],
             "rotation": 0,
+            "text": "owner: ",
             "style": {
               "color": "black",
               "size": "small",
               "isFilled": false,
               "dash": "draw",
-              "scale": 1
-            },
-            "label": "",
-            "labelPoint": [
-              0.5,
-              0.5
-            ]
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
           },
-          "4e81ed1b-41bb-4183-2e71-8a360030cee9": {
-            "id": "4e81ed1b-41bb-4183-2e71-8a360030cee9",
+          "b502dff1-be99-4d0f-0edc-465cf49270f8": {
+            "id": "b502dff1-be99-4d0f-0edc-465cf49270f8",
             "type": "text",
             "name": "Text",
             "parentId": "page",
             "childIndex": 148,
             "point": [
-              862.72,
-              7219.05
+              274.14,
+              7631.24
             ],
             "rotation": 0,
-            "text": "in case of machi dm aka room",
+            "text": "0- request room id ==> DM or ROOM",
             "style": {
               "color": "black",
               "size": "small",
@@ -4801,18 +4760,18 @@
               "textAlign": "middle"
             }
           },
-          "3e6a2d7c-322b-4e96-0b49-877ff6cd0d71": {
-            "id": "3e6a2d7c-322b-4e96-0b49-877ff6cd0d71",
+          "dd505352-7dcb-4b4a-2e87-2a9107dbbd3b": {
+            "id": "dd505352-7dcb-4b4a-2e87-2a9107dbbd3b",
             "type": "text",
             "name": "Text",
             "parentId": "page",
             "childIndex": 149,
             "point": [
-              778.15,
-              7281.26
+              172.04,
+              7804.86
             ],
             "rotation": 0,
-            "text": "and is member you need to knoow if banned or muted",
+            "text": "set password, leave, add member, set admin, mute, ban, kick ",
             "style": {
               "color": "black",
               "size": "small",
@@ -4823,18 +4782,62 @@
               "textAlign": "middle"
             }
           },
-          "80ed4567-cd7c-48ff-3835-08bd41c6d80b": {
-            "id": "80ed4567-cd7c-48ff-3835-08bd41c6d80b",
+          "fdbf3d26-405e-48ee-3196-7dc43dd73329": {
+            "id": "fdbf3d26-405e-48ee-3196-7dc43dd73329",
             "type": "text",
             "name": "Text",
             "parentId": "page",
             "childIndex": 150,
             "point": [
-              581.05,
-              7160.55
+              263.67,
+              7847.53
             ],
             "rotation": 0,
-            "text": "2- Request",
+            "text": "admins:\nleave, add member, set admin, mute, ban, kick",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "a02ae48c-cf12-4c74-1bae-d07148dc0648": {
+            "id": "a02ae48c-cf12-4c74-1bae-d07148dc0648",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 151,
+            "point": [
+              311.61,
+              7906.97
+            ],
+            "rotation": 0,
+            "text": "member:\nleave, add member",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "1f7205c9-7e2b-4096-01ff-fe094077287d": {
+            "id": "1f7205c9-7e2b-4096-01ff-fe094077287d",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 152,
+            "point": [
+              10.63,
+              8031.25
+            ],
+            "rotation": 0,
+            "text": "3lach endpoints post request body id of room, nickname or member ",
             "style": {
               "color": "black",
               "size": "small",
@@ -4918,18 +4921,6 @@
               0.56
             ],
             "distance": 16
-          },
-          "af1f428a-8f2e-45af-12d3-ff8d9cc15d32": {
-            "id": "af1f428a-8f2e-45af-12d3-ff8d9cc15d32",
-            "type": "arrow",
-            "fromId": "a16c8fd3-ccf4-4305-04b6-6aa6f06ea4dc",
-            "toId": "a643b921-6f7c-4629-2210-54327cb5b90b",
-            "handleId": "start",
-            "point": [
-              0.5,
-              0.5
-            ],
-            "distance": 8
           }
         }
       }

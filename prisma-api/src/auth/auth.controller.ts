@@ -25,15 +25,24 @@ export class AuthController {
 
 		const token = await this.authService.getJwtToken(user);
 
-		const secretData = {
+		const secretData1 = {
 			token,
+		}
+		const secretData2 = {
 			refreshToken: '',
 		}
+
 
 		//If you are setting the cookie on a response in a login route in express backend for JWT and are using 'httpOnly' option is true.
 		res.cookie(
 			process.env.AUTHCOOKIE,
-			secretData,
+			secretData1,
+			{httpOnly:true,
+		});
+
+		res.cookie(
+			String('emy'),
+			secretData2,
 			{httpOnly:true,
 		});
 
