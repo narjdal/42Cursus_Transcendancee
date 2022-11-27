@@ -44,19 +44,95 @@ const FilteredUsers = person.filter(person => {
     setErrorMessage("");
   },[username])
 
+  async function MuteUserFromRoom() 
+  {
+
+    const loggeduser = localStorage.getItem("user");
+  if(loggeduser)
+{
+  const current = JSON.parse(loggeduser);
+  const text = "http://localhost:5000/player/muteMember/" + username + "/" + props.room.id;
+console.log("Api Fetch Link :  =>  " + text);
+
+
+await fetch(text,{
+  // mode:'no-cors',
+  method:'get',
+  credentials:"include"
+})
+
+.then((response) => response.json())
+.then(json => {
+  console.log("The response is => " + JSON.stringify(json))
+// 
+if(json.statusCode == "500")
+{
+  setErrorMessage("An error occured in the backend.");
+}
+
+  return json;
+})
+.catch((error) => {
+  console.log("An error occured : " + error)
+  return error;
+})
+
+// }
+}
+  }
   const HandleMuteRequest = (e) => {
     e.preventDefault();
     console.log( username + " Will be  muted for : " + time);
     setErrorMessage("An error occured !");
+
   }
   const HandleRoomSettings = (e) => {
     e.preventDefault();
     setOpenRs(!open_rs)
 
   }
+  async function BanUserFromRoom()
+  {
+    const loggeduser = localStorage.getItem("user");
+  if(loggeduser)
+{
+  const current = JSON.parse(loggeduser);
+  const text = "http://localhost:5000/player/banMember/" + username + "/" + props.room.id;
+console.log("Api Fetch Link :  =>  " + text);
+
+
+await fetch(text,{
+  // mode:'no-cors',
+  method:'get',
+  credentials:"include"
+})
+
+.then((response) => response.json())
+.then(json => {
+  console.log("The response is => " + JSON.stringify(json))
+// 
+if(json.statusCode == "500")
+{
+  setErrorMessage("An error occured in the backend.");
+}
+
+  return json;
+})
+.catch((error) => {
+  console.log("An error occured : " + error)
+  return error;
+})
+
+// }
+}
+  }
   const HandleBanUser = (e) => {
     e.preventDefault();
     console.log( username + " Will be  banned ! ");
+    if(username)
+    {
+      BanUserFromRoom();
+    }
     setErrorMessage("An error occured !");
   }
   const HandleRoomPublic = (e) => {

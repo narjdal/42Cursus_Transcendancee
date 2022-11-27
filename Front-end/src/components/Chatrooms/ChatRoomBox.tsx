@@ -137,12 +137,40 @@ const SendMessage = (e) => {
 }
 
 async function LeaveRoom () {
-  
+
+  const text = "http://localhost:5000/player/leaveRoom/" +"me"  + "/" + props.room.id
+console.log("Api Fetch Link :  =>  " + text);
+
+
+await fetch(text,{
+  // mode:'no-cors',
+  method:'get',
+  credentials:"include"
+})
+
+.then((response) => response.json())
+.then(json => {
+  console.log("The response is => " + JSON.stringify(json))
+// 
+if(json.statusCode == "500")
+{
+  setErrorMessage("An error occured in the backend.");
+}
+
+  return json;
+})
+.catch((error) => {
+  console.log("An error occured : " + error)
+  return error;
+})
+
+// }
 };
 
 const HandleLeaveRoom = (e) => {
   e.preventDefault();
   console.log("Handle Leave Room Click !" );
+  LeaveRoom();
 
 }
 const HandleFetchedFriend = (e) => {
@@ -157,7 +185,7 @@ const HandleFetchedFriend = (e) => {
   //filter nickname not name 
    return person.name.toLowerCase().includes(userQuery.toLowerCase());
 })
-console.log("PROPS IS DM " + props.isDM);
+console.log("PROPS IS DM " + props.room.is_dm);
 return (
   <div className='body'>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
