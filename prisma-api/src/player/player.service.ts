@@ -46,6 +46,7 @@ export class PlayerService {
 
             }
         })
+        console.log(rooms);
         return rooms;
     }
 
@@ -136,7 +137,9 @@ export class PlayerService {
 
     async getAllMembersOfThisRoom(data: any, room_id: number) {
         const me = await this.findPlayer(data.nickname);
-        const room = await this.prisma.chatRoom.findFirst({
+        console.log("getAllMembersOfThisRoom method", room_id);
+        
+        const room = await this.prisma.chatRoom.findUnique({
             where: {
                 id: room_id
             },
@@ -153,6 +156,8 @@ export class PlayerService {
                 },
             },
         })
+        console.log(room);
+        // return [1,2,3]
         return room.all_members.map(user => user.playerId);
     }
 
@@ -163,7 +168,7 @@ export class PlayerService {
         const me = await this.findPlayer(data.nickname);
 
         // 1- Get all members of this room except me
-        const membersId = await this.getAllMembersOfThisRoom(data, room_id);
+        const membersId = await this.getAllMembersOfThisRoom(data, +room_id);
         // console.log(membersId);
 
         // 2- Get all friends

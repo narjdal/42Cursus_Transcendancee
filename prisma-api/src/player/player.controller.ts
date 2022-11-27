@@ -53,7 +53,8 @@ export class PlayerController {
     @Get('/listOfMembers/:id')
     async GetListOfMembers(@Param() id_room: number, @Req() request, @Res() response) {
         console.log("List of Friends");
-        const friends = await this.playerService.getAllMembersOfThisRoom(request.user, id_room['id']);
+
+        const friends = await this.playerService.getAllMembersOfThisRoom(request.user, +id_room['id']);
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -66,7 +67,7 @@ export class PlayerController {
     @Get('/listToAddFriend/:id')
     async GetListOfAddFriends(@Param() id_room: number, @Req() request, @Res() response) {
         console.log("List of Friends");
-        const friends = await this.playerService.getListOfFriendsToAddinThisRoom(request.user, id_room['id']);
+        const friends = await this.playerService.getListOfFriendsToAddinThisRoom(request.user, +id_room['id']);
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -79,7 +80,7 @@ export class PlayerController {
     @Get('/listOfSetAdmin/:id')
     async GetListOfSetAdmin(@Param() id_room: number, @Req() request, @Res() response) {
         console.log("List of Friends");
-        const friends = await this.playerService.getListOfFriendsToUpgradeAdmininThisRoom(request.user, id_room['id']);    
+        const friends = await this.playerService.getListOfFriendsToUpgradeAdmininThisRoom(request.user, +id_room['id']);    
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -92,7 +93,7 @@ export class PlayerController {
     @Get('/listToMute/:id')
     async GetListOfMembersToMute(@Param() id_room: number, @Req() request, @Res() response) {
         console.log("List of Friends");
-        const friends = await this.playerService.getListOfFriendsToMuteinThisRoom(request.user, id_room['id']);    
+        const friends = await this.playerService.getListOfFriendsToMuteinThisRoom(request.user, +id_room['id']);    
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -105,7 +106,7 @@ export class PlayerController {
     @Get('/listOfUnmute/:id')
     async GetListOfMembersToUnmute(@Param() id_room: number, @Req() request, @Res() response) {
         console.log("List of Friends");
-        const friends = await this.playerService.getListOfFriendsToUnmuteinThisRoom(request.user, id_room['id']);    
+        const friends = await this.playerService.getListOfFriendsToUnmuteinThisRoom(request.user, +id_room['id']);    
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -118,7 +119,7 @@ export class PlayerController {
     @Get('/listToBan/:id')
     async GetListOfMembersToBan(@Param() id_room: number, @Req() request, @Res() response) {
         console.log("List of Friends");
-        const friends = await this.playerService.getListOfFriendsToBaninThisRoom(request.user, id_room['id']);    
+        const friends = await this.playerService.getListOfFriendsToBaninThisRoom(request.user, +id_room['id']);    
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -308,7 +309,7 @@ export class PlayerController {
     @Get('/GetRoomById/:id')
     async GetRoomById(@Param() id_room: number, @Req() request, @Res() response) {
         console.log("Get Room By Id");
-        const room = await this.playerService.getRoomById(id_room['id']);
+        const room = await this.playerService.getRoomById(+id_room['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
