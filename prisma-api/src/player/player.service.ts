@@ -592,6 +592,7 @@ async getRoomById(room_id: number) {
                 is_dm: false,
                 name: nameOfRoom,
                 is_public: false,
+                password: setpassword,
 
                 all_members: {
                     create: [
