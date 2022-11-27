@@ -101,11 +101,11 @@ useEffect (() =>
             <h2><ChatRoomBox room={testRoom}
             /></h2>
 
-            {isDm ? (
+            {/* {isDm ? (
               <>
 
               </>
-            ) : (
+            ) : ( */}
               <> 
                 <ChatRoomButton/>
 {userAdmin ? (
@@ -118,7 +118,7 @@ useEffect (() =>
         </div>
 )}
               </>
-              )}
+              {/* )} */}
              
             <div>
                 <li><Link to="/Landing">⬅️ Back to all rooms</Link> </li>

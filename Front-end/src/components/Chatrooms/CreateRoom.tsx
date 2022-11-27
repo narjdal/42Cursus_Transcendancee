@@ -47,19 +47,32 @@ const CreateRoom = () => {
         if(loggeduser)
       {
         var Current_User = JSON.parse(loggeduser);
-        const text = ("http://localhost:5000/player/createChatRoom/" );
+        let text ;
+        if(roomState == "Public")
+        {
+         text = ("http://localhost:5000/player/createChatRoom/Public/" );
+        }
+        else if (roomState == "Private")
+        {
+         text = ("http://localhost:5000/player/createChatRoom/Private/" );
+        }
+        else if (roomState == "Protected")
+        {
+         text = ("http://localhost:5000/player/createChatRoom/Protected/");
+        }
+        //  text = ("http://localhost:5000/player/createChatRoom/" );const
         console.log("Api Fetch Link :  =>  " + text);
 
         
         console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + password + " Owner : " + Current_User.nickname);
-        await fetch(`http://localhost:5000/player/createChatRoom/${RoomName}`,{
+        await fetch(text,{
           // mode:'no-cors',
           method:'post',
           credentials:"include",
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(
               { 
-                roomState: roomState,
+            roomState: roomState,
             name: RoomName,
             password: password,}
               )

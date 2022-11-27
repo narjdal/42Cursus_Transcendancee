@@ -20,18 +20,6 @@ console.log("Fetching User Profile  Infos  Home Page  => " + userQuery);
     const loggeduser = localStorage.getItem("user");
 if(loggeduser)
 {
-  var Current_User = JSON.parse(loggeduser);
-  const {id} = Current_User
-  // Here Create the User Infos for testing purpose change the relation && sender 
-  const newUser = ({
-    id:Current_User.id,
-    name:Current_User.name,
-    nickname:Current_User.nickname,
-    avatar:Current_User.avatar,
-    relation:"",
-    sender:""
-  }
-  )
      
 let endpoint = 'http://localhost:5000/player/profile/?id=';
 // endpoint = endpoint + userQuery;
@@ -47,18 +35,26 @@ await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
     method:'get',
     credentials:"include"
 })
-.then((response) => 
-{
-  if (response.ok)
+
+
+.then((response) => {
+  if(!response.ok)
   {
-    return response.json();
+    console.log(" I MA RESPONSE Ok  ")
+
+    throw new Error("Somethign went wrong");
   }
-  else
+
+  else if (response.ok)
   {
-    throw new Error ("User not found !");
+    console.log("RESPONSE IS OK")
+  return response.json();
+
   }
 })
-.then((json) => {
+.then(json => {
+
+  
     console.log("The response is => " + JSON.stringify(json))
   setErrorMessage(""); 
   // localStorage.setItem("usertoshow",JSON.stringify(json));
@@ -71,17 +67,13 @@ await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
   {
     setAllgood(false);
   setErrorMessage(" User not found ! ");
+
   }
   else
-  {
-    setAllgood(true);
-    setUsertoShow(json);
-      return json;
-  }
+  setAllgood(true);
+  setUsertoShow(json);
+    return json;
 
-})
-.catch((error) => {
-  console.log(error);
 })
 // .catch((error) => {
 //   console.log("An error occured : " + error)
@@ -89,15 +81,16 @@ await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
 //   setAllgood(false);
 //   // localStorage.setItem("usertoshow","");
 //   setErrorMessage("An error occured! User not found ! ");
-//   return error;
+//   throw new Error("Not Found  wrong");
+
 // })
-}
 
-catch(err)
+}
+catch(error)
 {
-    console.log("err try catch" + err);
+  console.log("An error occured trycatch : " + error)
+  
 }
-
 // console.log("Waiting for the backend endpoint ...");
   // console.log("Fetching Friends of this User " + id);
 
