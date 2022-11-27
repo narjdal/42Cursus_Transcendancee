@@ -36,7 +36,8 @@ const App = () => {
   const [trylogin, settrylogin] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("authenticated") === "true") {
+    if (localStorage.getItem("authenticated") === "true")
+     {
       console.log("Loggin the user");
       setIslogged(true);
     }
@@ -70,14 +71,11 @@ const App = () => {
     )
   }
   else {
-    // const user = jwt(accessToken)
-    // const {nickname} = test;
-    // login(accessToken);
+
+
     const user = localStorage.getItem("user");
     console.log(" User Object  =>   " + user)
-    // window.location.href = "http::/localhost:3000/Account";
-    // console.log("USER JWT => " + JSON.stringify(user));
-    // localStorage.setItem("token",accessToken)
+
     return (
       <div className="App">
         {/* <link rel="stylesheet" href="toruskit.blobz/blobz.min.css" />

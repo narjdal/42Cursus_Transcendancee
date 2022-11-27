@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import DisplayUserHome from "./DisplayUserHome";
+import { IsAuthOk } from '../../utils/utils';
 
 const SearchBar = () => {
   const [userQuery,setUserQuery] = useState("");
@@ -8,7 +9,8 @@ const SearchBar = () => {
     const [usertoShow,setUsertoShow] = useState<any>([]);
     const[display,setDisplay] = useState(false);
     const [allgood,setAllgood] = useState(false);
-const navigate = useNavigate();
+
+    const navigate = useNavigate();
 
 
   async function FetchUserInfos ()  {
@@ -48,7 +50,12 @@ await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
     console.log("The response is => " + JSON.stringify(json))
   setErrorMessage(""); 
   // localStorage.setItem("usertoshow",JSON.stringify(json));
-    setAllgood(true);
+  if (IsAuthOk(json.statusCode) == 1)
+  {
+    console.log("SHOULD RELOAD  ....")
+  window.location.reload();
+  }
+  setAllgood(true);
   setUsertoShow(json);
     return json;
 })

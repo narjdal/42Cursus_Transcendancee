@@ -3,7 +3,7 @@ import {Link} from'react-router-dom';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {Pop} from '../../utils/Popup';
-
+import { IsAuthOk } from '../../utils/utils';
 import './Landing.css'
 function Landing() {
     const navigate = useNavigate();
@@ -64,7 +64,8 @@ async function GetRoomList  ()  {
   .then((response) => response.json())
   .then(json => {
       console.log("The response is => " + JSON.stringify(json))
-    setChatRooms(json);
+    if(IsAuthOk(json.statusCode) == 0)
+      setChatRooms(json);
   
       return json;
   })

@@ -8,6 +8,31 @@ const getCookies = (key:string) => {
 
 }
 
-export {
-    getCookies
+const   IsAuthOk = (key:string) => {
+    
+    if(key == "401")
+    {
+        localStorage.setItem("authenticated","");
+        localStorage.setItem("user","");
+        localStorage.setItem("trylogin","false");
+        return(1);
+    }
+return (0);
+
 }
+
+
+const IsInfoFound = (key:string) => {
+
+    if(key == "404")
+    {   
+        return(1);
+    }
+    return (0);
+}
+
+export {
+    getCookies,
+    IsAuthOk
+}
+

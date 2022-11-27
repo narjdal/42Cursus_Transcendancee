@@ -6,6 +6,7 @@ import person from "./users/users.json"
 import ContactList from './Friendlist/ContactList';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { IsAuthOk } from '../utils/utils';
 
 // TODO :
 // Request to Backend pour avoir la FriendList 
@@ -57,32 +58,80 @@ function Navbar() {
   
          };
          //DOuble LogOut Component To Fixe 
+        
+ async function LogOut ()
+         {
+          const tt = localStorage.getItem("user")
+          const loggedUser =JSON.parse(tt!);
+          console.log(" Login Out this user   => "  + loggedUser.nickname);
+
+
+let endpoint = 'http://localhost:5000/auth/logout';
+// endpoint = endpoint + userQuery;
+console.log(" this endpoint   " + endpoint)
+
+
+await fetch((endpoint),{
+    // mode:'no-cors',
+    method:'get',
+    credentials:"include"
+})
+
+
+.then((response) => response.json())
+.then(json => {
+    console.log("The response is => " + JSON.stringify(json))
+  setErrorMessage(""); 
+  if (IsAuthOk(json.statusCode) == 1)
+  {
+    console.log("SHOULD RELOAD  ....")
+  window.location.reload();
+  }
+
+  localStorage.setItem("authenticated", "false");
+  localStorage.setItem("user","");
+  window.location.reload();
+
+  // localStorage.setItem("usertoshow",JSON.stringify(json));
+
+    return json;
+})
+.catch((error) => {
+  console.log("An error occured : " + error)
+  setErrorMessage("An error occured! User not found ! ");
+  return error;
+})
+
+
+         }
+
       const LogUserOut = () => {
-        console.log("Inside LogUser Out =>>> ")
-        const loggedInUser = localStorage.getItem("authenticated");
-        console.log("Before  : " + loggedInUser);
-        if (loggedInUser == "true")
-        {   
-            localStorage.setItem("authenticated", "false");
-            localStorage.setItem("user","");
-            localStorage.setItem("token","");
-            setauthenticated("false");
 
-        const loggeduser = localStorage.getItem("user");
-        if(loggeduser)
-           var Current_User = JSON.parse(loggeduser);
-            console.log("Logging out ..." + authenticated);
-            if(Current_User)
-          console.log("=>>>>> FROM THE NAVBAR  LOGOUT "   + Current_User.nickname + Current_User.UserId)
+        LogOut();
+        // console.log("Inside LogUser Out =>>> ")
+        // const loggedInUser = localStorage.getItem("authenticated");
+        // console.log("Before  : " + loggedInUser);
+        // if (loggedInUser == "true")
+        // {   
+        //     localStorage.setItem("authenticated", "false");
+        //     localStorage.setItem("user","");
+        //     localStorage.setItem("token","");
+        //     setauthenticated("false");
 
-            // navigate("/");
-          // Remove Cookie On Log Out 
-           Cookies.remove('auth-cookie')
-          //  Cookies.remove('narjdal')
+        // const loggeduser = localStorage.getItem("user");
+        // if(loggeduser)
+        //    var Current_User = JSON.parse(loggeduser);
+        //     console.log("Logging out ..." + authenticated);
+        //     if(Current_User)
+        //   console.log("=>>>>> FROM THE NAVBAR  LOGOUT "   + Current_User.nickname + Current_User.UserId)
+
+        //     // navigate("/");
+        //   // Remove Cookie On Log Out 
+        //    Cookies.remove('auth-cookie')
+        //   //  Cookies.remove('narjdal')
 
 
-            window.location.reload();
-        }
+        // }
     };
 
     async function FetchUserInfo (nickname) {
@@ -106,7 +155,11 @@ function Navbar() {
   .then((response) => response.json())
   .then(json => {
       console.log("The response is => " + JSON.stringify(json))
-    setFriends(json);
+       if ( IsAuthOk(json.statusCode) == 1)
+       {
+       window.location.reload();
+       }
+          setFriends(json);
   
       return json;
   })

@@ -19,9 +19,20 @@ await fetch(endpoint,{
 .then((response) => response.json())
 .then(json => {
     console.log("The response is => " + JSON.stringify(json))
-  localStorage.setItem("authenticated","true");
-  localStorage.setItem("user",JSON.stringify(json));
+    if(json.statusCode == "401")
+    {
+        localStorage.setItem("authenticated","");
+  localStorage.setItem("user","");
   localStorage.setItem("trylogin","false");
+
+    }
+    else
+    {
+        localStorage.setItem("authenticated","true");
+        localStorage.setItem("user",JSON.stringify(json));
+        localStorage.setItem("trylogin","false");
+    }
+
   
     return json;
 })
