@@ -31,7 +31,7 @@ export class AuthService {
     }
 
     public async getJwtToken(player: any) : Promise<string> {
-        return this.jwtService.signAsync(player);
+        return this.jwtService.signAsync(player.id);
     }
 }
 

@@ -16,7 +16,7 @@ export class PlayerService {
                 nickname: login
             }
         });
-        
+
         if (!player) {
             throw new NotFoundException()
             // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
@@ -104,7 +104,7 @@ export class PlayerService {
                 ]
             },
         })
-        
+
         const friendsId = friends.map(user => {
             if (user.receiverId == me.id)
                 return user.senderId
@@ -117,7 +117,7 @@ export class PlayerService {
     async getAllFriends(data: any) {
         const me = await this.findPlayer(data.nickname);
 
-        console.log("ana get all friends method"); 
+        console.log("ana get all friends method");
         const friendsId = await this.getFriendships(data); // friend 
 
         // console.log(friendsId);
@@ -155,7 +155,7 @@ export class PlayerService {
         })
         return room.all_members.map(user => user.playerId);
     }
-    
+
     // 2 - list of friends that we can add to the chat room
     async getListOfFriendsToAddinThisRoom(data: any, room_id: number) {
         console.log("getListOfFriendsToAddinThisRoom");
@@ -193,7 +193,7 @@ export class PlayerService {
             },
 
         })
-        
+
         const friendsId = friendships.map(user => {
             if (user.receiverId == me.id)
                 return user.senderId
@@ -203,18 +203,18 @@ export class PlayerService {
         // 3- Get all friends that are not members of this room
         const listFriendsToadd = await this.prisma.player.findMany({
             where: {
-                id: 
+                id:
                 {
                     in: friendsId,
                 },
             },
         })
-        
+
         return listFriendsToadd;
     }
 
-     // 2 - list of friends that we can add to the chat room
-     async getListOfFriendsToUpgradeAdmininThisRoom(data: any, room_id: number) {
+    // 2 - list of friends that we can add to the chat room
+    async getListOfFriendsToUpgradeAdmininThisRoom(data: any, room_id: number) {
         const me = await this.findPlayer(data.nickname);
         const room = await this.prisma.chatRoom.findFirst({
             where: {
@@ -228,23 +228,23 @@ export class PlayerService {
                     },
                     where:
                     {
-                        AND: 
-                        [
-                            {
-                                playerId: {
-                                    not: me.id
+                        AND:
+                            [
+                                {
+                                    playerId: {
+                                        not: me.id
+                                    },
                                 },
-                            },
-                            {
-                                statusMember: "member"
-                            },
-                            {
-                                is_banned: false,
-                            },
-                            {
-                                is_muted: false,
-                            }
-                        ],
+                                {
+                                    statusMember: "member"
+                                },
+                                {
+                                    is_banned: false,
+                                },
+                                {
+                                    is_muted: false,
+                                }
+                            ],
                     },
                 },
             },
@@ -267,23 +267,23 @@ export class PlayerService {
                     },
                     where:
                     {
-                        AND: 
-                        [
-                            {
-                                playerId: {
-                                    not: me.id
+                        AND:
+                            [
+                                {
+                                    playerId: {
+                                        not: me.id
+                                    },
                                 },
-                            },
-                            {
-                                statusMember: "member"
-                            },
-                            {
-                                is_banned: false,
-                            },
-                            {
-                                is_muted: false,
-                            }
-                        ],
+                                {
+                                    statusMember: "member"
+                                },
+                                {
+                                    is_banned: false,
+                                },
+                                {
+                                    is_muted: false,
+                                }
+                            ],
                     },
                 },
             },
@@ -291,8 +291,8 @@ export class PlayerService {
         return room.all_members.map(user => user.playerId);
     }
 
-     // 2 - list of friends that we can add to the chat room
-     async getListOfFriendsToUnmuteinThisRoom(data: any, room_id: number) {
+    // 2 - list of friends that we can add to the chat room
+    async getListOfFriendsToUnmuteinThisRoom(data: any, room_id: number) {
         const me = await this.findPlayer(data.nickname);
         const room = await this.prisma.chatRoom.findFirst({
             where: {
@@ -306,23 +306,23 @@ export class PlayerService {
                     },
                     where:
                     {
-                        AND: 
-                        [
-                            {
-                                playerId: {
-                                    not: me.id
+                        AND:
+                            [
+                                {
+                                    playerId: {
+                                        not: me.id
+                                    },
                                 },
-                            },
-                            {
-                                statusMember: "member"
-                            },
-                            {
-                                is_banned: false,
-                            },
-                            {
-                                is_muted: true,
-                            }
-                        ],
+                                {
+                                    statusMember: "member"
+                                },
+                                {
+                                    is_banned: false,
+                                },
+                                {
+                                    is_muted: true,
+                                }
+                            ],
                     },
                 },
             },
@@ -345,23 +345,23 @@ export class PlayerService {
                     },
                     where:
                     {
-                        AND: 
-                        [
-                            {
-                                playerId: {
-                                    not: me.id
+                        AND:
+                            [
+                                {
+                                    playerId: {
+                                        not: me.id
+                                    },
                                 },
-                            },
-                            {
-                                statusMember: "member"
-                            },
-                            {
-                                is_banned: false,
-                            },
-                            {
-                                is_muted: false,
-                            }
-                        ],
+                                {
+                                    statusMember: "member"
+                                },
+                                {
+                                    is_banned: false,
+                                },
+                                {
+                                    is_muted: false,
+                                }
+                            ],
                     },
                 },
             },
@@ -426,30 +426,30 @@ export class PlayerService {
         // awal haja an howwa sender w ana receiver
         const friendship = await this.prisma.friendship.updateMany({
 
-           where:{
-            OR: [
-                {
-                    senderId: me.id,
-                    receiverId: howa.id,
-                },
+            where: {
+                OR: [
+                    {
+                        senderId: me.id,
+                        receiverId: howa.id,
+                    },
 
-                {
-                    senderId: howa.id,
-                    receiverId: me.id,
-                }
-            ]
-            
-           },
+                    {
+                        senderId: howa.id,
+                        receiverId: me.id,
+                    }
+                ]
+
+            },
             // and status === friend
             data: {
                 status: "Block",
                 senderId: me.id,
                 receiverId: howa.id,
             },
-            
+
         })
-    return friendship;
-}
+        return friendship;
+    }
     // 4- delete aka unfriend [unblock]
     async deleteFriendship(data: any, friendname: string) {
         const me = await this.findPlayer(data.nickname);
@@ -493,25 +493,26 @@ export class PlayerService {
 
     // ------------------------------ 3- Chat ---------------------------------------------
 
-// Get room by id
-async getRoomById(room_id: number) {
-    const room = await this.prisma.chatRoom.findUnique({
-        where: {
-            id: +room_id
-        },
-        select: {
-            name: true,
-            is_dm: true,
-        }
-    })
-    return room;
-}
+    // Get room by id
+    async getRoomById(room_id: number) {
+        const room = await this.prisma.chatRoom.findUnique({
+            where: {
+                id: +room_id
+            },
+            select: {
+                name: true,
+                is_dm: true,
+            }
+        })
+        return room;
+    }
 
 
-// 0- Create a chat room
+    // 0- Create a chat room
 
     // function to create a chat room between two players if they are friends
     async createPublicChatRoom(user: any, nameOfRoom: string) {
+        console.log("createPublicChatRoom");
         const me = await this.findPlayer(user.nickname);
 
         // owner create a room 
@@ -533,8 +534,8 @@ async getRoomById(room_id: number) {
                             //        id: me.id,
                             //     }
                             // },
-                            muted_until: null,
-                            blocked_since: null,
+                            muted_until: new Date(),
+                            blocked_since: new Date(),
                             playerId: me.id
                             // connect && include 
                         },
@@ -568,8 +569,8 @@ async getRoomById(room_id: number) {
                             //        id: me.id,
                             //     }
                             // },
-                            muted_until: null,
-                            blocked_since: null,
+                            muted_until: new Date(),
+                            blocked_since: new Date(),
                             playerId: me.id,
                             // connect && include 
                         },
@@ -597,9 +598,9 @@ async getRoomById(room_id: number) {
                 all_members: {
                     create: [
                         {
-                            statusMember: "owner",   
-                            muted_until: null,
-                            blocked_since: null,
+                            statusMember: "owner",
+                            muted_until: new Date(),
+                            blocked_since: new Date(),
                             playerId: me.id,
                         },
                     ],
@@ -629,8 +630,8 @@ async getRoomById(room_id: number) {
                             //        id: me.id,
                             //     }
                             // },
-                            muted_until: null,
-                            blocked_since: null,
+                            muted_until: new Date(),
+                            blocked_since: new Date(),
                             playerId: sender.id,
                             // connect && include 
                         },
@@ -642,8 +643,8 @@ async getRoomById(room_id: number) {
                             //        id: me.id,
                             //     }
                             // },
-                            muted_until: null,
-                            blocked_since: null,
+                            muted_until: new Date(),
+                            blocked_since: new Date(),
                             playerId: receiver.id
                             // connect && include 
                         },
@@ -654,7 +655,7 @@ async getRoomById(room_id: number) {
         return room;
     }
 
-// 1- Get Permissions of the user in the room
+    // 1- Get Permissions of the user in the room
 
     async getPermissions(user: any, id_room: number) {
         const status = await this.prisma.permission.findFirst({
@@ -668,20 +669,20 @@ async getRoomById(room_id: number) {
         return status;
     }
 
-// 2- get history messages of a room
+    // 2- get history messages of a room
 
     async getMessagesOfDM(user: any, id_room: any) {
-    const me = await this.findPlayer(user.nickname);
+        const me = await this.findPlayer(user.nickname);
 
-    const messages = await this.prisma.message.findMany({
-        where: {
-            AND: [
-                { senderId: me.id },
-                { roomId: id_room },
-            ]
-        },
-    })
-    return messages;
+        const messages = await this.prisma.message.findMany({
+            where: {
+                AND: [
+                    { senderId: me.id },
+                    { roomId: id_room },
+                ]
+            },
+        })
+        return messages;
     }
 
     async getMessagesOfRoom(user: any, id_room) {
@@ -790,7 +791,7 @@ async getRoomById(room_id: number) {
         return result;
     }
 
-// 3- send message in chat room 
+    // 3- send message in chat room 
 
     async sendMessage(user: any, room_id: number, message: string) {
         const me = await this.findPlayer(user.nickname);
@@ -827,11 +828,11 @@ async getRoomById(room_id: number) {
             }
         })
         return messageSent;
-    }  
+    }
 
-// 4- add new member to a chat room 
+    // 4- add new member to a chat room 
 
-    async addMember(login : string, room_id: number) {
+    async addMember(login: string, room_id: number) {
         const palyer = await this.findPlayer(login);
         const room = await this.prisma.permission.create({
             data: {
@@ -845,16 +846,16 @@ async getRoomById(room_id: number) {
         return room;
     }
 
-// 5- set member as admin if u are admin or owner
+    // 5- set member as admin if u are admin or owner
 
     async setAdmin(login: string, room_id: number) {
         const palyer = await this.findPlayer(login);
 
         const room = await this.prisma.permission.updateMany({
-            where: {      
-                AND : [
-                    {playerId: palyer.id},
-                    {roomId: room_id}
+            where: {
+                AND: [
+                    { playerId: palyer.id },
+                    { roomId: room_id }
                 ],
 
             },
@@ -864,16 +865,16 @@ async getRoomById(room_id: number) {
         });
     }
 
-// 6- ban member if u are admin or owner
+    // 6- ban member if u are admin or owner
 
     async banMember(login: string, room_id: number/*, fix_date: Date*/) {
         const palyer = await this.findPlayer(login);
 
         const room = await this.prisma.permission.updateMany({
-            where: {      
-                AND : [
-                    {playerId: palyer.id},
-                    {roomId: room_id}
+            where: {
+                AND: [
+                    { playerId: palyer.id },
+                    { roomId: room_id }
                 ],
 
             },
@@ -884,31 +885,31 @@ async getRoomById(room_id: number) {
         });
     }
 
-// 6- ban member if u are admin or owner
+    // 6- ban member if u are admin or owner
 
     async kickMember(login: string, room_id: number) {
         const palyer = await this.findPlayer(login);
 
         const room = await this.prisma.permission.deleteMany({
-            where: {      
-                AND : [
-                    {playerId: palyer.id},
-                    {roomId: room_id}
+            where: {
+                AND: [
+                    { playerId: palyer.id },
+                    { roomId: room_id }
                 ],
 
             },
         });
     }
-// 7- mute OR umute member if u are admin or owner
+    // 7- mute OR umute member if u are admin or owner
 
     async muteMember(login: any, room_id: number/*, fix_date: Date*/) {
         const palyer = await this.findPlayer(login);
 
         const room = await this.prisma.permission.updateMany({
-            where: {      
-                AND : [
-                    {playerId: palyer.id},
-                    {roomId: room_id}
+            where: {
+                AND: [
+                    { playerId: palyer.id },
+                    { roomId: room_id }
                 ],
 
             },
@@ -923,37 +924,37 @@ async getRoomById(room_id: number) {
         const palyer = await this.findPlayer(login);
 
         const room = await this.prisma.permission.updateMany({
-            where: {      
-                AND : [
-                    {playerId: palyer.id},
-                    {roomId: room_id}
+            where: {
+                AND: [
+                    { playerId: palyer.id },
+                    { roomId: room_id }
                 ],
 
             },
             data: {
                 is_muted: false,
-                muted_until: null,
-                blocked_since: null,
+                muted_until: new Date(),
+                blocked_since: new Date(),
             },
         });
     }
 
-// 8- leave channel // delete the player from the permision
+    // 8- leave channel // delete the player from the permision
 
     async leaveChannel(data: any, room_id: number) {
         const palyer = await this.findPlayer(data.nickname);
 
         const room = await this.prisma.permission.deleteMany({
-            where: {      
-                AND : [
-                    {playerId: palyer.id},
-                    {roomId: room_id}
+            where: {
+                AND: [
+                    { playerId: palyer.id },
+                    { roomId: room_id }
                 ],
 
             },
         });
     }
 
-// 9- create a password to channel or delete password if is owner
+    // 9- create a password to channel or delete password if is owner
 
 }
