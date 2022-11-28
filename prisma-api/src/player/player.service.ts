@@ -199,34 +199,45 @@ export class PlayerService {
 
     async getProfilesOfChatRooms(userId: string, room_id: string) {
         const me = await this.findPlayerById(userId);
-        console.log("getAllMembersOfThisRoom method", room_id);
+        console.log("getProfilesOfChatRooms    method", room_id);
         
         const members = await this.prisma.chatRoom.findUnique({
             where: {
                 id: room_id
             },
-
-            select: {
+            include: {
                 all_members: {
-                    select: {
-                        playerId: true,
-                    },
-                    where: {
-                        playerId: {
-                            not: me.id
-                        },
-                    },
-                    include:
-                    {
+                    include: {
                         player: {
                             select: {
-                                id: true,
                                 nickname: true,
                                 avatar: true,
-                            },
+                                id: true,
+                            }
                         },
-                    },
-                },
+                    }
+                }
+            // include: {
+            //     all_members: {
+            //         select: {
+            //             playerId: true,
+            //         },
+            //         where: {
+            //             playerId: {
+            //                 not: me.id
+            //             },
+            //         },
+            //         include:
+            //         {
+            //             player: {
+            //                 select: {
+            //                     id: true,
+            //                     nickname: true,
+            //                     avatar: true,
+            //                 },
+            //             },
+            //         },
+            //     },
             },
         })
         return members;
@@ -234,7 +245,7 @@ export class PlayerService {
 
     async getAllMembersOfThisRoom(userId: string, room_id: string) {
         const me = await this.findPlayerById(userId);
-        console.log("getAllMembersOfThisRoom method", room_id);
+        console.log("==> getAllMembersOfThisRoom method ", room_id, " ", room_id);
         
         const room = await this.prisma.chatRoom.findUnique({
             where: {
@@ -260,9 +271,9 @@ export class PlayerService {
 
     // 2 - list of friends that we can add to the chat room
     async getListOfFriendsToAddinThisRoom(userId: string, room_id: string) {
-        console.log("getListOfFriendsToAddinThisRoom");
+        console.log("==> getListOfFriendsToAddinThisRoom Method", userId, room_id);
 
-        const me = await this.findPlayerById(userId);
+        // const me = await this.findPlayerById(userId);
 
         // 1- Get all members of this room except me
         const membersId = await this.getAllMembersOfThisRoom(userId, room_id);
@@ -273,7 +284,7 @@ export class PlayerService {
             where: {
                 OR: [
                     {
-                        senderId: me.id,
+                        senderId: userId,
                         status: "Friend",
                         NOT: {
                             receiverId: {
@@ -283,7 +294,7 @@ export class PlayerService {
                     },
 
                     {
-                        receiverId: me.id,
+                        receiverId: userId,
                         status: "Friend",
                         NOT: {
                             senderId: {
@@ -297,7 +308,7 @@ export class PlayerService {
         })
 
         const friendsId = friendships.map(user => {
-            if (user.receiverId == me.id)
+            if (user.receiverId == userId)
                 return user.senderId
             return user.receiverId
         })
@@ -311,7 +322,7 @@ export class PlayerService {
                 },
             },
         })
-
+        console.log("listFriendsToadd    FINIXHED");
         return listFriendsToadd;
     }
 
@@ -979,8 +990,8 @@ export class PlayerService {
         const room = await this.prisma.permission.create({
             data: {
                 statusMember: "member",
-                muted_until: null,
-                blocked_since: null,
+                muted_until: new Date(),
+                blocked_since: new Date(),
                 playerId: playerId,
                 roomId: room_id,
             }
