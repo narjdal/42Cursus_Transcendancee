@@ -1,18 +1,20 @@
-import { Body, Controller, Get, Param, Post, Req, Request, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Request, Res, UseGuards, NotFoundException, HttpException } from '@nestjs/common';
 // import { Response } from 'express';
 import { PlayerService } from './player.service';
 import { AuthGuard } from '@nestjs/passport';
 import { userInfo } from 'os';
 import { resourceUsage } from 'process';
+import { NotFoundError } from 'rxjs';
 
 @Controller('player')
 @UseGuards(AuthGuard('jwt'))
+// JWT Guard return in user object
 export class PlayerController {
     constructor(private readonly playerService: PlayerService) { }
     @Get('myprofile') // localhost:3000/account 
-    async login(@Req() request, @Res() response) {
-        console.log("MY PROFILE");
-        console.log(request.user);
+    async login(@Req() request, @Res() response) //:Promise<Profile>
+    {
+        // console.log("Profile");
         const profile = await this.playerService.findPlayerById(request.user.id);
 
         response.set({
@@ -25,8 +27,9 @@ export class PlayerController {
 
     // This is for guetting player profile
     @Get('/profile/:id')
-    async getProfile(@Param() nickname: string, @Req() request, @Res() response) {
-        console.log("Profile of another Player");
+    async getProfile(@Param() nickname: string, @Req() request, @Res() response) //:Promise<Profile>
+    {
+        // console.log("Profile of another Player");
         const profile = await this.playerService.findPlayerByNickname(nickname['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -437,8 +440,18 @@ export class PlayerController {
     @Get('/unmuteMember/:id1/:id2')
     async unmuteMember(@Param() nickname: string, @Param() room_id: String, @Req() request, @Res() response) {
         console.log("Mute Member");
-        // check if room_id exists
-        // check if room_id is not a dm
+
+        // 1- check if room_id exists
+        const room = await this.playerService.findRoomById(room_id['id']);
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true)
+        {
+            throw new NotFoundException("Cannot leave a DM");
+        }
+        // 3- check if user is member of this room
+        const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
+        // 4- check if nickname is a member of room_id
+        
         // check if nickname is a member of room_id with status member
         // check if user status permission is an owner or admin
         const mute = await this.playerService.unmuteMember(nickname['id1'], room_id['id2']);
@@ -453,9 +466,17 @@ export class PlayerController {
     @Get('/leaveRoom/:id')
     async leaveRoom(@Param() room_id: String, @Req() request, @Res() response) {
         console.log("Leave Room");
-        // check if room_id exists
-        // check if room_id is not a dm
-        // check if user is member of this room
+
+        // 1- check if room_id exists
+        const room = await this.playerService.findRoomById(room_id['id']);
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true)
+        {
+            throw new NotFoundException("Cannot leave a DM");
+        }
+        // 3- check if user is member of this room
+        const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
+        // 4- then leave room
         const leave = await this.playerService.leaveChannel(request.user.id, room_id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'

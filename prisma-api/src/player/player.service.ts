@@ -26,6 +26,22 @@ export class PlayerService {
         return player;
     }
 
+    async findRoomById(roomId: string) //: Promise<boolean>
+    {
+        console.log("-->", roomId);
+        
+        const room = await this.prisma.chatRoom.findUnique({
+            where: {
+                id: roomId,
+            }
+        });
+
+        if (!room) {
+            throw new NotFoundException("room not found");
+        }
+        return room;
+    }
+
     async findPlayerByNickname(login: string): Promise<any> {
         const player = await this.prisma.player.findUnique({
             where: {
@@ -687,6 +703,9 @@ export class PlayerService {
                 ]
             }
         })
+        if(status === null){
+            throw new NotFoundException("You are not a member of this room");
+        }
         return status;
     }
 
