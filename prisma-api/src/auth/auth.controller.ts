@@ -20,6 +20,8 @@ export class AuthController {
 	async login(@Req() request, @Res({passthrough:true}) res: Response) {
 		const user =  await this.authService.findORcreate(request.user);
 
+		// console.log("after creating the user");
+		
 		// console.log(user); // affiche uer 
 
 		const token = await this.authService.getJwtToken(user);

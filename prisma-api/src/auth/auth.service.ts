@@ -7,8 +7,10 @@ export class AuthService {
     constructor(private prisma: PrismaService,
         private jwtService:JwtService) {}
     
-    async findORcreate(data: any)
+    async findORcreate(data: any) // data is the user object from 42
     {
+        console.log("findORcreate");
+        console.log(data);
 
         const player = await this.prisma.player.findUnique
         ({
@@ -27,7 +29,7 @@ export class AuthService {
             },
         });
 
-        return player;
+        // return player;
     }
 
     public async getJwtToken(player: any) : Promise<string> {

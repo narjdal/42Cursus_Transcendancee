@@ -11,11 +11,13 @@ import { NotFoundError } from 'rxjs';
 // JWT Guard return in user object
 export class PlayerController {
     constructor(private readonly playerService: PlayerService) { }
-    @Get('myprofile') // localhost:3000/account 
+    @Get('GEET myprofile') // localhost:3000/account 
     async login(@Req() request, @Res() response) //:Promise<Profile>
     {
         const profile = await this.playerService.findPlayerById(request.user.id);
 
+        console.log(profile);
+        process.exit(0);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }

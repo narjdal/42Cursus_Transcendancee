@@ -10,8 +10,9 @@ export class PlayerService {
 
     // ------------------ 0- Find Player && get Player ------------------
 
-    async findPlayerById(userId: string): Promise<any> {
-        console.log("-->", userId);
+    async findPlayerById(userId: string)//: Promise<any> {
+    {
+        console.log("FindPlayerById", userId);
         
         const player = await this.prisma.player.findUnique({
             where: {
@@ -19,10 +20,10 @@ export class PlayerService {
             }
         });
 
-        // if (!player) {
-        //     throw new NotFoundException()
-        //     // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
-        // }
+        if (!player) {
+            throw new NotFoundException()
+            // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
+        }
         return player;
     }
 

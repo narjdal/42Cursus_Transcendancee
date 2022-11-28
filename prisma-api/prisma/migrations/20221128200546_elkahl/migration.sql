@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Player" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "nickname" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
@@ -12,11 +12,12 @@ CREATE TABLE "Player" (
 
 -- CreateTable
 CREATE TABLE "ChatRoom" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "is_dm" BOOLEAN NOT NULL DEFAULT true,
     "name" TEXT,
     "is_public" BOOLEAN NOT NULL DEFAULT true,
+    "is_protected" BOOLEAN NOT NULL DEFAULT false,
     "password" TEXT
 );
 
@@ -27,8 +28,8 @@ CREATE TABLE "Permission" (
     "is_muted" BOOLEAN NOT NULL DEFAULT false,
     "blocked_since" DATETIME NOT NULL,
     "muted_until" DATETIME NOT NULL,
-    "playerId" INTEGER NOT NULL,
-    "roomId" INTEGER NOT NULL,
+    "playerId" TEXT NOT NULL,
+    "roomId" TEXT NOT NULL,
 
     PRIMARY KEY ("playerId", "roomId"),
     CONSTRAINT "Permission_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "Player" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -37,9 +38,9 @@ CREATE TABLE "Permission" (
 
 -- CreateTable
 CREATE TABLE "Message" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "senderId" INTEGER NOT NULL,
-    "roomId" INTEGER NOT NULL,
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "senderId" TEXT NOT NULL,
+    "roomId" TEXT NOT NULL,
     "msg" TEXT NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Message_senderId_fkey" FOREIGN KEY ("senderId") REFERENCES "Player" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -50,8 +51,8 @@ CREATE TABLE "Message" (
 CREATE TABLE "Friendship" (
     "status" TEXT NOT NULL,
     "date" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "senderId" INTEGER NOT NULL,
-    "receiverId" INTEGER NOT NULL,
+    "senderId" TEXT NOT NULL,
+    "receiverId" TEXT NOT NULL,
 
     PRIMARY KEY ("senderId", "receiverId"),
     CONSTRAINT "Friendship_senderId_fkey" FOREIGN KEY ("senderId") REFERENCES "Player" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
