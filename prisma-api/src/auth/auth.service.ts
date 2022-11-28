@@ -12,7 +12,7 @@ export class AuthService {
 
         const player = await this.prisma.player.findUnique
         ({
-            where: { nickname: data.nickname }
+            where: { email: data.email },
         });
     
         if (!player)
@@ -31,7 +31,10 @@ export class AuthService {
     }
 
     public async getJwtToken(player: any) : Promise<string> {
-        return this.jwtService.signAsync(player);
+        return this.jwtService.sign({id :player.id}, {
+            secret: process.env.JWT_SECRET, 
+            expiresIn: process.env.JWTEXPIRATION
+        } );   
     }
 }
 

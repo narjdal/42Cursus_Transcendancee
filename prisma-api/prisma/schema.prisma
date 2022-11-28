@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Player {
-    id        Int    @id @default(autoincrement())
+    id   String @id @default(uuid())
     nickname  String @unique
     firstName String
     lastName  String
@@ -31,7 +31,7 @@ model Player {
 }
 
 model ChatRoom {
-    id           Int          @id @default(autoincrement())
+    id   String @id @default(uuid())
     createdAt    DateTime     @default(now())
     is_dm        Boolean      @default(true) // type ==> enum [DM, ROOM]
     name         String?
@@ -50,21 +50,21 @@ model Permission {
     muted_until       DateTime
 
     player    Player   @relation("PermissionInRoom", fields: [playerId], references: [id])
-    playerId  Int
+    playerId  String
     chat_room ChatRoom @relation("PermissionOfmember", fields: [roomId], references: [id])
-    roomId    Int
+    roomId    String
     @@unique([playerId, roomId])
     @@id([playerId, roomId])
 
 }
 
 model Message {
-    id       Int    @id @default(autoincrement())
+    id   String @id @default(uuid())
     sender   Player @relation("SendMsg", fields: [senderId], references: [id])
-    senderId Int
+    senderId String
 
     room   ChatRoom @relation("ThisRoom", fields: [roomId], references: [id])
-    roomId Int
+    roomId String
 
     msg       String
     createdAt DateTime @default(now())
@@ -86,9 +86,9 @@ model Friendship {
     status     String
     date       DateTime @default(now())  // we don;t need you
     sender     Player   @relation("SendRequest", fields: [senderId], references: [id])
-    senderId   Int
+    senderId   String
     receiver   Player   @relation("ReceiveRequest", fields: [receiverId], references: [id])
-    receiverId Int
+    receiverId String
 
     @@id([senderId, receiverId])
     @@unique([senderId, receiverId])

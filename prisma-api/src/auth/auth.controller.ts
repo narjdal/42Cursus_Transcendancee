@@ -18,7 +18,6 @@ export class AuthController {
 	@Get('/redirect')
 	@UseGuards(AuthGuard('42'))
 	async login(@Req() request, @Res({passthrough:true}) res: Response) {
-
 		const user =  await this.authService.findORcreate(request.user);
 
 		// console.log(user); // affiche uer 
@@ -36,13 +35,13 @@ export class AuthController {
 		//If you are setting the cookie on a response in a login route in express backend for JWT and are using 'httpOnly' option is true.
 		res.cookie(
 			process.env.AUTHCOOKIE,
-			secretData1,
+			secretData1.token,
 			{httpOnly:true,
 		});
 
 		res.cookie(
 			String('emy'),
-			secretData2,
+			secretData2.refreshToken,
 			{httpOnly:true,
 		});
 

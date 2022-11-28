@@ -10,23 +10,39 @@ export class PlayerService {
 
     // ------------------ 0- Find Player && get Player ------------------
 
-    async findPlayer(login: string): Promise<any> {
+    async findPlayerById(userId: string): Promise<any> {
+        console.log("-->", userId);
+        
+        const player = await this.prisma.player.findUnique({
+            where: {
+                id: userId,
+            }
+        });
+
+        // if (!player) {
+        //     throw new NotFoundException()
+        //     // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
+        // }
+        return player;
+    }
+
+    async findPlayerByNickname(login: string): Promise<any> {
         const player = await this.prisma.player.findUnique({
             where: {
                 nickname: login
             }
         });
 
-        if (!player) {
-            throw new NotFoundException()
-            // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
-        }
+        // if (!player) {
+        //     throw new NotFoundException('Profile not found')
+        //     // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
+        // }
         return player;
     }
 
     // ------------------- GET list of Rooms -------------------
-    async getAllRooms(data: any) {
-        const me = await this.findPlayer(data.nickname);
+    async getAllRooms(userId: string) {
+        const me = await this.findPlayerById(userId);
 
         const rooms = await this.prisma.chatRoom.findMany({
             where: {
@@ -52,20 +68,20 @@ export class PlayerService {
 
     // -------------------------- 1- Get list of friends ------------------
 
-    async getFriend(data: any, login: string) {
+    async getFriend(userId: string, login: string) {
 
-        const me = await this.findPlayer(data.nickname);
+        const me = await this.findPlayerById(userId);
 
         const friend = await this.prisma.player.findUnique({
             where: { nickname: login }
         });
 
+        // 1- Check if this login exist in the database
         if (!friend) {
             throw new NotFoundException()
-            // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
         }
-        // suppose friend exist in the database
-        // now I have to check if this user is my friend or not
+        
+        // 2- Check if this login is my friend or not
         // where me: sender or receiver && friend sender or receiver
         const friendship = await this.prisma.friendship.findFirst({
             where: {
@@ -87,8 +103,8 @@ export class PlayerService {
         return friendship;
     }
 
-    async getFriendships(data: any) {
-        const me = await this.findPlayer(data.nickname);
+    async getFriendships(userId: string) {
+        const me = await this.findPlayerById(userId);
 
         const friends = await this.prisma.friendship.findMany({
             where: {
@@ -115,11 +131,11 @@ export class PlayerService {
         return friendsId;
     }
 
-    async getAllFriends(data: any) {
-        const me = await this.findPlayer(data.nickname);
+    async getAllFriends(userId: string) {
+        const me = await this.findPlayerById(userId);
 
         console.log("ana get all friends method");
-        const friendsId = await this.getFriendships(data); // friend 
+        const friendsId = await this.getFriendships(userId); // friend 
 
         // console.log(friendsId);
 
@@ -135,8 +151,8 @@ export class PlayerService {
         return friends;
     }
 
-    async getAllMembersOfThisRoom(data: any, room_id: number) {
-        const me = await this.findPlayer(data.nickname);
+    async getAllMembersOfThisRoom(userId: string, room_id: string) {
+        const me = await this.findPlayerById(userId);
         console.log("getAllMembersOfThisRoom method", room_id);
         
         const room = await this.prisma.chatRoom.findUnique({
@@ -162,13 +178,13 @@ export class PlayerService {
     }
 
     // 2 - list of friends that we can add to the chat room
-    async getListOfFriendsToAddinThisRoom(data: any, room_id: number) {
+    async getListOfFriendsToAddinThisRoom(userId: string, room_id: string) {
         console.log("getListOfFriendsToAddinThisRoom");
 
-        const me = await this.findPlayer(data.nickname);
+        const me = await this.findPlayerById(userId);
 
         // 1- Get all members of this room except me
-        const membersId = await this.getAllMembersOfThisRoom(data, +room_id);
+        const membersId = await this.getAllMembersOfThisRoom(userId, room_id);
         // console.log(membersId);
 
         // 2- Get all friends
@@ -219,8 +235,8 @@ export class PlayerService {
     }
 
     // 2 - list of friends that we can add to the chat room
-    async getListOfFriendsToUpgradeAdmininThisRoom(data: any, room_id: number) {
-        const me = await this.findPlayer(data.nickname);
+    async getListOfFriendsToUpgradeAdmininThisRoom(userId: string, room_id: string) {
+        const me = await this.findPlayerById(userId);
         const room = await this.prisma.chatRoom.findFirst({
             where: {
                 id: room_id
@@ -258,8 +274,8 @@ export class PlayerService {
     }
 
     // 2 - list of friends that we can add to the chat room
-    async getListOfFriendsToMuteinThisRoom(data: any, room_id: number) {
-        const me = await this.findPlayer(data.nickname);
+    async getListOfFriendsToMuteinThisRoom(userId: string, room_id: string) {
+        const me = await this.findPlayerById(userId);
         const room = await this.prisma.chatRoom.findFirst({
             where: {
                 id: room_id
@@ -297,8 +313,8 @@ export class PlayerService {
     }
 
     // 2 - list of friends that we can add to the chat room
-    async getListOfFriendsToUnmuteinThisRoom(data: any, room_id: number) {
-        const me = await this.findPlayer(data.nickname);
+    async getListOfFriendsToUnmuteinThisRoom(userId: string, room_id: string) {
+        const me = await this.findPlayerById(userId);
         const room = await this.prisma.chatRoom.findFirst({
             where: {
                 id: room_id
@@ -336,11 +352,11 @@ export class PlayerService {
     }
 
     // 2 - list of friends that we can add to the chat room
-    async getListOfFriendsToBaninThisRoom(data: any, room_id: number) {
-        const me = await this.findPlayer(data.nickname);
+    async getListOfFriendsToBaninThisRoom(userId: string, room_id: string) {
+        const me = await this.findPlayerById(userId);
         const room = await this.prisma.chatRoom.findFirst({
             where: {
-                id: room_id
+                id: room_id,
             },
             select: {
                 all_members: {
@@ -377,8 +393,8 @@ export class PlayerService {
     // -------------------------- 2- Request FriendShip -------------------------------
 
     // 1- create
-    async createFriendship(data: any, friendname: string) {
-        const sender = await this.findPlayer(data.nickname);
+    async createFriendship(userId: string, friendname: string) {
+        const sender = await this.findPlayerById(userId);
         const receiver = await this.prisma.player.findUnique({
             where: { nickname: friendname }
         });
@@ -398,8 +414,8 @@ export class PlayerService {
     }
 
     // 2- accept
-    async acceptFriendship(data: any, friendname: string) {
-        const me = await this.findPlayer(data.nickname);
+    async acceptFriendship(userId: string, friendname: string) {
+        const me = await this.findPlayerById(userId);
         const howa = await this.prisma.player.findUnique({
             where: { nickname: friendname },
         });
@@ -422,8 +438,8 @@ export class PlayerService {
     }
 
     // 3- block // ana blockit howa[friendname]
-    async blockFriendship(data: any, friendname: string) {
-        const me = await this.findPlayer(data.nickname);
+    async blockFriendship(userId: string, friendname: string) {
+        const me = await this.findPlayerById(userId);
         const howa = await this.prisma.player.findUnique({
             where: { nickname: friendname },
         });
@@ -456,8 +472,8 @@ export class PlayerService {
         return friendship;
     }
     // 4- delete aka unfriend [unblock]
-    async deleteFriendship(data: any, friendname: string) {
-        const me = await this.findPlayer(data.nickname);
+    async deleteFriendship(userId: string, friendname: string) {
+        const me = await this.findPlayerById(userId);
         const howa = await this.prisma.player.findUnique({
             where: { nickname: friendname },
         });
@@ -476,8 +492,8 @@ export class PlayerService {
     }
 
     // 5- refuse
-    async refuseFriendship(data: any, friendname: string) {
-        const me = await this.findPlayer(data.nickname);
+    async refuseFriendship(userId: string, friendname: string) {
+        const me = await this.findPlayerById(userId);
         const howa = await this.prisma.player.findUnique({
             where: { nickname: friendname },
         });
@@ -499,10 +515,10 @@ export class PlayerService {
     // ------------------------------ 3- Chat ---------------------------------------------
 
     // Get room by id
-    async getRoomById(room_id: number) {
+    async getRoomById(room_id: string) {
         const room = await this.prisma.chatRoom.findUnique({
             where: {
-                id: +room_id
+                id: room_id
             },
             select: {
                 name: true,
@@ -516,9 +532,9 @@ export class PlayerService {
     // 0- Create a chat room
 
     // function to create a chat room between two players if they are friends
-    async createPublicChatRoom(user: any, nameOfRoom: string) {
+    async createPublicChatRoom(userId: string, nameOfRoom: string) {
         console.log("createPublicChatRoom");
-        const me = await this.findPlayer(user.nickname);
+        const me = await this.findPlayerById(userId);
 
         // owner create a room 
         // while creating the room create a member type(permission) and set it to owner
@@ -552,7 +568,7 @@ export class PlayerService {
     }
 
     async createPrivateChatRoom(user: any, nameOfRoom: string) {
-        const me = await this.findPlayer(user.nickname);
+        const me = await this.findPlayerById(user.nickname);
 
         // owner create a room 
         // while creating the room create a member type(permission) and set it to owner
@@ -586,8 +602,8 @@ export class PlayerService {
         return room;
     }
 
-    async createProtectedChatRoom(user: any, nameOfRoom: string, setpassword: string) {
-        const me = await this.findPlayer(user.nickname);
+    async createProtectedChatRoom(userId: string, nameOfRoom: string, setpassword: string) {
+        const me = await this.findPlayerById(userId);
 
         // owner create a room 
         // while creating the room create a member type(permission) and set it to owner
@@ -616,8 +632,8 @@ export class PlayerService {
     }
 
     // if type == DM
-    async createDMRoom(user: any, friendname: string) {
-        const sender = await this.findPlayer(user.nickname);
+    async createDMRoom(userId: string, friendname: string) {
+        const sender = await this.findPlayerById(userId);
         const receiver = await this.prisma.player.findUnique({
             where: { nickname: friendname }
         });
@@ -662,12 +678,12 @@ export class PlayerService {
 
     // 1- Get Permissions of the user in the room
 
-    async getPermissions(user: any, id_room: number) {
+    async getPermissions(userId: string, id_room: string) {
         const status = await this.prisma.permission.findFirst({
             where: {
                 AND: [
-                    { playerId: user.id },
-                    { roomId: +id_room },
+                    { playerId: userId },
+                    { roomId: id_room },
                 ]
             }
         })
@@ -677,13 +693,13 @@ export class PlayerService {
     // 2- get history messages of a room
 
     async getMessagesOfDM(user: any, id_room: any) {
-        const me = await this.findPlayer(user.nickname);
+        const me = await this.findPlayerById(user.nickname);
 
         const messages = await this.prisma.message.findMany({
             where: {
                 AND: [
                     { senderId: me.id },
-                    { roomId: +id_room },
+                    { roomId: id_room },
                 ]
             },
         })
@@ -691,14 +707,14 @@ export class PlayerService {
     }
 
     async getMessagesOfRoom(user: any, id_room) {
-        const me = await this.findPlayer(user.nickname);
+        const me = await this.findPlayerById(user.nickname);
 
         // 1- get the permission of this player in this room
         const status = await this.prisma.permission.findFirst({
             where: {
                 AND: [
                     { playerId: me.id },
-                    { roomId: +id_room },
+                    { roomId: id_room },
                 ]
             }
         })
@@ -736,7 +752,7 @@ export class PlayerService {
                 {
                     AND: [
                         {
-                            roomId: +id_room,
+                            roomId: id_room,
                         },
                         {
                             NOT: {
@@ -771,7 +787,7 @@ export class PlayerService {
             {
                 AND: [
                     {
-                        roomId: +id_room,
+                        roomId: id_room,
                     },
                     {
                         NOT: {
@@ -798,8 +814,8 @@ export class PlayerService {
 
     // 3- send message in chat room 
 
-    async sendMessage(user: any, room_id: number, message: string) {
-        const me = await this.findPlayer(user.nickname);
+    async sendMessage(user: any, room_id: string, message: string) {
+        const me = await this.findPlayerById(user.nickname);
         // const room = await this.prisma.chatRoom.findUnique({
         //     where: { id: room_id }
         // });
@@ -811,14 +827,14 @@ export class PlayerService {
             data: {
                 msg: message,
                 senderId: me.id,
-                roomId: +room_id
+                roomId: room_id
             }
         })
         return messageSent;
     }
 
-    async sendMessageinRoom(user: any, message: string, room_id: number) {
-        const me = await this.findPlayer(user.nickname);
+    async sendMessageinRoom(user: any, message: string, room_id: string) {
+        const me = await this.findPlayerById(user.nickname);
         // const room = await this.prisma.chatRoom.findUnique({
         //     where: { id: room_id }
         // });
@@ -829,7 +845,7 @@ export class PlayerService {
             data: {
                 msg: message,
                 senderId: me.id,
-                roomId: +room_id
+                roomId: room_id
             }
         })
         return messageSent;
@@ -837,15 +853,15 @@ export class PlayerService {
 
     // 4- add new member to a chat room 
 
-    async addMember(login: string, room_id: number) {
-        const palyer = await this.findPlayer(login);
+    async addMember(login: string, room_id: string) {
+        const palyer = await this.findPlayerById(login);
         const room = await this.prisma.permission.create({
             data: {
                 statusMember: "member",
                 muted_until: null,
                 blocked_since: null,
                 playerId: palyer.id,
-                roomId: +room_id,
+                roomId: room_id,
             }
         })
         return room;
@@ -853,14 +869,14 @@ export class PlayerService {
 
     // 5- set member as admin if u are admin or owner
 
-    async setAdmin(login: string, room_id: number) {
-        const palyer = await this.findPlayer(login);
+    async setAdmin(login: string, room_id: string) {
+        const palyer = await this.findPlayerById(login);
 
         const room = await this.prisma.permission.updateMany({
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: +room_id }
+                    { roomId: room_id }
                 ],
 
             },
@@ -872,14 +888,14 @@ export class PlayerService {
 
     // 6- ban member if u are admin or owner
 
-    async banMember(login: string, room_id: number/*, fix_date: Date*/) {
-        const palyer = await this.findPlayer(login);
+    async banMember(login: string, room_id: string/*, fix_date: Date*/) {
+        const palyer = await this.findPlayerById(login);
 
         const room = await this.prisma.permission.updateMany({
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: +room_id }
+                    { roomId: room_id }
                 ],
 
             },
@@ -892,14 +908,14 @@ export class PlayerService {
 
     // 6- ban member if u are admin or owner
 
-    async kickMember(login: string, room_id: number) {
-        const palyer = await this.findPlayer(login);
+    async kickMember(login: string, room_id: string) {
+        const palyer = await this.findPlayerById(login);
 
         const room = await this.prisma.permission.deleteMany({
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: +room_id }
+                    { roomId: room_id }
                 ],
 
             },
@@ -907,14 +923,14 @@ export class PlayerService {
     }
     // 7- mute OR umute member if u are admin or owner
 
-    async muteMember(login: any, room_id: number/*, fix_date: Date*/) {
-        const palyer = await this.findPlayer(login);
+    async muteMember(login: any, room_id: string/*, fix_date: Date*/) {
+        const palyer = await this.findPlayerById(login);
 
         const room = await this.prisma.permission.updateMany({
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: +room_id }
+                    { roomId: room_id }
                 ],
 
             },
@@ -925,14 +941,14 @@ export class PlayerService {
         });
     }
 
-    async unmuteMember(login: string, room_id: number) {
-        const palyer = await this.findPlayer(login);
+    async unmuteMember(login: string, room_id: string) {
+        const palyer = await this.findPlayerById(login);
 
         const room = await this.prisma.permission.updateMany({
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: +room_id }
+                    { roomId: room_id }
                 ],
 
             },
@@ -946,14 +962,14 @@ export class PlayerService {
 
     // 8- leave channel // delete the player from the permision
 
-    async leaveChannel(data: any, room_id: number) {
-        const palyer = await this.findPlayer(data.nickname);
+    async leaveChannel(userId: string, room_id: string) {
+        const palyer = await this.findPlayerById(userId);
 
         const room = await this.prisma.permission.deleteMany({
             where: {
                 AND: [
                     { playerId: palyer.id },
-                    { roomId: +room_id }
+                    { roomId: room_id }
                 ],
 
             },
