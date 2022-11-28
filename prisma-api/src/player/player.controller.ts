@@ -277,7 +277,7 @@ export class PlayerController {
     @Get('/listOfRooms')
     async GetListOfRooms(@Req() request, @Res() response) {
         console.log("List of Rooms");
-        const rooms = await this.playerService.getAllRooms(request.user);
+        const rooms = await this.playerService.getAllRooms(request.user.id);
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
