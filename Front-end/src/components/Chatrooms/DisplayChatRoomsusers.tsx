@@ -32,13 +32,13 @@ const DisplayChatRoomusers = (props,roomownnership) => {
     <tr>
    </tr>
    <tr>
-   <td> <img src={props.user.avatar!} 
+   <td> <img src={props.user.player.avatar!} 
    height="20" 
    className='avatarsidebar'/>
    </td>
    <td>
-   <Link style={{color:'white'}} to={`/users/${props.user.nickname}`} >
-   <p> {props.user.nickname} </p>
+   <Link style={{color:'white'}} to={`/users/${props.user.player.nickname}`} >
+   <p> {props.user.player.nickname} </p>
     </Link>
      </td> 
   <td>

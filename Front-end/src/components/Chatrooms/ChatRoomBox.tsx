@@ -117,8 +117,8 @@ async function GetMembers ()
   
   .then((response) => response.json())
   .then(json => {
-      console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json))
-      setMessages(json);
+      console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json.all_members))
+      // setMessages(json);
       // setRoom(json);
       // if(json.is_dm == true)
       // {
@@ -151,7 +151,8 @@ async function GetMembers ()
         else
         {
           setAllgood(true);
-          setMembers(json)
+          setMembers(json['all_members']);
+          // setMembers(json)
           console.log("Setting the ChatRooms Members ...");
           return json;
         }
@@ -200,7 +201,6 @@ async function GetMessageHistory()
         {
           setMessages(json);
           setAllgood(true);
-      
           console.log("Setting the ChatRooms Members ...");
           return json;
         }
@@ -217,7 +217,7 @@ async function GetMessageHistory()
   useEffect (() => {
 
 
-      console.log("INSIDE CHATROOMBOX Is_DM :  " + props.room.is_dm)
+      console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name)
 
         // HERE request to backend to fetch users of the room
         if(!props.room.is_dm)
@@ -290,11 +290,11 @@ const HandleFetchedFriend = (e) => {
 //-----------------------//
 //Filter User List 
 // const FilteredUsers =  useMemo (() => {
-  const FilteredUsers = members.filter(members => {
-  // Here A changer : person with friends from backend , 
-  //filter nickname not name 
-   return members.name.toLowerCase().includes(userQuery.toLowerCase());
-})
+//   const FilteredUsers = members.filter(members => {
+//   // Here A changer : person with friends from backend , 
+//   //filter nickname not name 
+//    return members.name.toLowerCase().includes(userQuery.toLowerCase());
+// })
 // console.log("PROPS IS DM " + props.room.is_dm);
 return (
   <div className='body'>
@@ -320,7 +320,7 @@ return (
        value={userQuery || ""}
         />
 
-    {FilteredUsers.map(c => < DisplayChatRoomusers key = {c.id} user = {c} isadmin ={"true"} />)}
+    {members.map(c => < DisplayChatRoomusers key = {c.playerId} user = {c} isadmin ={"true"} />)}
 
         </div>
   </div>

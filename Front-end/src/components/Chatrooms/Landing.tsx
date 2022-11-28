@@ -15,6 +15,7 @@ const [errorMessage, setErrorMessage] = useState("");
 const [Updated, setisUpdated] = useState(false);
 const [prevRoom,setPrevRoom] = useState("");
 const [roomid,setRoomId] = useState("");
+const [succes,setSuccess] = useState(false);
 
     const HandleClick = (e) => {
         navigate('/CreateRoom')
@@ -99,7 +100,8 @@ async function JoinRoom(roomid:string)
   .then((response) => response.json())
   .then(json => {
       console.log("The response is => " + JSON.stringify(json))
-
+      setSuccess(true);
+      if(json.statusCode == "")
 
       return json;
   })
@@ -116,6 +118,7 @@ e.preventDefault();
 console.log("JOING THIS ROOM " + idsavior )
 
 JoinRoom(idsavior)
+
 
 }
       useEffect (() =>
@@ -135,10 +138,12 @@ JoinRoom(idsavior)
             <ul className="chat-room-list">
                 {BackendRooms.map((room) => (
                     <li key={room.id}>
-                        {room.password ? (
+                        {room.is_protected ? (
                          <>
-        
-     <Pop room={room}/> 
+          <button type="button" className='has-border' onClick={HandleShowPassword}>
+      <span className="icon material-symbols-outlined">
+     {"lock"}    {  <Link to={`/room/${room.id}`}>{room.name}</Link> }    </span>
+      </button> 
       {(showinput  && prevRoom !== room.id )? (
         <>
           

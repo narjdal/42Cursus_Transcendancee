@@ -44,17 +44,6 @@ return (
        <label htmlFor='textbox'> Password : </label>
     {errorMessage && <div className="error"> {errorMessage} </div>}
      <button onClick={HandleEnterProtectedRoom}> Submit</button>
-       {/* <button
-      onSubmit={HandleEnterProtectedRoom}
-      className={isUpdating || Updated ? "sending" : ""}
-    >
-      <span className="icon material-symbols-outlined">
-        {Updated ? "check" : "send"}
-      </span>
-      <span className="text">
-        {isUpdating ? "Sending ..." : Updated ? "Sent" : ""}
-      </span>
-    </button> */}
     </div>
   </Popup>
 )

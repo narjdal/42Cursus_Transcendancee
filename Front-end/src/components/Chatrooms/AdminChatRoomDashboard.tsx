@@ -200,15 +200,15 @@ const HandleRoomPrivate = (e) => {
     {
       const current = JSON.parse(loggedUser);
        const {id} = current;
-      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "RoomOwnerId : " + props.room.OwnerId);
+      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "Member Status  : " + props.room.statusMember);
       // // In JS == Ignores the Data Types 
       // // === Check condition + data types then true 
-      // if(props.room.OwnerId == id)
-      // {
-      //   console.log(" i am owenr")
+      if(props.room.statusMember == "owner")
+      {
+        console.log(" i am owenr")
 
-      //   setOwner("true");
-      // }
+        setOwner("true");
+      }
 
       // if(props.room.AdminIds == id)
       // {

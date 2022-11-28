@@ -6,6 +6,8 @@ import ChatRoomButton from './ChatRoomButtons'
 import { useState ,useEffect} from "react";
 import AdminChatRoomDashboard from './AdminChatRoomDashboard';
 import { IsAuthOk } from '../../utils/utils';
+import { Pop } from '../../utils/Popup';
+
 function ChatRoom() {
     const params = useParams();
   const [errorMessage, setErrorMessage] = useState("");
@@ -15,6 +17,7 @@ function ChatRoom() {
     const [allgood,setAllgood] = useState(false);
     const [isDm,setIsDm] = useState(false);
     const [haspswd,setHaspsswd] = useState(false)
+    const [HasPermission,setHasPermissions] = useState(false);
 
 
 async function GetRoomById  ()  {
@@ -101,14 +104,41 @@ async function GetPermissions()
       if(json.statusMember  == "owner")
       {
         console.log("This is the owner of the room");
+        // let obj = {
+        //   statusmember: json.statusMember
+        // }
+        // var newobj = Object.assign({}, testRoom, {statusMember : json.statusMember});
+        // setRoom("");
+        // setRoom(newobj);
+        // let AdminRoom = [
+        //   ...testRoom,obj
+        // ]
+          // AdminRoom
+    //       {
+    //     statusmember:json.statusmember
+    //         },
+    // );
+        // AdminRoom  = json.statusMember;
+        // setRoom()
+        var newRoom = {...testRoom};
+
         SetUserAdmin(true);
       }
+      // if ()
       if(json.statusCode == "500" || IsAuthOk(json.statusCode) == 1)
         {
             console.log("an error occured");
             setErrorMessage("an error occured");
             // setAllgood(false)
             // window.location.reload();
+        }
+        if(json.statusCode == "404")
+        {
+          if(json.message == "You are not a member of this room")
+         { 
+          setErrorMessage(" You are not a member of this room.");
+          setAllgood(false);
+        }
         }
         // else
         // {
@@ -164,9 +194,12 @@ useEffect (() =>
     return (
         <div className='ChatRoomMessageBox'>
         {errorMessage && <div className="error"> {errorMessage} </div>}
-      {haspswd ? (
+      {testRoom.is_protected ? (
         <>
   HAS PASSWORD
+  <br/>
+  <Pop room={testRoom}/> 
+
         </>
       ) :(
         <>
