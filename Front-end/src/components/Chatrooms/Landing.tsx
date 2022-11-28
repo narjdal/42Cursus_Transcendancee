@@ -109,11 +109,13 @@ async function JoinRoom(roomid:string)
   })
 
 }
+let idsavior;
+
 const HandleJoinRoom = (e) => {
 e.preventDefault();
-console.log("JOING THIS ROOM " + roomid )
+console.log("JOING THIS ROOM " + idsavior )
 
-JoinRoom(roomid)
+JoinRoom(idsavior)
 
 }
       useEffect (() =>
@@ -163,7 +165,7 @@ JoinRoom(roomid)
                          </>   
                         ) : (
                             <>
-                            {setRoomId(room.id)}
+                            {idsavior = (room.id)}
                     <button 
                     onClick={HandleJoinRoom}
                           
