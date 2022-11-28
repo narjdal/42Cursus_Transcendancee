@@ -594,16 +594,18 @@ export class PlayerController {
         console.log("Join Room");
 
         // 1- check if room_id exists
+        console.log(room_id['id']);
         const room = await this.playerService.findRoomById(room_id['id']);
-        if(room.is_public === false)
-        {
-            throw new NotFoundException("cannot join a private room");
-        }
+        
 
         // 2- check if room_id is not a dm
         if(room.is_dm === true)
         {
             throw new NotFoundException("Cannot join a DM");
+        }
+        if(room.is_public === false)
+        {
+            throw new NotFoundException("cannot join a private room");
         }
 
         // 3- check if user is member of this room

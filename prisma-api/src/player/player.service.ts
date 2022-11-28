@@ -101,6 +101,7 @@ export class PlayerService {
                 name: room.name,
                 is_dm: room.is_dm,
                 is_public: room.is_public,
+                is_protected: room.is_protected,
             }
         })
     }
