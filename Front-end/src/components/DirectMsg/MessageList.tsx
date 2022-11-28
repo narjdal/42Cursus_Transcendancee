@@ -26,31 +26,33 @@ const MessageList = (props) => {
     // if(props.user.userId == 0)
     // {
     // }
+    console.log("INSIDE MESSAGE LIST " + props.user.msg + " MSG USER ID " + props.user.id)
     if(loggeduser)
 		{
 
 		const Current_User = JSON.parse(loggeduser);
-           const {UserId,image_url} = Current_User;
+           const {id,avatar} = Current_User;
             // console.log("User is " + UserId +" props USER ID => "+ props.user.userId);
     SetCurrentUser(CurrentUser);
-    SetUserId(UserId);
+    SetUserId(id);
     SetImageUrl(image_url);
         }
   }, []);
     return (   
         <div className="MsgHistory">
-        {UserId == props.user.userId ? (
+          
+        {UserId == props.user.senderId ? (
        <div className='YourMessages'>  
-       <img src={props.user.image_url} className="avatar1" />     
+       <img src={props.user.avatar} className="avatar1" />     
     <span>{props.user.msg} </span>
         
-    <span className="time-right">11:00</span>
+    <span className="time-right">11:55</span>
         </div>
             ):(
  <div className="OthersHistory">
     <div className='OthersMessages'>
 
- <Link style={{color:'purple',float:'left'}} to={`/users/${props.user.userId}`} >{props.user.username}</Link>
+ <Link style={{color:'purple',float:'left'}} to={`/users/${props.user.senderId}`} >{props.user.nickname}</Link>
       {props.user.msg}
         
            {/* <p onClick={HandleRightClick} onContextMenu={HandleRightClick} > {props.user.msg} </p>
@@ -64,7 +66,7 @@ const MessageList = (props) => {
                 </div>
            )} */}
        
-            <span className="time-left">11:00</span>
+            <span className="time-left">11:99999</span>
             </div>
             </div>
             )}

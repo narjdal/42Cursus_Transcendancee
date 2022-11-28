@@ -17,6 +17,7 @@ const ChatRoomBox = (props) => {
   const [Updated, setisUpdated] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
   const[members,setMembers] = useState <any >([]);
+  const [messages, setMessages] = useState <any>([]);
 
   const [userQuery,setUserQuery] = useState("");
   const [user42,SetUser42] = useState<any>([])
@@ -36,11 +37,11 @@ const ChatRoomBox = (props) => {
   };
   
     const[chatroomUsers,Setchatroomusers] = useState<any>([]);
-  const MsgHistory = [
-    {id:1,userId:3},
-  ];
-//GEt Request to Backend to get Message History of the room 
-var MsgList =[...MsgHistory];
+//   const MsgHistory = [
+//     {id:1,userId:3},
+//   ];
+// //GEt Request to Backend to get Message History of the room 
+// var MsgList =[...MsgHistory];
 
   const HandleInputMsg = (e) => {
     e.preventDefault();
@@ -116,7 +117,7 @@ async function GetMembers ()
   .then((response) => response.json())
   .then(json => {
       console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json))
-
+      setMessages(json);
       // setRoom(json);
       // if(json.is_dm == true)
       // {
@@ -163,6 +164,54 @@ async function GetMembers ()
 
     }
 }
+
+async function GetMessageHistory()
+{
+  const loggeduser = localStorage.getItem("user");
+  if(loggeduser)
+  {
+    var Current_User = JSON.parse(loggeduser);
+  const text = "http://localhost:5000/player/getmessages/" + props.room.id;
+    console.log("Api getmessages Link :  =>  " + text);
+    
+
+    await fetch(text,{
+      // mode:'no-cors',
+      method:'get',
+      credentials:"include"
+  })
+  
+  .then((response) => response.json())
+  .then(json => {
+      console.log("getmessages :   => " + JSON.stringify(json))
+      setMessages(json);
+    
+      // if(json.statusCode == "500" )
+      //   {
+      //       console.log("an error occured");
+      //       setErrorMessage("an error occured");
+      //       setAllgood(false)
+      //       if(IsAuthOk(json.statusCode) == 1)
+      //       window.location.reload();
+      //   }
+
+      //   else
+      //   {
+      //     setAllgood(true);
+      //     setMembers(json)
+      //     console.log("Setting the ChatRooms Members ...");
+      //     return json;
+      //   }
+     
+
+  })
+  .catch((error) => {
+      console.log("An error occured : " + error)
+      return error;
+  })
+
+    }
+}
   useEffect (() => {
 
 
@@ -174,23 +223,8 @@ async function GetMembers ()
           console.log("Fethcing members of this chatroom.");
           GetMembers();
         }
-      // console.log("=>>>>> FROM THE Chatroom "   + Current_User.nickname + Current_User.UserId + OwnedDbId + "This room Owner Id  is :> " + room.OwnerId)
-    //   var help = JSON.parse(room.AdminsIds);
-    // FetchUserInfo(2)
-    // .then((resp) => {
-    //   console.log("resp => " + resp[0].id);
-    //   setFriends(resp);
-    //   console.log("user42.image_url" + friends.image_url)
-    // // })
-    // console.log("=>>> " +props.room.AdminsIds);
-
-    //   if(Current_User.UserId == props.room.AdminsIds)
-    //   {
-    //     console.log("User is Admin ! ");
-    //   SetUserAdmin(true);
-    //   }
-    // //   var new_User = [...Current_User];
-    //   SetUser42(Current_User);
+        GetMessageHistory();
+        // console.log("Members of the room : " + JSON.stringify(chatroomUsers));
     
 },[]);
 
@@ -294,7 +328,7 @@ return (
      
       <div className='History-Box'> 
      
-      {MsgList.map(c => < MessageList  key = {c.id} user ={c} />)}
+      {messages.map(c => < MessageList  key = {c.senderId} user ={c} />)}
  
       
       </div>
