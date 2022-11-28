@@ -21,7 +21,7 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("----------------- myprofile -----------------", profile.nickname);
+        console.log("----------------- Finish myprofile -----------------", profile.nickname);
         response.status(200).send(profile);
         return profile;
     }
@@ -35,7 +35,7 @@ export class PlayerController {
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         })
-        console.log("----------------- Profile of this nickname -----------------");
+        console.log("----------------- Finish Profile of this nickname -----------------");
         response.status(200).send(profile);
         return profile;
     }
@@ -51,13 +51,13 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("-------------  Finish List of Friends   -------------------");
         response.status(200).send(friends);
         return friends;
     }
 
     @Get('/listOfMembers/:id') // check if id room exists ==> getProfilesOfChatRooms
-    async GetListOfMembers(@Param() id_room: String, @Req() request, @Res() response) {
+    async GetListOfMembers(@Param() id_room: string, @Req() request, @Res() response) {
         console.log("-------------------List of Members-------------------");
 
         // check if id_room exist
@@ -68,30 +68,31 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("------------ Finish List of Members---------------");
         response.status(200).send(friends);
         return friends;
     }
 
     @Get('/listToAddFriend/:id') // check if id room exists
-    async GetListOfAddFriends(@Param() id_room: String, @Req() request, @Res() response) {
-        console.log("---------------List To ADD Friends -----------------");
+    async GetListOfAddFriends(@Param() id_room: string, @Req() request, @Res() response) {
+        console.log("\n---------------List To ADD Friends -----------------", request.user.id, " ", id_room['id']);
 
         // check if id_room exist
         // check permission of user admin or owner or a member
-        const friends = await this.playerService.getListOfFriendsToAddinThisRoom(request.user.id, id_room['id']);
+        const friends = await this.playerService.getListOfFriendsToAddinThisRoom(request.user.id, id_room['id']); /// PRRRRRRR
+
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("-------------- FINISH getListOfFriendsTo ------------------");
         response.status(200).send(friends);
         return friends;
     }
 
     @Get('/listOfSetAdmin/:id') // check if id room exists
-    async GetListOfSetAdmin(@Param() id_room: String, @Req() request, @Res() response) {
+    async GetListOfSetAdmin(@Param() id_room: string, @Req() request, @Res() response) {
         console.log("-------------- List of Friends to Set Admin ----------------");
         // check if id_room exist
         // check permission of user is owner
@@ -102,13 +103,13 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("-------------- Finish List of Friends to Set Admin------------------");
         response.status(200).send(friends);
         return friends;
     }
 
     @Get('/listToMute/:id') // check if id room exists
-    async GetListOfMembersToMute(@Param() id_room: String, @Req() request, @Res() response) {
+    async GetListOfMembersToMute(@Param() id_room: string, @Req() request, @Res() response) {
         console.log("-------------- List to Mute ----------------");
         // check if id_room exist
         const friends = await this.playerService.getListOfFriendsToMuteinThisRoom(request.user.id, id_room['id']);    
@@ -117,13 +118,13 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("-------------- Finish List to Mute-------");
         response.status(200).send(friends);
         return friends;
     }
 
     @Get('/listOfUnmute/:id') // check if room exists
-    async GetListOfMembersToUnmute(@Param() id_room: String, @Req() request, @Res() response) {
+    async GetListOfMembersToUnmute(@Param() id_room: string, @Req() request, @Res() response) {
         console.log("---------------List to Unmute ----------------");
         // check if id_room exist
         // check permission of user admin or owner
@@ -133,13 +134,13 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("----------- Finish List to Unmute-----------");
         response.status(200).send(friends);
         return friends;
     }
 
     @Get('/listToBan/:id') // check if room exists
-    async GetListOfMembersToBan(@Param() id_room: String, @Req() request, @Res() response) {
+    async GetListOfMembersToBan(@Param() id_room: string, @Req() request, @Res() response) {
         console.log("---------------List To Ban -----------------");
         // check if id_room exist
         // check permission of user admin or owner
@@ -149,7 +150,7 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("---------- Finish List To Ban-----------------");
         response.status(200).send(friends);
         return friends;
     }
@@ -158,7 +159,7 @@ export class PlayerController {
 
     @Get('/statusFriendship/:id') // check if nickname exist
     async checkStatusFriendship(@Param() login: string, @Req() request, @Res() response) {
-        console.log("--------------- status -----------------");
+        console.log("--------------- Status -----------------");
         const membership = await this.playerService.getFriend(request.user.id, login['id']);
 
         let choices: Array<String> = [];
@@ -194,25 +195,27 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
+        console.log("---------- Finish Status-----------------");
         response.status(200).send(choices);
         console.log(choices);
         return choices;
     }
 
     @Get('/requestFriendship/:id') // check if nickname exist
-    async RequestFriendship(@Param() login: String, @Req() request, @Res() response) {
-        console.log("Request Friendship");
+    async RequestFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("-------------- Request Friendship ----------------");
         const friend = await this.playerService.createFriendship(request.user.id, login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        response.status(200).send(friend);
+        console.log("-------------- Finish Request Friendship ------------------");
+        return response.status(200).send(friend);
     }
 
     @Get('/acceptFriendship/:id') // check if nickname exist
-    async AcceptFriendship(@Param() login: String, @Req() request, @Res() response) {
-        console.log("Accept Friendship");
+    async AcceptFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("---------------- Accept Friendship ----------------");
    
         // check login exist
         const friend = await this.playerService.acceptFriendship(request.user.id, login['id']);
@@ -221,39 +224,43 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        response.status(200).send(friend);
+        console.log("---------------- Finish Accept Friendship ------------------");
+        return response.status(200).send(friend);
     }
 
     @Get('/refuseFriendship/:id') // check if nickname exist
-    async RefuseFriendship(@Param() login: String, @Req() request, @Res() response) {
-        console.log("Refuse Friendship");
+    async RefuseFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("----------------- Refuse Friendship ----------------");
         const friend = await this.playerService.refuseFriendship(request.user.id, login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
+        console.log("----------------- Finish Refuse Friendship ------------------");
         response.status(200).send(friend);
     }
 
     @Get('/blockFriendship/:id') // check if nickname exist
-    async BlockFriendship(@Param() login: String, @Req() request, @Res() response) {
-        console.log("Block Friendship");
+    async BlockFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("------------------ Block Friendship ----------------");
         const friend = await this.playerService.blockFriendship(request.user.id, login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
+        console.log("------------------ Finish Block Friendship ------------------");
         response.status(200).send(friend);
     }
 
     @Get('/unblockFriendship/:id') // check if nickname exist
-    async UnblockFriendship(@Param() login: String, @Req() request, @Res() response) {
-        console.log("Unblock Friendship");
+    async UnblockFriendship(@Param() login: string, @Req() request, @Res() response) {
+        console.log("---------------- Unblock Friendship ----------------");
         const friend = await this.playerService.deleteFriendship(request.user.id, login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
+        console.log("---------------- Finish Unblock Friendship ------------------");
         response.status(200).send(friend);
     }
 
@@ -294,7 +301,7 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("---------- Finish List of Rooms-----------------");
         response.status(200).send(rooms);
         return rooms;
     }
@@ -307,7 +314,7 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("----------------- Finish Create Public Chat Room ------------------");
         response.status(200).send(room);
     }
 
@@ -319,6 +326,7 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
+        console.log("---------------- Finish Create Private Chat Room ------------------");
         response.status(200).send(room);
     }
 
@@ -330,38 +338,38 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("-------------Finish Creatte Protected Chat Room-----------");
         response.status(200).send(room);
     }
 
     @Get('/GetRoomById/:id')
-    async GetRoomById(@Param() id_room: String, @Req() request, @Res() response) {
+    async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
         console.log("-------------- Get Room By Id --------------");
         const room = await this.playerService.getRoomById(id_room['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("-------------Finish Get Room By Id-------------");
         response.status(200).send(room);
     }
 
     @Get('/Permission/:id') //POST REQUEST // id is roon id 
-    async GetPermission(@Param() id_room: String, @Req() request, @Res() response) {
+    async GetPermission(@Param() id_room: string, @Req() request, @Res() response) {
         console.log("------------------- Get Permission-------------------");
         const permission = await this.playerService.getPermissions(request.user.id, id_room['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
         )
-        console.log("--------------------------------");
+        console.log("------------------- Finish Get Permission-------------------");
         response.status(200).send(permission);
         return permission;
     }
 
     // //endpoint for setting a member as admin
     @Get('/addMember/:id1/:id2')
-    async addMember(@Param() login: string, @Param() room: String ,@Req() request, @Res() response) {
+    async addMember(@Param() login: string, @Param() room: string ,@Req() request, @Res() response) {
         console.log("------------------ Add Member ------------------");
         // check if room_id exists
         // check if room_id is not a dm
@@ -372,14 +380,14 @@ export class PlayerController {
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
         )
-        console.log("--------------------------------");
+        console.log("------------------ Finish Add Member ------------------");
         response.status(200).send(admin);
     }
 
     // //endpoint for setting a member as admin
     @Get('/setAdmin/:id1/:id2')
-    async setAdmin(@Param() login: string, @Param() room: String, @Req() request, @Res() response) {
-        console.log("Set Admin");
+    async setAdmin(@Param() login: string, @Param() room: string, @Req() request, @Res() response) {
+        console.log("---------------- Set Admin ----------------");
         // check if room_id exists
         // check if room_id is not a dm
         // check if nickname is a member of room_id with status member
@@ -433,7 +441,7 @@ export class PlayerController {
     }
 
     @Get('/kickMember/:id1/:id2') // kick member or admin
-    async kickMember(@Param() login: string, @Param() room_id: String, @Req() request, @Res() response) {
+    async kickMember(@Param() login: string, @Param() room_id: string, @Req() request, @Res() response) {
         console.log("Kick Member");
        // 1- check if room_id exists
        const room = await this.playerService.findRoomById(room_id['id']);
@@ -465,7 +473,7 @@ export class PlayerController {
     }
 
     // @Get('/kick/:id1/:id2')
-    // async kickMember(@Param() login: string, @Param() room_id: String, @Req() request, @Res() response) {
+    // async kickMember(@Param() login: string, @Param() room_id: string, @Req() request, @Res() response) {
     //     // console.log("Kick Member");
     //    // 1- check if room_id exists
     //    const room = await this.playerService.findRoomById(room_id['id']);
@@ -498,7 +506,7 @@ export class PlayerController {
 
     // //endpoint for muting member
     @Get('/muteMember/:id1/:id2') // post need time til muted
-    async muteMember(@Param() login: string, @Param() room_id: String, @Req() request, @Res() response) {
+    async muteMember(@Param() login: string, @Param() room_id: string, @Req() request, @Res() response) {
         console.log("Mute Member");
 
         // 1- check if room_id exists
@@ -531,7 +539,7 @@ export class PlayerController {
     }
 
     @Get('/unmuteMember/:id1/:id2')
-    async unmuteMember(@Param() nickname: string, @Param() room_id: String, @Req() request, @Res() response) {
+    async unmuteMember(@Param() nickname: string, @Param() room_id: string, @Req() request, @Res() response) {
         console.log("Mute Member");
 
         // 1- check if room_id exists
@@ -564,7 +572,7 @@ export class PlayerController {
 
     // //endpoint for leaving a room
     @Get('/leaveRoom/:id')
-    async leaveRoom(@Param() room_id: String, @Req() request, @Res() response) {
+    async leaveRoom(@Param() room_id: string, @Req() request, @Res() response) {
         console.log("Leave Room");
 
         // 1- check if room_id exists
@@ -586,7 +594,7 @@ export class PlayerController {
     }
 
     @Get('/getmessages/:id')
-    async getMessages(@Param() room_id: String, @Req() request, @Res() response) {
+    async getMessages(@Param() room_id: string, @Req() request, @Res() response) {
         console.log("----------------------- Get Messages -----------------------", room_id['id']);
 
         const room = await this.playerService.findRoomById(room_id['id']);
@@ -603,17 +611,18 @@ export class PlayerController {
         // }
 
 
-        const messages = await this.playerService.getMessagesOfRoom(request.user, room_id['id']);
+        const messages = await this.playerService.getMessagesOfRoom(request.user.id, room_id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
         )
+        console.log("----------------------- Finish Get Messages -----------------------");
         response.status(200).send(messages);
         return messages;
     }
 
     @Get('/joinRoom/:id')
-    async joinRoom(@Param() room_id: String, @Req() request, @Res() response) {
+    async joinRoom(@Param() room_id: string, @Req() request, @Res() response) {
         console.log("---------------- Join Room ----------------", room_id['id']);
 
         // 1- check if room_id exists
@@ -643,7 +652,7 @@ export class PlayerController {
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         })
-        console.log("----------------------------------");
+        console.log("--------------  Finish Join Room--------------------");
         return response.status(200).send(join);
     }
 }

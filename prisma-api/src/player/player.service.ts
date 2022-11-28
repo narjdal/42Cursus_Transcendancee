@@ -12,8 +12,10 @@ export class PlayerService {
 
     async findPlayerById(userId: string)//: Promise<any> {
     {
-        console.log("FindPlayerById", userId);
-        
+        console.log("FindPlayerById", userId);  // userId ===> roomId
+        if (!userId) {
+            throw new HttpException('User Id is required', 400);
+        }
         const player = await this.prisma.player.findUnique({
             where: {
                 id: userId,
@@ -244,8 +246,8 @@ export class PlayerService {
     }
 
     async getAllMembersOfThisRoom(userId: string, room_id: string) {
-        const me = await this.findPlayerById(userId);
-        console.log("==> getAllMembersOfThisRoom method ", room_id, " ", room_id);
+        // const me = await this.findPlayerById(userId); /// ERRor here
+        console.log(" MEthod one of get all members ", userId, " ", room_id);
         
         const room = await this.prisma.chatRoom.findUnique({
             where: {
@@ -258,7 +260,7 @@ export class PlayerService {
                     },
                     where: {
                         playerId: {
-                            not: me.id
+                            not: userId
                         },
                     },
                 },
@@ -271,13 +273,13 @@ export class PlayerService {
 
     // 2 - list of friends that we can add to the chat room
     async getListOfFriendsToAddinThisRoom(userId: string, room_id: string) {
-        console.log("==> getListOfFriendsToAddinThisRoom Method", userId, room_id);
+        console.log("MEEEEEEThod two get all friends ", userId, room_id);
 
         // const me = await this.findPlayerById(userId);
 
         // 1- Get all members of this room except me
         const membersId = await this.getAllMembersOfThisRoom(userId, room_id);
-        // console.log(membersId);
+        console.log("one", membersId);
 
         // 2- Get all friends
         const friendships = await this.prisma.friendship.findMany({
@@ -306,12 +308,14 @@ export class PlayerService {
             },
 
         })
+        console.log("two", friendships);
 
         const friendsId = friendships.map(user => {
             if (user.receiverId == userId)
                 return user.senderId
             return user.receiverId
         })
+        console.log("three", friendsId);
 
         // 3- Get all friends that are not members of this room
         const listFriendsToadd = await this.prisma.player.findMany({
@@ -322,7 +326,7 @@ export class PlayerService {
                 },
             },
         })
-        console.log("listFriendsToadd    FINIXHED");
+        console.log(" .  listFriendsToadd    FINIXHED");
         return listFriendsToadd;
     }
 
@@ -661,8 +665,8 @@ export class PlayerService {
         return room;
     }
 
-    async createPrivateChatRoom(user: any, nameOfRoom: string) {
-        const me = await this.findPlayerById(user.nickname);
+    async createPrivateChatRoom(userId: string, nameOfRoom: string) {
+        const me = await this.findPlayerById(userId);
 
         // owner create a room 
         // while creating the room create a member type(permission) and set it to owner
@@ -809,9 +813,11 @@ export class PlayerService {
         return messages;
     }
 
-    async getMessagesOfRoom(user: any, id_room) {
-        const me = await this.findPlayerById(user.nickname);
+    async getMessagesOfRoom(userId: string, id_room: string) {
+        const me = await this.findPlayerById(userId);
 
+        console.log("\\\\\\\\\\\\\\\\getMessagesOfRoom \\\\\\\\\\\\\\\\");
+        console.log("userId:", userId, " ", "roomId",  id_room);
         // 1- get the permission of this player in this room
         const status = await this.prisma.permission.findFirst({
             where: {
@@ -821,6 +827,9 @@ export class PlayerService {
                 ]
             }
         })
+        if (status === null) {
+            throw new NotFoundException("You are not a member of this room");
+        }
 
         const blocked_list = await this.prisma.friendship.findMany({
             where: {
@@ -849,7 +858,8 @@ export class PlayerService {
         // 1- if user is banned, send all msgs before the time of banning
         // ==>  status.createdAt
         // where { message.createdAT {lt: status.createdAt} }
-        if (status.statusMember === "banned") {
+        console.log("status", status);
+        if (status.is_banned) {
             const result = await this.prisma.message.findMany({
                 where:
                 {
@@ -933,8 +943,8 @@ export class PlayerService {
 
     // 3- send message in chat room 
 
-    async sendMessage(user: any, room_id: string, message: string) {
-        const me = await this.findPlayerById(user.nickname);
+    async sendMessage(userId: string, room_id: string, message: string) {
+        const me = await this.findPlayerById(userId);
         // const room = await this.prisma.chatRoom.findUnique({
         //     where: { id: room_id }
         // });
@@ -952,8 +962,8 @@ export class PlayerService {
         return messageSent;
     }
 
-    async sendMessageinRoom(user: any, message: string, room_id: string) {
-        const me = await this.findPlayerById(user.nickname);
+    async sendMessageinRoom(userId: string, message: string, room_id: string) {
+        const me = await this.findPlayerById(userId);
         // const room = await this.prisma.chatRoom.findUnique({
         //     where: { id: room_id }
         // });
