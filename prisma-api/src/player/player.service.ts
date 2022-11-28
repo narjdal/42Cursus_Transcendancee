@@ -60,10 +60,12 @@ export class PlayerService {
     async getAllRooms(userId: string) {
         const me = await this.findPlayerById(userId);
 
+        // ROOMS  + public
+
         const rooms = await this.prisma.chatRoom.findMany({
             where: {
                 OR: [
-                    {
+                    { // member DM or private proctected
                         all_members: {
                             some: {
                                 playerId: me.id
@@ -75,12 +77,38 @@ export class PlayerService {
                         is_public: true,
                     },
                 ],
-
+            },
+            include: {
+                all_members: {
+                    include: {
+                        player: {
+                            select: {
+                                nickname: true,
+                            }
+                        },
+                    }
+                }
             }
         })
         // console.log(rooms);
-        return rooms;
+        return rooms.map(room => {
+            if (room.is_dm === true) {
+                room.name = room.all_members.find(e=>e.playerId !== me.id)?.player.nickname;
+            }
+            return {
+                id: room.id,
+                name: room.name,
+                is_dm: room.is_dm,
+                is_public: room.is_public,
+            }
+        })
     }
+
+    // async joinRoom(userId: string, roomId: string) {
+    //     // const me = await this.findPlayerById(userId);
+    //     // const room = await this.findRoomById(roomId);
+    // }
+
 
     // -------------------------- 1- Get list of friends ------------------
 
@@ -165,6 +193,30 @@ export class PlayerService {
         })
         console.log(friends);
         return friends;
+    }
+
+    async getListOfChatRooms(userId: string, room_id: string) {
+        const me = await this.findPlayerById(userId);
+        console.log("getAllMembersOfThisRoom method", room_id);
+        
+        const rooms = await this.prisma.chatRoom.findUnique({
+            where: {
+                id: room_id
+            },
+            select: {
+                all_members: {
+                    select: {
+                        playerId: true
+                    },
+                    where: {
+                        playerId: {
+                            not: me.id
+                        },
+                    },
+                },
+            },
+        })
+        return rooms;
     }
 
     async getAllMembersOfThisRoom(userId: string, room_id: string) {
