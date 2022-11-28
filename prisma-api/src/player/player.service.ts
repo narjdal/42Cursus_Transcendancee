@@ -591,6 +591,8 @@ export class PlayerService {
             select: {
                 name: true,
                 is_dm: true,
+                is_public: true,
+                is_protected : true,
             }
         })
         return room;
@@ -682,6 +684,7 @@ export class PlayerService {
                 is_dm: false,
                 name: nameOfRoom,
                 is_public: false,
+                is_protected: true,
                 password: setpassword,
 
                 all_members: {
@@ -753,6 +756,11 @@ export class PlayerService {
                     { playerId: userId },
                     { roomId: id_room },
                 ]
+            },
+            select: {
+                statusMember: true,
+                is_banned: true,
+                is_muted: true,
             }
         })
         if(status === null){
@@ -824,6 +832,7 @@ export class PlayerService {
                     AND: [
                         {
                             roomId: id_room,
+    
                         },
                         {
                             NOT: {
@@ -846,11 +855,18 @@ export class PlayerService {
                     createdAt: 'asc',
                 },
                 select: {
+                    sender: {
+                        select: {
+                            id: true,
+                            nickname: true,
+                            avatar: true, 
+                        }
+                    },
                     msg: true,
                     senderId: true,
-                }
+                    createdAt: true,
+                },
             })
-            return result;
         }
         // else
         const result = await this.prisma.message.findMany({
@@ -876,12 +892,20 @@ export class PlayerService {
                 createdAt: 'asc',
             },
             select: {
+                sender: {
+                    select: {
+                        id: true,
+                        nickname: true,
+                        avatar: true, 
+                    }
+                },
                 msg: true,
                 senderId: true,
-            }
+                createdAt: true,
+            },
         })
         return result;
-    }
+    }ƒ
 
     // 3- send message in chat room 
 
@@ -932,6 +956,19 @@ export class PlayerService {
                 muted_until: null,
                 blocked_since: null,
                 playerId: palyer.id,
+                roomId: room_id,
+            }
+        })
+        return room;
+    }
+
+    async joinRoom(playerId: string, room_id: string) {
+        const room = await this.prisma.permission.create({
+            data: {
+                statusMember: "member",
+                muted_until: null,
+                blocked_since: null,
+                playerId: playerId,
                 roomId: room_id,
             }
         })
@@ -1047,6 +1084,7 @@ export class PlayerService {
         });
     }
 
+    
     // 9- create a password to channel or delete password if is owner
 
 }

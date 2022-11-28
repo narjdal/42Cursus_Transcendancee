@@ -36,6 +36,7 @@ model ChatRoom {
     is_dm        Boolean      @default(true) // type ==> enum [DM, ROOM]
     name         String?
     is_public    Boolean      @default(true)
+    is_protected Boolean      @default(false)
     password     String?
     all_members  Permission[] @relation("PermissionOfmember")
     all_messages Message[]    @relation("ThisRoom") // one to many

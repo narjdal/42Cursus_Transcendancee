@@ -8320,6 +8320,244 @@
               0.5,
               0.5
             ]
+          },
+          "737bea82-8eca-460f-3f92-09e9d5754a27": {
+            "id": "737bea82-8eca-460f-3f92-09e9d5754a27",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 234,
+            "point": [
+              67.2,
+              13800.74
+            ],
+            "size": [
+              282.75,
+              373.68
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "d7018a66-6c22-43fc-11ab-14ecc59d63af": {
+            "id": "d7018a66-6c22-43fc-11ab-14ecc59d63af",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 235,
+            "point": [
+              87.4,
+              13861.33
+            ],
+            "rotation": 0,
+            "text": "1- I change in include 848",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "116b8bb4-8e7e-4fe0-26c6-8a228121db8d": {
+            "id": "116b8bb4-8e7e-4fe0-26c6-8a228121db8d",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 236,
+            "point": [
+              -72.15,
+              12328.72
+            ],
+            "size": [
+              686.2,
+              253.38
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "b2440f1e-7af4-46cd-1231-894bb2733e7d": {
+            "id": "b2440f1e-7af4-46cd-1231-894bb2733e7d",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 237,
+            "point": [
+              7.91,
+              12410.61
+            ],
+            "rotation": 0,
+            "text": "1- get room by id",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "99ea2644-3164-4207-0a74-b39c8e28ea53": {
+            "id": "99ea2644-3164-4207-0a74-b39c8e28ea53",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 238,
+            "point": [
+              -19.685445573310517,
+              12476.915559197676
+            ],
+            "rotation": 0,
+            "text": "2- create room",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "a6f9840a-0312-4587-19a4-7e9380866d80": {
+            "id": "a6f9840a-0312-4587-19a4-7e9380866d80",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 239,
+            "point": [
+              5.2,
+              14278.89
+            ],
+            "size": [
+              521.91,
+              417.9
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "91b8012a-1bcc-488a-2503-494a4024bccf": {
+            "id": "91b8012a-1bcc-488a-2503-494a4024bccf",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 240,
+            "point": [
+              60.06,
+              14343.98
+            ],
+            "rotation": 0,
+            "text": "1- get room id",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "05b01b35-9f3d-4ff8-25c8-dee8ca873610": {
+            "id": "05b01b35-9f3d-4ff8-25c8-dee8ca873610",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 241,
+            "point": [
+              85.3,
+              14397.4
+            ],
+            "rotation": 0,
+            "text": "2- permissions",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "677f23c1-8989-4ae0-2d1e-2292a3653a48": {
+            "id": "677f23c1-8989-4ae0-2d1e-2292a3653a48",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 242,
+            "point": [
+              68.01,
+              14459.06
+            ],
+            "rotation": 0,
+            "text": "3- get ll msgs",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
+          },
+          "c6e7fc79-e0a3-484b-0d17-feb71e8b69f0": {
+            "id": "c6e7fc79-e0a3-484b-0d17-feb71e8b69f0",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 243,
+            "point": [
+              69.63,
+              14553.52
+            ],
+            "rotation": 0,
+            "text": "4- create a room ",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
           }
         },
         "bindings": {

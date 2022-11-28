@@ -25,7 +25,7 @@ export class PlayerController {
     }
 
     // This is for guetting player profile
-    @Get('/profile/:id')
+    @Get('/profile/:id') // id is player
     async getProfile(@Param() nickname: string, @Req() request, @Res() response) //:Promise<Profile>
     {
         // console.log("Profile of another Player");
@@ -53,7 +53,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listOfMembers/:id') // check if room exists
+    @Get('/listOfMembers/:id') // check if id room exists
     async GetListOfMembers(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
 
@@ -69,7 +69,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listToAddFriend/:id') // check if room exists
+    @Get('/listToAddFriend/:id') // check if id room exists
     async GetListOfAddFriends(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
 
@@ -85,7 +85,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listOfSetAdmin/:id') // check if room exists
+    @Get('/listOfSetAdmin/:id') // check if id room exists
     async GetListOfSetAdmin(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
         // check if id_room exist
@@ -101,7 +101,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listToMute/:id') // check if room exists
+    @Get('/listToMute/:id') // check if id room exists
     async GetListOfMembersToMute(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
         // check if id_room exist
@@ -289,7 +289,7 @@ export class PlayerController {
         return rooms;
     }
 
-    @Post('/createChatRoom/Public') // no check to do
+    @Post('/createChatRoom/Public') // no check if name exist choose another name 
     async CreatePublicChatRoom(@Body() Body, String, @Req() request, @Res() response) {
         console.log("Create Chat Room");
         const room = await this.playerService.createPublicChatRoom(request.user.id, Body.name);
@@ -333,7 +333,7 @@ export class PlayerController {
         response.status(200).send(room);
     }
 
-    @Get('/Permission/:id') //POST REQUEST
+    @Get('/Permission/:id') //POST REQUEST // id is roon id 
     async GetPermission(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("Get Permission");
         const permission = await this.playerService.getPermissions(request.user.id, id_room['id']);
@@ -482,7 +482,7 @@ export class PlayerController {
     // }
 
     // //endpoint for muting member
-    @Get('/muteMember/:id1/:id2')
+    @Get('/muteMember/:id1/:id2') // post need time til muted
     async muteMember(@Param() login: string, @Param() room_id: String, @Req() request, @Res() response) {
         console.log("Mute Member");
 
@@ -569,4 +569,55 @@ export class PlayerController {
         )
         response.status(200).send(leave);
     }
+
+    @Get('/getmessages/:id')
+    async getMessages(@Param() room_id: String, @Req() request, @Res() response) {
+        console.log("Get Messages");
+
+        const room = await this.playerService.findRoomById(room_id['id']);
+        if(!room)
+        {
+            throw new NotFoundException("Room not found");
+        }
+        const messages = await this.playerService.getMessagesOfRoom(request.user, room_id['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+            }
+        )
+        response.status(200).send(messages);
+    }
+
+    @Get('/joinRoom/:id')
+    async joinRoom(@Param() room_id: String, @Req() request, @Res() response) {
+        console.log("Join Room");
+
+        // 1- check if room_id exists
+        const room = await this.playerService.findRoomById(room_id['id']);
+        if(room.is_public === false)
+        {
+            throw new NotFoundException("cannot join a private room");
+        }
+
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true)
+        {
+            throw new NotFoundException("Cannot join a DM");
+        }
+
+        // 3- check if user is member of this room
+        // const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
+        // if(member)
+        // {
+        //     throw new NotFoundException("Already a member");
+        // }
+
+        // 4- then join room
+        const join = await this.playerService.joinRoom(request.user.id, room_id['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        })
+        response.status(200).send(join);
+
+    }
 }
+
