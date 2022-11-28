@@ -29,7 +29,7 @@ export class AuthService {
             },
         });
 
-        // return player;
+        return player;
     }
 
     public async getJwtToken(player: any) : Promise<string> {
