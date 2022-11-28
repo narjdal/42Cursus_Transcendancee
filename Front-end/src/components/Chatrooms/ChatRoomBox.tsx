@@ -116,7 +116,7 @@ async function GetMembers ()
   .then((response) => response.json())
   .then(json => {
       console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json))
-    
+
       // setRoom(json);
       // if(json.is_dm == true)
       // {
@@ -126,7 +126,17 @@ async function GetMembers ()
       //   setAllgood(true)
       //   setIsDm(true);
       // }
-
+      if(json == 1)
+      {
+        console.log("weird");
+        return ;
+      }
+      else if (json == 4 || json == 3)
+      {
+        console.log("Id received instead of user infos.")
+        return ;
+      }
+    
       if(json.statusCode == "500" )
         {
             console.log("an error occured");
@@ -200,7 +210,7 @@ const SendMessage = (e) => {
 async function LeaveRoom () {
 
   const text = "http://localhost:5000/player/leaveRoom/" +"me"  + "/" + props.room.id
-console.log("Api Fetch Link :  =>  " + text);
+console.log("Api Leave Rookm  Link :  =>  " + text);
 
 
 await fetch(text,{
@@ -243,12 +253,12 @@ const HandleFetchedFriend = (e) => {
 //-----------------------//
 //Filter User List 
 // const FilteredUsers =  useMemo (() => {
-  const FilteredUsers = person.filter(person => {
+  const FilteredUsers = members.filter(members => {
   // Here A changer : person with friends from backend , 
   //filter nickname not name 
-   return person.name.toLowerCase().includes(userQuery.toLowerCase());
+   return members.name.toLowerCase().includes(userQuery.toLowerCase());
 })
-console.log("PROPS IS DM " + props.room.is_dm);
+// console.log("PROPS IS DM " + props.room.is_dm);
 return (
   <div className='body'>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />

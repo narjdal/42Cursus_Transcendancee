@@ -73,8 +73,8 @@ const App = () => {
   else {
 
 
-    const user = localStorage.getItem("user");
-    console.log(" User Object  =>   " + user)
+    // const user = localStorage.getItem("user");
+    // console.log(" User Object  =>   " + user)
 
     return (
       <div className="App">

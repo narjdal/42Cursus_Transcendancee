@@ -30,7 +30,7 @@ return (
   <Popup trigger ={
   <button type="button" className='has-border' onClick={HandleShowPassword}>
       <span className="icon material-symbols-outlined">
-     {"lock"}    {props.room.title}    </span>
+     {"lock"}    {props.room.name}    </span>
       </button> 
       }    
     position="bottom center">

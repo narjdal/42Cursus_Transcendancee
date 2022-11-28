@@ -89,6 +89,9 @@ await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
 catch(error)
 {
   console.log("An error occured trycatch : " + error)
+  setErrorMessage(" User not found ! ");
+  setAllgood(false);
+  setUserQuery("");
   
 }
 // console.log("Waiting for the backend endpoint ...");
@@ -127,6 +130,7 @@ setDisplay(true);
 const HandleChange  = (e) => {
     setUserQuery(e.target.value);
     setDisplay(false);
+
 }
 
 return (

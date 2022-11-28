@@ -1,5 +1,4 @@
 import { Link, useParams } from 'react-router-dom';
-import { chatRooms } from './ChatRoomData.js';
 
 import './ChatRoom.css';
 import ChatRoomBox from './ChatRoomBox'
@@ -15,11 +14,8 @@ function ChatRoom() {
     const [testRoom,setRoom] = useState<any>([]);
     const [allgood,setAllgood] = useState(false);
     const [isDm,setIsDm] = useState(false);
-    const room = chatRooms.find((x) => x.id === params.id);
     
-    if (!room) {
-        // TODO: 404
-    }
+
 
 async function GetRoomById  ()  {
 
@@ -29,7 +25,7 @@ async function GetRoomById  ()  {
   {
     var Current_User = JSON.parse(loggeduser);
   const text = "http://localhost:5000/player/GetRoomById/" + params.id;
-    console.log("Api Fetch Link :  =>  " + text);
+    console.log("Api GetRoomById Link :  =>  " + text);
     
 
     await fetch(text,{
@@ -41,15 +37,22 @@ async function GetRoomById  ()  {
   .then((response) => response.json())
   .then(json => {
       json.id = params.id;
-      console.log("The response Of ChatRoom is  => " + JSON.stringify(json))
+      console.log("The response Of GetRoomById is  => " + JSON.stringify(json))
       setRoom(json);
       if(json.is_dm == true)
       {
-        testRoom.is_dm = true;
+        // testRoom.is_dm = true;
         console.log("This is a DM Room");
-      
+            // GetPermissions();
         setAllgood(true)
+        // localStorage.setItem("isdm","true");
         setIsDm(true);
+      }
+      else
+      {
+        // localStorage.setItem("isdm","false");
+        GetPermissions();
+        setIsDm(false);
       }
       if(json.statusCode == "500" || IsAuthOk(json.statusCode) == 1)
         {
@@ -58,7 +61,6 @@ async function GetRoomById  ()  {
             setAllgood(false)
             window.location.reload();
         }
-
         else
         {
           setAllgood(true);
@@ -66,7 +68,6 @@ async function GetRoomById  ()  {
           return json;
         }
      
-
   })
   .catch((error) => {
       console.log("An error occured : " + error)
@@ -78,14 +79,79 @@ async function GetRoomById  ()  {
   
 
 }
+async function GetPermissions()
+{
+
+
+  const text = "http://localhost:5000/player/Permission/" + params.id;
+    console.log("Api Get Permission  Link :  =>  " + text);
+    
+
+    await fetch(text,{
+      // mode:'no-cors',
+      method:'get',
+      credentials:"include"
+  })
+  
+  .then((response) => response.json())
+  .then(json => {
+      json.id = params.id;
+      console.log("The response Of Permissions  is  => " + JSON.stringify(json))
+      // SetUserAdmin(json);
+      if(json.statusCode == "500" || IsAuthOk(json.statusCode) == 1)
+        {
+            console.log("an error occured");
+            setErrorMessage("an error occured");
+            // setAllgood(false)
+            // window.location.reload();
+        }
+        // else
+        // {
+        //   setAllgood(true);
+        //   console.log("Setting the chatRoom Infos ...");
+        //   return json;
+        // }
+     
+  })
+  .catch((error) => {
+      console.log("An error occured : " + error)
+      return error;
+  })
+
+}
+async function Waiit () {
+  await GetRoomById();
+  // if(!isDm)
+  // await GetPermissions();
+
+}
+useEffect(() => {
+  // if(!isDm)
+  // {
+  //   GetPermissions();
+  // }
+
+},[])
 useEffect (() =>
       {
         const loggeduser = localStorage.getItem("user");
           if(loggeduser)
           {
             const current = JSON.parse(loggeduser);
-            GetRoomById();
+            Waiit();
+            // GetRoomById();
             // HEre ADD contdition if user owner
+            // if(testRoom.is_dm == false)
+            // if(isDm)
+          //   if(!isDm)
+          //   {
+          //     console.log("THIS IS NOT A DDDDDDDMMMMMM")
+          //   // GetPermissions();
+          // }
+          //   else if(isDm)
+          //   {
+          //     console.log("THIS IS A DM ")
+          //   }
             SetUserAdmin(true);
           }
       },[])
@@ -101,16 +167,16 @@ useEffect (() =>
             <h2><ChatRoomBox room={testRoom}
             /></h2>
 
-            {/* {isDm ? (
+            {isDm ? (
               <>
 
               </>
-            ) : ( */}
+            ) : (
               <> 
                 <ChatRoomButton/>
 {userAdmin ? (
     <div>
-      <AdminChatRoomDashboard room={room}/>
+      <AdminChatRoomDashboard room={testRoom}/>
         </div>
 ) : (
     <div>
@@ -118,7 +184,7 @@ useEffect (() =>
         </div>
 )}
               </>
-              {/* )} */}
+              )}
              
             <div>
                 <li><Link to="/Landing">⬅️ Back to all rooms</Link> </li>

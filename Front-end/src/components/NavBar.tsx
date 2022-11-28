@@ -147,7 +147,7 @@ await fetch((endpoint),{
   {
     var Current_User = JSON.parse(loggeduser);
     const text = ("http://localhost:5000/player/listOfFriends");
-    console.log("Api Fetch Link :  =>  " + text);
+    console.log("Social Fetch  Link :  =>  " + text);
     
 
     await fetch(text,{
@@ -186,7 +186,7 @@ await fetch((endpoint),{
         {
           var Current_User = JSON.parse(loggeduser);
           const {id} = Current_User
-          console.log("Fetching Friends of this User " + Current_User.nickname);
+          // console.log("Fetching Friends of this User " + Current_User.nickname);
           setUser42(JSON.parse(localStorage.getItem("user")!))
 
       FetchUserInfo(Current_User.nickname)

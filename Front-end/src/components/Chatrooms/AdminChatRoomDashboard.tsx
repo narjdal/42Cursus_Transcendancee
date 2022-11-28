@@ -24,10 +24,50 @@ const HandleAddUserAdmin = () => {
 
 
 };
+async function AddAdmin (username:string)
+{
+  const loggeduser = localStorage.getItem("user");
+  if(loggeduser)
+{
+  const current = JSON.parse(loggeduser);
+  const text = "http://localhost:5000/player/setAdmin/" + username + "/" + props.room.id;
+console.log("Api Set Admin Link :  =>  " + text);
+
+
+await fetch(text,{
+  // mode:'no-cors',
+  method:'get',
+  credentials:"include"
+})
+
+.then((response) => response.json())
+.then(json => {
+  console.log("The response is => " + JSON.stringify(json))
+// 
+if(json.statusCode == "500")
+{
+  setErrorMessage("An error occured in the backend.");
+}
+
+  return json;
+})
+.catch((error) => {
+  console.log("An error occured : " + error)
+  return error;
+})
+
+// }
+}
+}
 
 const HandleAddAdmin = (e ) => {
     e.preventDefault();
     console.log("adding this user to be admin ...." + username);
+    if(username)
+    {
+      AddAdmin(username);
+    }
+    else
     setErrorMessage("Could not find this user ! Are you sure u spelled it correcly ? ");
 }
 const HandleMute = (e) => {
@@ -80,6 +120,8 @@ if(json.statusCode == "500")
 // }
 }
   }
+
+
   const HandleMuteRequest = (e) => {
     e.preventDefault();
     console.log( username + " Will be  muted for : " + time);
@@ -159,21 +201,21 @@ const HandleRoomPrivate = (e) => {
       const current = JSON.parse(loggedUser);
        const {id} = current;
       console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "RoomOwnerId : " + props.room.OwnerId);
-      // In JS == Ignores the Data Types 
-      // === Check condition + data types then true 
-      if(props.room.OwnerId == id)
-      {
-        console.log(" i am owenr")
+      // // In JS == Ignores the Data Types 
+      // // === Check condition + data types then true 
+      // if(props.room.OwnerId == id)
+      // {
+      //   console.log(" i am owenr")
 
-        setOwner("true");
-      }
+      //   setOwner("true");
+      // }
 
-      if(props.room.AdminIds == id)
-      {
-        console.log(" i am Admin")
+      // if(props.room.AdminIds == id)
+      // {
+      //   console.log(" i am Admin")
 
-        setOwner("true");
-      }
+      //   setOwner("true");
+      // }
 
       //https://stackoverflow.com/questions/43309712/how-to-check-if-a-value-is-not-null-and-not-empty-string-in-js
       //
@@ -181,20 +223,19 @@ const HandleRoomPrivate = (e) => {
 //Other values become true
 
       //
-      if((!props.room.password))
-      {
-        console.log("Room has no password ! should not be  protected");
-        setMsg("Your room is public ! ");
-        setisPublic(true);
-        setHasPassword(false);
-      }
-      else 
+      // if((!props.room.password))
+      // {
+      //   console.log("Room has no password ! should not be  protected");
+      //   setMsg("Your room is public ! ");
+      //   setisPublic(true);
+      //   setHasPassword(false);
+      // }
+      if(props.room.passwond) 
       {
         console.log("Room has a password ! should be protected");
         setMsg("Your room is protected with a password ");
         setisPublic(false);
         setHasPassword(true);
-
       }
     }
   },[])

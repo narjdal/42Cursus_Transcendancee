@@ -31,7 +31,7 @@ async function FetchUserInfo (nickname) {
 // var Current_User = JSON.parse(loggeduser);
 // const text = "http://localhost:5000/player/listOfFriends";
 const text = ("http://localhost:5000/player/listToAddFriend/" + params.id);
-console.log("Api Fetch Link :  =>  " + text);
+console.log("Api ListToAddFriend Link :  =>  " + text);
 
 
 await fetch(text,{
@@ -67,7 +67,6 @@ useEffect(() => {
 {
   var Current_User = JSON.parse(loggeduser);
   const {id} = Current_User
-  console.log("Fetching Friends of this User " + Current_User.nickname);
   FetchUserInfo(Current_User.nickname);
 }
 },[]);

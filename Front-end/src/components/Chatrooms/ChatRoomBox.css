@@ -44,7 +44,7 @@
     z-index: 10;
     width: 40vh;
 
-    height: 40em;
+    max-height: 40vh;
     overflow: hidden;
     overflow-y: scroll;
   }
