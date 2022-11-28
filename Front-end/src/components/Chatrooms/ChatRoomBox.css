@@ -44,6 +44,7 @@
     z-index: 10;
     width: 40vh;
 
+   height:10vh;
     max-height: 40vh;
     overflow: hidden;
     overflow-y: scroll;
