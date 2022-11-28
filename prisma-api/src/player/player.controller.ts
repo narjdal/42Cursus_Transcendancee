@@ -53,7 +53,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listOfMembers/:id')
+    @Get('/listOfMembers/:id') // check if room exists
     async GetListOfMembers(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
 
@@ -69,7 +69,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listToAddFriend/:id')
+    @Get('/listToAddFriend/:id') // check if room exists
     async GetListOfAddFriends(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
 
@@ -85,7 +85,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listOfSetAdmin/:id')
+    @Get('/listOfSetAdmin/:id') // check if room exists
     async GetListOfSetAdmin(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
         // check if id_room exist
@@ -101,7 +101,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listToMute/:id')
+    @Get('/listToMute/:id') // check if room exists
     async GetListOfMembersToMute(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
         // check if id_room exist
@@ -115,7 +115,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listOfUnmute/:id')
+    @Get('/listOfUnmute/:id') // check if room exists
     async GetListOfMembersToUnmute(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
         // check if id_room exist
@@ -130,7 +130,7 @@ export class PlayerController {
         return friends;
     }
 
-    @Get('/listToBan/:id')
+    @Get('/listToBan/:id') // check if room exists
     async GetListOfMembersToBan(@Param() id_room: String, @Req() request, @Res() response) {
         console.log("List of Friends");
         // check if id_room exist
@@ -147,7 +147,7 @@ export class PlayerController {
 
     // ---------------------------------- Frienships ----------------------------------
 
-    @Get('/statusFriendship/:id')
+    @Get('/statusFriendship/:id') // check if nickname exist
     async checkStatusFriendship(@Param() login: string, @Req() request, @Res() response) {
         console.log("Check if Friend");
         const membership = await this.playerService.getFriend(request.user.id, login['id']);
@@ -190,7 +190,7 @@ export class PlayerController {
         return choices;
     }
 
-    @Get('/requestFriendship/:id')
+    @Get('/requestFriendship/:id') // check if nickname exist
     async RequestFriendship(@Param() login: String, @Req() request, @Res() response) {
         console.log("Request Friendship");
         const friend = await this.playerService.createFriendship(request.user.id, login['id']);
@@ -201,7 +201,7 @@ export class PlayerController {
         response.status(200).send(friend);
     }
 
-    @Get('/acceptFriendship/:id')
+    @Get('/acceptFriendship/:id') // check if nickname exist
     async AcceptFriendship(@Param() login: String, @Req() request, @Res() response) {
         console.log("Accept Friendship");
    
@@ -215,7 +215,7 @@ export class PlayerController {
         response.status(200).send(friend);
     }
 
-    @Get('/refuseFriendship/:id')
+    @Get('/refuseFriendship/:id') // check if nickname exist
     async RefuseFriendship(@Param() login: String, @Req() request, @Res() response) {
         console.log("Refuse Friendship");
         const friend = await this.playerService.refuseFriendship(request.user.id, login['id']);
@@ -226,7 +226,7 @@ export class PlayerController {
         response.status(200).send(friend);
     }
 
-    @Get('/blockFriendship/:id')
+    @Get('/blockFriendship/:id') // check if nickname exist
     async BlockFriendship(@Param() login: String, @Req() request, @Res() response) {
         console.log("Block Friendship");
         const friend = await this.playerService.blockFriendship(request.user.id, login['id']);
@@ -237,7 +237,7 @@ export class PlayerController {
         response.status(200).send(friend);
     }
 
-    @Get('/unblockFriendship/:id')
+    @Get('/unblockFriendship/:id') // check if nickname exist
     async UnblockFriendship(@Param() login: String, @Req() request, @Res() response) {
         console.log("Unblock Friendship");
         const friend = await this.playerService.deleteFriendship(request.user.id, login['id']);
@@ -276,7 +276,7 @@ export class PlayerController {
 
 // ---------------------------------- CONTROLLER Permission in room ---------------------------------- //
 
-    @Get('/listOfRooms')
+    @Get('/listOfRooms') // no check to do 
     async GetListOfRooms(@Req() request, @Res() response) {
         console.log("List of Rooms");
         const rooms = await this.playerService.getAllRooms(request.user.id);
@@ -289,7 +289,7 @@ export class PlayerController {
         return rooms;
     }
 
-    @Post('/createChatRoom/Public')
+    @Post('/createChatRoom/Public') // no check to do
     async CreatePublicChatRoom(@Body() Body, String, @Req() request, @Res() response) {
         console.log("Create Chat Room");
         const room = await this.playerService.createPublicChatRoom(request.user.id, Body.name);
