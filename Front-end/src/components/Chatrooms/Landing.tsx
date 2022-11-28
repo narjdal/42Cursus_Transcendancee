@@ -82,11 +82,11 @@ async function GetRoomList  ()  {
   
 
 }
-async function JoinRoom()
+async function JoinRoom(roomid:string)
 {
  
   
-  const text = "http://localhost:5000/player/joinRoom/" + "1";
+  const text = "http://localhost:5000/player/joinRoom/" + roomid;
     console.log("THE  Join Room Link :  =>  " + text);
     
 
@@ -112,7 +112,8 @@ async function JoinRoom()
 const HandleJoinRoom = (e) => {
 e.preventDefault();
 console.log("JOING THIS ROOM " + roomid )
-JoinRoom()
+
+JoinRoom(roomid)
 
 }
       useEffect (() =>
@@ -162,10 +163,13 @@ JoinRoom()
                          </>   
                         ) : (
                             <>
+                            {setRoomId(room.id)}
                     <button 
                     onClick={HandleJoinRoom}
-                    onChange={event => setRoomId(room.id)}>
+                          
+                  >
                       <Link to={`/room/${room.id}`}>{room.name}</Link>
+                    
                       </button>
                             
                             </>
