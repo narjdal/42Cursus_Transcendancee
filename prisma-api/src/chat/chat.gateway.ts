@@ -46,6 +46,7 @@ function getIdUserFromToken(cookie: string) {
 })
 export class ChatGateway {
 	@WebSocketServer() wss: Socket;
+	private roomPrefix = 'roomSocket';
 
 	constructor(private readonly playerservice: PlayerService) { }
 
@@ -60,15 +61,17 @@ export class ChatGateway {
 		//   client.disconnect(); 
 		//   return;
 		// }
-		userLog = { id: 1, nickname: "mlabrayj" }
+
+		// get user id from jwt token from frontend
+		userLog = { id: "3c2d8759-126c-4d2a-b8bb-83475c0b8e63", nickname: "mlabrayj" }
 
 
-		const allrooms = await this.playerservice.getAllRooms(userLog);
+		const allrooms = await this.playerservice.getAllRooms(userLog.id);
 		let allmsgs = [];
 
 		// room
 		for (let room of allrooms) {
-			let roomId = 'roomSocket' + room.id;
+			let roomId = this.roomPrefix + room.id;
 			client.join(roomId);
 
 			const msgofroom = await this.playerservice.getMessagesOfRoom(userLog, room.id);
@@ -79,25 +82,47 @@ export class ChatGateway {
 			});
 		}
 
-		console.log('ALL MSGS', allmsgs[0]);
+		console.log('ALL ROOMS WITH MSGS ', allmsgs[0]);
 
-		this.wss.to(client.id).emit("La7sen", allmsgs);
+		this.wss.to(client.id).emit("La7sen", allmsgs); // listen to this event in frontend to get all rooms with messages fot the fisrt time connection
 	}
 
 
-	@SubscribeMessage("dm")
-	handleMessage2(client: Socket, data: any): void {
-		console.log("Message received", data);
+	@SubscribeMessage("newmessage")
+	handleMessage(client: Socket, data: any): void {
+		console.log("Message received", data); //data contains the message sent and room from client (frontend)
 
-		let roomId = 'roomSocket';
-		this.wss.to(roomId).emit("EventAlmerdi", data);
+		// 
+		// ALWAYS - VALIDATION
+		// 
+		let userLog = getIdUserFromToken(client.handshake.headers.cookie)
+		// discconnect socket
+		// if(!userLog){
+		//   this.wss.to(client.id).emit("EventAlmerdi", "You are not connected");
+		//   client.disconnect(); 
+		//   return;
+		// }
+		// get user id from jwt token from frontend
+		// TEMPORARY
+		userLog = { id: "3c2d8759-126c-4d2a-b8bb-83475c0b8e63", nickname: "mlabrayj" } // TEMPORARY
+		// TEMPORARY
+		// 
+		// ALWAYS - VALIDATION
+		// 
+
+
+		// this.roomPrefix
+
+		this.playerservice.sendMessageinRoom(userLog, data.message, data.roomId);
+
+		this.wss.to(this.roomPrefix + data.roomId).emit("addmsg", {user: userLog, message: data.mesage, room: data.roomId, }); // event name 
 	}
 
-	@SubscribeMessage("message")
-	handleMessage(client: Socket, payload: any): void {
-		console.log("Message received", payload);
-		this.wss.to(client.id).emit("EventAlmerdi", payload);
-	}
+	// @SubscribeMessage("message")
+	// handleMessage(client: Socket, payload: any): void {
+	// 	console.log("Message received", payload);
+	// 	this.wss.to(client.id).emit("EventAlmerdi", payload);
+	// }
 
 	async handleDisconnect(client: Socket) {
 		console.log("Client disconnected", client.id);
