@@ -59,7 +59,7 @@ export class PlayerController {
 
         // check if id_room exist
 
-        const friends = await this.playerService.getAllMembersOfThisRoom(request.user.id, id_room['id']);
+        const friends = await this.playerService.getProfilesOfChatRooms(request.user.id, id_room['id']);
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -607,11 +607,11 @@ export class PlayerController {
         }
 
         // 3- check if user is member of this room
-        // const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
-        // if(member)
-        // {
-        //     throw new NotFoundException("Already a member");
-        // }
+        const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
+        if(member)
+        {
+            throw new NotFoundException("Already a member");
+        }
 
         // 4- then join room
         const join = await this.playerService.joinRoom(request.user.id, room_id['id']);

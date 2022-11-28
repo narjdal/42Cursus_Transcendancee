@@ -197,28 +197,39 @@ export class PlayerService {
         return friends;
     }
 
-    async getListOfChatRooms(userId: string, room_id: string) {
+    async getProfilesOfChatRooms(userId: string, room_id: string) {
         const me = await this.findPlayerById(userId);
         console.log("getAllMembersOfThisRoom method", room_id);
         
-        const rooms = await this.prisma.chatRoom.findUnique({
+        const members = await this.prisma.chatRoom.findUnique({
             where: {
                 id: room_id
             },
+
             select: {
                 all_members: {
                     select: {
-                        playerId: true
+                        playerId: true,
                     },
                     where: {
                         playerId: {
                             not: me.id
                         },
                     },
+                    include:
+                    {
+                        player: {
+                            select: {
+                                id: true,
+                                nickname: true,
+                                avatar: true,
+                            },
+                        },
+                    },
                 },
             },
         })
-        return rooms;
+        return members;
     }
 
     async getAllMembersOfThisRoom(userId: string, room_id: string) {
@@ -765,9 +776,9 @@ export class PlayerService {
                 is_muted: true,
             }
         })
-        if(status === null){
-            throw new NotFoundException("You are not a member of this room");
-        }
+        // if(status === null){
+        //     throw new NotFoundException("You are not a member of this room");
+        // }
         return status;
     }
 
