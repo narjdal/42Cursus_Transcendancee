@@ -14,6 +14,8 @@ const [errorMessage, setErrorMessage] = useState("");
    const [isUpdating, setIsUpdating] = useState(false);
 const [Updated, setisUpdated] = useState(false);
 const [prevRoom,setPrevRoom] = useState("");
+const [roomid,setRoomId] = useState("");
+
     const HandleClick = (e) => {
         navigate('/CreateRoom')
     };
@@ -80,7 +82,39 @@ async function GetRoomList  ()  {
   
 
 }
+async function JoinRoom()
+{
+ 
+  
+  const text = "http://localhost:5000/player/joinRoom/" + "1";
+    console.log("THE  Join Room Link :  =>  " + text);
+    
 
+    await fetch(text,{
+      // mode:'no-cors',
+      method:'get',
+      credentials:"include"
+  })
+  
+  .then((response) => response.json())
+  .then(json => {
+      console.log("The response is => " + JSON.stringify(json))
+
+
+      return json;
+  })
+  .catch((error) => {
+      console.log("An error occured : " + error)
+      return error;
+  })
+
+}
+const HandleJoinRoom = (e) => {
+e.preventDefault();
+console.log("JOING THIS ROOM " + roomid )
+JoinRoom()
+
+}
       useEffect (() =>
       {
         const loggeduser = localStorage.getItem("user");
@@ -128,7 +162,11 @@ async function GetRoomList  ()  {
                          </>   
                         ) : (
                             <>
-                    <Link to={`/room/${room.id}`}>{room.name}</Link>
+                    <button 
+                    onClick={HandleJoinRoom}
+                    onChange={event => setRoomId(room.id)}>
+                      <Link to={`/room/${room.id}`}>{room.name}</Link>
+                      </button>
                             
                             </>
                         )}

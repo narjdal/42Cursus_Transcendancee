@@ -7,11 +7,12 @@ import MessageList from '../DirectMsg/MessageList';
 import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import axios from 'axios';
 import { IsAuthOk } from '../../utils/utils';
+import { set } from 'date-fns';
 //https://codeburst.io/tutorial-how-to-build-a-chat-app-with-react-native-and-backend-9b24d01ea62a
 const ChatRoomBox = (props) => {
 
   const [inputMsg,SetInputMsg] = useState("");
-
+  const [haspswd,setHaspswd] = useState(false);
   const [BanUser,SetBanUser] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [Updated, setisUpdated] = useState(false);
@@ -184,24 +185,25 @@ async function GetMessageHistory()
   .then((response) => response.json())
   .then(json => {
       console.log("getmessages :   => " + JSON.stringify(json))
-      setMessages(json);
+      
     
-      // if(json.statusCode == "500" )
-      //   {
-      //       console.log("an error occured");
-      //       setErrorMessage("an error occured");
-      //       setAllgood(false)
-      //       if(IsAuthOk(json.statusCode) == 1)
-      //       window.location.reload();
-      //   }
+      if(json.statusCode == "500" || json.statusCode == "404")
+        {
+            console.log("an error occured");
+            setErrorMessage("an error occured");
+            setAllgood(false)
+            // if(IsAuthOk(json.statusCode) == 1)
+            // window.location.reload();
+        }
 
-      //   else
-      //   {
-      //     setAllgood(true);
-      //     setMembers(json)
-      //     console.log("Setting the ChatRooms Members ...");
-      //     return json;
-      //   }
+        else
+        {
+          setMessages(json);
+          setAllgood(true);
+      
+          console.log("Setting the ChatRooms Members ...");
+          return json;
+        }
      
 
   })
@@ -223,6 +225,7 @@ async function GetMessageHistory()
           console.log("Fethcing members of this chatroom.");
           GetMembers();
         }
+      
         GetMessageHistory();
         // console.log("Members of the room : " + JSON.stringify(chatroomUsers));
     
@@ -296,7 +299,8 @@ const HandleFetchedFriend = (e) => {
 return (
   <div className='body'>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
+   
+        <>
     <div className='ChatRoomBox-card'>
       <div className='ChatBox-container'>
         {props.room.is_dm ? (
@@ -378,6 +382,9 @@ return (
   </form>
   </div>
   </div>
+        </>
+   
+    
   </div>
   )
 };

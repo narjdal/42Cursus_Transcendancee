@@ -14,7 +14,7 @@ function ChatRoom() {
     const [testRoom,setRoom] = useState<any>([]);
     const [allgood,setAllgood] = useState(false);
     const [isDm,setIsDm] = useState(false);
-    
+    const [haspswd,setHaspsswd] = useState(false)
 
 
 async function GetRoomById  ()  {
@@ -98,6 +98,11 @@ async function GetPermissions()
       json.id = params.id;
       console.log("The response Of Permissions  is  => " + JSON.stringify(json))
       // SetUserAdmin(json);
+      if(json.statusMember  == "owner")
+      {
+        console.log("This is the owner of the room");
+        SetUserAdmin(true);
+      }
       if(json.statusCode == "500" || IsAuthOk(json.statusCode) == 1)
         {
             console.log("an error occured");
@@ -139,6 +144,7 @@ useEffect (() =>
           {
             const current = JSON.parse(loggeduser);
             Waiit();
+          //  setHaspsswd(true);
             // GetRoomById();
             // HEre ADD contdition if user owner
             // if(testRoom.is_dm == false)
@@ -152,14 +158,20 @@ useEffect (() =>
           //   {
           //     console.log("THIS IS A DM ")
           //   }
-            SetUserAdmin(true);
+       
           }
       },[])
     return (
         <div className='ChatRoomMessageBox'>
         {errorMessage && <div className="error"> {errorMessage} </div>}
-
-            {allgood ? (
+      {haspswd ? (
+        <>
+  HAS PASSWORD
+        </>
+      ) :(
+        <>
+      
+  {allgood ? (
               <>
               <div className='ChatRoomMessageBox'>
                <h2>{testRoom.name}</h2>
@@ -198,6 +210,9 @@ useEffect (() =>
                   
                 </>
               )}
+        </>
+      )}
+            
            
             </div>
     );
