@@ -29,6 +29,7 @@ import { login } from './cookies/AuthProvider';
 import getProfile from './utils/fetchProfile'
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { io } from 'socket.io-client';
 
 const App = () => {
   const accessToken = "ss";
@@ -38,6 +39,14 @@ const App = () => {
   useEffect(() => {
     if (localStorage.getItem("authenticated") === "true")
      {
+
+      //config socket client on front end
+      const socket = io("http://localhost:5000");
+
+      socket.on("dm", () => {
+        console.log("connected");
+      });
+
       console.log("Loggin the user");
       setIslogged(true);
     }
