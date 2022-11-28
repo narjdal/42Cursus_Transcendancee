@@ -46,7 +46,7 @@ export class PlayerService {
 
             }
         })
-        console.log(rooms);
+        // console.log(rooms);
         return rooms;
     }
 
