@@ -32,6 +32,22 @@ export class PlayerService {
         return player;
     }
 
+    async findPlayerByNickname(login: string) //: Promise<any> {
+    {
+        const player = await this.prisma.player.findUnique({
+            where: {
+                nickname: login
+            }
+        });
+
+        if (!player) {
+            throw new NotFoundException('Profile not found')
+        }
+        return player;
+    }
+
+    // ------------------- GET list of Rooms -------------------
+
     async findRoomById(roomId: string) //: Promise<boolean>
     {
         // console.log("-->", roomId);
@@ -48,21 +64,47 @@ export class PlayerService {
         return room;
     }
 
-    async findPlayerByNickname(login: string) //: Promise<any> {
+
+    async getRoomBetweenTwoPlayers(useId: string, login: string) //: Promise<boolean>
     {
-        const player = await this.prisma.player.findUnique({
+        //  console.log("-->", friendId);
+        const friend = await this.prisma.player.findUnique({
             where: {
                 nickname: login
             }
         });
-
-        if (!player) {
+        if (!friend) {
             throw new NotFoundException('Profile not found')
         }
-        return player;
+
+        const room = await this.prisma.chatRoom.findFirst({
+        
+            where: {
+                is_dm: true,
+                AND: [
+                     {
+                        all_members: {
+                            some: {
+                                playerId: useId,
+                            }
+                        }
+                    },
+                     {
+                        all_members: {
+                            some: {
+                                playerId: friend.id,
+                            }
+                        }
+                    },
+                ]
+            },
+                       
+
+        })
+        // console.log("room", room);
+        return room;
     }
 
-    // ------------------- GET list of Rooms -------------------
     async getAllRooms(userId: string) {
         const me = await this.findPlayerById(userId);
 
@@ -509,13 +551,8 @@ export class PlayerService {
         if (!receiver) {
             throw new NotFoundException("Receiver not found");
         }
-        // 2- Check if this friendship already exist
-        const friendship = await this.getFriendshipStatus(userId, receiver.id);
-        if (friendship) {
-            //throw new ConflictException("You already have a friendship with this user");
-        }
 
-        // 3- Send FriendShip Request
+        // 2- Send FriendShip Request
         const friends = await this.prisma.friendship.create({
             data: {
                 senderId: userId,
@@ -523,7 +560,7 @@ export class PlayerService {
                 status: "Pending"
             }
         })
-        return friends;
+        // return friends;
     }
 
     // 2- accept
@@ -532,6 +569,21 @@ export class PlayerService {
         const howa = await this.prisma.player.findUnique({
             where: { nickname: friendname },
         });
+        if (!howa) {
+            throw new NotFoundException("Receiver not found");
+        }
+        const ad = await this.prisma.friendship.findUnique({
+            where: {
+                senderId_receiverId: {
+                    senderId: howa.id,
+                    receiverId: me.id
+                }
+            },
+            // and status === friend
+        })
+
+        if (!ad) 
+            throw new NotFoundException("Request not found");
 
         const friendship = await this.prisma.friendship.update({
             where: {
@@ -547,7 +599,7 @@ export class PlayerService {
         })
 
         // if (friendship) ==> status = friend
-        return friendship;
+         return friendship;
     }
 
     // 3- block // ana blockit howa[friendname]
@@ -556,6 +608,9 @@ export class PlayerService {
         const howa = await this.prisma.player.findUnique({
             where: { nickname: friendname },
         });
+        if (!howa) {
+            throw new NotFoundException("Receiver not found");
+        }
 
         // awal haja an howwa sender w ana receiver
         const friendship = await this.prisma.friendship.updateMany({
@@ -582,7 +637,7 @@ export class PlayerService {
             },
 
         })
-        return friendship;
+        // return friendship;
     }
     // 4- delete aka unfriend [unblock]
     async deleteFriendship(userId: string, friendname: string) {
@@ -590,7 +645,9 @@ export class PlayerService {
         const howa = await this.prisma.player.findUnique({
             where: { nickname: friendname },
         });
-
+        if (!howa) {
+            throw new NotFoundException("Receiver not found");
+        }
 
         const friendship = await this.prisma.friendship.delete({
             where: {
@@ -601,7 +658,7 @@ export class PlayerService {
             },
         })
 
-        return friendship;
+        // return friendship;
     }
 
     // 5- refuse
@@ -610,7 +667,9 @@ export class PlayerService {
         const howa = await this.prisma.player.findUnique({
             where: { nickname: friendname },
         });
-
+        if (!howa) {
+            throw new NotFoundException("Receiver not found");
+        }
 
         const friendship = await this.prisma.friendship.delete({
             where: {
@@ -621,7 +680,7 @@ export class PlayerService {
             },
         })
 
-        return friendship;
+        // return friendship;
     }
 
 
