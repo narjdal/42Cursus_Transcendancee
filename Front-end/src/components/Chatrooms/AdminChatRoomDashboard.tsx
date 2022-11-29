@@ -201,15 +201,20 @@ const HandleRoomPrivate = (e) => {
     {
       const current = JSON.parse(loggedUser);
        const {id} = current;
-      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "Member Status  : " + JSON.stringify(statusMember));
+      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "Member Status  : " + JSON.stringify(props.statusMember.data.statusMember));
       // // In JS == Ignores the Data Types 
       // // === Check condition + data types then true 
-      if(statusMember == "owner")
+      if(props.statusMember.data.statusMember == "owner")
       {
-        console.log(" i am owenr")
-
+        console.log("LETSGO")
         setOwner("true");
+
       }
+      // if(statusMember == "owner")
+      // {
+      //   console.log(" i am owenr")
+
+      // }
 
       // if(props.room.AdminIds == id)
       // {
@@ -231,7 +236,7 @@ const HandleRoomPrivate = (e) => {
       //   setisPublic(true);
       //   setHasPassword(false);
       // }
-      if(props.room.passwond) 
+      if(props.room.is_protected) 
       {
         console.log("Room has a password ! should be protected");
         setMsg("Your room is protected with a password ");

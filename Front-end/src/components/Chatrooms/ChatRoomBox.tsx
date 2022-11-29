@@ -19,6 +19,7 @@ const ChatRoomBox = (props) => {
 	const [errorMessage, setErrorMessage] = useState("");
   const[members,setMembers] = useState <any >([]);
   const [messages, setMessages] = useState <any>([]);
+  const [showInput,setShowInput] = useState(false)
 
   const [userQuery,setUserQuery] = useState("");
   const [user42,SetUser42] = useState<any>([])
@@ -214,6 +215,59 @@ async function GetMessageHistory()
 
     }
 }
+
+
+
+async function FetchRelationship() {
+
+  const loggeduser = localStorage.getItem("user");
+  if (loggeduser) {
+    const current = JSON.parse(loggeduser);
+    console.log("Fetching Relationship    Infos   => "  + "isghioua " + " I am : " + current.nickname + " This is hard coded waiting for getroombyid ");
+
+    let endpoint = 'http://localhost:5000/player/statusFriendship/'
+    // let nicknametofetch: string = JSON.stringify(params.nickname);
+    // console.log(" this endpoint   " + endpoint + " Fetching : " + nicknametofetch)
+    http://localhost:5000/statusFriendship/?id=narjdal
+
+    await fetch((`http://localhost:5000/player/statusFriendship/isghioua`
+    ), {
+      // mode:'no-cors',
+      method: 'get',
+      credentials: "include"
+    })
+
+
+
+      .then((response) => response.json())
+      .then(json => {
+        console.log("The Realtionship is => " + JSON.stringify(json))
+        setErrorMessage("");
+        if(json == "blockFriend")
+        {
+          setShowInput(true);
+        }
+        else
+        {
+          // setShowInput(true);
+          console.log(" NO INPUT TO SHOW SORRY ")
+        setShowInput(false);
+        setErrorMessage("You are not friend with this user  \n You can't send him a message ! ")
+       }
+        // localStorage.setItem("usertoshow",JSON.stringify(json));
+        // localStorage.setItem("choice", json);
+        return json;
+      })
+      .catch((error) => {
+        console.log("An error occured : " + error)
+        // setRelation("error");
+        setErrorMessage("An error occured! Relationship not found ! ");
+        return error;
+      })
+
+  }
+
+}
   useEffect (() => {
 
 
@@ -224,6 +278,11 @@ async function GetMessageHistory()
         {
           console.log("Fethcing members of this chatroom.");
           GetMembers();
+        }
+        else if (props.room.is_dm)
+        {
+          console.log("Fethcing Relationship of this chatroom.");
+         FetchRelationship();
         }
       
         GetMessageHistory();
@@ -331,12 +390,13 @@ return (
 
             </>
            )} 
-     
+
       <div className='History-Box'> 
      
       {messages.map(c => < MessageList  key = {c.senderId} user ={c} />)}
  
-      
+     <br></br>
+            
       </div>
       {props.room.is_dm  ? (
         <>
@@ -351,8 +411,10 @@ return (
       <span> Leave Room</span>
                   </button>
           </>)}
-   
-  <form className='ChatRoom-Input-form' onSubmit={HandleInputMsg}>
+          
+   {showInput ? (
+    <>
+     <form className='ChatRoom-Input-form' onSubmit={HandleInputMsg}>
     <div className='ChatRoom-InputBox'>
       <input type="text"
        className={`${inputMsg ? "has-value" : ""}`}
@@ -382,6 +444,20 @@ return (
     {errorMessage && <div className="error"> {errorMessage} </div>}
 
   </form>
+    </>
+   ) : (
+    <>
+     <button type="button" className='button-displayuser' >
+              <span className="icon material-symbols-outlined">
+                {"sentiment_very_dissatisfied"}
+              </span>
+              <span>     {errorMessage && <div className="error"> {errorMessage} </div>}
+  </span>
+            </button>
+
+    </>
+   )}
+ 
   </div>
   </div>
         </>

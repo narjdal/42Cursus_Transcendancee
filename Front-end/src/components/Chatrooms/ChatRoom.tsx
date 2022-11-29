@@ -13,13 +13,17 @@ function ChatRoom() {
     const params = useParams();
   const [errorMessage, setErrorMessage] = useState("");
     const [user42,SetUser42] = useState<any>([])
+    const [roomPerm,setRoomPerm] = useState<any>([])
+    
     const [userAdmin,SetUserAdmin] = useState(false);
     const [testRoom,setRoom] = useState<any>([]);
     const [allgood,setAllgood] = useState(false);
     const [isDm,setIsDm] = useState(false);
     const [statusMember,setStatusMember] = useState("");
     const [haspswd,setHaspsswd] = useState(false)
+
     const [HasPermission,setHasPermissions] = useState(false);
+
 
 
 async function GetRoomById  ()  {
@@ -75,7 +79,7 @@ async function GetRoomById  ()  {
      
   })
   .catch((error) => {
-      console.log("An error occured : " + error)
+      console.log("An error occured  while fetching the friendship status .: " + error)
       return error;
   })
 
@@ -105,7 +109,7 @@ async function GetPermissions()
       // console.log("json" + json)
       console.log("The response Of Permissions  is  => " + JSON.stringify(json.data))
       // SetUserAdmin(json);
-      if(!json.data.statusMember)
+      if(json.data.statusMember == "You are not a member of this room ")
       {
         console.log("ALLL GOOOOD FALSE ")
         setErrorMessage(" You are not a member of this room.");
@@ -132,6 +136,7 @@ async function GetPermissions()
         // AdminRoom  = json.statusMember;
         // setRoom()
         // var newRoom = {...testRoom};
+        setRoomPerm(json);
       setStatusMember("owner");
         SetUserAdmin(true);
       }
@@ -171,7 +176,7 @@ async function GetPermissions()
   })
   .catch((error) => {
       console.log("An error occured  while fetching the Pemissions ! : " + error)
-      setErrorMessage(" You are not a member of this room.");
+      setErrorMessage(" An error occured while fetching the room data . You are not a member of this room.");
       setAllgood(false);
       return error;
   })
@@ -244,7 +249,7 @@ useEffect (() =>
                 <ChatRoomButton/>
 {userAdmin ? (
     <div>
-      <AdminChatRoomDashboard room={testRoom} statusMember={statusMember}/>
+      <AdminChatRoomDashboard room={testRoom} statusMember={roomPerm} />
         </div>
 ) : (
     <div>
