@@ -21,7 +21,7 @@ const ChatRoomBox = (props) => {
   const[members,setMembers] = useState <any >([]);
   const [messages, setMessages] = useState <any>([]);
   const [showInput,setShowInput] = useState(false)
-
+  // const [friendName,setFriendName] = useState("");
   const [userQuery,setUserQuery] = useState("");
   const [user42,SetUser42] = useState<any>([])
   const [UserAdmin,SetUserAdmin] = useState(false);
@@ -220,19 +220,19 @@ async function GetMessageHistory()
 
 
 
-async function FetchRelationship() {
+async function FetchRelationship(friendName : string) {
 
   const loggeduser = localStorage.getItem("user");
   if (loggeduser) {
     const current = JSON.parse(loggeduser);
-    console.log("Fetching Relationship    Infos   => "  + "isghioua " + " I am : " + current.nickname + " This is hard coded waiting for getroombyid ");
+    console.log("Fetching Relationship    Infos   => "  +  friendName +  " I am : " + current.nickname  );
 
-    let endpoint = 'http://localhost:5000/player/statusFriendship/'
+    let endpoint = 'http://localhost:5000/player/statusFriendship/' + friendName
     // let nicknametofetch: string = JSON.stringify(params.nickname);
-    // console.log(" this endpoint   " + endpoint + " Fetching : " + nicknametofetch)
+    console.log(" this endpoint   " + endpoint + " Fetching : " + friendName)
     http://localhost:5000/statusFriendship/?id=narjdal
 
-    await fetch((`http://localhost:5000/player/statusFriendship/isghioua`
+    await fetch((endpoint
     ), {
       // mode:'no-cors',
       method: 'get',
@@ -273,7 +273,7 @@ async function FetchRelationship() {
   useEffect (() => {
 
 
-      console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name)
+      console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name )
 
         // HERE request to backend to fetch users of the room
         if(!props.room.is_dm)
@@ -284,8 +284,29 @@ async function FetchRelationship() {
         }
         else if (props.room.is_dm)
         {
+          const loggedUser = localStorage.getItem("user");
+          if(loggedUser)
+          {
+            const current = JSON.parse(loggedUser);
+            if(current.id == props.room.all_members[0].player.id)
+            {
+          console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[1].player.nickname);
+              // setFriendName(props.room.all_members[1].player.nickname)
+         FetchRelationship(props.room.all_members[1].player.nickname);
+
+            }
+            else
+            {
+          console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[0].player.nickname);
+              // setFriendName(props.room.all_members[0].player.nickname)
+         FetchRelationship(props.room.all_members[0].player.nickname);
+          
+            }
+          }
           console.log("Fethcing Relationship of this chatroom.");
-         FetchRelationship();
+          // const filtered = props.room.all_nmebers(player => {
+          //   return player.id !== 
+          // })
         }
       
         GetMessageHistory();

@@ -14,7 +14,7 @@ function ChatRoom() {
   const [errorMessage, setErrorMessage] = useState("");
     const [user42,SetUser42] = useState<any>([])
     const [roomPerm,setRoomPerm] = useState<any>([])
-    
+    const [roomNme,setRoomName] = useState("")
     const [userAdmin,SetUserAdmin] = useState(false);
     const [testRoom,setRoom] = useState<any>([]);
     const [allgood,setAllgood] = useState(false);
@@ -37,33 +37,48 @@ async function GetRoomById  ()  {
     console.log("Api GetRoomById Link :  =>  " + text);
     
 
-    await fetch(text,{
+    await axios.get(text,{withCredentials:true}
       // mode:'no-cors',
-      method:'get',
-      credentials:"include"
-  })
+      // method:'get',
+      // credentials:"include"
+    )
   
-  .then((response) => response.json())
+  // .then((response) => response.json())
   .then(json => {
-      json.id = params.id;
-      console.log("The response Of GetRoomById is  => " + JSON.stringify(json))
-      setRoom(json);
-      if(json.is_dm == true)
+      // json.data.id = params.id;
+      console.log("The response Of GetRoomById is  => " + JSON.stringify(json.data))
+      const room = {
+        id: params.id
+        ,...json.data
+        // [json.data],
+      }
+      setRoom(room);
+      if(json.data.is_dm == true)
       {
         // testRoom.is_dm = true;
         console.log("This is a DM Room");
             // GetPermissions();
+          if(Current_User.id == json.data.all_members[0].player.id)
+          {
+            setRoomName(json.data.all_members[1].player.nickname);
+          }
+          else
+          {
+            setRoomName(json.data.all_members[0].player.nickname);
+          }
         setAllgood(true)
         // localStorage.setItem("isdm","true");
         setIsDm(true);
+        console.log("the name should be : " )
       }
       else
       {
         // localStorage.setItem("isdm","false");
+        setRoomName(json.data.name)
         GetPermissions();
         setIsDm(false);
       }
-      if(json.statusCode == "500" || IsAuthOk(json.statusCode) == 1)
+      if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
         {
             console.log("an error occured");
             setErrorMessage("an error occured");
@@ -235,7 +250,7 @@ useEffect (() =>
   {allgood ? (
               <>
               <div className='ChatRoomMessageBox'>
-               <h2>{testRoom.name}</h2>
+               <h2>{roomNme}</h2>
         {errorMessage && <div className="error"> {errorMessage} </div>}
             <h2><ChatRoomBox room={testRoom}
             /></h2>

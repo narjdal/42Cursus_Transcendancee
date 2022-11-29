@@ -34,7 +34,6 @@ async function FetchUserInfo (nickname) {
 const text = ("http://localhost:5000/player/listToAddFriend/" + params.id);
 console.log("Api ListToAddFriend Link :  =>  " + text);
 
-
 await fetch(text,{
   // mode:'no-cors',
   method:'get',
