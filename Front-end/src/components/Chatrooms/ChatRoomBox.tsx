@@ -11,6 +11,7 @@ import { set } from 'date-fns';
 //https://codeburst.io/tutorial-how-to-build-a-chat-app-with-react-native-and-backend-9b24d01ea62a
 const ChatRoomBox = (props) => {
 
+  const navigate = useNavigate();
   const [inputMsg,SetInputMsg] = useState("");
   const [haspswd,setHaspswd] = useState(false);
   const [BanUser,SetBanUser] = useState("");
@@ -152,6 +153,7 @@ async function GetMembers ()
         else
         {
           setAllgood(true);
+          localStorage.setItem("members",JSON.stringify(json));
           setMembers(json);
           // setMembers(json)
           console.log("Setting the ChatRooms Members ...");
@@ -278,6 +280,7 @@ async function FetchRelationship() {
         {
           console.log("Fethcing members of this chatroom.");
           GetMembers();
+          setShowInput(true);
         }
         else if (props.room.is_dm)
         {
@@ -319,6 +322,7 @@ await axios.get(text,{withCredentials:true})
 // .then((response) => response.json())
 .then(json => {
   console.log("json" + JSON.stringify(json.data))
+  
   // console.log("The response is => " + JSON.stringify(json))
 // 
 if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
@@ -327,7 +331,7 @@ if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
   window.location.reload();
 }
 
-
+  navigate("/Landing")
   return json;
 })
 .catch((error) => {

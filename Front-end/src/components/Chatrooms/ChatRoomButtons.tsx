@@ -83,6 +83,7 @@ const FilteredUsers = friends.filter(friends => {
     return (
         <div className='ChatRoomButtons-container'>
         {errorMessage && <div className="error"> {errorMessage} </div>}
+        <div className='ChatAddFriends-container'>
         <input
           type="text"
           className ="AddUserInput"
@@ -90,6 +91,8 @@ const FilteredUsers = friends.filter(friends => {
           onChange={event => setUsername(event.target.value)}
        value={username || ""}
         />
+        </div>
+
         {username ? (
 <>
 {FilteredUsers.map(c => < DisplayChatRoomFriendsToAdd key = {c.id} user = {c} />)}

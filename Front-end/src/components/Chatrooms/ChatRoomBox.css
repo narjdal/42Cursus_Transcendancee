@@ -71,15 +71,15 @@
     border-radius: 1.25rem;
     /* height: 40vh; */
     min-height: 40vh;
-    display: flex;
+    display: inline-block;
     border-top: 3px solid #1e90fe;
     border-bottom: 3px solid #1e90fe;
     border-left: 3px solid #1e90fe;
     border-right: 3px solid #1e90fe;
     color : darkblue;
-    flex-direction: column;
-    text-align: center;
-    align-items: left;
+
+    justify-content: center;
+    align-items: center;
     
 
     

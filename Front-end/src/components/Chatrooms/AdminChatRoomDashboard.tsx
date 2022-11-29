@@ -19,7 +19,7 @@ const [ispublic,setisPublic] = useState(false);
 const [Roompassword,setRoompassword] = useState("");
 const [isUpdating, setIsUpdating] = useState(false);
 const [Updated, setisUpdated] = useState(false);
-
+const [members,setMembers] = useState<any>([]);
 const HandleAddUserAdmin = () => {
 
 
@@ -76,11 +76,11 @@ const HandleMute = (e) => {
     setModal(!showmodal)
 }
 
-const FilteredUsers = person.filter(person => {
-    // Here A changer : person with friends from backend , 
-    //filter nickname not name 
-    return person.nickname.toLowerCase().includes(username.toLowerCase());
-  })
+// const FilteredUsers = person.filter(person => {
+//     // Here A changer : person with friends from backend , 
+//     //filter nickname not name 
+//     return person.nickname.toLowerCase().includes(username.toLowerCase());
+//   })
   useEffect(() => {
     setErrorMessage("");
   },[username])
@@ -203,10 +203,18 @@ const HandleRoomPrivate = (e) => {
        const {id} = current;
       console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "Member Status  : " + JSON.stringify(props.statusMember.data.statusMember));
       // // In JS == Ignores the Data Types 
+    const getMembers = localStorage.getItem("members");
+      if(getMembers)
+      {
+        console.log("THE GET MEMBERS IS " + getMembers);
+        const ParsedMembers = JSON.parse(getMembers);
+        setMembers(ParsedMembers);
+        localStorage.setItem("members","");
+      }
       // // === Check condition + data types then true 
       if(props.statusMember.data.statusMember == "owner")
       {
-        console.log("LETSGO")
+        console.log(" I AM OWNER ")
         setOwner("true");
 
       }
@@ -280,7 +288,7 @@ const HandleRoomPrivate = (e) => {
 
         {username ? (
             <>
-{FilteredUsers.map(c => < DisplayChatRoomusers key = {c.id} user = {c} />)}
+{members.map(c => < DisplayChatRoomusers key = {c.nickname} user = {c} />)}
 
             </>
         )  : (
