@@ -95,7 +95,7 @@ const FilteredUsers = friends.filter(friends => {
 
         {username ? (
 <>
-{FilteredUsers.map(c => < DisplayChatRoomFriendsToAdd key = {c.id} user = {c} />)}
+{FilteredUsers.map(c => < DisplayChatRoomFriendsToAdd key = {c.nickname} user = {c} />)}
 
 </>
         ) : (
