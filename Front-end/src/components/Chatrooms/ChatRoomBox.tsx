@@ -117,7 +117,7 @@ async function GetMembers ()
   
   .then((response) => response.json())
   .then(json => {
-      console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json.all_members))
+      console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json))
       // setMessages(json);
       // setRoom(json);
       // if(json.is_dm == true)
@@ -151,7 +151,7 @@ async function GetMembers ()
         else
         {
           setAllgood(true);
-          setMembers(json['all_members']);
+          setMembers(json);
           // setMembers(json)
           console.log("Setting the ChatRooms Members ...");
           return json;
@@ -322,7 +322,7 @@ return (
        value={userQuery || ""}
         />
 
-    {members.map(c => < DisplayChatRoomusers key = {c.playerId} user = {c.player} isadmin ={"true"} />)}
+    {members.map(c => < DisplayChatRoomusers key = {c.nickname} user = {c} isadmin ={"true"} />)}
 
         </div>
   </div>
