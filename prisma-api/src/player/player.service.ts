@@ -153,12 +153,6 @@ export class PlayerService {
         })
     }
 
-    // async joinRoom(userId: string, roomId: string) {
-    //     // const me = await this.findPlayerById(userId);
-    //     // const room = await this.findRoomById(roomId);
-    // }
-
-
     // -------------------------- 1- Get list of friends ------------------
 
     async getFriendshipStatus(userId: string, login: string) {
@@ -1059,12 +1053,19 @@ export class PlayerService {
     // 4- add new member to a chat room 
 
     async addMember(login: string, room_id: string) {
-        const palyer = await this.findPlayerById(login);
+        const palyer = await this.findPlayerByNickname(login);
+        // console.log("palyer", palyer.id);
+        // console.log("room_id", room_id);
+
+        // if (room === null) {
+        //     throw new NotFoundException("This nickname already exist in this room");
+        // }
+
         const room = await this.prisma.permission.create({
             data: {
                 statusMember: "member",
-                muted_until: null,
-                blocked_since: null,
+                muted_until: new Date(),
+                blocked_since: new Date(),
                 playerId: palyer.id,
                 roomId: room_id,
             }
