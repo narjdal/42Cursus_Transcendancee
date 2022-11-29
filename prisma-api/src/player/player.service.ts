@@ -1,3 +1,6 @@
+//Add friend after blocking should not create another dm
+
+
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { stat } from 'fs';
