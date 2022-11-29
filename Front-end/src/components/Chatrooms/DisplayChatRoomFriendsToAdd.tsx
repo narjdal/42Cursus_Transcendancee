@@ -1,13 +1,13 @@
 import react, { useEffect } from 'react'
 import { useState } from 'react'; 
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './DisplayChatRoomsusers.css'
 // import blobz from 'blobz.css'
-const DisplayChatRoomusers = (props,roomownnership) => {
+const DisplayChatRoomFriendsToAdd = (props,roomownnership) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [action,setAction] = useState(false);
     const [display,setDisplay] = useState(false);
-
+    const params = useParams();
     const [isAdmin,setIsAdmin] = useState(JSON.stringify(roomownnership));
 //   console.log("isADmin" + JSON.stringify(isAdmin))
     const handleFriendClick  = (e) => {
@@ -25,6 +25,56 @@ const DisplayChatRoomusers = (props,roomownnership) => {
         setAction(!action);
         // Here request to know which button to display 
     }
+
+
+async function InviteFriendToRoom () {
+    const loggeduser = localStorage.getItem("user");
+    if(loggeduser)
+  {
+    const current = JSON.parse(loggeduser);
+    const text = "http://localhost:5000/player/addMember/" + props.user.nickname + "/" + params.id
+  console.log("Api Fetch Link :  =>  " + text);
+  
+  
+  await fetch(text,{
+    // mode:'no-cors',
+    method:'get',
+    credentials:"include"
+  })
+  
+  .then((response) => response.json())
+  .then(json => {
+    console.log("The ADd Member response is   => " + JSON.stringify(json))
+  // 
+  if(json.statusCode == "500")
+  {
+    setErrorMessage("An error occured in the backend.");
+  }
+  
+    return json;
+  })
+  .catch((error) => {
+    console.log("An error occured : " + error)
+    return error;
+  })
+  
+  // }
+  }
+  
+  };
+    const HandleInviteToRoom = (e) => {
+        e.preventDefault();
+        console.log("Inviting this user to the chatroom " + props.user.nickname + " The room id is :" + params.id)
+      
+        if(props.user.nickname)
+        {
+          InviteFriendToRoom();
+        }
+        else
+        {
+          setErrorMessage("Please enter a valid nickname");
+        }
+      }
     useEffect(() => {
         const loggeduser = localStorage.getItem("user");
         if(loggeduser)
@@ -46,10 +96,11 @@ const DisplayChatRoomusers = (props,roomownnership) => {
         <tbody>
             {display ? (
                 <>
-                 <tr>
+     <tr>
    </tr>
    <tr>
-   <td> <img src={props.user.avatar!} 
+   <td>
+ <img src={props.user.avatar!} 
    height="20" 
    className='avatarsidebar'/>
    </td>
@@ -57,45 +108,17 @@ const DisplayChatRoomusers = (props,roomownnership) => {
    <Link style={{color:'white'}} to={`/users/${props.user.nickname}`} >
    <p> {props.user.nickname} </p>
     </Link>
+    <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleInviteToRoom}>
+    <span className="icon material-symbols-outlined">
+     {"group_add"}  
+      </span>
+      <span> Add a friend to the chatroom</span>
+      </button>
      </td> 
+
   <td>
-{isAdmin === "true"  ? (
-<>
-
-<button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleShowAction}>
-    <span className="icon material-symbols-outlined">
-     {"Settings"}  
-      </span>
-      </button>
-
-{action ? (
-<>
-   <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>
-    <span className="icon material-symbols-outlined">
-     {"people"}  
-      </span>
-
-      </button>
-      <button type="button" id="ss" className='ButtonSocial-block' onClick={HandleBlock}>
-    <span className="icon material-symbols-outlined">
-     {"block"}  
-      </span>
-
-      </button> 
-      <p> {errorMessage && <div className="error"> {errorMessage} </div>}  </p>
-
-   
-</>
-) : (
-    <>
-    </>
-)}
-</>
-) : (
-<>
-
-</>
-)}
+                
+ 
 
 
       
@@ -117,4 +140,4 @@ const DisplayChatRoomusers = (props,roomownnership) => {
        
     )
 }
-export default DisplayChatRoomusers;
+export default DisplayChatRoomFriendsToAdd;

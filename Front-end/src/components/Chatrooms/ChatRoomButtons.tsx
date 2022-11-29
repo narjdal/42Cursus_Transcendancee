@@ -4,6 +4,7 @@ import './ChatRoomButtons.css'
 import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import person from '../users/users.json'
 import { useParams } from 'react-router-dom';
+import DisplayChatRoomFriendsToAdd from './DisplayChatRoomFriendsToAdd';
 
 const ChatRoomButton = () => {
   const[friends,setFriends] = useState <any >([]);
@@ -42,7 +43,7 @@ await fetch(text,{
 
 .then((response) => response.json())
 .then(json => {
-  console.log("The response is => " + JSON.stringify(json))
+  console.log("The ListToAddFriends  is => " + JSON.stringify(json))
 if(json.statusCode == "500")
 {
   console.log("An error occured in the backend.");
@@ -72,55 +73,8 @@ useEffect(() => {
 },[]);
 
 
-async function InviteFriendToRoom () {
-  const loggeduser = localStorage.getItem("user");
-  if(loggeduser)
-{
-  const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/addMember/" + current.nickname + "/" + username
-console.log("Api Fetch Link :  =>  " + text);
 
 
-await fetch(text,{
-  // mode:'no-cors',
-  method:'get',
-  credentials:"include"
-})
-
-.then((response) => response.json())
-.then(json => {
-  console.log("The response is => " + JSON.stringify(json))
-// 
-if(json.statusCode == "500")
-{
-  setErrorMessage("An error occured in the backend.");
-}
-
-  return json;
-})
-.catch((error) => {
-  console.log("An error occured : " + error)
-  return error;
-})
-
-// }
-}
-
-};
-
-const HandleInviteToRoom = (e) => {
-  e.preventDefault();
-  console.log("Inviting this user to the chatroom " + username)
-
-  if(username)
-  {
-    InviteFriendToRoom();
-  }
-  else
-  {
-    setErrorMessage("Please enter a valid nickname");
-  }
-}
 const FilteredUsers = friends.filter(friends => {
     // Here A changer : person with friends from backend , 
     //filter nickname not name 
@@ -138,19 +92,13 @@ const FilteredUsers = friends.filter(friends => {
         />
         {username ? (
 <>
-{FilteredUsers.map(c => < DisplayChatRoomusers key = {c.id} user = {c} />)}
+{FilteredUsers.map(c => < DisplayChatRoomFriendsToAdd key = {c.id} user = {c} />)}
 
 </>
         ) : (
 <>
 </>
         )}
-        <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleInviteToRoom}>
-    <span className="icon material-symbols-outlined">
-     {"group_add"}  
-      </span>
-      <span> Add a friend to the chatroom</span>
-      </button>
            
 
 

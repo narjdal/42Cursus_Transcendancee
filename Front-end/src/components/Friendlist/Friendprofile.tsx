@@ -38,7 +38,7 @@ const Friendprofile = () => {
       .then((response) => response.json())
       .then(json => {
         console.log("The response  => " + JSON.stringify(json))
-        if (json.ok || IsAuthOk(json) == 1)
+          IsAuthOk(json)
           window.location.reload();
         setErrorMessage("");
         return json;
@@ -73,7 +73,8 @@ const Friendprofile = () => {
       .then((response) => response.json())
       .then(json => {
         console.log("The response is => " + JSON.stringify(json))
-        if (json.ok)
+        // if (json.ok)
+        IsAuthOk(json);
           window.location.reload();
         setErrorMessage("");
         return json;
@@ -135,8 +136,9 @@ const Friendprofile = () => {
       .then((response) => response.json())
       .then(json => {
         console.log("The response is => " + JSON.stringify(json))
-        if (json.ok)
-          window.location.reload();
+        IsAuthOk(json);
+        // if (json.ok)
+        window.location.reload();
         setErrorMessage("");
         return json;
       })

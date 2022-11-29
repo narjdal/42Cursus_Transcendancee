@@ -80,9 +80,9 @@ const CreateRoom = () => {
       
       .then((response) => response.json())
       .then(json => {
-          console.log("The response is => " + JSON.stringify(json))
+          console.log("The createRoomResponse  is => " + JSON.stringify(json))
       
-      
+        window.location.reload();
           return json;
       })
       .catch((error) => {

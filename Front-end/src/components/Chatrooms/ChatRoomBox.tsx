@@ -208,7 +208,7 @@ async function GetMessageHistory()
 
   })
   .catch((error) => {
-      console.log("An error occured : " + error)
+      console.log("An error occured  get Message: " + error)
       return error;
   })
 
@@ -246,21 +246,23 @@ const SendMessage = (e) => {
 
 async function LeaveRoom () {
 
-  const text = "http://localhost:5000/player/leaveRoom/" +"me"  + "/" + props.room.id
+  const text = "http://localhost:5000/player/leaveRoom/" + props.room.id
 console.log("Api Leave Rookm  Link :  =>  " + text);
 
 
-await fetch(text,{
-  // mode:'no-cors',
-  method:'get',
-  credentials:"include"
-})
+await axios.get(text,{withCredentials:true})
+  //{
+//   // mode:'no-cors',
+//   method:'get',
+//   credentials:"include"
+// })
 
-.then((response) => response.json())
+// .then((response) => response.json())
 .then(json => {
-  console.log("The response is => " + JSON.stringify(json))
+  console.log("json" + JSON.stringify(json.data))
+  // console.log("The response is => " + JSON.stringify(json))
 // 
-if(json.statusCode == "500" || IsAuthOk(json.satusCode) == 1)
+if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
 {
   setErrorMessage("An error occured in the backend.");
   window.location.reload();
@@ -320,7 +322,7 @@ return (
        value={userQuery || ""}
         />
 
-    {members.map(c => < DisplayChatRoomusers key = {c.playerId} user = {c} isadmin ={"true"} />)}
+    {members.map(c => < DisplayChatRoomusers key = {c.playerId} user = {c.player} isadmin ={"true"} />)}
 
         </div>
   </div>

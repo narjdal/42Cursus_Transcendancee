@@ -4,6 +4,8 @@ import {Routes, Route, useNavigate} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {Pop} from '../../utils/Popup';
 import { IsAuthOk } from '../../utils/utils';
+import DisplayRoomList from './DisplayRoomList';
+
 import './Landing.css'
 function Landing() {
     const navigate = useNavigate();
@@ -55,7 +57,7 @@ async function GetRoomList  ()  {
   {
     var Current_User = JSON.parse(loggeduser);
   const text = "http://localhost:5000/player/listOfRooms"
-    console.log("Api Fetch Link :  =>  " + text);
+    console.log("Api ListOfRooms Link :  =>  " + text);
     
 
     await fetch(text,{
@@ -66,7 +68,7 @@ async function GetRoomList  ()  {
   
   .then((response) => response.json())
   .then(json => {
-      console.log("The response is => " + JSON.stringify(json))
+      console.log("The ListOfRooms is => " + JSON.stringify(json))
     if(IsAuthOk(json.statusCode) == 1)
     window.location.reload();
       setChatRooms(json);
@@ -83,41 +85,13 @@ async function GetRoomList  ()  {
   
 
 }
-async function JoinRoom(roomid:string)
-{
- 
-  
-  const text = "http://localhost:5000/player/joinRoom/" + roomid;
-    console.log("THE  Join Room Link :  =>  " + text);
-    
-
-    await fetch(text,{
-      // mode:'no-cors',
-      method:'get',
-      credentials:"include"
-  })
-  
-  .then((response) => response.json())
-  .then(json => {
-      console.log("The response is => " + JSON.stringify(json))
-      setSuccess(true);
-      if(json.statusCode == "")
-
-      return json;
-  })
-  .catch((error) => {
-      console.log("An error occured : " + error)
-      return error;
-  })
-
-}
 let idsavior;
 
 const HandleJoinRoom = (e) => {
 e.preventDefault();
 console.log("JOING THIS ROOM " + idsavior )
 
-JoinRoom(idsavior)
+// JoinRoom(idsavior)
 
 
 }
@@ -135,55 +109,11 @@ JoinRoom(idsavior)
         <div className='ChatRooms-card'>
             <h2> Join a ChatRoom </h2>
            <button className='CreateChatRoom-button' onClick={HandleClick}> Create a Chat Room </button>
-            <ul className="chat-room-list">
-                {BackendRooms.map((room) => (
-                    <li key={room.id}>
-                        {room.is_protected ? (
-                         <>
-          <button type="button" className='has-border' onClick={HandleShowPassword}>
-      <span className="icon material-symbols-outlined">
-     {"lock"}    {  <Link to={`/room/${room.id}`}>{room.name}</Link> }    </span>
-      </button> 
-      {(showinput  && prevRoom !== room.id )? (
-        <>
-          
+           <div className='Roomlist-card'>
+    
+      {BackendRooms.map(c => < DisplayRoomList  key = {c.id} room ={c} />)}
+      </div>
 
-<button
-      onClick={UpdateRoomPassword}
-      className={isUpdating || Updated ? "sending" : ""}
-    >
-      <span className="icon material-symbols-outlined">
-        {Updated ? "check" : "send"}
-      </span>
-      <span className="text">
-        {isUpdating ? "Updating ..." : Updated ? "Updated" : ""}
-      </span>
-    </button>
-    {errorMessage && <div className="error"> {errorMessage} </div>}
-        
-        </>
-      ) : (
-        <>
-
-        </>
-      )}
-                         </>   
-                        ) : (
-                            <>
-                            {idsavior = (room.id)}
-                    <button 
-                    onClick={HandleJoinRoom}
-                          
-                  >
-                      <Link to={`/room/${room.id}`}>{room.name}</Link>
-                    
-                      </button>
-                            
-                            </>
-                        )}
-                    </li>
-                ))}
-            </ul>
             </div>
         </>
     );

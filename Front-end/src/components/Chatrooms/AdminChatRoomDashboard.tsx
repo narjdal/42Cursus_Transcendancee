@@ -4,7 +4,7 @@ import './AdminChatRoomDashboard.css'
 import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import person from '../users/users.json'
 
-const AdminChatRoomDashboard = (props) => {
+const AdminChatRoomDashboard = (props,statusMember) => {
   const[roomUsers,setRoomUsers] = useState <any >([]);
 const [username, setUsername] = useState("");
 const [errorMessage, setErrorMessage] = useState("");
@@ -24,6 +24,7 @@ const HandleAddUserAdmin = () => {
 
 
 };
+
 async function AddAdmin (username:string)
 {
   const loggeduser = localStorage.getItem("user");
@@ -200,10 +201,10 @@ const HandleRoomPrivate = (e) => {
     {
       const current = JSON.parse(loggedUser);
        const {id} = current;
-      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "Member Status  : " + props.room.statusMember);
+      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "Member Status  : " + JSON.stringify(statusMember));
       // // In JS == Ignores the Data Types 
       // // === Check condition + data types then true 
-      if(props.room.statusMember == "owner")
+      if(statusMember == "owner")
       {
         console.log(" i am owenr")
 

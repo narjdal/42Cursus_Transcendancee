@@ -7,6 +7,7 @@ import { useState ,useEffect} from "react";
 import AdminChatRoomDashboard from './AdminChatRoomDashboard';
 import { IsAuthOk } from '../../utils/utils';
 import { Pop } from '../../utils/Popup';
+import axios from 'axios';
 
 function ChatRoom() {
     const params = useParams();
@@ -16,6 +17,7 @@ function ChatRoom() {
     const [testRoom,setRoom] = useState<any>([]);
     const [allgood,setAllgood] = useState(false);
     const [isDm,setIsDm] = useState(false);
+    const [statusMember,setStatusMember] = useState("");
     const [haspswd,setHaspsswd] = useState(false)
     const [HasPermission,setHasPermissions] = useState(false);
 
@@ -90,18 +92,27 @@ async function GetPermissions()
     console.log("Api Get Permission  Link :  =>  " + text);
     
 
-    await fetch(text,{
+    await axios.get(text,{
+      withCredentials:true
       // mode:'no-cors',
-      method:'get',
-      credentials:"include"
+      // method:'get',
+      // credentials:"include"
   })
   
-  .then((response) => response.json())
+  // .then((response) => response.json())
   .then(json => {
-      json.id = params.id;
-      console.log("The response Of Permissions  is  => " + JSON.stringify(json))
+      // json.data.id = params.id;
+      // console.log("json" + json)
+      console.log("The response Of Permissions  is  => " + JSON.stringify(json.data))
       // SetUserAdmin(json);
-      if(json.statusMember  == "owner")
+      if(!json.data.statusMember)
+      {
+        console.log("ALLL GOOOOD FALSE ")
+        setErrorMessage(" You are not a member of this room.");
+
+        setAllgood(false);
+      }
+      if(json.data.statusMember  == "owner")
       {
         console.log("This is the owner of the room");
         // let obj = {
@@ -120,25 +131,35 @@ async function GetPermissions()
     // );
         // AdminRoom  = json.statusMember;
         // setRoom()
-        var newRoom = {...testRoom};
-
+        // var newRoom = {...testRoom};
+      setStatusMember("owner");
+        SetUserAdmin(true);
+      }
+      else if(json.data.statusMember == "admin")
+      {
+        setStatusMember("admin");
         SetUserAdmin(true);
       }
       // if ()
-      if(json.statusCode == "500" || IsAuthOk(json.statusCode) == 1)
+      if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
         {
             console.log("an error occured");
             setErrorMessage("an error occured");
-            // setAllgood(false)
+            setAllgood(false)
             // window.location.reload();
         }
-        if(json.statusCode == "404")
+        if(json.data.statusCode == "404")
         {
-          if(json.message == "You are not a member of this room")
+          if(json.data.message == "You are not a member of this room")
          { 
           setErrorMessage(" You are not a member of this room.");
           setAllgood(false);
         }
+      //   if(json.data.message == "Already a member")
+      //   { 
+      //    setErrorMessage(" You are not a member of this room.");
+      //    setAllgood(false);
+      //  }
         }
         // else
         // {
@@ -149,7 +170,9 @@ async function GetPermissions()
      
   })
   .catch((error) => {
-      console.log("An error occured : " + error)
+      console.log("An error occured  while fetching the Pemissions ! : " + error)
+      setErrorMessage(" You are not a member of this room.");
+      setAllgood(false);
       return error;
   })
 
@@ -221,7 +244,7 @@ useEffect (() =>
                 <ChatRoomButton/>
 {userAdmin ? (
     <div>
-      <AdminChatRoomDashboard room={testRoom}/>
+      <AdminChatRoomDashboard room={testRoom} statusMember={statusMember}/>
         </div>
 ) : (
     <div>

@@ -32,7 +32,7 @@ const MessageList = (props) => {
 
 		const Current_User = JSON.parse(loggeduser);
            const {id,avatar} = Current_User;
-            // console.log("User is " + UserId +" props USER ID => "+ props.user.userId);
+      // console.log("User is " + UserId +" props USER ID => "+ props.user.userId);
     SetCurrentUser(CurrentUser);
     SetUserId(id);
     SetImageUrl(image_url);
@@ -43,17 +43,18 @@ const MessageList = (props) => {
           
         {UserId == props.user.senderId ? (
        <div className='YourMessages'>  
-       <img src={props.user.avatar} className="avatar1" />     
-    <span>{props.user.msg} </span>
-        
-    <span className="time-right">11:55</span>
+       <img src={props.user.sender.avatar} className="avatar1" />   
+
+    <p>  {props.user.msg} </p>
+          
+    <span className="time-right"> {props.user.createdAt}</span>
         </div>
             ):(
  <div className="OthersHistory">
     <div className='OthersMessages'>
-
- <Link style={{color:'purple',float:'left'}} to={`/users/${props.user.senderId}`} >{props.user.nickname}</Link>
-      {props.user.msg}
+    <img src={props.user.sender.avatar} className="avatar1" />     
+ <Link style={{color:'purple',float:'left'}} to={`/users/${props.user.sender.nickname}`} >{props.user.sender.nickname} : </Link>
+    <p>{props.user.msg}</p>
         
            {/* <p onClick={HandleRightClick} onContextMenu={HandleRightClick} > {props.user.msg} </p>
            {ShowActionsButtons ? (
@@ -66,7 +67,7 @@ const MessageList = (props) => {
                 </div>
            )} */}
        
-            <span className="time-left">11:99999</span>
+            <span className="time-left"> {props.user.createdAt}</span>
             </div>
             </div>
             )}
