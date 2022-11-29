@@ -105,14 +105,11 @@ async function InviteFriendToRoom () {
    className='avatarsidebar'/>
    </td>
    <td>
-   <Link style={{color:'white'}} to={`/users/${props.user.nickname}`} >
-   <p> {props.user.nickname} </p>
-    </Link>
     <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleInviteToRoom}>
     <span className="icon material-symbols-outlined">
      {"group_add"}  
       </span>
-      <span> Add a friend to the chatroom</span>
+      <span> Add  {props.user.nickname} to the chatroom</span>
       </button>
      </td> 
 

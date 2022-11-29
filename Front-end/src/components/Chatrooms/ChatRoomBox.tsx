@@ -255,7 +255,7 @@ async function FetchRelationship() {
           console.log(" NO INPUT TO SHOW SORRY ")
         setShowInput(false);
         setErrorMessage("You are not friend with this user  \n You can't send him a message ! ")
-       }
+        }
         // localStorage.setItem("usertoshow",JSON.stringify(json));
         // localStorage.setItem("choice", json);
         return json;
