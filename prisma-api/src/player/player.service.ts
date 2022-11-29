@@ -15,7 +15,7 @@ export class PlayerService {
 
     async findPlayerById(userId: string)//: Promise<any> {
     {
-        console.log("FindPlayerById", userId);  // userId ===> roomId
+        // console.log("FindPlayerById", userId);  // userId ===> roomId
         if (!userId) {
             throw new HttpException('User Id is required', 400);
         }
@@ -34,7 +34,7 @@ export class PlayerService {
 
     async findRoomById(roomId: string) //: Promise<boolean>
     {
-        console.log("-->", roomId);
+        // console.log("-->", roomId);
         
         const room = await this.prisma.chatRoom.findUnique({
             where: {
@@ -48,17 +48,17 @@ export class PlayerService {
         return room;
     }
 
-    async findPlayerByNickname(login: string): Promise<any> {
+    async findPlayerByNickname(login: string) //: Promise<any> {
+    {
         const player = await this.prisma.player.findUnique({
             where: {
                 nickname: login
             }
         });
 
-        // if (!player) {
-        //     throw new NotFoundException('Profile not found')
-        //     // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
-        // }
+        if (!player) {
+            throw new NotFoundException('Profile not found')
+        }
         return player;
     }
 
@@ -119,17 +119,17 @@ export class PlayerService {
 
     // -------------------------- 1- Get list of friends ------------------
 
-    async getFriend(userId: string, login: string) {
-
-        const me = await this.findPlayerById(userId);
-
-        const friend = await this.prisma.player.findUnique({
-            where: { nickname: login }
-        });
+    async getFriendshipStatus(userId: string, login: string) {
 
         // 1- Check if this login exist in the database
+        // const friend = this.findPlayerByNickname(login);
+        const friend = await this.prisma.player.findUnique({
+            where: {
+                nickname: login
+            }
+        });
         if (!friend) {
-            throw new NotFoundException()
+            throw new NotFoundException('Profile not found')
         }
         
         // 2- Check if this login is my friend or not
@@ -138,19 +138,18 @@ export class PlayerService {
             where: {
                 OR: [
                     {
-                        senderId: me.id,
+                        senderId: userId,
                         receiverId: friend.id,
                     },
 
                     {
                         senderId: friend.id,
-                        receiverId: me.id,
+                        receiverId: userId,
                     }
                 ],
-
-                // and status === friend
             },
-        })
+        });
+        // It can return Null or Object
         return friendship;
     }
 
@@ -171,8 +170,10 @@ export class PlayerService {
                     }
                 ]
             },
+            // select is not working in this case, the explanation is below
         })
 
+        // ==> We use map insted of select because select is not working in this case
         const friendsId = friends.map(user => {
             if (user.receiverId == me.id)
                 return user.senderId
@@ -183,13 +184,11 @@ export class PlayerService {
     }
 
     async getAllFriends(userId: string) {
-        const me = await this.findPlayerById(userId);
+        // console.log("Method Get All Friends, without the user himself");
 
-        console.log("ana get all friends method");
-        const friendsId = await this.getFriendships(userId); // friend 
-
-        // console.log(friendsId);
-
+        // 1- Get Friends Id from Friendship table
+        const friendsId = await this.getFriendships(userId);
+        // 2- Get Friends Profile from Player table
         const friends = await this.prisma.player.findMany({
             where: {
                 id:
@@ -197,21 +196,37 @@ export class PlayerService {
                     in: friendsId,
                 },
             },
+            select: {
+                id: true,
+                nickname: true,
+                avatar: true,
+            }
         })
-        console.log(friends);
+        // console.log(friends);
         return friends;
     }
 
     async getProfilesOfChatRooms(userId: string, room_id: string) {
-        const me = await this.findPlayerById(userId);
-        console.log("getProfilesOfChatRooms    method", room_id);
-        
+
+        // console.log(" Method Get Profiles of Chat room, without the user himself", room_id);
+
+        // 1- Check if this user member of this room
+        const status = await this.getPermissions(userId, room_id);
+        if (!status) {
+            throw new NotFoundException("You are not member of this room");
+        }
+        // 2- Get all members of this room
         const members = await this.prisma.chatRoom.findUnique({
             where: {
                 id: room_id
             },
             include: {
                 all_members: {
+                    where: {
+                        playerId: {
+                            not: userId,
+                        }
+                    },
                     include: {
                         player: {
                             select: {
@@ -222,37 +237,23 @@ export class PlayerService {
                         },
                     }
                 }
-            // include: {
-            //     all_members: {
-            //         select: {
-            //             playerId: true,
-            //         },
-            //         where: {
-            //             playerId: {
-            //                 not: me.id
-            //             },
-            //         },
-            //         include:
-            //         {
-            //             player: {
-            //                 select: {
-            //                     id: true,
-            //                     nickname: true,
-            //                     avatar: true,
-            //                 },
-            //             },
-            //         },
-            //     },
             },
         })
-        return members;
+        // console.log(members);
+        return members.all_members.map(member => {  // all_members
+            return {   // player
+                // id: member.playerId,
+                nickname: member.player.nickname,
+                avatar: member.player.avatar,
+            }
+        })
     }
 
     async getAllMembersOfThisRoom(userId: string, room_id: string) {
         // const me = await this.findPlayerById(userId); /// ERRor here
-        console.log(" MEthod one of get all members ", userId, " ", room_id);
+        // console.log(" MEthod one of get all members ", userId, " ", room_id);
         
-        const room = await this.prisma.chatRoom.findUnique({
+        const ids = await this.prisma.chatRoom.findUnique({
             where: {
                 id: room_id
             },
@@ -269,22 +270,23 @@ export class PlayerService {
                 },
             },
         })
-        console.log(room);
-        // return [1,2,3]
-        return room.all_members.map(user => user.playerId);
+        // console.log(ids);
+        return ids.all_members.map(user => user.playerId);
     }
 
     // 2 - list of friends that we can add to the chat room
     async getListOfFriendsToAddinThisRoom(userId: string, room_id: string) {
-        console.log("MEEEEEEThod two get all friends ", userId, room_id);
+        // console.log("MEEEEEEThod two get all friends ", userId, room_id);
 
-        // const me = await this.findPlayerById(userId);
-
-        // 1- Get all members of this room except me
+        // 1- Check if this user member of this room
+        const status = await this.getPermissions(userId, room_id);
+        if (!status) {
+            throw new NotFoundException("You are not member of this room");
+        }
+        // 2- Get all members ids of this room except me
         const membersId = await this.getAllMembersOfThisRoom(userId, room_id);
-        console.log("one", membersId);
 
-        // 2- Get all friends
+        // 3- Get all friends
         const friendships = await this.prisma.friendship.findMany({
             where: {
                 OR: [
@@ -311,14 +313,12 @@ export class PlayerService {
             },
 
         })
-        console.log("two", friendships);
 
         const friendsId = friendships.map(user => {
             if (user.receiverId == userId)
                 return user.senderId
             return user.receiverId
         })
-        console.log("three", friendsId);
 
         // 3- Get all friends that are not members of this room
         const listFriendsToadd = await this.prisma.player.findMany({
@@ -328,11 +328,17 @@ export class PlayerService {
                     in: friendsId,
                 },
             },
+            select: {
+                nickname: true,
+                avatar: true,
+                // id: true,
+            }
         })
-        console.log(" .  listFriendsToadd    FINIXHED");
+        // console.log(" Method listFriendsToadd    FINIXHED");
         return listFriendsToadd;
     }
 
+    ///////////////////////// HADCHI BA9i 5assou ytverifia /////////////////////////////////
     // 2 - list of friends that we can add to the chat room
     async getListOfFriendsToUpgradeAdmininThisRoom(userId: string, room_id: string) {
         const me = await this.findPlayerById(userId);
@@ -491,24 +497,32 @@ export class PlayerService {
 
     // -------------------------- 2- Request FriendShip -------------------------------
 
+        ///////////////////////////////// Ta hada mochkil 5asou yt7al ////////////////////////////////////////////
+
     // 1- create
     async createFriendship(userId: string, friendname: string) {
-        const sender = await this.findPlayerById(userId);
+
+        // 1- Why i CAN'T use getPlayerByNickname ??
         const receiver = await this.prisma.player.findUnique({
             where: { nickname: friendname }
         });
         if (!receiver) {
             throw new NotFoundException("Receiver not found");
         }
+        // 2- Check if this friendship already exist
+        const friendship = await this.getFriendshipStatus(userId, receiver.id);
+        if (friendship) {
+            //throw new ConflictException("You already have a friendship with this user");
+        }
 
+        // 3- Send FriendShip Request
         const friends = await this.prisma.friendship.create({
             data: {
-                senderId: sender.id,
+                senderId: userId,
                 receiverId: receiver.id,
                 status: "Pending"
             }
         })
-
         return friends;
     }
 
@@ -634,7 +648,7 @@ export class PlayerService {
 
     // function to create a chat room between two players if they are friends
     async createPublicChatRoom(userId: string, nameOfRoom: string) {
-        console.log("createPublicChatRoom");
+        // console.log("createPublicChatRoom");
         const me = await this.findPlayerById(userId);
 
         // owner create a room 
@@ -819,8 +833,8 @@ export class PlayerService {
     async getMessagesOfRoom(userId: string, id_room: string) {
         const me = await this.findPlayerById(userId);
 
-        console.log("\\\\\\\\\\\\\\\\getMessagesOfRoom \\\\\\\\\\\\\\\\");
-        console.log("userId:", userId, " ", "roomId",  id_room);
+        // console.log("\\\\\\\\\\\\\\\\getMessagesOfRoom \\\\\\\\\\\\\\\\");
+        // console.log("userId:", userId, " ", "roomId",  id_room);
         // 1- get the permission of this player in this room
         const status = await this.prisma.permission.findFirst({
             where: {
@@ -861,7 +875,7 @@ export class PlayerService {
         // 1- if user is banned, send all msgs before the time of banning
         // ==>  status.createdAt
         // where { message.createdAT {lt: status.createdAt} }
-        console.log("status", status);
+        // console.log("status", status);
         if (status.is_banned) {
             const result = await this.prisma.message.findMany({
                 where:

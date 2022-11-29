@@ -8558,6 +8558,56 @@
               "font": "script",
               "textAlign": "middle"
             }
+          },
+          "19916b20-c30e-417d-3586-9ccf35814d7d": {
+            "id": "19916b20-c30e-417d-3586-9ccf35814d7d",
+            "type": "rectangle",
+            "name": "Rectangle",
+            "parentId": "page",
+            "childIndex": 244,
+            "point": [
+              442.55,
+              17320.25
+            ],
+            "size": [
+              876.22,
+              482.45
+            ],
+            "rotation": 0,
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1
+            },
+            "label": "",
+            "labelPoint": [
+              0.5,
+              0.5
+            ]
+          },
+          "2dde540e-e9d4-4e8f-2a8f-fe02e0481518": {
+            "id": "2dde540e-e9d4-4e8f-2a8f-fe02e0481518",
+            "type": "text",
+            "name": "Text",
+            "parentId": "page",
+            "childIndex": 245,
+            "point": [
+              492.95,
+              17347.42
+            ],
+            "rotation": 0,
+            "text": "1- admin and owner can set another admin",
+            "style": {
+              "color": "black",
+              "size": "small",
+              "isFilled": false,
+              "dash": "draw",
+              "scale": 1,
+              "font": "script",
+              "textAlign": "middle"
+            }
           }
         },
         "bindings": {

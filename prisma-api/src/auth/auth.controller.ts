@@ -12,7 +12,7 @@ export class AuthController {
 	@Get('/signup')
 	@UseGuards(AuthGuard('42'))
 	async authentication() {
-		console.log("trying to auth")
+		// console.log("trying to auth")
 	}
 
 	@Get('/redirect')

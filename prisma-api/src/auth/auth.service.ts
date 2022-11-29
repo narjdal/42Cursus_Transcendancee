@@ -9,8 +9,8 @@ export class AuthService {
     
     async findORcreate(data: any) // data is the user object from 42
     {
-        console.log("findORcreate");
-        console.log(data);
+        // console.log("findORcreate");
+        // console.log(data);
 
         const player = await this.prisma.player.findUnique
         ({
