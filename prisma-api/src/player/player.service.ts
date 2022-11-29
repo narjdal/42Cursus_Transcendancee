@@ -683,10 +683,17 @@ export class PlayerService {
 
     // Get room by id
     async getRoomById(userId: string, room_id: string) {
-        const room = await this.prisma.chatRoom.findUnique({
+        const room = await this.prisma.chatRoom.findFirst({
             where: {
-                id: room_id
-            },
+                id: room_id,
+                all_members: {
+                    some: {
+                        playerId:{
+                                not: userId,
+                            },
+                        },
+                    },
+                },
             select: {
                 name: true,
                 is_dm: true,
