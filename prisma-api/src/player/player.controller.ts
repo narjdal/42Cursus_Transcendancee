@@ -40,6 +40,19 @@ export class PlayerController {
 
     // ---------------------------------- Frienships ----------------------------------
 
+    // @Get('/isFriend/:id') // id is player
+    // async isFriend(@Param() login: string, @Req() request, @Res() response) //:Promise<Profile>
+    // {
+    //     // console.log("----------------- isFriend -----------------", request.user.id, " ", login);
+    //     const isFriend = await this.playerService.getFriendshipStatus(request.user.id, login['id']);
+    //     if (isFriend.status == "friends") {
+    //         response.status(200).send(true);
+    //     }
+    //     else {
+    //         response.status(200).send(false);
+    //     }
+    // }
+
     @Get('/statusFriendship/:id') // check if nickname exist
     async checkStatusFriendship(@Param() login: string, @Req() request, @Res() response) {
         // console.log("--------------- Status -----------------");
@@ -585,7 +598,7 @@ export class PlayerController {
     @Get('/GetRoomById/:id')
     async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("-------------- Get Room By Id --------------");
-        const room = await this.playerService.getRoomById(id_room['id']);
+        const room = await this.playerService.getRoomById(request.user.id,id_room['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }

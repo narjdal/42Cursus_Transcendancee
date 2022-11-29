@@ -17,7 +17,8 @@ export class PlayerService {
     {
         // console.log("FindPlayerById", userId);  // userId ===> roomId
         if (!userId) {
-            throw new HttpException('User Id is required', 400);
+            // throw new HttpException('User Id is required', 400);
+            throw new NotFoundException('User Id is required');
         }
         const player = await this.prisma.player.findUnique({
             where: {
@@ -681,7 +682,7 @@ export class PlayerService {
     // ------------------------------ 3- Chat ---------------------------------------------
 
     // Get room by id
-    async getRoomById(room_id: string) {
+    async getRoomById(userId: string, room_id: string) {
         const room = await this.prisma.chatRoom.findUnique({
             where: {
                 id: room_id
@@ -691,8 +692,19 @@ export class PlayerService {
                 is_dm: true,
                 is_public: true,
                 is_protected : true,
+                all_members: {
+                    select: {
+                        player: {
+                            select: {
+                                nickname: true,
+                                id: true,
+                                }
+                            },
+                        },
+                    },
+                },
             }
-        })
+        )
         return room;
     }
 
