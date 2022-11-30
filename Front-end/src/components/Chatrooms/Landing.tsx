@@ -103,6 +103,7 @@ console.log("JOING THIS ROOM " + idsavior )
             const current = JSON.parse(loggeduser);
             GetRoomList();
           }
+        localStorage.setItem("members","");
       },[])
     return (
         <>

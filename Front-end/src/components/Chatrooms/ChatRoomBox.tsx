@@ -8,8 +8,15 @@ import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import axios from 'axios';
 import { IsAuthOk } from '../../utils/utils';
 import { set } from 'date-fns';
+import { io } from "socket.io-client";
+import { Socket } from 'dgram';
+import { any } from 'prop-types';
+
+var socket:any;
+
 //https://codeburst.io/tutorial-how-to-build-a-chat-app-with-react-native-and-backend-9b24d01ea62a
 const ChatRoomBox = (props) => {
+  // localStorage.setItem("members","");
 
   const navigate = useNavigate();
   const [inputMsg,SetInputMsg] = useState("");
@@ -19,6 +26,10 @@ const ChatRoomBox = (props) => {
   const [Updated, setisUpdated] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
   const[members,setMembers] = useState <any >([]);
+const [allMembers,setAllMembers] = useState <any>([]);
+  // var allMembers: any = [];
+
+
   const [messages, setMessages] = useState <any>([]);
   const [showInput,setShowInput] = useState(false)
   // const [friendName,setFriendName] = useState("");
@@ -155,6 +166,13 @@ async function GetMembers ()
           setAllgood(true);
           localStorage.setItem("members",JSON.stringify(json));
           setMembers(json);
+          setAllMembers(json);
+          // json.map(async (json) => {
+          //   console.log("MAPPING OVER NICKNAME " + json.nickname)
+          //   if(Current_User.id != json.id)
+          // })
+          // allMembers = json;
+          console.log("ALL GET MEMBERS ARE ", json, allMembers);
           // setMembers(json)
           console.log("Setting the ChatRooms Members ...");
           return json;
@@ -204,7 +222,7 @@ async function GetMessageHistory()
         {
           setMessages(json);
           setAllgood(true);
-          console.log("Setting the ChatRooms Members ...");
+          console.log("Setting the ChatRooms Messages ...");
           return json;
         }
      
@@ -220,7 +238,7 @@ async function GetMessageHistory()
 
 
 
-async function FetchRelationship(friendName : string) {
+async function FetchRelationshipNarjdal(friendName : string) {
 
   const loggeduser = localStorage.getItem("user");
   if (loggeduser) {
@@ -270,60 +288,241 @@ async function FetchRelationship(friendName : string) {
   }
 
 }
+
+
+// async function FetchRelationshipmlabrayj() {
+
+//   const loggeduser = localStorage.getItem("user");
+//   if (loggeduser) {
+//     const current = JSON.parse(loggeduser);
+//     console.log("Fetching Relationship    Infos   => "  +  " I am : " + current.nickname + " This is hard coded waiting for getroombyid ");
+
+//     let endpoint = 'http://localhost:5000/player/statusFriendship/'
+//     // let nicknametofetch: string = JSON.stringify(params.nickname);
+//     // console.log(" this endpoint   " + endpoint + " Fetching : " + nicknametofetch)
+//     http://localhost:5000/statusFriendship/?id=narjdal
+
+//     console.log('ALL MEMBERS ARE', allMembers);
+    
+//     allMembers.map(async (member) => {
+//       // if (member.id != current.id)
+//       await fetch (endpoint + member.nickname, {
+//         // mode:'no-cors',
+//         method: 'get',
+//         credentials: "include"
+//       })
+
+//       .then((response) => response.json())
+//         .then(json => {
+//           console.log("The Realtionship is => " + JSON.stringify(json))
+//           setErrorMessage("");
+//           if (json == "blockFriend") {
+//             setShowInput(true);
+//           }
+//           else {
+//             // setShowInput(true);
+//             console.log(" NO INPUT TO SHOW SORRY ")
+//             setShowInput(false);
+//             setErrorMessage("You are not friend with this user  \n You can't send him a message ! ")
+//           }
+//           return json;
+//         })
+//         .catch((error) => {
+//           console.log("An error occured : " + error)
+//           // setRelation("error");
+//           setErrorMessage("An error occured! Relationship not found ! ");
+//           return error;
+//         })
+//     })
+
+//   }
+
+// }
+async function init_socket()
+{
+  // if(allMembers)
+  // {
+
+  socket = io("http://localhost:5000/chat");
+  socket.emit('joinroom', { room: props.room.id, user: JSON.parse(localStorage.getItem("user")!) });
+  socket.on("addmsg", (data: any) => {
+    console.clear();
+    /*
+  {
+    id          Message Id
+    sender      Player
+    senderId    Id Player
+    msg         Text
+    createdAt   Time
+  }
+  */
+ const NewMembers = JSON.parse(localStorage.getItem("members")!);
+  console.log("ALL MEMBERS : ", NewMembers);
+  let srch = NewMembers.filter((m: any) => {
+    console.log("m.id : " + m.nickname + " data.senderId : " + data.nickname, data);
+    return m.nickname === data.nickname
+  })[0]
+  if(!srch)
+  srch = JSON.parse(localStorage.getItem("user")!);
+   console.log("SEARCH RESULT: ", srch);
+  
+  const msgObj = {
+    id: data.message.id ,
+    sender: srch,
+    senderId: data.message.senderId,
+    msg: data.message.msg,
+    createdAt: data.message.createdAt,
+  }
+  console.log("OLD Messages : ", messages, 'NEW', msgObj);
+
+    // append new message to messages using previous state
+
+    setMessages((prevMessages: any) => [...prevMessages, msgObj]);
+
+  // setMessages([...messages, msgObj]);
+
+  });
+// }
+}
+
+useEffect(() => {
+
+  if(localStorage.getItem("members")!)
+  {
+  init_socket();
+
+  }
+  // init_socket();
+//   if(props.room.is_dm)
+
+// {
+
+// }
+  
+  // localStorage.setItem("members",JSON.stringify(json));
+},[localStorage.getItem("members")])
   useEffect (() => {
 
-
+    
       console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name )
 
-        // HERE request to backend to fetch users of the room
-        if(!props.room.is_dm)
+      GetMembers().then((res) => {
+
+        console.log('AFTER WAITING', allMembers);
+          // init_socket();
+      })
+        if (props.room.is_dm) 
         {
-          console.log("Fethcing members of this chatroom.");
-          GetMembers();
-          setShowInput(true);
-        }
-        else if (props.room.is_dm)
-        {
+          console.log("Fethcing Relationship of this chatroom.");
           const loggedUser = localStorage.getItem("user");
-          if(loggedUser)
-          {
-            const current = JSON.parse(loggedUser);
-            if(current.id == props.room.all_members[0].player.id)
+            if(loggedUser)
             {
-          console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[1].player.nickname);
-              // setFriendName(props.room.all_members[1].player.nickname)
-         FetchRelationship(props.room.all_members[1].player.nickname);
+              const current = JSON.parse(loggedUser);
+              if(props.room.all_members)
+              {
+
+              if(current.id == props.room.all_members[0].player.id)
+              {
+            console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[1].player.nickname);
+                // setFriendName(props.room.all_members[1].player.nickname)
+           FetchRelationshipNarjdal(props.room.all_members[1].player.nickname);
+  
+              }
+              else
+              {
+            console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[0].player.nickname);
+                // setFriendName(props.room.all_members[0].player.nickname)
+           FetchRelationshipNarjdal(props.room.all_members[0].player.nickname);
+              }
+            }
 
             }
-            else
-            {
-          console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[0].player.nickname);
-              // setFriendName(props.room.all_members[0].player.nickname)
-         FetchRelationship(props.room.all_members[0].player.nickname);
-          
-            }
-          }
-          console.log("Fethcing Relationship of this chatroom.");
-          // const filtered = props.room.all_nmebers(player => {
-          //   return player.id !== 
-          // })
+          // setShowInput(true);
+
         }
-      
+        else
+        {
+          GetMembers();
+          //   setShowInput(true);
+          setShowInput(true);
+        }
+
         GetMessageHistory();
+      
+      // HERE request to backend to fetch users of the room
+    /*if (!props.room.is_dm) {
+      console.log("Fethcing members of this chatroom.");
+      GetMembers();
+      setShowInput(true);
+    }
+    else */
+    // console.log("Members of the room : " + JSON.stringify(chatroomUsers));
+
+
+    // socket INIT
+  
+    
+
+    // EVENT LISTENER : NEW MESSAGE
+
+  }, []);
+        // HERE request to backend to fetch users of the room
+        // if(!props.room.is_dm)
+        // {
+        //   console.log("Fethcing members of this chatroom.");
+        //   GetMembers();
+        //   setShowInput(true);
+        // }
+        // else if (props.room.is_dm)
+        // {
+        //   const loggedUser = localStorage.getItem("user");
+        //   if(loggedUser)
+        //   {
+        //     const current = JSON.parse(loggedUser);
+        //     if(current.id == props.room.all_members[0].player.id)
+        //     {
+        //   console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[1].player.nickname);
+        //       // setFriendName(props.room.all_members[1].player.nickname)
+        //  FetchRelationshipNarjdal(props.room.all_members[1].player.nickname);
+
+        //     }
+        //     else
+        //     {
+        //   console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[0].player.nickname);
+        //       // setFriendName(props.room.all_members[0].player.nickname)
+        //  FetchRelationshipNarjdal(props.room.all_members[0].player.nickname);
+          
+        //     }
+        //   }
+        //   console.log("Fethcing Relationship of this chatroom.");
+        //   // const filtered = props.room.all_nmebers(player => {
+        //   //   return player.id !== 
+        //   // })
+        // }
+      
+        // GetMessageHistory();
         // console.log("Members of the room : " + JSON.stringify(chatroomUsers));
     
-},[]);
+// },[]);
 
 const SendMessage = (e) => {
   e.preventDefault();
   setIsUpdating(true);
+
+  const loggeduser = localStorage.getItem("user");
+  if (!loggeduser) {
+    return ;
+  }
+  var Current_User = JSON.parse(loggeduser);
+  console.log(socket);
   setTimeout(() => {
     setIsUpdating(false);
     setisUpdated(true);
     setTimeout(() => setisUpdated(false), 2500);
-    window.location.reload();
+    // window.location.reload();
  
   }, 2000);
+  socket.emit("newmessage", {user: Current_User, msgTxt: inputMsg, room: props.room.id});
 
 }
 
@@ -418,7 +617,7 @@ return (
 
       <div className='History-Box'> 
      
-      {messages.map(c => < MessageList  key = {c.senderId} user ={c} />)}
+      {messages.map(c => < MessageList  key = {c.sender.createdAt} user ={c} />)}
  
      <br></br>
             
@@ -437,7 +636,7 @@ return (
                   </button>
           </>)}
           
-   {showInput ? (
+    {showInput ? ( 
     <>
      <form className='ChatRoom-Input-form' onSubmit={HandleInputMsg}>
     <div className='ChatRoom-InputBox'>
@@ -470,7 +669,7 @@ return (
 
   </form>
     </>
-   ) : (
+    ) : (
     <>
      <button type="button" className='button-displayuser' >
               <span className="icon material-symbols-outlined">
@@ -481,7 +680,7 @@ return (
             </button>
 
     </>
-   )}
+    )} 
  
   </div>
   </div>

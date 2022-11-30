@@ -82,14 +82,14 @@ const App = () => {
     // const user = localStorage.getItem("user");
     // console.log(" User Object  =>   " + user)
 
-    const socket = io("http://localhost:5000");
-    console.log("socket is connecting ");
+    // const socket = io("http://localhost:5000");
+    // console.log("socket is connecting ");
 
 
     
-    socket.on("dm", () => {
-      console.log("connected");
-    });
+    // socket.on("dm", () => {
+    //   console.log("connected");
+    // });
     return (
       <div className="App">
         {/* <link rel="stylesheet" href="toruskit.blobz/blobz.min.css" />

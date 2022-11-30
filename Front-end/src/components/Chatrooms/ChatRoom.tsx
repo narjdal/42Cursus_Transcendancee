@@ -58,6 +58,8 @@ async function GetRoomById  ()  {
         // testRoom.is_dm = true;
         console.log("This is a DM Room");
             // GetPermissions();
+            if(json.data.all_members)
+          {
           if(Current_User.id == json.data.all_members[0].player.id)
           {
             setRoomName(json.data.all_members[1].player.nickname);
@@ -66,6 +68,8 @@ async function GetRoomById  ()  {
           {
             setRoomName(json.data.all_members[0].player.nickname);
           }
+        }
+
         setAllgood(true)
         // localStorage.setItem("isdm","true");
         setIsDm(true);

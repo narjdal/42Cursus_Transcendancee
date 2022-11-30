@@ -9,6 +9,7 @@ const MessageList = (props) => {
     const[CurrentUser,SetCurrentUser] = useState<any>([]);
     const [ShowActionsButtons,SetActionsButtons] = useState(false);
     const [UserId,SetUserId] = useState("");
+    const [date,setDate] = useState("");
     const [image_url,SetImageUrl] = useState("");
     const HandleRightClick = (e) => {
         e.preventDefault();
@@ -32,6 +33,19 @@ const MessageList = (props) => {
 
 		const Current_User = JSON.parse(loggeduser);
            const {id,avatar} = Current_User;
+           var date = new Date(props.user.createdAt);
+
+          //  setDate(date.getDate().toString());
+           var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var year = date.getFullYear();
+var month = months[date.getMonth()];
+var dateVal = date.getDate();
+var hours = date.getHours();
+var seconds = date.getSeconds();
+
+
+var formattedDate = dateVal + '/' + (date.getMonth()+1) + '/' + year + '  ' + hours + ':' + seconds
+setDate(formattedDate)
       // console.log("User is " + UserId +" props USER ID => "+ props.user.userId);
     SetCurrentUser(CurrentUser);
     SetUserId(id);
@@ -47,7 +61,7 @@ const MessageList = (props) => {
 
     <p>  {props.user.msg} </p>
           
-    <span className="time-right"> {props.user.createdAt}</span>
+    <span className="time-right"> {date}</span>
         </div>
             ):(
  <div className="OthersHistory">
@@ -67,7 +81,7 @@ const MessageList = (props) => {
                 </div>
            )} */}
        
-            <span className="time-left"> {props.user.createdAt}</span>
+            <span className="time-left"> {date}</span>
             </div>
             </div>
             )}
