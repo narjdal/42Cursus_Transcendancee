@@ -341,7 +341,11 @@ let PlayerController = class PlayerController {
         response.status(200).send(room);
     }
     async GetRoomById(id_room, request, response) {
-        const room = await this.playerService.findRoomById(id_room['id']);
+        const room = await this.playerService.getRoomById(request.user.id, id_room['id']);
+        console.log("room: \n", room);
+        if (room === null) {
+            throw new common_1.NotFoundException("No Room exists");
+        }
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });

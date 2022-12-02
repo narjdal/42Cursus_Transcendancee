@@ -647,7 +647,12 @@ export class PlayerController {
     @Get('/GetRoomById/:id')
     async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("-------------- Get Room By Id --------------");
-        const room = await this.playerService.findRoomById(id_room['id']);
+        const room = await this.playerService.getRoomById(request.user.id, id_room['id']);
+        console.log("room: \n", room);
+        if(room === null)
+        {
+            throw new NotFoundException("No Room exists");
+        }
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }

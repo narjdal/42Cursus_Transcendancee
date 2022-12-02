@@ -53,7 +53,7 @@ export class PlayerService {
     {
         // console.log("-->", roomId);
         
-        const room = await this.prisma.chatRoom.findFirst({
+        const room = await this.prisma.chatRoom.findUnique({
             where: {
                 id: roomId,
             }
@@ -686,14 +686,7 @@ export class PlayerService {
         const room = await this.prisma.chatRoom.findFirst({
             where: {
                 id: room_id,
-                all_members: {
-                    some: {
-                        playerId:{
-                                not: userId,
-                            },
-                        },
-                    },
-                },
+            },
             select: {
                 name: true,
                 is_dm: true,
@@ -766,6 +759,7 @@ export class PlayerService {
             {
                 is_dm: false,
                 is_public: false,
+                // is_private:
                 name: nameOfRoom,
 
                 all_members: {
@@ -879,6 +873,9 @@ export class PlayerService {
                 statusMember: true,
                 is_banned: true,
                 is_muted: true,
+                // blocked_since: true,
+                // muted_until: true,
+
             }
         })
         // if(status === null){

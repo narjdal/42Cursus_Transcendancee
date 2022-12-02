@@ -42,7 +42,7 @@ let PlayerService = class PlayerService {
         return player;
     }
     async findRoomById(roomId) {
-        const room = await this.prisma.chatRoom.findFirst({
+        const room = await this.prisma.chatRoom.findUnique({
             where: {
                 id: roomId,
             }
@@ -544,13 +544,6 @@ let PlayerService = class PlayerService {
         const room = await this.prisma.chatRoom.findFirst({
             where: {
                 id: room_id,
-                all_members: {
-                    some: {
-                        playerId: {
-                            not: userId,
-                        },
-                    },
-                },
             },
             select: {
                 name: true,
