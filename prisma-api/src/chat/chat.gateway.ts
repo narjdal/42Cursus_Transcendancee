@@ -1,3 +1,5 @@
+
+
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import { Socket } from "socket.io";
 
@@ -53,7 +55,7 @@ export class ChatGateway {
 	async handleConnection(client: Socket, ...args: any[]) {
 		console.log("Client connected", client.id);
 
-		let userLog = getIdUserFromToken(client.handshake.headers.cookie)
+		// let userLog = getIdUserFromToken(client.handshake.headers.cookie)
 
 		// discconnect socket
 		// if(!userLog){
@@ -63,59 +65,103 @@ export class ChatGateway {
 		// }
 
 		// get user id from jwt token from frontend
-		userLog = { id: "3c2d8759-126c-4d2a-b8bb-83475c0b8e63", nickname: "mlabrayj" }
+		// userLog = { id: "3c2d8759-126c-4d2a-b8bb-83475c0b8e63", nickname: "mlabrayj" }
 
 
-		const allrooms = await this.playerservice.getAllRooms(userLog.id);
-		let allmsgs = [];
+		// const allrooms = await this.playerservice.getAllRooms(userLog.id);
+		// let allmsgs = [];
 
-		// room
-		for (let room of allrooms) {
-			let roomId = this.roomPrefix + room.id;
-			client.join(roomId);
+		// // room
+		// for (let room of allrooms) {
+		// 	let roomId = this.roomPrefix + room.id;
+		// 	client.join(roomId);
 
-			const msgofroom = await this.playerservice.getMessagesOfRoom(userLog, room.id);
+		// 	const msgofroom = await this.playerservice.getMessagesOfRoom(userLog, room.id);
 
-			allmsgs.push({
-				...room,
-				messages: msgofroom,
-			});
-		}
+		// 	allmsgs.push({
+		// 		...room,
+		// 		messages: msgofroom,
+		// 	});
+		// }
 
-		console.log('ALL ROOMS WITH MSGS ', allmsgs[0]);
+		// console.log('ALL ROOMS WITH MSGS ', allmsgs[0]);
 
-		this.wss.to(client.id).emit("La7sen", allmsgs); // listen to this event in frontend to get all rooms with messages fot the fisrt time connection
+		// this.wss.to(client.id).emit("La7sen", allmsgs); // listen to this event in frontend to get all rooms with messages fot the fisrt time connection
 	}
 
+	@SubscribeMessage("joinroom")
+	async handleJoinRoom(client: Socket, data: any): Promise<void> {
+		console.log("joinroom", data);
+
+		// validate user object passed in data
+		if (!data.user)
+			return;
+		const user = await this.playerservice.findPlayerById(data.user.id);
+		// exception if user not found
+		if (!user)
+			return;
+
+		console.log('SOCKET JOIN', data);
+			
+		// validate room object passed in data
+		if (!data.room)
+			return;
+		// join room
+		const room = await this.playerservice.getRoomById(data.user.id,data.room);
+		if (!room)
+			return;
+
+		client.join(this.roomPrefix + data.roomId);
+	}
 
 	@SubscribeMessage("newmessage")
-	handleMessage(client: Socket, data: any): void {
+	async handleMessage(client: Socket, data: any): Promise<void> {
 		console.log("Message received", data); //data contains the message sent and room from client (frontend)
 
 		// 
 		// ALWAYS - VALIDATION
 		// 
-		let userLog = getIdUserFromToken(client.handshake.headers.cookie)
+		// let userLog:any // = getIdUserFromToken(client.handshake.headers.cookie)
 		// discconnect socket
 		// if(!userLog){
 		//   this.wss.to(client.id).emit("EventAlmerdi", "You are not connected");
 		//   client.disconnect(); 
 		//   return;
 		// }
-		// get user id from jwt token from frontend
-		// TEMPORARY
-		userLog = { id: "3c2d8759-126c-4d2a-b8bb-83475c0b8e63", nickname: "mlabrayj" } // TEMPORARY
-		// TEMPORARY
-		// 
+
+		// IF ROOM EXISTS
+		if (!data.room)
+			return;
+		const room = await this.playerservice.getRoomById(data.user.id,data.room);
+		if (!room) {
+			// if user is member
+			return;
+		}
+
 		// ALWAYS - VALIDATION
 		// 
 
+		// user: Current_User, msgTxt: inputMsg, room: props.room.id
+		const newMessage = await this.playerservice.sendMessageinRoom(data.user.id, data.msgTxt, data.room);
 
-		// this.roomPrefix
 
-		this.playerservice.sendMessageinRoom(userLog, data.message, data.roomId);
+		if (!newMessage) {
+			return ;
+		}
 
-		this.wss.to(this.roomPrefix + data.roomId).emit("addmsg", {user: userLog, message: data.mesage, room: data.roomId, }); // event name 
+		/*
+		{
+			id          Message Id
+			sender      Player
+			senderId    Id Player
+			msg         Text
+			createdAt   Time
+		}
+		*/
+		this.wss.to(this.roomPrefix + data.roomId).emit("addmsg", 
+		{
+			nickname: data.user.nickname,
+			message: newMessage}); // event name 
 	}
 
 	// @SubscribeMessage("message")
