@@ -582,7 +582,6 @@ let PlayerService = class PlayerService {
                 },
             },
         });
-        console.log("room\n", room);
         return room;
     }
     async createPrivateChatRoom(userId, nameOfRoom) {
@@ -696,7 +695,7 @@ let PlayerService = class PlayerService {
             }
         });
         if (status === null) {
-            throw new common_1.NotFoundException("You are not a member of this room");
+            throw new common_1.NotFoundException("You can not a get a msgs of this room bcuz you are not member");
         }
         const blocked_list = await this.prisma.friendship.findMany({
             where: {
@@ -815,7 +814,6 @@ let PlayerService = class PlayerService {
         return messageSent;
     }
     async addMember(login, room_id) {
-        console.log("addMember ", login);
         const palyer = await this.findPlayerByNickname(login);
         const permission = await this.prisma.permission.create({
             data: {
@@ -828,20 +826,21 @@ let PlayerService = class PlayerService {
                 roomId: room_id,
             }
         });
-        console.log("permission ===>", permission);
         return permission;
     }
-    async joinRoom(playerId, room_id) {
-        const room = await this.prisma.permission.create({
+    async joinRoom(userId, room_id) {
+        const permission = await this.prisma.permission.create({
             data: {
-                statusMember: "member",
-                muted_until: new Date(),
-                blocked_since: new Date(),
-                playerId: playerId,
+                playerId: userId,
                 roomId: room_id,
+                statusMember: "member",
+                is_muted: false,
+                muted_until: new Date(),
+                is_banned: false,
+                blocked_since: new Date(),
             }
         });
-        return room;
+        return permission;
     }
     async setAdmin(login, room_id) {
         const palyer = await this.findPlayerById(login);

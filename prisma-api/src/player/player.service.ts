@@ -744,7 +744,7 @@ export class PlayerService {
                 },
             },
         })
-        console.log("room\n", room);
+        // console.log("room\n", room);
         return room;
     }
 
@@ -915,7 +915,7 @@ export class PlayerService {
             }
         })
         if (status === null) {
-            throw new NotFoundException("You are not a member of this room");
+            throw new NotFoundException("You can not a get a msgs of this room bcuz you are not member");
         }
 
         const blocked_list = await this.prisma.friendship.findMany({
@@ -1071,7 +1071,7 @@ export class PlayerService {
     // 4- add new member to a chat room 
 
     async addMember(login: string, room_id: string) {
-        console.log("addMember ", login);
+        // console.log("addMember ", login);
         const palyer = await this.findPlayerByNickname(login);
         const permission = await this.prisma.permission.create({
             data: {
@@ -1085,21 +1085,27 @@ export class PlayerService {
 
             }
         })
-        console.log("permission ===>", permission);
+        // console.log("permission ===>", permission);
         return permission;
     }
 
-    async joinRoom(playerId: string, room_id: string) {
-        const room = await this.prisma.permission.create({
+    async joinRoom(userId: string, room_id: string) {
+        // console.log("userId ==> ", userId);
+        // console.log("room_id ==> ", room_id);
+        const permission = await this.prisma.permission.create({
             data: {
-                statusMember: "member",
-                muted_until: new Date(),
-                blocked_since: new Date(),
-                playerId: playerId,
+                playerId: userId,
                 roomId: room_id,
+                statusMember: "member",
+                is_muted: false,
+                muted_until: new Date(),
+                is_banned: false,
+                blocked_since: new Date(),
+
+
             }
         })
-        return room;
+        return permission;
     }
 
     // 5- set member as admin if u are admin or owner

@@ -295,7 +295,7 @@ export class PlayerController {
 
         // 1- check if room_id exists
         const room = await this.playerService.findRoomById(room_id['id2']);
-        console.log(room)
+        // console.log(room)
         // 2- check if room_id is not a dm
         if(room.is_dm === true)
         {
@@ -353,7 +353,7 @@ export class PlayerController {
 
         // 1- check if room_id exists
        const room = await this.playerService.findRoomById(room_id['id2']);
-       console.log(room)
+    //    console.log(room)
        // 2- check if room_id is not a dm
        if(room.is_dm === true)
        {
@@ -413,7 +413,7 @@ export class PlayerController {
 
         // 1- check if room_id exists
        const room = await this.playerService.findRoomById(room_id['id2']);
-       console.log(room)
+    //    console.log(room)
        // 2- check if room_id is not a dm
        if(room.is_dm === true)
        {
@@ -473,7 +473,7 @@ export class PlayerController {
 
        // 1- check if room_id exists
        const room = await this.playerService.findRoomById(room_id['id2']);
-       console.log(room)
+    //    console.log(room)
        // 2- check if room_id is not a dm
        if(room.is_dm === true)
        {
@@ -648,7 +648,7 @@ export class PlayerController {
     async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("-------------- Get Room By Id --------------");
         const room = await this.playerService.getRoomById(request.user.id, id_room['id']);
-        console.log("room: \n", room);
+        // console.log("room: \n", room);
         if(room === null)
         {
             throw new NotFoundException("No Room exists");
@@ -742,7 +742,6 @@ export class PlayerController {
         // console.log("---------------- Join Room ----------------", room_id['id']);
 
         // 1- check if room_id exists
-        console.log(room_id['id']);
         const room = await this.playerService.findRoomById(room_id['id']);
         
         // 2- check if room_id is not a dm
@@ -756,14 +755,15 @@ export class PlayerController {
         }
 
         // 3- check if user is member of this room
-        const member = await this.playerService.getPermissions(request.user.id, room_id['id2']);
+        const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
+        // console.log("member: ", member);
         if(member)
         {
             throw new NotFoundException("Already a member");
         }
 
         // 4- then join room
-        const join = await this.playerService.joinRoom(request.user.id, room_id['id2']);
+        const join = await this.playerService.joinRoom(request.user.id, room_id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         })

@@ -76,7 +76,7 @@ export declare class PlayerService {
     sendMessage(userId: string, room_id: string, message: string): Promise<import(".prisma/client").Message>;
     sendMessageinRoom(userId: string, message: string, room_id: string): Promise<import(".prisma/client").Message>;
     addMember(login: string, room_id: string): Promise<import(".prisma/client").Permission>;
-    joinRoom(playerId: string, room_id: string): Promise<import(".prisma/client").Permission>;
+    joinRoom(userId: string, room_id: string): Promise<import(".prisma/client").Permission>;
     setAdmin(login: string, room_id: string): Promise<void>;
     banMember(login: string, room_id: string): Promise<void>;
     kickMember(login: string, room_id: string): Promise<void>;

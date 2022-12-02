@@ -53,7 +53,7 @@ export class ChatGateway {
 	constructor(private readonly playerservice: PlayerService) { }
 
 	async handleConnection(client: Socket, ...args: any[]) {
-		console.log("Client connected", client.id);
+		// emyconsole.log("Client connected", client.id);
 
 		// let userLog = getIdUserFromToken(client.handshake.headers.cookie)
 
@@ -91,7 +91,7 @@ export class ChatGateway {
 
 	@SubscribeMessage("joinroom")
 	async handleJoinRoom(client: Socket, data: any): Promise<void> {
-		console.log("joinroom", data);
+		// emyconsole.log("joinroom", data);
 
 		// validate user object passed in data
 		if (!data.user)
@@ -101,7 +101,7 @@ export class ChatGateway {
 		if (!user)
 			return;
 
-		console.log('SOCKET JOIN', data);
+		//emyconsole.log('SOCKET JOIN', data);
 			
 		// validate room object passed in data
 		if (!data.room)
@@ -116,7 +116,7 @@ export class ChatGateway {
 
 	@SubscribeMessage("newmessage")
 	async handleMessage(client: Socket, data: any): Promise<void> {
-		console.log("Message received", data); //data contains the message sent and room from client (frontend)
+		// emyconsole.log("Message received", data); //data contains the message sent and room from client (frontend)
 
 		// 
 		// ALWAYS - VALIDATION
@@ -176,6 +176,6 @@ export class ChatGateway {
 	// }
 
 	async handleDisconnect(client: Socket) {
-		console.log("Client disconnected", client.id);
+		// emyconsole.log("Client disconnected", client.id);
 	}
 }

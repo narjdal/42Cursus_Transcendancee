@@ -36,16 +36,13 @@ let ChatGateway = class ChatGateway {
         this.roomPrefix = 'roomSocket';
     }
     async handleConnection(client, ...args) {
-        console.log("Client connected", client.id);
     }
     async handleJoinRoom(client, data) {
-        console.log("joinroom", data);
         if (!data.user)
             return;
         const user = await this.playerservice.findPlayerById(data.user.id);
         if (!user)
             return;
-        console.log('SOCKET JOIN', data);
         if (!data.room)
             return;
         const room = await this.playerservice.getRoomById(data.user.id, data.room);
@@ -54,7 +51,6 @@ let ChatGateway = class ChatGateway {
         client.join(this.roomPrefix + data.roomId);
     }
     async handleMessage(client, data) {
-        console.log("Message received", data);
         if (!data.room)
             return;
         const room = await this.playerservice.getRoomById(data.user.id, data.room);
@@ -75,7 +71,6 @@ let ChatGateway = class ChatGateway {
         });
     }
     async handleDisconnect(client) {
-        console.log("Client disconnected", client.id);
     }
 };
 __decorate([

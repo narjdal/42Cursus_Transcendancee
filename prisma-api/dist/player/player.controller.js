@@ -154,7 +154,6 @@ let PlayerController = class PlayerController {
     }
     async setAdmin(login, room_id, request, response) {
         const room = await this.playerService.findRoomById(room_id['id2']);
-        console.log(room);
         if (room.is_dm === true) {
             throw new common_1.NotFoundException("Is a DM");
         }
@@ -190,7 +189,6 @@ let PlayerController = class PlayerController {
     }
     async muteMember(login, room_id, request, response) {
         const room = await this.playerService.findRoomById(room_id['id2']);
-        console.log(room);
         if (room.is_dm === true) {
             throw new common_1.NotFoundException("Is a DM");
         }
@@ -226,7 +224,6 @@ let PlayerController = class PlayerController {
     }
     async unmuteMember(nickname, room_id, request, response) {
         const room = await this.playerService.findRoomById(room_id['id2']);
-        console.log(room);
         if (room.is_dm === true) {
             throw new common_1.NotFoundException("Is a DM");
         }
@@ -262,7 +259,6 @@ let PlayerController = class PlayerController {
     }
     async banMember(login, room_id, request, response) {
         const room = await this.playerService.findRoomById(room_id['id2']);
-        console.log(room);
         if (room.is_dm === true) {
             throw new common_1.NotFoundException("Is a DM");
         }
@@ -342,7 +338,6 @@ let PlayerController = class PlayerController {
     }
     async GetRoomById(id_room, request, response) {
         const room = await this.playerService.getRoomById(request.user.id, id_room['id']);
-        console.log("room: \n", room);
         if (room === null) {
             throw new common_1.NotFoundException("No Room exists");
         }
@@ -377,7 +372,6 @@ let PlayerController = class PlayerController {
         response.status(200).send(messages);
     }
     async joinRoom(room_id, request, response) {
-        console.log(room_id['id']);
         const room = await this.playerService.findRoomById(room_id['id']);
         if (room.is_dm === true) {
             throw new common_1.NotFoundException("Cannot join a DM");
@@ -385,11 +379,11 @@ let PlayerController = class PlayerController {
         if (room.is_public === false) {
             throw new common_1.NotFoundException("cannot join a private room");
         }
-        const member = await this.playerService.getPermissions(request.user.id, room_id['id2']);
+        const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
         if (member) {
             throw new common_1.NotFoundException("Already a member");
         }
-        const join = await this.playerService.joinRoom(request.user.id, room_id['id2']);
+        const join = await this.playerService.joinRoom(request.user.id, room_id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
