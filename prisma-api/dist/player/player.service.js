@@ -222,6 +222,7 @@ let PlayerService = class PlayerService {
         });
         return members.all_members.map(member => {
             return {
+                id: member.playerId,
                 nickname: member.player.nickname,
                 avatar: member.player.avatar,
             };

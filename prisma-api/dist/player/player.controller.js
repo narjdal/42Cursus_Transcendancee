@@ -342,6 +342,9 @@ let PlayerController = class PlayerController {
     }
     async GetRoomById(id_room, request, response) {
         const room = await this.playerService.getRoomById(request.user.id, id_room['id']);
+        if (!room) {
+            throw new common_1.NotFoundException("Chat Room Not Found");
+        }
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });

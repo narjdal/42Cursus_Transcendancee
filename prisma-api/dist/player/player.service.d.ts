@@ -21,6 +21,7 @@ export declare class PlayerService {
         avatar: string;
     }[]>;
     getProfilesOfChatRooms(userId: string, room_id: string): Promise<{
+        id: string;
         nickname: string;
         avatar: string;
     }[]>;
