@@ -66,7 +66,11 @@ let ChatGateway = class ChatGateway {
             return;
         }
         this.wss.to(this.roomPrefix + data.roomId).emit("addmsg", {
-            nickname: data.user.nickname,
+            sender: {
+                id: data.user.id,
+                avatar: data.user.avatar,
+                nickname: data.user.nickname
+            },
             message: newMessage
         });
     }

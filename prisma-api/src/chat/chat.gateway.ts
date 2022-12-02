@@ -160,8 +160,13 @@ export class ChatGateway {
 		*/
 		this.wss.to(this.roomPrefix + data.roomId).emit("addmsg", 
 		{
-			nickname: data.user.nickname,
-			message: newMessage}); // event name 
+			sender:{
+				id: data.user.id,
+				avatar: data.user.avatar,
+				nickname: data.user.nickname
+			},
+			message: newMessage // event name 
+		}); 
 	}
 
 	// @SubscribeMessage("message")
