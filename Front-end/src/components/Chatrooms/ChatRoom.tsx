@@ -23,7 +23,7 @@ function ChatRoom() {
     const [haspswd,setHaspsswd] = useState(false)
 
     const [HasPermission,setHasPermissions] = useState(false);
-
+ 
 
 
 async function GetRoomById  ()  {
@@ -128,6 +128,14 @@ async function GetPermissions()
       // console.log("json" + json)
       console.log("The response Of Permissions  is  => " + JSON.stringify(json.data))
       // SetUserAdmin(json);
+      // const RoomPerm = {
+      //   ...json.data,
+      //   ...testRoom
+      // }
+      // setRoom(RoomPerm)
+      // setRoom((prevRoom: any) => [...prevRoom, roomPerm]);
+
+      setRoomPerm(json);
       if(json.data.statusMember == "You are not a member of this room ")
       {
         console.log("ALLL GOOOOD FALSE ")
@@ -135,6 +143,13 @@ async function GetPermissions()
 
         setAllgood(false);
       }
+      if(json.data.is_banned == true || json.data.is_muted == true )
+      {
+        localStorage.setItem("noinput","true");
+        setErrorMessage(" You cnanot send a message in this room. You are either banned or muted ");
+        // setAllgood(false);
+      }
+
       if(json.data.statusMember  == "owner")
       {
         console.log("This is the owner of the room");
@@ -156,7 +171,7 @@ async function GetPermissions()
         // setRoom()
         // var newRoom = {...testRoom};
         setRoomPerm(json);
-      setStatusMember("owner");
+      // setStatusMember("owner");
         SetUserAdmin(true);
       }
       else if(json.data.statusMember == "admin")
@@ -207,15 +222,11 @@ async function Waiit () {
   // await GetPermissions();
 
 }
-useEffect(() => {
-  // if(!isDm)
-  // {
-  //   GetPermissions();
-  // }
 
-},[])
 useEffect (() =>
       {
+        localStorage.setItem("noinput","false");
+        setErrorMessage("");
         const loggeduser = localStorage.getItem("user");
           if(loggeduser)
           {
@@ -256,7 +267,7 @@ useEffect (() =>
               <div className='ChatRoomMessageBox'>
                <h2>{roomNme}</h2>
         {errorMessage && <div className="error"> {errorMessage} </div>}
-            <h2><ChatRoomBox room={testRoom}
+            <h2><ChatRoomBox statusMember={roomPerm}  room={testRoom} 
             /></h2>
 
             {isDm ? (
@@ -268,7 +279,7 @@ useEffect (() =>
                 <ChatRoomButton/>
 {userAdmin ? (
     <div>
-      <AdminChatRoomDashboard room={testRoom} statusMember={roomPerm} />
+      <AdminChatRoomDashboard room={testRoom} statusMember={roomPerm}  />
         </div>
 ) : (
     <div>

@@ -38,7 +38,7 @@ const DisplayChatRoomusers = (props,roomownnership) => {
             setDisplay(true);
         }
     })
-// console.log(" DIsplay ChatRoom Users >>> " + props.user.id)
+console.log(" DIsplay ChatRoom Users >>> " + props.user + " nickname : " , props.user.nickname)
     return (
         <>
 <div className="ChatRoom-HELP"> 
@@ -54,9 +54,9 @@ const DisplayChatRoomusers = (props,roomownnership) => {
    className='avatarsidebar'/>
    </td>
    <td>
-   <Link style={{color:'white'}} to={`/users/${props.user.nickname}`} >
+    <Link style={{color:'white'}} to={`/users/${props.user.nickname}`} > 
    <p> {props.user.nickname} </p>
-    </Link>
+     </Link> 
      </td> 
   <td>
 {isAdmin === "true"  ? (

@@ -15,7 +15,7 @@ import { any } from 'prop-types';
 var socket:any;
 
 //https://codeburst.io/tutorial-how-to-build-a-chat-app-with-react-native-and-backend-9b24d01ea62a
-const ChatRoomBox = (props) => {
+const ChatRoomBox = (props,statusMember) => {
   // localStorage.setItem("members","");
 
   const navigate = useNavigate();
@@ -174,16 +174,7 @@ async function GetMembers ()
           }
           setMembers(json);
           setAllMembers(json);
-        // init_socket(json);
-
-          // if
-          // json.map(async (json) => {
-          //   console.log("MAPPING OVER NICKNAME " + json.nickname)
-          //   if(Current_User.id != json.id)
-          // })
-          // allMembers = json;
           console.log("ALL GET MEMBERS ARE ", json, allMembers);
-          // setMembers(json)
           console.log("Setting the ChatRooms Members ...");
           return json;
         }
@@ -299,55 +290,6 @@ async function FetchRelationshipNarjdal(friendName : string) {
 
 }
 
-
-// async function FetchRelationshipmlabrayj() {
-
-//   const loggeduser = localStorage.getItem("user");
-//   if (loggeduser) {
-//     const current = JSON.parse(loggeduser);
-//     console.log("Fetching Relationship    Infos   => "  +  " I am : " + current.nickname + " This is hard coded waiting for getroombyid ");
-
-//     let endpoint = 'http://localhost:5000/player/statusFriendship/'
-//     // let nicknametofetch: string = JSON.stringify(params.nickname);
-//     // console.log(" this endpoint   " + endpoint + " Fetching : " + nicknametofetch)
-//     http://localhost:5000/statusFriendship/?id=narjdal
-
-//     console.log('ALL MEMBERS ARE', allMembers);
-    
-//     allMembers.map(async (member) => {
-//       // if (member.id != current.id)
-//       await fetch (endpoint + member.nickname, {
-//         // mode:'no-cors',
-//         method: 'get',
-//         credentials: "include"
-//       })
-
-//       .then((response) => response.json())
-//         .then(json => {
-//           console.log("The Realtionship is => " + JSON.stringify(json))
-//           setErrorMessage("");
-//           if (json == "blockFriend") {
-//             setShowInput(true);
-//           }
-//           else {
-//             // setShowInput(true);
-//             console.log(" NO INPUT TO SHOW SORRY ")
-//             setShowInput(false);
-//             setErrorMessage("You are not friend with this user  \n You can't send him a message ! ")
-//           }
-//           return json;
-//         })
-//         .catch((error) => {
-//           console.log("An error occured : " + error)
-//           // setRelation("error");
-//           setErrorMessage("An error occured! Relationship not found ! ");
-//           return error;
-//         })
-//     })
-
-//   }
-
-// }
 async function init_socket()
 {
   // if(allMembers)
@@ -389,7 +331,9 @@ await GetMembers()
   console.log("OLD Messages : ", messages, 'NEW', msgObj);
 
     // append new message to messages using previous state
-
+    // console.log(" DATA MESSAGE : ",data.message)
+  // if(data.message)
+  if(props.room.id  == data.message.roomId)
     setMessages((prevMessages: any) => [...prevMessages, msgObj]);
 
   // setMessages([...messages, msgObj]);
@@ -399,31 +343,12 @@ await GetMembers()
 // }
 }
 
-useEffect(() => {
-
-  if(allMembers)
-  {
-
-  }
-  // init_socket();
-//   if(props.room.is_dm)
-
-// {
-
-// }
-  
-  // localStorage.setItem("members",JSON.stringify(json));
-},[allMembers])
   useEffect (() => {
 
     
       console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name )
-
-      // GetMembers().then((res) => {
-
-      //   console.log('AFTER WAITING', allMembers);
-      //     // init_socket();
-      // })
+      console.log("CHATROOMBOX ROOM PERM : " + statusMember.data + " muted : " , props.statusMember.data)
+   
         if (props.room.is_dm) 
         {
 
@@ -452,72 +377,23 @@ useEffect(() => {
 
 
             }
-          // setShowInput(true);
-
         }
         else
         {
-          //   setShowInput(true);
-          setShowInput(true);
+         
         }
+        
         init_socket();
         GetMessageHistory();
       
-      // HERE request to backend to fetch users of the room
-    /*if (!props.room.is_dm) {
-      console.log("Fethcing members of this chatroom.");
-      GetMembers();
-      setShowInput(true);
-    }
-    else */
-    // console.log("Members of the room : " + JSON.stringify(chatroomUsers));
-
-
-    // socket INIT
-  
-    
-
-    // EVENT LISTENER : NEW MESSAGE
 
   }, []);
-        // HERE request to backend to fetch users of the room
-        // if(!props.room.is_dm)
-        // {
-        //   console.log("Fethcing members of this chatroom.");
-        //   GetMembers();
-        //   setShowInput(true);
-        // }
-        // else if (props.room.is_dm)
-        // {
-        //   const loggedUser = localStorage.getItem("user");
-        //   if(loggedUser)
-        //   {
-        //     const current = JSON.parse(loggedUser);
-        //     if(current.id == props.room.all_members[0].player.id)
-        //     {
-        //   console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[1].player.nickname);
-        //       // setFriendName(props.room.all_members[1].player.nickname)
-        //  FetchRelationshipNarjdal(props.room.all_members[1].player.nickname);
-
-        //     }
-        //     else
-        //     {
-        //   console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[0].player.nickname);
-        //       // setFriendName(props.room.all_members[0].player.nickname)
-        //  FetchRelationshipNarjdal(props.room.all_members[0].player.nickname);
-          
-        //     }
-        //   }
-        //   console.log("Fethcing Relationship of this chatroom.");
-        //   // const filtered = props.room.all_nmebers(player => {
-        //   //   return player.id !== 
-        //   // })
-        // }
-      
-        // GetMessageHistory();
-        // console.log("Members of the room : " + JSON.stringify(chatroomUsers));
-    
-// },[]);
+  useEffect(() => {
+    if(localStorage.getItem("noinput") == "true")
+    setShowInput(false);
+    else
+    setShowInput(true);
+  },[localStorage.getItem("noinput")])
 
 const SendMessage = (e) => {
   e.preventDefault();
@@ -537,7 +413,7 @@ const SendMessage = (e) => {
  
   }, 2000);
   socket.emit("newmessage", {user: Current_User, msgTxt: inputMsg, room: props.room.id});
-
+  SetInputMsg("");
 }
 
 async function LeaveRoom () {

@@ -4,7 +4,7 @@ import './AdminChatRoomDashboard.css'
 import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import person from '../users/users.json'
 
-const AdminChatRoomDashboard = (props,statusMember) => {
+const AdminChatRoomDashboard = (props) => {
   const[roomUsers,setRoomUsers] = useState <any >([]);
 const [username, setUsername] = useState("");
 const [errorMessage, setErrorMessage] = useState("");
@@ -19,6 +19,7 @@ const [ispublic,setisPublic] = useState(false);
 const [Roompassword,setRoompassword] = useState("");
 const [isUpdating, setIsUpdating] = useState(false);
 const [Updated, setisUpdated] = useState(false);
+const [MembersAdmin,setMembersAdmin] = useState <any>([]);
 const [members,setMembers] = useState<any>([]);
 const HandleAddUserAdmin = () => {
 
@@ -154,6 +155,10 @@ await fetch(text,{
 .then(json => {
   console.log("The response is => " + JSON.stringify(json))
 // 
+if(json.statusCode =="404")
+{
+  setErrorMessage(json.message)
+}
 if(json.statusCode == "500")
 {
   setErrorMessage("An error occured in the backend.");
@@ -176,7 +181,10 @@ if(json.statusCode == "500")
     {
       BanUserFromRoom();
     }
-    setErrorMessage("An error occured !");
+    else
+    {
+      setErrorMessage("Please enter a valid username.")
+    }
   }
   const HandleRoomPublic = (e) => {
     e.preventDefault();
@@ -201,15 +209,16 @@ const HandleRoomPrivate = (e) => {
     {
       const current = JSON.parse(loggedUser);
        const {id} = current;
-      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "Member Status  : " + JSON.stringify(props.statusMember.data.statusMember));
+      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "Member Status  : " , props.statusMember.data.statusMember);
       // // In JS == Ignores the Data Types 
+      // setMembers(props.room.all_members);
+      setMembersAdmin(props.room.all_members);
     const getMembers = localStorage.getItem("members");
       if(getMembers)
       {
         const ParsedMembers = JSON.parse(getMembers);
-        console.log("THE GET MEMBERS IS " + getMembers +  " PARSED : " ,ParsedMembers);
+        console.log("THE GET MEMBERS IS " + getMembers +  " PARSED : "  + ParsedMembers.nickname);
 
-        setMembers(ParsedMembers);
         // localStorage.setItem("members","");
       }
       // // === Check condition + data types then true 
@@ -276,6 +285,11 @@ const HandleRoomPrivate = (e) => {
     }, 2000);
   }
   }
+  const FilteredUsers = MembersAdmin.filter(friends => {
+    // Here A changer : person with friends from backend , 
+    //filter nickname not name 
+     return friends.player.nickname.toLowerCase().includes(username.toLowerCase());
+  })
     return (
         <div className='ChatRoomAdminDash-container'>
         <input
@@ -287,15 +301,15 @@ const HandleRoomPrivate = (e) => {
         />
         {errorMessage && <div className="error"> {errorMessage} </div>}
 
-        {username ? (
+        {/* {username ? (
             <>
-{members.map(c => < DisplayChatRoomusers key = {c.id} user = {c} />)}
+{FilteredUsers.map(c => < DisplayChatRoomusers key = {c} user = {c} />)}
 
             </>
         )  : (
             <>
             </>
-        )}
+        )} */}
 
 
       <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleBanUser}>
