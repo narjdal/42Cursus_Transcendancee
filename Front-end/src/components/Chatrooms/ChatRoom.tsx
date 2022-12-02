@@ -98,7 +98,7 @@ async function GetRoomById  ()  {
      
   })
   .catch((error) => {
-      console.log("An error occured  while fetching the friendship status .: " + error)
+      console.log("An error occured  while fetching the GetRoomById  : " + error)
       return error;
   })
 

@@ -206,10 +206,11 @@ const HandleRoomPrivate = (e) => {
     const getMembers = localStorage.getItem("members");
       if(getMembers)
       {
-        console.log("THE GET MEMBERS IS " + getMembers);
         const ParsedMembers = JSON.parse(getMembers);
+        console.log("THE GET MEMBERS IS " + getMembers +  " PARSED : " ,ParsedMembers);
+
         setMembers(ParsedMembers);
-        localStorage.setItem("members","");
+        // localStorage.setItem("members","");
       }
       // // === Check condition + data types then true 
       if(props.statusMember.data.statusMember == "owner")
@@ -288,7 +289,7 @@ const HandleRoomPrivate = (e) => {
 
         {username ? (
             <>
-{members.map(c => < DisplayChatRoomusers key = {c.nickname} user = {c} />)}
+{members.map(c => < DisplayChatRoomusers key = {c.id} user = {c} />)}
 
             </>
         )  : (

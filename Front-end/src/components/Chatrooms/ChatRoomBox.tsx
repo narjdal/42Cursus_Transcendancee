@@ -171,11 +171,10 @@ async function GetMembers ()
           else
           {
           localStorage.setItem("members",JSON.stringify(json));
-
           }
           setMembers(json);
           setAllMembers(json);
-        init_socket(json);
+        // init_socket(json);
 
           // if
           // json.map(async (json) => {
@@ -349,10 +348,12 @@ async function FetchRelationshipNarjdal(friendName : string) {
 //   }
 
 // }
-async function init_socket(RoomMembers : any)
+async function init_socket()
 {
   // if(allMembers)
   // {
+await GetMembers()
+.then((resp) => {
 
   socket = io("http://localhost:5000/chat");
   socket.emit('joinroom', { room: props.room.id, user: JSON.parse(localStorage.getItem("user")!) });
@@ -367,24 +368,24 @@ async function init_socket(RoomMembers : any)
     createdAt   Time
   }
   */
-//  const NewMembers = JSON.parse(localStorage.getItem("members")!);
-  console.log("ALL MEMBERS : ", allMembers);
-  let srch = RoomMembers.filter((m: any) => {
-    console.log("m.id : " + m.id + " data.senderId : " + data.message.senderId, data);
-    return m.id === data.message.senderId
-  })[0]
+ const NewMembers = JSON.parse(localStorage.getItem("members")!);
+  console.log("ALL MEMBERS : ", NewMembers);
+  // let srch = NewMembers.filter((m: any) => {
+  //   console.log("m.id : " + m.id + " data.senderId : " + data.message.senderId, data);
+  //   return m.id === data.message.senderId
+  // })[0]
   // if(!srch)
   // srch = JSON.parse(localStorage.getItem("user")!);
   //  console.log("SEARCH RESULT: ", srch);
   
   const msgObj = {
     id: data.message.id ,
-    sender: srch ? srch : JSON.parse(localStorage.getItem("user")!),
+    sender:  data.sender,
     senderId: data.message.senderId,
     msg: data.message.msg,
     createdAt: data.message.createdAt,
   }
-  console.log("SRCH IS " ,srch);
+  // console.log("SRCH IS " ,srch);
   console.log("OLD Messages : ", messages, 'NEW', msgObj);
 
     // append new message to messages using previous state
@@ -394,6 +395,7 @@ async function init_socket(RoomMembers : any)
   // setMessages([...messages, msgObj]);
 
   });
+})
 // }
 }
 
@@ -447,7 +449,6 @@ useEffect(() => {
            FetchRelationshipNarjdal(props.room.all_members[0].player.nickname);
               }
             }
-          GetMembers();
 
 
             }
@@ -456,11 +457,10 @@ useEffect(() => {
         }
         else
         {
-          GetMembers();
           //   setShowInput(true);
           setShowInput(true);
         }
-
+        init_socket();
         GetMessageHistory();
       
       // HERE request to backend to fetch users of the room
