@@ -647,11 +647,7 @@ export class PlayerController {
     @Get('/GetRoomById/:id')
     async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("-------------- Get Room By Id --------------");
-        const room = await this.playerService.getRoomById(request.user.id,id_room['id']);
-        if (!room)
-        {
-            throw new NotFoundException("Chat Room Not Found");
-        }
+        const room = await this.playerService.findRoomById(id_room['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }

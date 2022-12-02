@@ -19,7 +19,6 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async findORcreate(data) {
-        console.log(data);
         const player = await this.prisma.player.findUnique({
             where: { email: data.email },
         });
