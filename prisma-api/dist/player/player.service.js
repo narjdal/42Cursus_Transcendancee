@@ -124,6 +124,7 @@ let PlayerService = class PlayerService {
                 name: room.name,
                 is_dm: room.is_dm,
                 is_public: room.is_public,
+                is_private: room.is_private,
                 is_protected: room.is_protected,
             };
         });
@@ -437,7 +438,7 @@ let PlayerService = class PlayerService {
             where: { nickname: friendname }
         });
         if (!receiver) {
-            throw new common_1.NotFoundException("Receiver not found");
+            throw new common_1.NotFoundException("Nickname not found");
         }
         const friends = await this.prisma.friendship.create({
             data: {
@@ -453,7 +454,7 @@ let PlayerService = class PlayerService {
             where: { nickname: friendname },
         });
         if (!howa) {
-            throw new common_1.NotFoundException("Receiver not found");
+            throw new common_1.NotFoundException("Nickname not found");
         }
         const ad = await this.prisma.friendship.findUnique({
             where: {
@@ -484,7 +485,7 @@ let PlayerService = class PlayerService {
             where: { nickname: friendname },
         });
         if (!howa) {
-            throw new common_1.NotFoundException("Receiver not found");
+            throw new common_1.NotFoundException("Profile not found");
         }
         const friendship = await this.prisma.friendship.updateMany({
             where: {
@@ -512,7 +513,7 @@ let PlayerService = class PlayerService {
             where: { nickname: friendname },
         });
         if (!howa) {
-            throw new common_1.NotFoundException("Receiver not found");
+            throw new common_1.NotFoundException("Profile not found");
         }
         const friendship = await this.prisma.friendship.delete({
             where: {
@@ -529,7 +530,7 @@ let PlayerService = class PlayerService {
             where: { nickname: friendname },
         });
         if (!howa) {
-            throw new common_1.NotFoundException("Receiver not found");
+            throw new common_1.NotFoundException("Profile not found");
         }
         const friendship = await this.prisma.friendship.delete({
             where: {
@@ -549,6 +550,7 @@ let PlayerService = class PlayerService {
                 name: true,
                 is_dm: true,
                 is_public: true,
+                is_private: true,
                 is_protected: true,
                 all_members: {
                     select: {
@@ -569,6 +571,7 @@ let PlayerService = class PlayerService {
         const room = await this.prisma.chatRoom.create({
             data: {
                 is_dm: false,
+                is_public: true,
                 name: nameOfRoom,
                 all_members: {
                     create: [
@@ -589,7 +592,7 @@ let PlayerService = class PlayerService {
         const room = await this.prisma.chatRoom.create({
             data: {
                 is_dm: false,
-                is_public: false,
+                is_private: true,
                 name: nameOfRoom,
                 all_members: {
                     create: [
@@ -611,7 +614,6 @@ let PlayerService = class PlayerService {
             data: {
                 is_dm: false,
                 name: nameOfRoom,
-                is_public: false,
                 is_protected: true,
                 password: setpassword,
                 all_members: {
@@ -843,7 +845,7 @@ let PlayerService = class PlayerService {
         return permission;
     }
     async setAdmin(login, room_id) {
-        const palyer = await this.findPlayerById(login);
+        const palyer = await this.findPlayerByNickname(login);
         const room = await this.prisma.permission.updateMany({
             where: {
                 AND: [

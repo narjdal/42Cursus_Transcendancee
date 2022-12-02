@@ -13,7 +13,7 @@ export declare class PlayerController {
     GetListOfFriends(request: any, response: any): Promise<void>;
     GetListOfMembers(id_room: string, request: any, response: any): Promise<void>;
     GetListOfAddFriends(id_room: string, request: any, response: any): Promise<void>;
-    addMember(login: string, room: string, request: any, response: any): Promise<void>;
+    addMember(login: string, room_id: string, request: any, response: any): Promise<void>;
     GetListOfSetAdmin(id_room: string, request: any, response: any): Promise<void>;
     setAdmin(login: string, room_id: string, request: any, response: any): Promise<void>;
     GetListOfMembersToMute(id_room: string, request: any, response: any): Promise<void>;

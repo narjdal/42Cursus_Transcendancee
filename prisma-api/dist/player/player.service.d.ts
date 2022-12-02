@@ -11,6 +11,7 @@ export declare class PlayerService {
         name: string;
         is_dm: boolean;
         is_public: boolean;
+        is_private: boolean;
         is_protected: boolean;
     }[]>;
     getFriendshipStatus(userId: string, login: string): Promise<import(".prisma/client").Friendship>;
@@ -49,6 +50,7 @@ export declare class PlayerService {
         }[];
         is_public: boolean;
         name: string;
+        is_private: boolean;
         is_protected: boolean;
     }>;
     createPublicChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
@@ -80,7 +82,7 @@ export declare class PlayerService {
     setAdmin(login: string, room_id: string): Promise<void>;
     banMember(login: string, room_id: string): Promise<void>;
     kickMember(login: string, room_id: string): Promise<void>;
-    muteMember(login: any, room_id: string): Promise<void>;
+    muteMember(login: string, room_id: string): Promise<void>;
     unmuteMember(login: string, room_id: string): Promise<void>;
     leaveChannel(userId: string, room_id: string): Promise<void>;
 }

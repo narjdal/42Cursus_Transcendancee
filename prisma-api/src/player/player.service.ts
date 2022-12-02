@@ -149,6 +149,7 @@ export class PlayerService {
                 name: room.name,
                 is_dm: room.is_dm,
                 is_public: room.is_public,
+                is_private: room.is_private,
                 is_protected: room.is_protected,
             }
         })
@@ -544,7 +545,7 @@ export class PlayerService {
             where: { nickname: friendname }
         });
         if (!receiver) {
-            throw new NotFoundException("Receiver not found");
+            throw new NotFoundException("Nickname not found");
         }
 
         // 2- Send FriendShip Request
@@ -565,7 +566,7 @@ export class PlayerService {
             where: { nickname: friendname },
         });
         if (!howa) {
-            throw new NotFoundException("Receiver not found");
+            throw new NotFoundException("Nickname not found");
         }
         const ad = await this.prisma.friendship.findUnique({
             where: {
@@ -604,7 +605,7 @@ export class PlayerService {
             where: { nickname: friendname },
         });
         if (!howa) {
-            throw new NotFoundException("Receiver not found");
+            throw new NotFoundException("Profile not found");
         }
 
         // awal haja an howwa sender w ana receiver
@@ -641,7 +642,7 @@ export class PlayerService {
             where: { nickname: friendname },
         });
         if (!howa) {
-            throw new NotFoundException("Receiver not found");
+            throw new NotFoundException("Profile not found");
         }
 
         const friendship = await this.prisma.friendship.delete({
@@ -663,7 +664,7 @@ export class PlayerService {
             where: { nickname: friendname },
         });
         if (!howa) {
-            throw new NotFoundException("Receiver not found");
+            throw new NotFoundException("Profile not found");
         }
 
         const friendship = await this.prisma.friendship.delete({
@@ -691,6 +692,7 @@ export class PlayerService {
                 name: true,
                 is_dm: true,
                 is_public: true,
+                is_private: true,
                 is_protected : true,
                 all_members: {
                     select: {
@@ -723,6 +725,7 @@ export class PlayerService {
             data:
             {
                 is_dm: false,
+                is_public: true,
                 name: nameOfRoom,
 
                 all_members: {
@@ -758,8 +761,7 @@ export class PlayerService {
             data:
             {
                 is_dm: false,
-                is_public: false,
-                // is_private:
+                is_private: true,
                 name: nameOfRoom,
 
                 all_members: {
@@ -795,7 +797,6 @@ export class PlayerService {
             {
                 is_dm: false,
                 name: nameOfRoom,
-                is_public: false,
                 is_protected: true,
                 password: setpassword,
 
@@ -1111,7 +1112,7 @@ export class PlayerService {
     // 5- set member as admin if u are admin or owner
 
     async setAdmin(login: string, room_id: string) {
-        const palyer = await this.findPlayerById(login);
+        const palyer = await this.findPlayerByNickname(login);
 
         const room = await this.prisma.permission.updateMany({
             where: {
@@ -1164,7 +1165,7 @@ export class PlayerService {
     }
     // 7- mute OR umute member if u are admin or owner
 
-    async muteMember(login: any, room_id: string/*, fix_date: Date*/) {
+    async muteMember(login: string, room_id: string/*, fix_date: Date*/) {
         const palyer = await this.findPlayerById(login);
 
         const room = await this.prisma.permission.updateMany({

@@ -35,7 +35,8 @@ model ChatRoom {
     createdAt    DateTime     @default(now())
     is_dm        Boolean      @default(true) // type ==> enum [DM, ROOM]
     name         String?
-    is_public    Boolean      @default(true)
+    is_public    Boolean      @default(false)
+    is_private Boolean      @default(false)
     is_protected Boolean      @default(false)
     password     String?
     all_members  Permission[] @relation("PermissionOfmember")

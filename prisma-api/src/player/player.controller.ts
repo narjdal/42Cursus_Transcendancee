@@ -98,6 +98,7 @@ export class PlayerController {
     @Get('/requestFriendship/:id') // check if nickname exist
     async RequestFriendship(@Param() login: string, @Req() request, @Res() response) {
         // console.log("-------------- Request Friendship ----------------");
+
         const friend = await this.playerService.createFriendship(request.user.id, login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -118,10 +119,12 @@ export class PlayerController {
         const friend = await this.playerService.acceptFriendship(request.user.id, login['id']);
         // 2- Check if their is a room chat between them
         const room  = await this.playerService.getRoomBetweenTwoPlayers(request.user.id, login['id']);
-        if (room === null) {
-        // 3- if not create a room chat between them
+        if (room === null)
+        {
+            // 2.1- if not create a room chat between them
             await this.playerService.createDMRoom(request.user.id, login['id']);
         }
+
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
@@ -197,8 +200,16 @@ export class PlayerController {
 
         // 1- check if room_id exists
         const room = await this.playerService.findRoomById(id_room['id']);
-
-        // 2- Get list of members of this room, and check if I am member of this room
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true) {
+            throw new NotFoundException("Is a DM");
+        }
+        // 3- check if the user is in the room
+        const permision = await this.playerService.getPermissions(request.user.id, id_room['id']);
+        if (permision === null) {
+            throw new NotFoundException("You are not in this room");
+        }
+        // 4- Get list of members of this room, and check if I am member of this room
         const friends = await this.playerService.getProfilesOfChatRooms(request.user.id, id_room['id']);
 
         response.set({
@@ -215,7 +226,16 @@ export class PlayerController {
 
         // 1- check if room_id exists
         const room = await this.playerService.findRoomById(id_room['id']);
-        // 2- Get list of members to add in this room, and check if I am member of this room
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true) {
+            throw new NotFoundException("Is a DM");
+        }
+        // 3- check if the user is in the room
+        const permision = await this.playerService.getPermissions(request.user.id, id_room['id']);
+        if (permision === null) {
+            throw new NotFoundException("You are not in this room");
+        }
+        // 4- Get list of members to add in this room, and check if I am member of this room
         const friends = await this.playerService.getListOfFriendsToAddinThisRoom(request.user.id, id_room['id']); /// PRRRRRRR
 
 
@@ -229,34 +249,30 @@ export class PlayerController {
 
     // //endpoint for setting a member as admin
     @Get('/addMember/:id1/:id2')
-    async addMember(@Param() login: string, @Param() room: string ,@Req() request, @Res() response) {
+    async addMember(@Param() login: string, @Param() room_id: string ,@Req() request, @Res() response) {
         // console.log("------------------ Add Member ------------------");
 
-        // // 1- check if room_id exists
-        // const room = await this.playerService.findRoomById(room_id['id2']);
-        // console.log(room)
-        // // 2- check if room_id is not a dm
-        // if(room.is_dm === true)
-        // {
-        //     throw new NotFoundException("Is a DM");
-        // }
-        // // 3- check if nickname is not a member of room_id already
-        // const member = await this.playerService.findPlayerByNickname(login['id1']);
-        // const status = await this.playerService.getPermissions(member.id, room_id['id2']);
-        // if(status !== null){
-        //     throw new NotFoundException("You are already a member of this room");
-        // }
-        // //4- check if user status permission is an owner or admin
-        // const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
-        // if(admin === null){
-        //     throw new NotFoundException("You are not a member of this room");
-        // }
-        // check if room_id exists
-
-        // check if room_id is not a dm
-        // check if nickname is not a member of room_id already
-        // check if user status permission is an owner or admin
-        const admin = await this.playerService.addMember(login['id1'], room['id2']);
+        // 1- check if room_id exists
+        const room = await this.playerService.findRoomById(room_id['id2']);
+        console.log(room)
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true)
+        {
+            throw new NotFoundException("Is a DM");
+        }
+        // 3- check if nickname is not a member of room_id already
+        const member = await this.playerService.findPlayerByNickname(login['id1']);
+        const status = await this.playerService.getPermissions(member.id, room_id['id2']);
+        if(status !== null){
+            throw new NotFoundException("You are already a member of this room");
+        }
+        // 4- check if user status permission is an owner or admin
+        const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
+        if(admin === null){
+            throw new NotFoundException("You are not a member of this room");
+        }
+        // 5- add member to room
+        await this.playerService.addMember(login['id1'], room_id['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -272,10 +288,20 @@ export class PlayerController {
     async GetListOfSetAdmin(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("-------------- List of Friends to Set Admin ----------------");
 
-        // 1- check if id_room exists
+        // 1- check if id_room exists and is not a DM
         const room = await this.playerService.findRoomById(id_room['id']);
+        if(room.is_dm === true)
+        {
+            throw new NotFoundException("Is a DM");
+        }
         // 2- check permission of user is owner or admin
-
+        const permission = await this.playerService.getPermissions(request.user.id, id_room['id']);
+        if (permission === null) {
+            throw new NotFoundException("You are not a member of this room");
+        }
+        if (permission.statusMember === "member") {
+            throw new NotFoundException("You are not an admin or owner of this room");
+        }
         // 3- Get list of members to add in this room, and check if I am member of this room
         const friends = await this.playerService.getListOfFriendsToUpgradeAdmininThisRoom(request.user.id, id_room['id']);    
 
@@ -293,33 +319,31 @@ export class PlayerController {
         // console.log("---------------- Set Admin ----------------");
 
 
-        // 1- check if room_id exists
+        // 1- check if room_id exists and is not a DM
         const room = await this.playerService.findRoomById(room_id['id2']);
-        // console.log(room)
-        // 2- check if room_id is not a dm
         if(room.is_dm === true)
         {
             throw new NotFoundException("Is a DM");
         }
-        // 3- check if login is member of this room
+        // 2- check if login is member of this room
         const member = await this.playerService.findPlayerByNickname(login['id1']);
         const status = await this.playerService.getPermissions(member.id, room_id['id2']);
         if(status === null){
             throw new NotFoundException("You are not a member of this room");
         }
-        //4- check if nickname is a status in room_id with status member And Muted
+        // 3- check if login status in room is member and NOT Muted
         if (status.statusMember !== "member" || status.is_banned === true || status.is_muted === true)
         {
             throw new NotFoundException("Cannot set this player as Admin");
         }
-        //5- check if user status permission is an owner or admin
+        // 4- check if user status permission is an owner or admin
         const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
         if(admin === null){
             throw new NotFoundException("You are not a member of this room");
         }
         if (admin.statusMember !== "admin" && admin.statusMember !== "owner")
         {
-            throw new NotFoundException("You cannot ban this player");
+            throw new NotFoundException("You cannot set this player as Admin");
         }
     
         const result = await this.playerService.setAdmin(login['id1'], room_id['id2']);
@@ -335,7 +359,19 @@ export class PlayerController {
     @Get('/listToMute/:id') // check if id room exists
     async GetListOfMembersToMute(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("-------------- List to Mute ----------------");
-        // check if id_room exist
+        
+        // 1- check if room_id exists
+        const room = await this.playerService.findRoomById(id_room['id']);
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true) {
+            throw new NotFoundException("Is a DM");
+        }
+        // 3- check if the user is in the room
+        const permision = await this.playerService.getPermissions(request.user.id, id_room['id']);
+        if (permision === null) {
+            throw new NotFoundException("You are not in this room");
+        }
+        // 3- get list of members to mute
         const friends = await this.playerService.getListOfFriendsToMuteinThisRoom(request.user.id, id_room['id']);    
 
         response.set({
@@ -395,8 +431,27 @@ export class PlayerController {
     @Get('/listOfUnmute/:id') // check if room exists
     async GetListOfMembersToUnmute(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("---------------List to Unmute ----------------");
-        // check if id_room exist
-        // check permission of user admin or owner
+        // 1- check if room_id exists
+        const room = await this.playerService.findRoomById(id_room['id']);
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true) {
+            throw new NotFoundException("Is a DM");
+        }
+        // 3- check if the user is in the room
+        const permision = await this.playerService.getPermissions(request.user.id, id_room['id']);
+        if (permision === null) {
+            throw new NotFoundException("You are not in this room");
+        }
+        // 4- check permission of user admin or owner
+        const admin = await this.playerService.getPermissions(request.user.id, id_room['id']);
+        if(admin === null){
+            throw new NotFoundException("You are not a member of this room");
+        }
+        if (admin.statusMember !== "admin" && admin.statusMember !== "owner")
+        {
+           throw new NotFoundException("You cannot unmute this player");
+        }
+        // 5- get list of members to mute
         const friends = await this.playerService.getListOfFriendsToUnmuteinThisRoom(request.user.id, id_room['id']);    
 
         response.set({
@@ -412,34 +467,32 @@ export class PlayerController {
         // console.log("Mute Member");
 
         // 1- check if room_id exists
-       const room = await this.playerService.findRoomById(room_id['id2']);
-    //    console.log(room)
-       // 2- check if room_id is not a dm
-       if(room.is_dm === true)
-       {
+        const room = await this.playerService.findRoomById(room_id['id2']);
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true)
+        {
            throw new NotFoundException("Is a DM");
-       }
-       // 3- check if login is member of this room
+        }
+        // 3- check if login is member of this room
         const member = await this.playerService.findPlayerByNickname(nickname['id1']);
-       const status = await this.playerService.getPermissions(member.id, room_id['id2']);
-       if(status === null){
+        const status = await this.playerService.getPermissions(member.id, room_id['id2']);
+        if(status === null){
             throw new NotFoundException("You are not a member of this room");
         }
-       //4- check if nickname is a status in room_id with status member And Muted
-       if (status.statusMember !== "member" || status.is_muted === false)
-       {
+        // 4- check if nickname is a status in room_id with status member And Muted
+        if (status.statusMember !== "member" || status.is_muted === false)
+        {
            throw new NotFoundException("Cannot unmute this player");
-       }
-       //5- check if user status permission is an owner or admin
-       const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
+        }
+        //5- check if user status permission is an owner or admin
+        const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
         if(admin === null){
             throw new NotFoundException("You are not a member of this room");
         }
-       if (admin.statusMember !== "admin" && admin.statusMember !== "owner")
-       {
+        if (admin.statusMember !== "admin" && admin.statusMember !== "owner")
+        {
            throw new NotFoundException("You cannot unmute this player");
-       }
-        
+        }
         //6- unmute member
         const mute = await this.playerService.unmuteMember(nickname['id1'], room_id['id2']);
         response.set({
@@ -454,8 +507,27 @@ export class PlayerController {
     @Get('/listToBan/:id') // check if room exists
     async GetListOfMembersToBan(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("---------------List To Ban -----------------");
-        // check if id_room exist
-        // check permission of user admin or owner
+        // 1- check if room_id exists
+        const room = await this.playerService.findRoomById(id_room['id']);
+        // 2- check if room_id is not a dm
+        if(room.is_dm === true) {
+            throw new NotFoundException("Is a DM");
+        }
+        // 3- check if the user is in the room
+        const permision = await this.playerService.getPermissions(request.user.id, id_room['id']);
+        if (permision === null) {
+            throw new NotFoundException("You are not in this room");
+        }
+        // 4- check permission of user admin or owner
+        const admin = await this.playerService.getPermissions(request.user.id, id_room['id']);
+        if(admin === null){
+            throw new NotFoundException("You are not a member of this room");
+        }
+        if (admin.statusMember !== "admin" && admin.statusMember !== "owner")
+        {
+           throw new NotFoundException("You cannot unmute this player");
+        }
+        // 5- get list of members to ban
         const friends = await this.playerService.getListOfFriendsToBaninThisRoom(request.user.id, id_room['id']);    
 
         response.set({
@@ -473,7 +545,6 @@ export class PlayerController {
 
        // 1- check if room_id exists
        const room = await this.playerService.findRoomById(room_id['id2']);
-    //    console.log(room)
        // 2- check if room_id is not a dm
        if(room.is_dm === true)
        {
@@ -554,7 +625,7 @@ export class PlayerController {
        {
            throw new NotFoundException("It's a DM");
        }
-       // 3- check if user is member of this room
+    //    // 3- check if user is member of this room
     //    const member = await this.playerService.getPermissions(request.user.id, room_id['id2']);
     //    //4- check if nickname is a status in room_id with status member And Muted
     //    if (member.statusMember !== "member")
@@ -585,7 +656,7 @@ export class PlayerController {
         // console.log("------------------- Get Permission-------------------");
         const permission = await this.playerService.getPermissions(request.user.id, id_room['id']);
         if (permission == null) {
-            throw new NotFoundException("You are not a member of this room");
+            throw new NotFoundException("Permission denied, you are not a member of this room");
         }
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -647,8 +718,18 @@ export class PlayerController {
     @Get('/GetRoomById/:id')
     async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("-------------- Get Room By Id --------------");
+
+        // 1- check if this room exists
         const room = await this.playerService.getRoomById(request.user.id, id_room['id']);
         // console.log("room: \n", room);
+        
+        // 2- check if this user is a member of this room
+        const permision = await this.playerService.getPermissions(request.user.id, id_room['id']);
+        if(!permision)
+        {
+            throw new NotFoundException("You can not a get infos of this room bcuz you are not member");
+        }
+
         if(room === null)
         {
             throw new NotFoundException("No Room exists");
@@ -691,20 +772,20 @@ export class PlayerController {
     async getMessages(@Param() room_id: string, @Req() request, @Res() response) {
         // console.log("----------------------- Get Messages -----------------------", room_id['id']);
 
+        // 1- check if room_id exists
         const room = await this.playerService.findRoomById(room_id['id']);
         if(!room)
         {
             throw new NotFoundException("Room not found");
         }
-
-        //check if user is member of this room
-        // const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
-        // if(!member)
+        // 2-check if user is member of this room, I aleardy check it in the service getMessagesOfRoom
+        // const permision = await this.playerService.getPermissions(request.user.id, room_id['id']);
+        // if(!permision)
         // {
-        //     throw new NotFoundException("User not found");
+        //     throw new NotFoundException("You can not a get a msgs of this room bcuz you are not member");
         // }
 
-
+        // 3- get messages
         const messages = await this.playerService.getMessagesOfRoom(request.user.id, room_id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -744,16 +825,16 @@ export class PlayerController {
         // 1- check if room_id exists
         const room = await this.playerService.findRoomById(room_id['id']);
         
-        // 2- check if room_id is not a dm
+        // 2- check if The Room is not a dm
         if(room.is_dm === true)
         {
             throw new NotFoundException("Cannot join a DM");
         }
+        // 3- check if room is public
         if(room.is_public === false)
         {
             throw new NotFoundException("cannot join a private room");
         }
-
         // 3- check if user is member of this room
         const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
         // console.log("member: ", member);
