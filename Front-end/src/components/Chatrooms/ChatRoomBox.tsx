@@ -164,9 +164,20 @@ async function GetMembers ()
         else
         {
           setAllgood(true);
+          if(!json.nickname)
+          {
+            localStorage.setItem("members",JSON.stringify(Current_User));
+          }
+          else
+          {
           localStorage.setItem("members",JSON.stringify(json));
+
+          }
           setMembers(json);
           setAllMembers(json);
+        init_socket(json);
+
+          // if
           // json.map(async (json) => {
           //   console.log("MAPPING OVER NICKNAME " + json.nickname)
           //   if(Current_User.id != json.id)
@@ -338,7 +349,7 @@ async function FetchRelationshipNarjdal(friendName : string) {
 //   }
 
 // }
-async function init_socket()
+async function init_socket(RoomMembers : any)
 {
   // if(allMembers)
   // {
@@ -356,23 +367,24 @@ async function init_socket()
     createdAt   Time
   }
   */
- const NewMembers = JSON.parse(localStorage.getItem("members")!);
-  console.log("ALL MEMBERS : ", NewMembers);
-  let srch = NewMembers.filter((m: any) => {
-    console.log("m.id : " + m.nickname + " data.senderId : " + data.nickname, data);
-    return m.nickname === data.nickname
+//  const NewMembers = JSON.parse(localStorage.getItem("members")!);
+  console.log("ALL MEMBERS : ", allMembers);
+  let srch = RoomMembers.filter((m: any) => {
+    console.log("m.id : " + m.id + " data.senderId : " + data.message.senderId, data);
+    return m.id === data.message.senderId
   })[0]
-  if(!srch)
-  srch = JSON.parse(localStorage.getItem("user")!);
-   console.log("SEARCH RESULT: ", srch);
+  // if(!srch)
+  // srch = JSON.parse(localStorage.getItem("user")!);
+  //  console.log("SEARCH RESULT: ", srch);
   
   const msgObj = {
     id: data.message.id ,
-    sender: srch,
+    sender: srch ? srch : JSON.parse(localStorage.getItem("user")!),
     senderId: data.message.senderId,
     msg: data.message.msg,
     createdAt: data.message.createdAt,
   }
+  console.log("SRCH IS " ,srch);
   console.log("OLD Messages : ", messages, 'NEW', msgObj);
 
     // append new message to messages using previous state
@@ -387,9 +399,8 @@ async function init_socket()
 
 useEffect(() => {
 
-  if(localStorage.getItem("members")!)
+  if(allMembers)
   {
-  init_socket();
 
   }
   // init_socket();
@@ -400,19 +411,20 @@ useEffect(() => {
 // }
   
   // localStorage.setItem("members",JSON.stringify(json));
-},[localStorage.getItem("members")])
+},[allMembers])
   useEffect (() => {
 
     
       console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name )
 
-      GetMembers().then((res) => {
+      // GetMembers().then((res) => {
 
-        console.log('AFTER WAITING', allMembers);
-          // init_socket();
-      })
+      //   console.log('AFTER WAITING', allMembers);
+      //     // init_socket();
+      // })
         if (props.room.is_dm) 
         {
+
           console.log("Fethcing Relationship of this chatroom.");
           const loggedUser = localStorage.getItem("user");
             if(loggedUser)
@@ -435,6 +447,8 @@ useEffect(() => {
            FetchRelationshipNarjdal(props.room.all_members[0].player.nickname);
               }
             }
+          GetMembers();
+
 
             }
           // setShowInput(true);
@@ -617,7 +631,7 @@ return (
 
       <div className='History-Box'> 
      
-      {messages.map(c => < MessageList  key = {c.sender.createdAt} user ={c} />)}
+      {messages.map(c => < MessageList  key = {c.id} user ={c} />)}
  
      <br></br>
             

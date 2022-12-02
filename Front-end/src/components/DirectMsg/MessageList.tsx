@@ -27,7 +27,7 @@ const MessageList = (props) => {
     // if(props.user.userId == 0)
     // {
     // }
-    console.log("INSIDE MESSAGE LIST " + props.user.msg + " MSG USER ID " + props.user.id)
+    console.log("INSIDE MESSAGE LIST " + props.user.msg + " MSG USER ID " + props.user.senderId + " NICKNAME " + props.user.sender.nickname)
     if(loggeduser)
 		{
 
