@@ -824,7 +824,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "joinRoom", null);
 __decorate([
-    (0, common_1.Get)('/joinProtectedRoom'),
+    (0, common_1.Post)('/joinProtectedRoom'),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __param(2, (0, common_1.Res)()),

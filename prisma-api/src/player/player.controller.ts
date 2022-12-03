@@ -906,7 +906,7 @@ export class PlayerController {
         });
     }
 
-    @Get('/joinProtectedRoom')
+    @Post('/joinProtectedRoom')
     async joinProtectedRoom(@Body() roomId_pwd: JoinProtectedRoomDto, @Req() request, @Res() response) {
         // console.log("---------------- Join Room ----------------", room_id['id']);
 
