@@ -199,7 +199,7 @@ let PlayerController = class PlayerController {
         const member = await this.playerService.findPlayerByNickname(login['id1']);
         const status = await this.playerService.getPermissions(member.id, room_id['id2']);
         if (status === null) {
-            throw new common_1.NotFoundException("You are not a member of this room");
+            throw new common_1.NotFoundException("This player is not a member of this room");
         }
         if (status.statusMember !== "member" || status.is_banned === true || status.is_muted === true) {
             throw new common_1.NotFoundException("Cannot set this player as Admin");
@@ -242,7 +242,7 @@ let PlayerController = class PlayerController {
         const member = await this.playerService.findPlayerByNickname(login['id1']);
         const status = await this.playerService.getPermissions(member.id, room_id['id2']);
         if (status === null) {
-            throw new common_1.NotFoundException("You are not a member of this room");
+            throw new common_1.NotFoundException("This player is not a member of this room");
         }
         if (status.statusMember !== "member" || status.is_banned === true || status.is_muted == true) {
             throw new common_1.NotFoundException("Cannot mute this player");
@@ -292,7 +292,7 @@ let PlayerController = class PlayerController {
         const member = await this.playerService.findPlayerByNickname(nickname['id1']);
         const status = await this.playerService.getPermissions(member.id, room_id['id2']);
         if (status === null) {
-            throw new common_1.NotFoundException("You are not a member of this room");
+            throw new common_1.NotFoundException("This player is not a member of this room");
         }
         if (status.statusMember !== "member" || status.is_muted === false) {
             throw new common_1.NotFoundException("Cannot unmute this player");
@@ -342,7 +342,7 @@ let PlayerController = class PlayerController {
         const member = await this.playerService.findPlayerByNickname(login['id1']);
         const status = await this.playerService.getPermissions(member.id, room_id['id2']);
         if (status === null) {
-            throw new common_1.NotFoundException("You are not a member of this room");
+            throw new common_1.NotFoundException("This player is not a member of this room");
         }
         if (status.statusMember !== "member" || status.is_banned === true) {
             throw new common_1.NotFoundException("Cannot ban this player");
@@ -366,6 +366,18 @@ let PlayerController = class PlayerController {
         const room = await this.playerService.findRoomById(room_id['id2']);
         if (room.is_dm === true) {
             throw new common_1.NotFoundException("It's a DM");
+        }
+        const member = await this.playerService.findPlayerByNickname(login['id1']);
+        const status = await this.playerService.getPermissions(member.id, room_id['id2']);
+        if (status === null) {
+            throw new common_1.NotFoundException("This player is not a member of this room");
+        }
+        if (status.statusMember !== "member" || status.is_banned === true) {
+            throw new common_1.NotFoundException("Cannot kick this player");
+        }
+        const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
+        if (admin.statusMember !== "admin" && admin.statusMember !== "owner") {
+            throw new common_1.NotFoundException("Cannot kick this player");
         }
         const kick = await this.playerService.kickMember(login['id1'], room_id['id2']);
         response.set({

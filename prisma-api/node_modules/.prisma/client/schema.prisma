@@ -85,7 +85,7 @@ model Message {
 
 model Friendship {
     //id Int @id @default(autoincrement())
-    status     String
+    status     String  // Friend, Block, Pending
     date       DateTime @default(now())  // we don;t need you
     sender     Player   @relation("SendRequest", fields: [senderId], references: [id])
     senderId   String
