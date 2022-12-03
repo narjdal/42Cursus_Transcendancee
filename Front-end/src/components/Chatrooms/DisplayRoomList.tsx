@@ -36,6 +36,12 @@ const DisplayRoomList =  (props) => {
         console.log("Joining this room ..." + props.room.id + " ROOM INFO : DM :  " + props.room.is_dm, + " PROTECTED ? : "  +  props.room.is_protected)
         if(!props.room.is_dm)
         JoinRoom()
+        .then((resp) => {
+            console.log( " JOINING IS DONE ! ")
+            // window.location.href="http:://localhost:3000/room/" + props.room.id;
+    window.location.href = "http://localhost:3000/room/" + props.room.id;
+            
+        })
     }
     return (
         <>
@@ -55,8 +61,8 @@ const DisplayRoomList =  (props) => {
          onClick={HandleJoinRoom}
                           
                   >
-                      <Link to={`/room/${props.room.id}`}>{props.room.name}</Link>
-                    
+                      {/* <Link to={`/room/${props.room.id}`}>{props.room.name}</Link> */}
+                    {props.room.name}
                       </button>
         </>
         

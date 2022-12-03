@@ -518,12 +518,19 @@ return (
         </>
         ) : (
           <>
-             <button type="button" onClick={HandleLeaveRoom} style={{bottom:0}}>
+           {showInput ? (
+            <>
+            <button type="button" onClick={HandleLeaveRoom} style={{bottom:0}}>
                     <span className="icon material-symbols-outlined">
      {"logout"} 
       </span>
       <span> Leave Room</span>
                   </button>
+            </>
+           ) : (
+            <>
+            </>
+           )}  
           </>)}
           
     {showInput ? ( 

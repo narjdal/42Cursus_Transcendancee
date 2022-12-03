@@ -44,8 +44,12 @@ await fetch(text,{
 
 .then((response) => response.json())
 .then(json => {
-  console.log("The response is => " + JSON.stringify(json))
+  console.log("The AddAdminResponse is => " + JSON.stringify(json))
 // 
+if(json.statusCode == "404")
+{
+  setErrorMessage(json.message)
+}
 if(json.statusCode == "500")
 {
   setErrorMessage("An error occured in the backend.");
@@ -202,6 +206,111 @@ const HandleRoomPrivate = (e) => {
     setHasPassword(true);
 
 } 
+async function KickUserFromRoom() 
+{
+  const loggeduser = localStorage.getItem("user");
+  if(loggeduser)
+{
+  const current = JSON.parse(loggeduser);
+  const text = "http://localhost:5000/player/kickMember/" + username + "/" + props.room.id;
+console.log("kickUserFromRoom Link :  =>  " + text);
+
+
+await fetch(text,{
+  // mode:'no-cors',
+  method:'get',
+  credentials:"include"
+})
+
+.then((response) => response.json())
+.then(json => {
+  console.log( " KickUser Response is :  " + JSON.stringify(json))
+// 
+if(json.statusCode =="404")
+{
+  setErrorMessage(json.message)
+}
+if(json.statusCode == "500")
+{
+  setErrorMessage("An error occured in the backend.");
+}
+
+  return json;
+})
+.catch((error) => {
+  console.log("An error occured : " + error)
+  return error;
+})
+
+// }
+}
+}
+
+const HandleKickUser = (e) => {
+  e.preventDefault();
+
+  console.log("Kicking this user ! " + username);
+  if(username)
+  {
+    KickUserFromRoom();
+  }
+  else
+  {
+    setErrorMessage("Please enter a valid username.")
+  }
+
+};
+
+async function UnmuteUserFromRoom()
+{
+  const loggeduser = localStorage.getItem("user");
+  if(loggeduser)
+{
+  const current = JSON.parse(loggeduser);
+  const text = "http://localhost:5000/player/unmuteMember/" + username + "/" + props.room.id;
+console.log("kickUserFromRoom Link :  =>  " + text);
+
+
+await fetch(text,{
+  // mode:'no-cors',
+  method:'get',
+  credentials:"include"
+})
+
+.then((response) => response.json())
+.then(json => {
+  console.log( " UnmuteUser Response is :  " + JSON.stringify(json))
+// 
+if(json.statusCode =="404")
+{
+  setErrorMessage(json.message)
+}
+if(json.statusCode == "500")
+{
+  setErrorMessage("An error occured in the backend.");
+}
+
+  return json;
+})
+.catch((error) => {
+  console.log("An error occured : " + error)
+  return error;
+})
+
+// }
+}
+}
+const HandleUnmute = (e) => {
+  e.preventDefault();
+  if(username)
+  {
+    UnmuteUserFromRoom();
+  }
+  else
+  {
+    setErrorMessage("Please enter a valid username.")
+  }
+}
   useEffect(() => {
     
     const loggedUser  =localStorage.getItem("user");
@@ -209,7 +318,7 @@ const HandleRoomPrivate = (e) => {
     {
       const current = JSON.parse(loggedUser);
        const {id} = current;
-      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "Member Status  : " , props.statusMember.data.statusMember);
+      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "PROPS =>   : " , props);
       // // In JS == Ignores the Data Types 
       // setMembers(props.room.all_members);
       setMembersAdmin(props.room.all_members);
@@ -319,11 +428,24 @@ const HandleRoomPrivate = (e) => {
       <span> Ban User  </span>
       </button>
 
+      <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleKickUser}>
+    <span className="icon material-symbols-outlined">
+     {"door_open"}  
+      </span>
+      <span> kick User  </span>
+      </button>
       <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleMute}>
     <span className="icon material-symbols-outlined">
      {"Mic_Off"}  
       </span>
       <span> Mute   </span>
+      </button>
+
+      <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleUnmute}>
+    <span className="icon material-symbols-outlined">
+     {"campaign"}  
+      </span>
+      <span> Unmute   </span>
       </button>
       {showmodal ? (
         <>

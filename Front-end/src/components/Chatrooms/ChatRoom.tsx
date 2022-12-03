@@ -98,6 +98,7 @@ async function GetRoomById  ()  {
      
   })
   .catch((error) => {
+    setErrorMessage("An error occured ! You cannot access this room.");
       console.log("An error occured  while fetching the GetRoomById  : " + error)
       return error;
   })
