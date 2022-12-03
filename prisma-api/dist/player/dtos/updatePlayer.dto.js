@@ -9,8 +9,61 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdatePlayerDto = void 0;
+exports.UpdatePlayerDto = exports.UpdateProtectedPasswordDto = exports.JoinProtectedRoomDto = exports.SetPwdToPublicChatRoomDto = exports.CreateProtectedRoomDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+class CreateProtectedRoomDto {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateProtectedRoomDto.prototype, "name", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateProtectedRoomDto.prototype, "pwd", void 0);
+exports.CreateProtectedRoomDto = CreateProtectedRoomDto;
+class SetPwdToPublicChatRoomDto {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], SetPwdToPublicChatRoomDto.prototype, "room_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], SetPwdToPublicChatRoomDto.prototype, "pwd", void 0);
+exports.SetPwdToPublicChatRoomDto = SetPwdToPublicChatRoomDto;
+class JoinProtectedRoomDto {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], JoinProtectedRoomDto.prototype, "room_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], JoinProtectedRoomDto.prototype, "pwd", void 0);
+exports.JoinProtectedRoomDto = JoinProtectedRoomDto;
+class UpdateProtectedPasswordDto {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], UpdateProtectedPasswordDto.prototype, "room_id", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], UpdateProtectedPasswordDto.prototype, "new_password", void 0);
+exports.UpdateProtectedPasswordDto = UpdateProtectedPasswordDto;
 class UpdatePlayerDto {
 }
 __decorate([

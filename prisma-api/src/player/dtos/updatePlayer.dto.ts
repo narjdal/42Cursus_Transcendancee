@@ -1,5 +1,40 @@
+import {ApiProperty} from "@nestjs/swagger";
 import { Player } from "@prisma/client";
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+
+
+export class CreateProtectedRoomDto {
+    @ApiProperty()
+    @IsNotEmpty()  name: string;
+
+    @ApiProperty()
+    @IsNotEmpty()   pwd: string;
+}
+
+export class SetPwdToPublicChatRoomDto {
+    @ApiProperty()
+    @IsNotEmpty() room_id: string;
+
+    @ApiProperty()
+    @IsNotEmpty() pwd: string;
+}
+
+export class JoinProtectedRoomDto {
+    @ApiProperty()
+    @IsNotEmpty()  room_id: string;
+
+    @ApiProperty()
+    @IsNotEmpty()  pwd: string;
+}
+
+export class UpdateProtectedPasswordDto {
+    @ApiProperty()
+    @IsNotEmpty()  room_id: string;    
+
+    @IsNotEmpty()
+    @ApiProperty() new_password: string;
+
+}
 
 export class  UpdatePlayerDto implements Partial<Player> {
     

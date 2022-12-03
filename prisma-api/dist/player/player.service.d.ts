@@ -1,4 +1,5 @@
 import { PrismaService } from 'src/prisma.service';
+import { CreateProtectedRoomDto, JoinProtectedRoomDto, SetPwdToPublicChatRoomDto, UpdateProtectedPasswordDto } from './dtos/updatePlayer.dto';
 export declare class PlayerService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -41,28 +42,30 @@ export declare class PlayerService {
     deleteFriendship(userId: string, friendname: string): Promise<void>;
     refuseFriendship(userId: string, friendname: string): Promise<void>;
     getRoomById(userId: string, room_id: string): Promise<{
-        is_dm: boolean;
+        is_protected: boolean;
+        is_public: boolean;
         all_members: {
             player: {
                 id: string;
                 nickname: string;
             };
         }[];
-        is_public: boolean;
         name: string;
+        is_dm: boolean;
         is_private: boolean;
-        is_protected: boolean;
     }>;
     createPublicChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
     createPrivateChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
-    createProtectedChatRoom(userId: string, nameOfRoom: string, setpassword: string): Promise<import(".prisma/client").ChatRoom>;
+    createProtectedChatRoom(userId: string, Body: CreateProtectedRoomDto): Promise<import(".prisma/client").ChatRoom>;
+    DeletePwdToProtectedChatRoom(userId: string, room_id: string): Promise<import(".prisma/client").ChatRoom>;
+    SetPwdToPublicChatRoom(userId: string, Body: SetPwdToPublicChatRoomDto): Promise<import(".prisma/client").ChatRoom>;
+    UpdatePwdProtectedChatRoom(userId: string, Body: UpdateProtectedPasswordDto): Promise<import(".prisma/client").ChatRoom>;
     createDMRoom(userId: string, friendname: string): Promise<import(".prisma/client").ChatRoom>;
     getPermissions(userId: string, id_room: string): Promise<{
         statusMember: string;
         is_banned: boolean;
         is_muted: boolean;
     }>;
-    getMessagesOfDM(user: any, id_room: any): Promise<import(".prisma/client").Message[]>;
     getMessagesOfRoom(userId: string, id_room: string): Promise<{
         id: string;
         senderId: string;
@@ -78,7 +81,16 @@ export declare class PlayerService {
     sendMessage(userId: string, room_id: string, message: string): Promise<import(".prisma/client").Message>;
     sendMessageinRoom(userId: string, message: string, room_id: string): Promise<import(".prisma/client").Message>;
     addMember(login: string, room_id: string): Promise<import(".prisma/client").Permission>;
-    joinRoom(userId: string, room_id: string): Promise<import(".prisma/client").Permission>;
+    joinRoom(userId: string, room_id: string): Promise<{
+        statusMember: string;
+        is_banned: boolean;
+        is_muted: boolean;
+    }>;
+    joinProtectedRoom(userId: string, { room_id, pwd }: JoinProtectedRoomDto): Promise<{
+        statusMember: string;
+        is_banned: boolean;
+        is_muted: boolean;
+    }>;
     setAdmin(login: string, room_id: string): Promise<void>;
     banMember(login: string, room_id: string): Promise<void>;
     kickMember(login: string, room_id: string): Promise<void>;

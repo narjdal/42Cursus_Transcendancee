@@ -5,6 +5,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { userInfo } from 'os';
 import { resourceUsage } from 'process';
 import { NotFoundError } from 'rxjs';
+import { CreateProtectedRoomDto, JoinProtectedRoomDto, SetPwdToPublicChatRoomDto, UpdateProtectedPasswordDto} from './dtos/updatePlayer.dto';
 
 @Controller('player')
 @UseGuards(AuthGuard('jwt'))
@@ -680,7 +681,7 @@ export class PlayerController {
     }
 
     @Post('/createChatRoom/Public') // no check if name exist choose another name 
-    async CreatePublicChatRoom(@Body() Body, String, @Req() request, @Res() response) {
+    async CreatePublicChatRoom(@Body() Body, @Req() request, @Res() response) {
         // console.log("----------------- Create Public Chat Room -----------------");
         const room = await this.playerService.createPublicChatRoom(request.user.id, Body.name);
         response.set({
@@ -691,8 +692,20 @@ export class PlayerController {
         response.status(200).send(room);
     }
 
+    @Post('/SetPwdToPublicChatRoom') // no check if name exist choose another name 
+    async SetPwdToPublicChatRoom(@Body() Body: SetPwdToPublicChatRoomDto, @Req() request, @Res() response) {
+        // console.log("----------------- Create Public Chat Room -----------------");
+        const room = await this.playerService.SetPwdToPublicChatRoom(request.user.id, Body);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        // console.log("----------------- Finish Create Public Chat Room ------------------");
+        response.status(200).send(room);
+    }
+
     @Post('/createChatRoom/Private')
-    async CreatePrivateChatRoom(@Body() Body, String, @Req() request, @Res() response) {
+    async CreatePrivateChatRoom(@Body() Body, @Req() request, @Res() response) {
         // console.log("---------------- Create Private Chat Room ----------------");
         const room = await this.playerService.createPrivateChatRoom(request.user.id, Body.name);
         response.set({
@@ -703,10 +716,12 @@ export class PlayerController {
         response.status(200).send(room);
     }
 
+///////////////////////////////////////// New //////////////////////////////////////////////////////////
+
     @Post('/createChatRoom/Protected')
-    async CreateProtectedChatRoom(@Body() Body, String, @Req() request, @Res() response) {
+    async CreateProtectedChatRoom(@Body() Body: CreateProtectedRoomDto, @Req() request, @Res() response) {
         // console.log("------------------- Create Protected Chat Room -------------------");
-        const room = await this.playerService.createProtectedChatRoom(request.user.id, Body.name, Body.password);
+        const room = await this.playerService.createProtectedChatRoom(request.user.id, Body);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
@@ -714,6 +729,33 @@ export class PlayerController {
         // console.log("-------------Finish Creatte Protected Chat Room-----------");
         response.status(200).send(room);
     }
+
+    @Post('/UpdatePwdProtectedChatRoom')
+    async UpdatePwdProtectedChatRoom(@Body() Body: UpdateProtectedPasswordDto, @Req() request, @Res() response) {
+        // console.log("------------------- Create Protected Chat Room -------------------");
+        const room = await this.playerService.UpdatePwdProtectedChatRoom(request.user.id, Body);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        // console.log("-------------Finish Creatte Protected Chat Room-----------");
+        response.status(200).send(room);
+    }
+
+    @Post('/DeletePwdProtectedChatRoom')
+    async DeletePwdProtectedChatRoom(@Body() Body, @Req() request, @Res() response) {
+        // console.log("------------------- Create Protected Chat Room -------------------");
+        const room = await this.playerService.DeletePwdToProtectedChatRoom(request.user.id, Body.id);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        // console.log("-------------Finish Creatte Protected Chat Room-----------");
+        response.status(200).send(room);
+    }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Get('/GetRoomById/:id')
     async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
@@ -795,56 +837,102 @@ export class PlayerController {
         response.status(200).send(messages);
     }
 
-    // @Post('/sendmessage/:id')
-    // async SendMessage(@Req() request, @Res() response) {
-        // console.log("Send Message");
-        
-    //     // if profile is banned, he can't send message
-    //     const status = await. this.playerService.getPermissions(request.user.id, i);
-    //     const status = await this.prisma.permision.findFirst({
-    //         where: {
-    //             AND: [
-    //                 { playerId: me.id },
-    //                 { roomId: id_room },
-    //             ]
-    //         }
-    //     });
+    @Get('/sendMessageButton/:id')
+    async SendMessageButton(@Param() login: string,@Req() request, @Res() response) {
+        console.log("Send Message");
 
-    //     const message = await this.playerService.sendMessage(request.user.id, login, request.body.message);
-    //     response.set({
-    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
-    //     }
-    //     )
-    //     response.status(200).send(message);
-    // }
+        // 0- check if login exists
+        const user = await this.playerService.findPlayerByNickname(login['login']);
+
+        let room = null;
+        // 1- check if room already exists between those 2 users
+        room = await this.playerService.getRoomBetweenTwoPlayers(request.user.id, login['id']);
+        // 2- if not create a new room
+        if (room === null)
+        {
+            const friendship = await this.playerService.getFriendshipStatus(request.user.id, login['id']);
+            if (!friendship) {
+                room = await this.playerService.createDMRoom(request.user.id, login['id']);
+            }
+            // status friendship: 0: Friend, 1: Pending, 2: Block
+            else if (friendship.status === 'Pending') {
+                room = await this.playerService.createDMRoom(request.user.id, login['id']);
+            }
+            else if (friendship.status === 'Block') {
+                throw new NotFoundException("You can not send a message to this player");
+            }
+        }
+
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        response.status(200).send(room.id);
+    }
 
     @Get('/joinRoom/:id')
     async joinRoom(@Param() room_id: string, @Req() request, @Res() response) {
         // console.log("---------------- Join Room ----------------", room_id['id']);
 
-        // 1- check if room_id exists
-        const room = await this.playerService.findRoomById(room_id['id']);
+        // // 1- check if room_id exists
+        // const room = await this.playerService.findRoomById(room_id['id']);
         
-        // 2- check if The Room is not a dm
-        if(room.is_dm === true)
-        {
-            throw new NotFoundException("Cannot join a DM");
-        }
-        // 3- check if room is public
-        if(room.is_public === false)
-        {
-            throw new NotFoundException("cannot join a private room");
-        }
-        // 3- check if user is member of this room
-        const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
-        // console.log("member: ", member);
-        if(member)
-        {
-            throw new NotFoundException("Already a member");
-        }
+        // // 2- check if The Room is not a dm
+        // if(room.is_dm === true)
+        // {
+        //     throw new NotFoundException("Cannot join a DM");
+        // }
+        // // 3- check if room is public
+        // if(room.is_public === false)
+        // {
+        //     throw new NotFoundException("cannot join a private room");
+        // }
+        // // 3- check if user is member of this room
+        // const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
+        // // console.log("member: ", member);
+        // if(member)
+        // {
+        //     throw new NotFoundException("Already a member");
+        // }
 
         // 4- then join room
         const join = await this.playerService.joinRoom(request.user.id, room_id['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        })
+        // console.log("--------------  Finish Join Room--------------------");
+        return response.status(200).send({
+            message: "Player joined the room successfully"
+        });
+    }
+
+    @Get('/joinProtectedRoom')
+    async joinProtectedRoom(@Body() roomId_pwd: JoinProtectedRoomDto, @Req() request, @Res() response) {
+        // console.log("---------------- Join Room ----------------", room_id['id']);
+
+        // // 1- check if room_id exists
+        // const room = await this.playerService.findRoomById(room_id['id']);
+        
+        // // 2- check if The Room is not a dm
+        // if(room.is_dm === true)
+        // {
+        //     throw new NotFoundException("Cannot join a DM");
+        // }
+        // // 3- check if room is public
+        // if(room.is_public === false)
+        // {
+        //     throw new NotFoundException("cannot join a private room");
+        // }
+        // // 3- check if user is member of this room
+        // const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
+        // // console.log("member: ", member);
+        // if(member)
+        // {
+        //     throw new NotFoundException("Already a member");
+        // }
+
+        // 4- then join room
+        const join = await this.playerService.joinProtectedRoom(request.user.id, roomId_pwd);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         })

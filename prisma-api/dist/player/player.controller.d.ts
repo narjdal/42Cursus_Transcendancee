@@ -1,4 +1,5 @@
 import { PlayerService } from './player.service';
+import { CreateProtectedRoomDto, JoinProtectedRoomDto, SetPwdToPublicChatRoomDto, UpdateProtectedPasswordDto } from './dtos/updatePlayer.dto';
 export declare class PlayerController {
     private readonly playerService;
     constructor(playerService: PlayerService);
@@ -25,11 +26,16 @@ export declare class PlayerController {
     kickMember(login: string, room_id: string, request: any, response: any): Promise<void>;
     GetPermission(id_room: string, request: any, response: any): Promise<void>;
     GetListOfRooms(request: any, response: any): Promise<void>;
-    CreatePublicChatRoom(Body: any, String: any, request: any, response: any): Promise<void>;
-    CreatePrivateChatRoom(Body: any, String: any, request: any, response: any): Promise<void>;
-    CreateProtectedChatRoom(Body: any, String: any, request: any, response: any): Promise<void>;
+    CreatePublicChatRoom(Body: any, request: any, response: any): Promise<void>;
+    SetPwdToPublicChatRoom(Body: SetPwdToPublicChatRoomDto, request: any, response: any): Promise<void>;
+    CreatePrivateChatRoom(Body: any, request: any, response: any): Promise<void>;
+    CreateProtectedChatRoom(Body: CreateProtectedRoomDto, request: any, response: any): Promise<void>;
+    UpdatePwdProtectedChatRoom(Body: UpdateProtectedPasswordDto, request: any, response: any): Promise<void>;
+    DeletePwdProtectedChatRoom(Body: any, request: any, response: any): Promise<void>;
     GetRoomById(id_room: string, request: any, response: any): Promise<void>;
     leaveRoom(room_id: string, request: any, response: any): Promise<void>;
     getMessages(room_id: string, request: any, response: any): Promise<void>;
+    SendMessageButton(login: string, request: any, response: any): Promise<void>;
     joinRoom(room_id: string, request: any, response: any): Promise<any>;
+    joinProtectedRoom(roomId_pwd: JoinProtectedRoomDto, request: any, response: any): Promise<any>;
 }

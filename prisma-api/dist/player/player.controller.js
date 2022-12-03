@@ -16,6 +16,7 @@ exports.PlayerController = void 0;
 const common_1 = require("@nestjs/common");
 const player_service_1 = require("./player.service");
 const passport_1 = require("@nestjs/passport");
+const updatePlayer_dto_1 = require("./dtos/updatePlayer.dto");
 let PlayerController = class PlayerController {
     constructor(playerService) {
         this.playerService = playerService;
@@ -391,22 +392,43 @@ let PlayerController = class PlayerController {
         });
         response.status(200).send(rooms);
     }
-    async CreatePublicChatRoom(Body, String, request, response) {
+    async CreatePublicChatRoom(Body, request, response) {
         const room = await this.playerService.createPublicChatRoom(request.user.id, Body.name);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
         response.status(200).send(room);
     }
-    async CreatePrivateChatRoom(Body, String, request, response) {
+    async SetPwdToPublicChatRoom(Body, request, response) {
+        const room = await this.playerService.SetPwdToPublicChatRoom(request.user.id, Body);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        response.status(200).send(room);
+    }
+    async CreatePrivateChatRoom(Body, request, response) {
         const room = await this.playerService.createPrivateChatRoom(request.user.id, Body.name);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
         response.status(200).send(room);
     }
-    async CreateProtectedChatRoom(Body, String, request, response) {
-        const room = await this.playerService.createProtectedChatRoom(request.user.id, Body.name, Body.password);
+    async CreateProtectedChatRoom(Body, request, response) {
+        const room = await this.playerService.createProtectedChatRoom(request.user.id, Body);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        response.status(200).send(room);
+    }
+    async UpdatePwdProtectedChatRoom(Body, request, response) {
+        const room = await this.playerService.UpdatePwdProtectedChatRoom(request.user.id, Body);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        response.status(200).send(room);
+    }
+    async DeletePwdProtectedChatRoom(Body, request, response) {
+        const room = await this.playerService.DeletePwdToProtectedChatRoom(request.user.id, Body.id);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
@@ -451,19 +473,39 @@ let PlayerController = class PlayerController {
         });
         response.status(200).send(messages);
     }
+    async SendMessageButton(login, request, response) {
+        console.log("Send Message");
+        const user = await this.playerService.findPlayerByNickname(login['login']);
+        let room = null;
+        room = await this.playerService.getRoomBetweenTwoPlayers(request.user.id, login['id']);
+        if (room === null) {
+            const friendship = await this.playerService.getFriendshipStatus(request.user.id, login['id']);
+            if (!friendship) {
+                room = await this.playerService.createDMRoom(request.user.id, login['id']);
+            }
+            else if (friendship.status === 'Pending') {
+                room = await this.playerService.createDMRoom(request.user.id, login['id']);
+            }
+            else if (friendship.status === 'Block') {
+                throw new common_1.NotFoundException("You can not send a message to this player");
+            }
+        }
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        response.status(200).send(room.id);
+    }
     async joinRoom(room_id, request, response) {
-        const room = await this.playerService.findRoomById(room_id['id']);
-        if (room.is_dm === true) {
-            throw new common_1.NotFoundException("Cannot join a DM");
-        }
-        if (room.is_public === false) {
-            throw new common_1.NotFoundException("cannot join a private room");
-        }
-        const member = await this.playerService.getPermissions(request.user.id, room_id['id']);
-        if (member) {
-            throw new common_1.NotFoundException("Already a member");
-        }
         const join = await this.playerService.joinRoom(request.user.id, room_id['id']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        return response.status(200).send({
+            message: "Player joined the room successfully"
+        });
+    }
+    async joinProtectedRoom(roomId_pwd, request, response) {
+        const join = await this.playerService.joinProtectedRoom(request.user.id, roomId_pwd);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
@@ -685,30 +727,57 @@ __decorate([
 __decorate([
     (0, common_1.Post)('/createChatRoom/Public'),
     __param(0, (0, common_1.Body)()),
-    __param(2, (0, common_1.Req)()),
-    __param(3, (0, common_1.Res)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "CreatePublicChatRoom", null);
 __decorate([
+    (0, common_1.Post)('/SetPwdToPublicChatRoom'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [updatePlayer_dto_1.SetPwdToPublicChatRoomDto, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "SetPwdToPublicChatRoom", null);
+__decorate([
     (0, common_1.Post)('/createChatRoom/Private'),
     __param(0, (0, common_1.Body)()),
-    __param(2, (0, common_1.Req)()),
-    __param(3, (0, common_1.Res)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "CreatePrivateChatRoom", null);
 __decorate([
     (0, common_1.Post)('/createChatRoom/Protected'),
     __param(0, (0, common_1.Body)()),
-    __param(2, (0, common_1.Req)()),
-    __param(3, (0, common_1.Res)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object, Object]),
+    __metadata("design:paramtypes", [updatePlayer_dto_1.CreateProtectedRoomDto, Object, Object]),
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "CreateProtectedChatRoom", null);
+__decorate([
+    (0, common_1.Post)('/UpdatePwdProtectedChatRoom'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [updatePlayer_dto_1.UpdateProtectedPasswordDto, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "UpdatePwdProtectedChatRoom", null);
+__decorate([
+    (0, common_1.Post)('/DeletePwdProtectedChatRoom'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "DeletePwdProtectedChatRoom", null);
 __decorate([
     (0, common_1.Get)('/GetRoomById/:id'),
     __param(0, (0, common_1.Param)()),
@@ -737,6 +806,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "getMessages", null);
 __decorate([
+    (0, common_1.Get)('/sendMessageButton/:id'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "SendMessageButton", null);
+__decorate([
     (0, common_1.Get)('/joinRoom/:id'),
     __param(0, (0, common_1.Param)()),
     __param(1, (0, common_1.Req)()),
@@ -745,6 +823,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "joinRoom", null);
+__decorate([
+    (0, common_1.Get)('/joinProtectedRoom'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [updatePlayer_dto_1.JoinProtectedRoomDto, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "joinProtectedRoom", null);
 PlayerController = __decorate([
     (0, common_1.Controller)('player'),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),

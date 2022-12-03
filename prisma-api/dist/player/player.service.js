@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayerService = void 0;
 const common_1 = require("@nestjs/common");
+const bcrypt_1 = require("bcrypt");
 const prisma_service_1 = require("../prisma.service");
 let PlayerService = class PlayerService {
     constructor(prisma) {
@@ -85,20 +86,21 @@ let PlayerService = class PlayerService {
         return room;
     }
     async getAllRooms(userId) {
-        const me = await this.findPlayerById(userId);
         const rooms = await this.prisma.chatRoom.findMany({
             where: {
                 OR: [
                     {
                         all_members: {
                             some: {
-                                playerId: me.id
+                                playerId: userId
                             }
                         },
                     },
                     {
-                        is_dm: false,
                         is_public: true,
+                    },
+                    {
+                        is_protected: true,
                     },
                 ],
             },
@@ -117,7 +119,7 @@ let PlayerService = class PlayerService {
         return rooms.map(room => {
             var _a;
             if (room.is_dm === true) {
-                room.name = (_a = room.all_members.find(e => e.playerId !== me.id)) === null || _a === void 0 ? void 0 : _a.player.nickname;
+                room.name = (_a = room.all_members.find(e => e.playerId !== userId)) === null || _a === void 0 ? void 0 : _a.player.nickname;
             }
             return {
                 id: room.id,
@@ -480,32 +482,43 @@ let PlayerService = class PlayerService {
         return friendship;
     }
     async blockFriendship(userId, friendname) {
-        const me = await this.findPlayerById(userId);
         const howa = await this.prisma.player.findUnique({
             where: { nickname: friendname },
         });
         if (!howa) {
             throw new common_1.NotFoundException("Profile not found");
         }
-        const friendship = await this.prisma.friendship.updateMany({
-            where: {
-                OR: [
-                    {
-                        senderId: me.id,
-                        receiverId: howa.id,
-                    },
-                    {
-                        senderId: howa.id,
-                        receiverId: me.id,
-                    }
-                ]
-            },
-            data: {
-                status: "Block",
-                senderId: me.id,
-                receiverId: howa.id,
-            },
-        });
+        const status = await this.getFriendshipStatus(userId, friendname);
+        if (!status) {
+            const friendship = await this.prisma.friendship.create({
+                data: {
+                    senderId: userId,
+                    receiverId: howa.id,
+                    status: "Blocked"
+                }
+            });
+        }
+        else {
+            const friendship = await this.prisma.friendship.updateMany({
+                where: {
+                    OR: [
+                        {
+                            senderId: userId,
+                            receiverId: howa.id,
+                        },
+                        {
+                            senderId: howa.id,
+                            receiverId: userId,
+                        }
+                    ]
+                },
+                data: {
+                    status: "Block",
+                    senderId: userId,
+                    receiverId: howa.id,
+                },
+            });
+        }
     }
     async deleteFriendship(userId, friendname) {
         const me = await this.findPlayerById(userId);
@@ -567,7 +580,6 @@ let PlayerService = class PlayerService {
         return room;
     }
     async createPublicChatRoom(userId, nameOfRoom) {
-        const me = await this.findPlayerById(userId);
         const room = await this.prisma.chatRoom.create({
             data: {
                 is_dm: false,
@@ -579,7 +591,7 @@ let PlayerService = class PlayerService {
                             statusMember: "owner",
                             muted_until: new Date(),
                             blocked_since: new Date(),
-                            playerId: me.id
+                            playerId: userId
                         },
                     ],
                 },
@@ -588,7 +600,6 @@ let PlayerService = class PlayerService {
         return room;
     }
     async createPrivateChatRoom(userId, nameOfRoom) {
-        const me = await this.findPlayerById(userId);
         const room = await this.prisma.chatRoom.create({
             data: {
                 is_dm: false,
@@ -600,7 +611,7 @@ let PlayerService = class PlayerService {
                             statusMember: "owner",
                             muted_until: new Date(),
                             blocked_since: new Date(),
-                            playerId: me.id,
+                            playerId: userId,
                         },
                     ],
                 },
@@ -608,21 +619,20 @@ let PlayerService = class PlayerService {
         });
         return room;
     }
-    async createProtectedChatRoom(userId, nameOfRoom, setpassword) {
-        const me = await this.findPlayerById(userId);
+    async createProtectedChatRoom(userId, Body) {
         const room = await this.prisma.chatRoom.create({
             data: {
                 is_dm: false,
-                name: nameOfRoom,
+                name: Body.name,
                 is_protected: true,
-                password: setpassword,
+                password: await (0, bcrypt_1.hash)(Body.pwd, 10),
                 all_members: {
                     create: [
                         {
                             statusMember: "owner",
                             muted_until: new Date(),
                             blocked_since: new Date(),
-                            playerId: me.id,
+                            playerId: userId,
                         },
                     ],
                 },
@@ -630,8 +640,125 @@ let PlayerService = class PlayerService {
         });
         return room;
     }
+    async DeletePwdToProtectedChatRoom(userId, room_id) {
+        const room = await this.prisma.chatRoom.findFirst({
+            where: {
+                id: room_id,
+                is_protected: true,
+            },
+            select: {
+                id: true,
+                name: true,
+                is_dm: true,
+                is_public: true,
+                is_private: true,
+                is_protected: true,
+            }
+        });
+        if (!room) {
+            throw new common_1.NotFoundException("Room not found");
+        }
+        const permision = await this.prisma.permission.findFirst({
+            where: {
+                playerId: userId,
+                roomId: room_id,
+                statusMember: "owner",
+            },
+        });
+        if (!permision) {
+            throw new common_1.NotFoundException("You are not the owner of this room");
+        }
+        const roomUpdated = await this.prisma.chatRoom.update({
+            where: {
+                id: room_id,
+            },
+            data: {
+                is_protected: false,
+                is_public: true,
+                password: null,
+            },
+        });
+        return roomUpdated;
+    }
+    async SetPwdToPublicChatRoom(userId, Body) {
+        const room = await this.prisma.chatRoom.findFirst({
+            where: {
+                id: Body.room_id,
+                is_private: true,
+            },
+            select: {
+                id: true,
+                name: true,
+                is_dm: true,
+                is_public: true,
+                is_private: true,
+                is_protected: true,
+            }
+        });
+        if (!room) {
+            throw new common_1.NotFoundException("Room not found");
+        }
+        const permision = await this.prisma.permission.findFirst({
+            where: {
+                playerId: userId,
+                roomId: Body.room_id,
+                statusMember: "owner",
+            },
+        });
+        if (!permision) {
+            throw new common_1.NotFoundException("You are not the owner of this room");
+        }
+        const roomUpdated = await this.prisma.chatRoom.update({
+            where: {
+                id: Body.room_id,
+            },
+            data: {
+                is_protected: true,
+                is_public: false,
+                password: (0, bcrypt_1.hash)(Body.pwd, 10),
+            },
+        });
+        return roomUpdated;
+    }
+    async UpdatePwdProtectedChatRoom(userId, Body) {
+        const room = await this.prisma.chatRoom.findFirst({
+            where: {
+                id: Body.room_id,
+                is_protected: true,
+            },
+            select: {
+                id: true,
+                name: true,
+                is_dm: true,
+                is_public: true,
+                is_private: true,
+                is_protected: true,
+            }
+        });
+        if (!room) {
+            throw new common_1.NotFoundException("Room not found");
+        }
+        const permision = await this.prisma.permission.findFirst({
+            where: {
+                playerId: userId,
+                roomId: Body.room_id,
+                statusMember: "owner",
+            },
+        });
+        if (!permision) {
+            throw new common_1.NotFoundException("You are not the owner of this room");
+        }
+        const roomUpdated = await this.prisma.chatRoom.update({
+            where: {
+                id: Body.room_id,
+            },
+            data: {
+                password: await (0, bcrypt_1.hash)(Body.new_password, 10),
+            },
+        });
+        return roomUpdated;
+    }
     async createDMRoom(userId, friendname) {
-        const sender = await this.findPlayerById(userId);
         const receiver = await this.prisma.player.findUnique({
             where: { nickname: friendname }
         });
@@ -644,7 +771,7 @@ let PlayerService = class PlayerService {
                             statusMember: "member",
                             muted_until: new Date(),
                             blocked_since: new Date(),
-                            playerId: sender.id,
+                            playerId: userId,
                         },
                         {
                             statusMember: "member",
@@ -674,24 +801,11 @@ let PlayerService = class PlayerService {
         });
         return status;
     }
-    async getMessagesOfDM(user, id_room) {
-        const me = await this.findPlayerById(user.nickname);
-        const messages = await this.prisma.message.findMany({
-            where: {
-                AND: [
-                    { senderId: me.id },
-                    { roomId: id_room },
-                ]
-            },
-        });
-        return messages;
-    }
     async getMessagesOfRoom(userId, id_room) {
-        const me = await this.findPlayerById(userId);
         const status = await this.prisma.permission.findFirst({
             where: {
                 AND: [
-                    { playerId: me.id },
+                    { playerId: userId },
                     { roomId: id_room },
                 ]
             }
@@ -706,10 +820,10 @@ let PlayerService = class PlayerService {
                     {
                         OR: [
                             {
-                                senderId: me.id,
+                                senderId: userId,
                             },
                             {
-                                receiverId: me.id,
+                                receiverId: userId,
                             },
                         ]
                     },
@@ -717,7 +831,7 @@ let PlayerService = class PlayerService {
             }
         });
         const blockedId = blocked_list.map(user => {
-            if (user.receiverId == me.id)
+            if (user.receiverId == userId)
                 return user.senderId;
             return user.receiverId;
         });
@@ -831,18 +945,74 @@ let PlayerService = class PlayerService {
         return permission;
     }
     async joinRoom(userId, room_id) {
-        const permission = await this.prisma.permission.create({
-            data: {
-                playerId: userId,
-                roomId: room_id,
-                statusMember: "member",
-                is_muted: false,
-                muted_until: new Date(),
-                is_banned: false,
-                blocked_since: new Date(),
-            }
+        const room = await this.prisma.chatRoom.findUnique({
+            where: { id: room_id }
         });
-        return permission;
+        if (!room) {
+            throw new common_1.NotFoundException("Room not found");
+        }
+        if (room.is_dm === true) {
+            throw new common_1.NotFoundException("Cannot join a DM");
+        }
+        if (room.is_protected === true) {
+            throw new common_1.NotFoundException("You cann't join a protected room");
+        }
+        const member = await this.getPermissions(userId, room_id);
+        if (member && member.is_banned === true) {
+            throw new common_1.UnauthorizedException("You are banned from this room");
+        }
+        else if (!member && room.is_private === false) {
+            const permission = await this.prisma.permission.create({
+                data: {
+                    playerId: userId,
+                    roomId: room_id,
+                    statusMember: "member",
+                    is_muted: false,
+                    muted_until: new Date(),
+                    is_banned: false,
+                    blocked_since: new Date(),
+                }
+            });
+            return permission;
+        }
+        return member;
+    }
+    async joinProtectedRoom(userId, { room_id, pwd }) {
+        const room = await this.prisma.chatRoom.findUnique({
+            where: { id: room_id }
+        });
+        if (!room) {
+            throw new common_1.NotFoundException("Room not found");
+        }
+        if (room.is_dm === true) {
+            throw new common_1.NotFoundException("Cannot join a DM");
+        }
+        if (room.is_protected === false) {
+            throw new common_1.NotFoundException("This is a not a protected room");
+        }
+        const areEqual = await (0, bcrypt_1.compare)(room.password, pwd);
+        if (!areEqual) {
+            throw new common_1.UnauthorizedException("Wrong password");
+        }
+        const member = await this.getPermissions(userId, room_id);
+        if (member && member.is_banned === true) {
+            throw new common_1.UnauthorizedException("You are banned from this room");
+        }
+        else if (!member) {
+            const permission = await this.prisma.permission.create({
+                data: {
+                    playerId: userId,
+                    roomId: room_id,
+                    statusMember: "member",
+                    is_muted: false,
+                    muted_until: new Date(),
+                    is_banned: false,
+                    blocked_since: new Date(),
+                }
+            });
+            return permission;
+        }
+        return member;
     }
     async setAdmin(login, room_id) {
         const palyer = await this.findPlayerByNickname(login);
@@ -874,7 +1044,7 @@ let PlayerService = class PlayerService {
         });
     }
     async kickMember(login, room_id) {
-        const palyer = await this.findPlayerById(login);
+        const palyer = await this.findPlayerByNickname(login);
         const room = await this.prisma.permission.deleteMany({
             where: {
                 AND: [
