@@ -11,6 +11,9 @@ const Friendprofile = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [userState, setUserState] = useState<any>([]);
   const [relation, setRelation] = useState("");
+  const [isMe,setIsMe] = useState(false);
+  const [allgood,setAllGood] = useState(false);
+
   const [icons, setIcons] = useState("");
   const [msg, setMsg] = useState("");
   const [action, setAction] = useState("");
@@ -52,7 +55,37 @@ const Friendprofile = () => {
   }
 
 
+async function BlockRelationship()
+{
+   let endpoint = "http://localhost:5000/player/blockFriendship/"
 
+
+    console.log("BlockRelation  => " + endpoint + " \n user" + params.nickname)
+    //  setAction("");
+    endpoint = endpoint + params.nickname;
+    await fetch((endpoint
+    ), {
+      // mode:'no-cors',
+      method: 'get',
+      credentials: "include"
+    })
+
+
+      .then((response) => response.json())
+      .then(json => {
+        console.log("The response is => " + JSON.stringify(json))
+        // if (json.ok)
+        // IsAuthOk(json);
+        // window.location.reload();
+        setErrorMessage("");
+        return json;
+      })
+      .catch((error) => {
+        console.log("An error occured : " + error)
+        setErrorMessage("An error occured! Can't Refuse Relationship    ! ");
+        return error;
+      })
+}
 
   async function RefuseRelationship() {
 
@@ -174,8 +207,13 @@ const Friendprofile = () => {
 
         .then((response) => response.json())
         .then(json => {
-          console.log("The response is => " + JSON.stringify(json))
-          setErrorMessage("");
+          console.log("The Status Response is => " + JSON.stringify(json))
+          // setErrorMessage("");
+          if(json.statusCode == "404")
+          {
+          setErrorMessage(json.message);
+
+          }
           // localStorage.setItem("usertoshow",JSON.stringify(json));
           localStorage.setItem("choice", json);
           // setRelation(json);
@@ -282,10 +320,18 @@ const Friendprofile = () => {
 
         .then((response) => response.json())
         .then(json => {
-          // console.log("The response is => " + JSON.stringify(json))
-          setErrorMessage("");
+          console.log("The User  is => " + JSON.stringify(json))
+          // setErrorMessage("");
           // localStorage.setItem("usertoshow",JSON.stringify(json));
-
+          if(json.statusCode == "404")
+          {
+            setAllGood(false);
+            setErrorMessage(json.message)
+          }
+          else
+          {
+            setAllGood(true);
+          }
           setUserState(json);
           return json;
         })
@@ -318,7 +364,6 @@ const Friendprofile = () => {
 
       })
     const tt = localStorage.getItem("choice");
-    console.log("TT is " + tt + " the action is " + action);
     if (tt === "addFriend") {
       // console.log("ww khello")
       setIcons("people")
@@ -379,9 +424,20 @@ const Friendprofile = () => {
       // localStorage.setItem("action","noaction");
 
     }
+    console.log("TT is " + tt + " the action is " + action);
+
     // if(localStorage.getItem("choice"))
   };
   useEffect(() => {
+    const loggedUser = localStorage.getItem("user");
+    if(loggedUser)
+    {
+      const current = JSON.parse(loggedUser);
+      if(current.nickname == params.nickname)
+      {
+        setIsMe(true);
+      }
+    }
     FetchUserInfos();
 
     SetRelationInfos();
@@ -422,6 +478,21 @@ const Friendprofile = () => {
     e.preventDefault();
     console.log("invinting to play a game ...")
   }
+
+  const HandleBlockUser = (e) => {
+    e.preventDefault();
+
+    // setAction("blockFriend")
+    BlockRelationship();
+
+    // console.log("Executing this command =>   " + action);
+    // if (action !== "error")
+    //   // ExecuteRelationship();
+    // // else
+      // console.log("Error ! can't execute action.");
+
+    // console.log("BLOCKING THIS USER ")
+  }
   if (!userState) {
     // TODO: 404
     console.log("ERROR ·404  from Friend Profile ,User Not found" + params.id + params.name);
@@ -436,10 +507,9 @@ const Friendprofile = () => {
       <div className='FriendProfile'>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         {errorMessage && <div className="error"> {errorMessage} </div>}
-        {relation === "YourBlocked" ? (
-          <>
-          </>
-        ) : (
+  
+    {allgood ? (
+      <>
           <>
        <img src={userState.avatar} height="80" />
         <h2>{userState.nickname}</h2>
@@ -450,12 +520,16 @@ const Friendprofile = () => {
         <h3>Lose</h3>
         <h2>{userState.loses}</h2>
           </>
-        )}
        
 
 
         <br />
-        {relation === "YourBlocked" ? (
+        {isMe ? (
+          <>
+          </>
+        ) : (
+          <>
+           {relation === "YourBlocked" ? (
           <>
             <button type="button" className='button-displayuser' >
               <span className="icon material-symbols-outlined">
@@ -490,6 +564,13 @@ const Friendprofile = () => {
                   </span>
                   <span>Refuse</span>
                 </button>
+
+                <button type="button" className='button-displayuser' onClick={HandleBlockUser}>
+                  <span className="icon material-symbols-outlined">
+                    {"Block"}
+                  </span>
+                  <span>Block</span>
+                </button>
               </>
             ) : (
               <>
@@ -508,6 +589,22 @@ const Friendprofile = () => {
                   </>
                 ) : (
                   <>
+                 
+                  </>
+                )}
+                {action == "addFriend" ? (
+                  <>
+                  <br/>
+                    <button type="button" className='button-displayuser' onClick={HandleBlockUser}>
+                  <span className="icon material-symbols-outlined">
+                    {"block"}
+                  </span>
+                  <span> Block this user </span>
+                </button>
+                  </>
+                ) : (
+                  <>
+
                   </>
                 )}
                 <br />
@@ -525,13 +622,24 @@ const Friendprofile = () => {
       </span>
       <span> Play  </span>
       </button>
+      
               </>
 
             )}
 
           </>
         )}
+          </>
+        )}
+       
 
+      </>
+    ) : (
+      <>
+
+      </>
+    )}
+       
       </div>
     );
   }

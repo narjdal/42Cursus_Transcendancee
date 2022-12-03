@@ -104,6 +104,10 @@ const CreateRoom = () => {
         console.log("Room infos  : " + RoomName+   " Room Password "+ RoomPassword);
     if(RoomName)
     {
+        if(isRoomProtected && !RoomPassword)
+        {
+            setErrorMessage("Please enter a valid room password ! Can't be empty.")
+        }
         if(RoomPassword && isRoomProtected)
         {
             console.log("Setting a room with pws ! " + RoomPassword);

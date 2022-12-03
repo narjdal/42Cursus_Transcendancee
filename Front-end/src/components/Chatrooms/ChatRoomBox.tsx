@@ -23,8 +23,11 @@ const ChatRoomBox = (props,statusMember) => {
   const [haspswd,setHaspswd] = useState(false);
   const [BanUser,SetBanUser] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
+  const [ifBlocked, setIfBlocked] = useState(false);
+
   const [Updated, setisUpdated] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
+  
   const[members,setMembers] = useState <any >([]);
 const [allMembers,setAllMembers] = useState <any>([]);
   // var allMembers: any = [];
@@ -121,6 +124,8 @@ async function GetMembers ()
   const text = "http://localhost:5000/player/listOfMembers/" + props.room.id;
     console.log("Api Fetch Link :  =>  " + text);
     
+try
+{
 
     await fetch(text,{
       // mode:'no-cors',
@@ -141,17 +146,6 @@ async function GetMembers ()
       //   setAllgood(true)
       //   setIsDm(true);
       // }
-      if(json == 1)
-      {
-        console.log("weird");
-        return ;
-      }
-      else if (json == 4 || json == 3)
-      {
-        console.log("Id received instead of user infos.")
-        return ;
-      }
-    
       if(json.statusCode == "500" )
         {
             console.log("an error occured");
@@ -187,6 +181,13 @@ async function GetMembers ()
   })
 
     }
+    catch(e)
+{
+  console.log("An error TryChat : " + e)
+  
+}
+}
+
 }
 
 async function GetMessageHistory()
@@ -264,10 +265,26 @@ async function FetchRelationshipNarjdal(friendName : string) {
       .then(json => {
         console.log("The Realtionship is => " + JSON.stringify(json))
         setErrorMessage("");
-        if(json == "blockFriend")
+      
+        if(json == "YourBlocked")
+        {
+          setIfBlocked(true);
+          let text = friendName + " Has blocked you !";
+        setErrorMessage(text)
+        setShowInput(false);
+        }
+        if(json == "unblockFriend")
+        {
+          setIfBlocked(true);
+          let text = "You blocked : " + friendName;
+        setErrorMessage(text)
+        setShowInput(false);
+        }
+        else if(json == "blockFriend")
         {
           setShowInput(true);
         }
+
         else
         {
           // setShowInput(true);
@@ -506,8 +523,14 @@ return (
            )} 
 
       <div className='History-Box'> 
-     
+          {ifBlocked ? (
+            <>
+            </>
+          ) : (
+            <>
       {messages.map(c => < MessageList  key = {c.id} user ={c} />)}
+            </>
+          )}
  
      <br></br>
             

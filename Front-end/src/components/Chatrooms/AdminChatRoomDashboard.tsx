@@ -18,6 +18,8 @@ const [haspassword,setHasPassword] = useState(false);
 const [ispublic,setisPublic] = useState(false);
 const [Roompassword,setRoompassword] = useState("");
 const [isUpdating, setIsUpdating] = useState(false);
+const [isroomPrivate, setIsRoomPrivate] = useState(false);
+
 const [Updated, setisUpdated] = useState(false);
 const [MembersAdmin,setMembersAdmin] = useState <any>([]);
 const [members,setMembers] = useState<any>([]);
@@ -321,6 +323,11 @@ const HandleUnmute = (e) => {
       console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "PROPS =>   : " , props);
       // // In JS == Ignores the Data Types 
       // setMembers(props.room.all_members);
+      if(props.room.is_private)
+      {
+        setIsRoomPrivate(true);
+      }
+
       setMembersAdmin(props.room.all_members);
     const getMembers = localStorage.getItem("members");
       if(getMembers)
@@ -480,13 +487,20 @@ const HandleUnmute = (e) => {
       </span>
       <span> Add As Admin  </span>
       </button>
-      
-<button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleRoomSettings}>
+      {isroomPrivate ? (
+        <>
+        </>
+      ) : (
+        <>
+  <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleRoomSettings}>
     <span className="icon material-symbols-outlined">
      {"Settings"}  
       </span>
       <span> Room Settings</span>
       </button>
+        </>
+      )}
+
       {open_rs ? (
         <>
    {/* <input type="text"

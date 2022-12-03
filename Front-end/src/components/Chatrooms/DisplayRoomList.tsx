@@ -35,13 +35,18 @@ const DisplayRoomList =  (props) => {
         e.preventDefault();
         console.log("Joining this room ..." + props.room.id + " ROOM INFO : DM :  " + props.room.is_dm, + " PROTECTED ? : "  +  props.room.is_protected)
         if(!props.room.is_dm)
-        JoinRoom()
+       { JoinRoom()
         .then((resp) => {
             console.log( " JOINING IS DONE ! ")
             // window.location.href="http:://localhost:3000/room/" + props.room.id;
     window.location.href = "http://localhost:3000/room/" + props.room.id;
             
-        })
+        })}
+        else
+        {
+    window.location.href = "http://localhost:3000/room/" + props.room.id;
+
+        }
     }
     return (
         <>
