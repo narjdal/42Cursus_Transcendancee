@@ -753,7 +753,7 @@ let PlayerService = class PlayerService {
                 id: Body.room_id,
             },
             data: {
-                password: await (0, bcrypt_1.hash)(Body.new_password, 10),
+                password: await (0, bcrypt_1.hash)(Body.new_password, 10)
             },
         });
         return roomUpdated;
@@ -816,7 +816,7 @@ let PlayerService = class PlayerService {
         const blocked_list = await this.prisma.friendship.findMany({
             where: {
                 AND: [
-                    { status: "block" },
+                    { status: "Block" },
                     {
                         OR: [
                             {

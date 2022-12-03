@@ -964,7 +964,7 @@ export class PlayerService {
                 id: Body.room_id,
             },
             data: {
-                password: await hash(Body.new_password, 10),
+                password: await hash(Body.new_password, 10)
             },
         })
         return roomUpdated;
@@ -1077,7 +1077,7 @@ export class PlayerService {
         const blocked_list = await this.prisma.friendship.findMany({
             where: {
                 AND: [
-                    { status: "block" },
+                    { status: "Block" },
                     {
                         OR: [
                             {
