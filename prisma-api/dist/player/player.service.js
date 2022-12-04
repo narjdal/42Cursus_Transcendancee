@@ -56,7 +56,7 @@ let PlayerService = class PlayerService {
     async getRoomById(userId, room_id) {
         const rooms_exist = await this.findRoomById(room_id);
         const is_member = await this.getPermissions(userId, room_id);
-        if (!is_member && rooms_exist.is_private === true) {
+        if (!is_member) {
             throw new common_1.UnauthorizedException("You are not a member of this room");
         }
         if (is_member && is_member.is_banned === true)
@@ -982,9 +982,12 @@ let PlayerService = class PlayerService {
             throw new common_1.NotFoundException("Cannot join a DM");
         }
         if (room.is_protected === true) {
-            throw new common_1.NotFoundException("You cann't join a protected room");
+            throw new common_1.NotFoundException("You can't join a protected room");
         }
         const member = await this.getPermissions(userId, room_id);
+        if (!member && room.is_private === true) {
+            throw new common_1.UnauthorizedException("You can't join a private room");
+        }
         if (member && member.is_banned === true) {
             throw new common_1.UnauthorizedException("You are banned from this room");
         }

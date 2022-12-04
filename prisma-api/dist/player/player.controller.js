@@ -35,6 +35,15 @@ let PlayerController = class PlayerController {
         });
         response.status(200).send(profile);
     }
+    async isBlocked(login, request, response) {
+        const isFriend = await this.playerService.getFriendshipStatus(request.user.id, login['id']);
+        if (isFriend && isFriend.status === "Block") {
+            response.status(200).send(true);
+        }
+        else {
+            response.status(200).send(false);
+        }
+    }
     async checkStatusFriendship(login, request, response) {
         const membership = await this.playerService.getFriendshipStatus(request.user.id, login['id']);
         let choices = [];
@@ -536,6 +545,15 @@ __decorate([
     __metadata("design:paramtypes", [String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "getProfile", null);
+__decorate([
+    (0, common_1.Get)('/isBlock/:id'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "isBlocked", null);
 __decorate([
     (0, common_1.Get)('/statusFriendship/:id'),
     __param(0, (0, common_1.Param)()),

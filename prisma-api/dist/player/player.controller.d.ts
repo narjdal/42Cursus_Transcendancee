@@ -5,6 +5,7 @@ export declare class PlayerController {
     constructor(playerService: PlayerService);
     login(request: any, response: any): Promise<void>;
     getProfile(nickname: string, request: any, response: any): Promise<void>;
+    isBlocked(login: string, request: any, response: any): Promise<void>;
     checkStatusFriendship(login: string, request: any, response: any): Promise<void>;
     RequestFriendship(login: string, request: any, response: any): Promise<void>;
     AcceptFriendship(login: string, request: any, response: any): Promise<void>;

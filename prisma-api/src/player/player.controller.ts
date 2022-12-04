@@ -41,18 +41,18 @@ export class PlayerController {
 
     // ---------------------------------- Frienships ----------------------------------
 
-    // @Get('/isFriend/:id') // id is player
-    // async isFriend(@Param() login: string, @Req() request, @Res() response) //:Promise<Profile>
-    // {
-    //     // console.log("----------------- isFriend -----------------", request.user.id, " ", login);
-    //     const isFriend = await this.playerService.getFriendshipStatus(request.user.id, login['id']);
-    //     if (isFriend.status == "friends") {
-    //         response.status(200).send(true);
-    //     }
-    //     else {
-    //         response.status(200).send(false);
-    //     }
-    // }
+    @Get('/isBlock/:id') // id is player
+    async isBlocked(@Param() login: string, @Req() request, @Res() response) //:Promise<Profile>
+    {
+        // console.log("----------------- isFriend -----------------", request.user.id, " ", login);
+        const isFriend = await this.playerService.getFriendshipStatus(request.user.id, login['id']);
+        if (isFriend && isFriend.status === "Block") {
+            response.status(200).send(true);
+        }
+        else {
+            response.status(200).send(false);
+        }
+    }
 
     @Get('/statusFriendship/:id') // check if nickname exist
     async checkStatusFriendship(@Param() login: string, @Req() request, @Res() response) {
@@ -74,7 +74,7 @@ export class PlayerController {
         }
         else if(membership && membership.status === "Block" && membership.receiverId === request.user.id) // condition
         {
-            choices = ['YourBlocked']; // walou hia block
+            choices = ['YourBlocked'];
         }
         else if (membership && membership.status === "Pending" && membership.senderId === request.user.id) // condition
         {
