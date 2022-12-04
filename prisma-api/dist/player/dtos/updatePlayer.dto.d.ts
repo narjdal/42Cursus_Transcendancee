@@ -2,7 +2,7 @@ import { Player } from "@prisma/client";
 export declare class MutePlayerInRoomDto {
     login: string;
     room_id: string;
-    time_s: number;
+    time: number;
 }
 export declare class CreateProtectedRoomDto {
     name: string;

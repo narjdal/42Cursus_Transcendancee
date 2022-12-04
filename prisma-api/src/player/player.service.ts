@@ -8,7 +8,7 @@ import { RouterModule } from '@nestjs/core';
 import { stat } from 'fs';
 import { networkInterfaces } from 'os';
 import { PrismaService } from 'src/prisma.service';
-import { CreateProtectedRoomDto, JoinProtectedRoomDto, SetPwdToPublicChatRoomDto, UpdateProtectedPasswordDto} from './dtos/updatePlayer.dto';
+import { MutePlayerInRoomDto, CreateProtectedRoomDto, JoinProtectedRoomDto, SetPwdToPublicChatRoomDto, UpdateProtectedPasswordDto} from './dtos/updatePlayer.dto';
 
 @Injectable()
 export class PlayerService {
@@ -67,6 +67,25 @@ export class PlayerService {
             throw new NotFoundException("room not found");
         }
         return room;
+    }
+
+    async getTypeOfRoom(roomId: string) //: Promise<boolean>
+    {
+        // console.log("-->", roomId);
+        const room = await this.findRoomById(roomId);
+        let type = null;
+        if (room.is_dm === true) {
+            type = "dm";
+        }
+        else if (room.is_public === true) {
+            type = "public";
+        }
+        else if (room.is_private === true) {
+            type = "private";
+        }
+        else
+            type = "protected";
+        return type;
     }
 
     // Get room by id
@@ -771,8 +790,7 @@ export class PlayerService {
                             //        id: me.id,
                             //     }
                             // },
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: userId
                             // connect && include 
                         },
@@ -807,8 +825,7 @@ export class PlayerService {
                             //        id: me.id,
                             //     }
                             // },
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: userId,
                             // connect && include 
                         },
@@ -833,8 +850,7 @@ export class PlayerService {
                     create: [
                         {
                             statusMember: "owner",
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: userId,
                         },
                     ],
@@ -859,6 +875,7 @@ export class PlayerService {
     }
 
     async DeletePwdToProtectedChatRoom(userId: string, room_id: string) {
+        console.log("room_id", room_id);
 
         // 1- check if this room exists and is protected
         const room = await this.prisma.chatRoom.findFirst({
@@ -974,14 +991,6 @@ export class PlayerService {
                 id: Body.room_id,
                 is_protected: true,
             },
-            select: {
-                id: true,
-                name: true,
-                is_dm: true,
-                is_public: true,
-                is_private: true,
-                is_protected: true,
-            }
         })
         if (!room) {
             throw new NotFoundException("Room not found");
@@ -999,6 +1008,7 @@ export class PlayerService {
             throw new NotFoundException("You are not the owner of this room");
         }
         
+        console.log("Body.new_password", Body.new_password);
         // 4- update the password of the room
         const roomUpdated = await this.prisma.chatRoom.update({
             where: {
@@ -1045,8 +1055,7 @@ export class PlayerService {
                             //        id: me.id,
                             //     }
                             // },
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: userId,
                             // connect && include 
                         },
@@ -1058,8 +1067,7 @@ export class PlayerService {
                             //        id: me.id,
                             //     }
                             // },
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: receiver.id
                             // connect && include 
                         },
@@ -1288,9 +1296,8 @@ export class PlayerService {
             data: {
                 statusMember: "member",
                 is_muted: false,
-                muted_until: new Date(),
+                muted_since: new Date(),
                 is_banned: false,
-                blocked_since: new Date(),
                 playerId: palyer.id,
                 roomId: room_id,
 
@@ -1298,6 +1305,32 @@ export class PlayerService {
         })
         // console.log("permission ===>", permission);
         return permission;
+    }
+
+    async joinDM(userId: string, login: string)
+    {
+        // 0- check if login exists
+        const user = await this.findPlayerByNickname(login);
+
+        let room = null;
+        // 1- check if room already exists between those 2 users
+        room = await this.getRoomBetweenTwoPlayers(userId, login);
+        // 2- if not create a new room
+        if (room === null)
+        {
+            const friendship = await this.getFriendshipStatus(userId, login);
+            if (!friendship) {
+                room = await this.createDMRoom(userId, login);
+            }
+            // status friendship: 0: Friend, 1: Pending, 2: Block
+            else if (friendship.status === 'Pending') {
+                room = await this.createDMRoom(userId, login);
+            }
+            else if (friendship.status === 'Block') {
+                throw new NotFoundException("You can not send a message to this player");
+            }
+        }
+        return await this.getRoomById(userId, room.id);
     }
 
     async joinRoom(userId: string, room_id: string) {
@@ -1311,19 +1344,21 @@ export class PlayerService {
         // 2- check if The Room is not a dm
         if(room.is_dm === true)
         {
-            throw new NotFoundException("Cannot join a DM");
+            // create or getRoomID
+            // throw new NotFoundException("Cannot join a DM");
         }
+        // 2- check if the Room is not protected
         if(room.is_protected === true)
         {
             throw new NotFoundException("You can't join a protected room");
         }
         // 3- create a permission to user to join the room if not created before
         const member = await this.getPermissions(userId, room_id);
-        if (!member && room.is_private === true) {
-            throw new UnauthorizedException("You can't join a private room");
-        }
         if (member && member.is_banned === true) {
             throw new UnauthorizedException("You are banned from this room");
+        }
+        if (!member && room.is_private === true) {
+            throw new UnauthorizedException("You can't join a private room");
         }
         else if(!member && room.is_private === false)
         {
@@ -1333,14 +1368,13 @@ export class PlayerService {
                     roomId: room_id,
                     statusMember: "member",
                     is_muted: false,
-                    muted_until: new Date(),
+                    muted_since: new Date(),
                     is_banned: false,
-                    blocked_since: new Date(),
                 }
             })
-            return permission;
+            // return permission;
         }
-        return member;
+        return await this.getRoomById(userId, room.id);
     }
 
     async joinProtectedRoom(userId: string, {room_id, pwd}: JoinProtectedRoomDto) {
@@ -1380,14 +1414,13 @@ export class PlayerService {
                     roomId: room_id,
                     statusMember: "member",
                     is_muted: false,
-                    muted_until: new Date(),
+                    muted_since: new Date(),
                     is_banned: false,
-                    blocked_since: new Date(),
                 }
             })
             return permission;
         }
-        return member;
+        return await this.getRoomById(userId, room.id);
     }
 
     // 5- set member as admin if u are admin or owner
@@ -1424,7 +1457,6 @@ export class PlayerService {
             },
             data: {
                 is_banned: true,
-                blocked_since: new Date(),
             },
         });
     }
@@ -1446,7 +1478,7 @@ export class PlayerService {
     }
     // 7- mute OR umute member if u are admin or owner
 
-    async muteMember(login: string, room_id: string/*, fix_date: Date*/) {
+    async muteMember(login: string, room_id: string, time: number) {
         const palyer = await this.findPlayerById(login);
 
         const room = await this.prisma.permission.updateMany({
@@ -1459,7 +1491,8 @@ export class PlayerService {
             },
             data: {
                 is_muted: true,
-                // muted_until: fix_date,
+                muted_since: new Date(),
+                duration: time,
             },
         });
     }
@@ -1477,8 +1510,7 @@ export class PlayerService {
             },
             data: {
                 is_muted: false,
-                muted_until: new Date(),
-                blocked_since: new Date(),
+                muted_since: new Date(),
             },
         });
     }

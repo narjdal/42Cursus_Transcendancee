@@ -54,6 +54,22 @@ let PlayerService = class PlayerService {
         }
         return room;
     }
+    async getTypeOfRoom(roomId) {
+        const room = await this.findRoomById(roomId);
+        let type = null;
+        if (room.is_dm === true) {
+            type = "dm";
+        }
+        else if (room.is_public === true) {
+            type = "public";
+        }
+        else if (room.is_private === true) {
+            type = "private";
+        }
+        else
+            type = "protected";
+        return type;
+    }
     async getRoomById(userId, room_id) {
         const rooms_exist = await this.findRoomById(room_id);
         const is_member = await this.getPermissions(userId, room_id);
@@ -598,8 +614,7 @@ let PlayerService = class PlayerService {
                     create: [
                         {
                             statusMember: "owner",
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: userId
                         },
                     ],
@@ -618,8 +633,7 @@ let PlayerService = class PlayerService {
                     create: [
                         {
                             statusMember: "owner",
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: userId,
                         },
                     ],
@@ -639,8 +653,7 @@ let PlayerService = class PlayerService {
                     create: [
                         {
                             statusMember: "owner",
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: userId,
                         },
                     ],
@@ -658,6 +671,7 @@ let PlayerService = class PlayerService {
         return room;
     }
     async DeletePwdToProtectedChatRoom(userId, room_id) {
+        console.log("room_id", room_id);
         const room = await this.prisma.chatRoom.findFirst({
             where: {
                 id: room_id,
@@ -751,14 +765,6 @@ let PlayerService = class PlayerService {
                 id: Body.room_id,
                 is_protected: true,
             },
-            select: {
-                id: true,
-                name: true,
-                is_dm: true,
-                is_public: true,
-                is_private: true,
-                is_protected: true,
-            }
         });
         if (!room) {
             throw new common_1.NotFoundException("Room not found");
@@ -773,6 +779,7 @@ let PlayerService = class PlayerService {
         if (!permision) {
             throw new common_1.NotFoundException("You are not the owner of this room");
         }
+        console.log("Body.new_password", Body.new_password);
         const roomUpdated = await this.prisma.chatRoom.update({
             where: {
                 id: Body.room_id,
@@ -802,14 +809,12 @@ let PlayerService = class PlayerService {
                     create: [
                         {
                             statusMember: "member",
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: userId,
                         },
                         {
                             statusMember: "member",
-                            muted_until: new Date(),
-                            blocked_since: new Date(),
+                            muted_since: new Date(),
                             playerId: receiver.id
                         },
                     ],
@@ -963,14 +968,31 @@ let PlayerService = class PlayerService {
             data: {
                 statusMember: "member",
                 is_muted: false,
-                muted_until: new Date(),
+                muted_since: new Date(),
                 is_banned: false,
-                blocked_since: new Date(),
                 playerId: palyer.id,
                 roomId: room_id,
             }
         });
         return permission;
+    }
+    async joinDM(userId, login) {
+        const user = await this.findPlayerByNickname(login);
+        let room = null;
+        room = await this.getRoomBetweenTwoPlayers(userId, login);
+        if (room === null) {
+            const friendship = await this.getFriendshipStatus(userId, login);
+            if (!friendship) {
+                room = await this.createDMRoom(userId, login);
+            }
+            else if (friendship.status === 'Pending') {
+                room = await this.createDMRoom(userId, login);
+            }
+            else if (friendship.status === 'Block') {
+                throw new common_1.NotFoundException("You can not send a message to this player");
+            }
+        }
+        return await this.getRoomById(userId, room.id);
     }
     async joinRoom(userId, room_id) {
         const room = await this.prisma.chatRoom.findUnique({
@@ -980,17 +1002,16 @@ let PlayerService = class PlayerService {
             throw new common_1.NotFoundException("Room not found");
         }
         if (room.is_dm === true) {
-            throw new common_1.NotFoundException("Cannot join a DM");
         }
         if (room.is_protected === true) {
             throw new common_1.NotFoundException("You can't join a protected room");
         }
         const member = await this.getPermissions(userId, room_id);
-        if (!member && room.is_private === true) {
-            throw new common_1.UnauthorizedException("You can't join a private room");
-        }
         if (member && member.is_banned === true) {
             throw new common_1.UnauthorizedException("You are banned from this room");
+        }
+        if (!member && room.is_private === true) {
+            throw new common_1.UnauthorizedException("You can't join a private room");
         }
         else if (!member && room.is_private === false) {
             const permission = await this.prisma.permission.create({
@@ -999,14 +1020,12 @@ let PlayerService = class PlayerService {
                     roomId: room_id,
                     statusMember: "member",
                     is_muted: false,
-                    muted_until: new Date(),
+                    muted_since: new Date(),
                     is_banned: false,
-                    blocked_since: new Date(),
                 }
             });
-            return permission;
         }
-        return member;
+        return await this.getRoomById(userId, room.id);
     }
     async joinProtectedRoom(userId, { room_id, pwd }) {
         const room = await this.prisma.chatRoom.findUnique({
@@ -1037,14 +1056,13 @@ let PlayerService = class PlayerService {
                     roomId: room_id,
                     statusMember: "member",
                     is_muted: false,
-                    muted_until: new Date(),
+                    muted_since: new Date(),
                     is_banned: false,
-                    blocked_since: new Date(),
                 }
             });
             return permission;
         }
-        return member;
+        return await this.getRoomById(userId, room.id);
     }
     async setAdmin(login, room_id) {
         const palyer = await this.findPlayerByNickname(login);
@@ -1071,7 +1089,6 @@ let PlayerService = class PlayerService {
             },
             data: {
                 is_banned: true,
-                blocked_since: new Date(),
             },
         });
     }
@@ -1086,7 +1103,7 @@ let PlayerService = class PlayerService {
             },
         });
     }
-    async muteMember(login, room_id) {
+    async muteMember(login, room_id, time) {
         const palyer = await this.findPlayerById(login);
         const room = await this.prisma.permission.updateMany({
             where: {
@@ -1097,6 +1114,8 @@ let PlayerService = class PlayerService {
             },
             data: {
                 is_muted: true,
+                muted_since: new Date(),
+                duration: time,
             },
         });
     }
@@ -1111,8 +1130,7 @@ let PlayerService = class PlayerService {
             },
             data: {
                 is_muted: false,
-                muted_until: new Date(),
-                blocked_since: new Date(),
+                muted_since: new Date(),
             },
         });
     }

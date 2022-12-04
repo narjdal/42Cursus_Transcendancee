@@ -10,7 +10,7 @@ export class MutePlayerInRoomDto {
     @IsNotEmpty()  room_id: string;
 
     @ApiProperty()
-    @IsNotEmpty()   time_s: number;
+    @IsNotEmpty()   time: number;
 }
 
 export class CreateProtectedRoomDto {

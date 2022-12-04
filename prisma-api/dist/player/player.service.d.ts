@@ -6,6 +6,7 @@ export declare class PlayerService {
     findPlayerById(userId: string): Promise<import(".prisma/client").Player>;
     findPlayerByNickname(login: string): Promise<import(".prisma/client").Player>;
     findRoomById(roomId: string): Promise<import(".prisma/client").ChatRoom>;
+    getTypeOfRoom(roomId: string): Promise<any>;
     getRoomById(userId: string, room_id: string): Promise<{
         name: string;
         is_dm: boolean;
@@ -102,20 +103,49 @@ export declare class PlayerService {
     sendMessage(userId: string, room_id: string, message: string): Promise<import(".prisma/client").Message>;
     sendMessageinRoom(userId: string, message: string, room_id: string): Promise<import(".prisma/client").Message>;
     addMember(login: string, room_id: string): Promise<import(".prisma/client").Permission>;
-    joinRoom(userId: string, room_id: string): Promise<{
-        statusMember: string;
-        is_banned: boolean;
-        is_muted: boolean;
+    joinDM(userId: string, login: string): Promise<{
+        name: string;
+        is_dm: boolean;
+        is_public: boolean;
+        is_private: boolean;
+        is_protected: boolean;
+        all_members: {
+            player: {
+                id: string;
+                nickname: string;
+            };
+        }[];
     }>;
-    joinProtectedRoom(userId: string, { room_id, pwd }: JoinProtectedRoomDto): Promise<{
-        statusMember: string;
-        is_banned: boolean;
-        is_muted: boolean;
+    joinRoom(userId: string, room_id: string): Promise<{
+        name: string;
+        is_dm: boolean;
+        is_public: boolean;
+        is_private: boolean;
+        is_protected: boolean;
+        all_members: {
+            player: {
+                id: string;
+                nickname: string;
+            };
+        }[];
+    }>;
+    joinProtectedRoom(userId: string, { room_id, pwd }: JoinProtectedRoomDto): Promise<import(".prisma/client").Permission | {
+        name: string;
+        is_dm: boolean;
+        is_public: boolean;
+        is_private: boolean;
+        is_protected: boolean;
+        all_members: {
+            player: {
+                id: string;
+                nickname: string;
+            };
+        }[];
     }>;
     setAdmin(login: string, room_id: string): Promise<void>;
     banMember(login: string, room_id: string): Promise<void>;
     kickMember(login: string, room_id: string): Promise<void>;
-    muteMember(login: string, room_id: string): Promise<void>;
+    muteMember(login: string, room_id: string, time: number): Promise<void>;
     unmuteMember(login: string, room_id: string): Promise<void>;
     leaveChannel(userId: string, room_id: string): Promise<void>;
 }

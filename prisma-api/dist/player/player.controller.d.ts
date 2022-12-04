@@ -1,5 +1,5 @@
 import { PlayerService } from './player.service';
-import { CreateProtectedRoomDto, JoinProtectedRoomDto, SetPwdToPublicChatRoomDto, UpdateProtectedPasswordDto } from './dtos/updatePlayer.dto';
+import { MutePlayerInRoomDto, CreateProtectedRoomDto, JoinProtectedRoomDto, SetPwdToPublicChatRoomDto, UpdateProtectedPasswordDto } from './dtos/updatePlayer.dto';
 export declare class PlayerController {
     private readonly playerService;
     constructor(playerService: PlayerService);
@@ -19,7 +19,7 @@ export declare class PlayerController {
     GetListOfSetAdmin(id_room: string, request: any, response: any): Promise<void>;
     setAdmin(login: string, room_id: string, request: any, response: any): Promise<void>;
     GetListOfMembersToMute(id_room: string, request: any, response: any): Promise<void>;
-    muteMember(login: string, room_id: string, request: any, response: any): Promise<void>;
+    muteMember(Body: MutePlayerInRoomDto, request: any, response: any): Promise<void>;
     GetListOfMembersToUnmute(id_room: string, request: any, response: any): Promise<void>;
     unmuteMember(nickname: string, room_id: string, request: any, response: any): Promise<void>;
     GetListOfMembersToBan(id_room: string, request: any, response: any): Promise<void>;
@@ -33,10 +33,13 @@ export declare class PlayerController {
     CreateProtectedChatRoom(Body: CreateProtectedRoomDto, request: any, response: any): Promise<void>;
     UpdatePwdProtectedChatRoom(Body: UpdateProtectedPasswordDto, request: any, response: any): Promise<void>;
     DeletePwdProtectedChatRoom(Body: any, request: any, response: any): Promise<void>;
+    GetTypeOfRoom(id_room: string, request: any, response: any): Promise<void>;
     GetRoomById(id_room: string, request: any, response: any): Promise<void>;
     leaveRoom(room_id: string, request: any, response: any): Promise<void>;
     getMessages(room_id: string, request: any, response: any): Promise<void>;
     SendMessageButton(login: string, request: any, response: any): Promise<void>;
     joinRoom(room_id: string, request: any, response: any): Promise<any>;
+    joinDM(login: string, request: any, response: any): Promise<any>;
+    joinNonProtectedRoom(room_id: string, request: any, response: any): Promise<any>;
     joinProtectedRoom(roomId_pwd: JoinProtectedRoomDto, request: any, response: any): Promise<any>;
 }
