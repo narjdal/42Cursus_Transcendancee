@@ -448,13 +448,6 @@ let PlayerController = class PlayerController {
     }
     async GetRoomById(id_room, request, response) {
         const room = await this.playerService.getRoomById(request.user.id, id_room['id']);
-        const permision = await this.playerService.getPermissions(request.user.id, id_room['id']);
-        if (!permision) {
-            throw new common_1.NotFoundException("You can not a get infos of this room bcuz you are not member");
-        }
-        if (room === null) {
-            throw new common_1.NotFoundException("No Room exists");
-        }
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });

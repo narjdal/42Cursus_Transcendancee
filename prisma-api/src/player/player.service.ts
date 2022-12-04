@@ -67,6 +67,45 @@ export class PlayerService {
         return room;
     }
 
+    // Get room by id
+    async getRoomById(userId: string, room_id: string) {
+        // 1- Check if room exists
+        const rooms_exist = await this.findRoomById(room_id);
+        // 2- check if user is a member of the room
+        const is_member = await this.getPermissions(userId, room_id);
+        if (!is_member) {
+            throw new UnauthorizedException("You are not a member of this room");
+        }
+        if (is_member.is_banned === true)
+            throw new UnauthorizedException("You are banned from this room");
+        // 3- return room
+        const room = await this.prisma.chatRoom.findFirst({
+            where: {
+                id: room_id,
+            },
+            select: {
+                name: true,
+                is_dm: true,
+                is_public: true,
+                is_private: true,
+                is_protected : true,
+                all_members: {
+                    select: {
+                        player: {
+                            select: {
+                                nickname: true,
+                                id: true,
+                                }
+                            },
+                        },
+                    },
+                },
+            }
+        )
+        return room;
+    }
+
+
 
     async getRoomBetweenTwoPlayers(useId: string, login: string) //: Promise<boolean>
     {
@@ -119,7 +158,8 @@ export class PlayerService {
                     { // member DM or private proctected
                         all_members: {
                             some: {
-                                playerId: userId
+                                playerId: userId,
+                                is_banned: false,
                             }
                         },
                     },
@@ -623,7 +663,7 @@ export class PlayerService {
                 data: {
                     senderId: userId,
                     receiverId: howa.id,
-                    status: "Blocked"
+                    status: "Block"
                 }
             })
         }
@@ -701,35 +741,6 @@ export class PlayerService {
 
 
     // ------------------------------ 3- Chat ---------------------------------------------
-
-    // Get room by id
-    async getRoomById(userId: string, room_id: string) {
-        const room = await this.prisma.chatRoom.findFirst({
-            where: {
-                id: room_id,
-            },
-            select: {
-                name: true,
-                is_dm: true,
-                is_public: true,
-                is_private: true,
-                is_protected : true,
-                all_members: {
-                    select: {
-                        player: {
-                            select: {
-                                nickname: true,
-                                id: true,
-                                }
-                            },
-                        },
-                    },
-                },
-            }
-        )
-        return room;
-    }
-
 
     // 0- Create a chat room
 
@@ -1120,11 +1131,11 @@ export class PlayerService {
                                 // playerId: blocked_list,
                             },
                         },
-                        {
-                            createdAt: {
-                                lte: status.blocked_since,
-                            }
-                        },
+                        // {
+                        //     createdAt: {
+                        //         lte: status.blocked_since,
+                        //     }
+                        // },
                     ],
                 },
                 orderBy:

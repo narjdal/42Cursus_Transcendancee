@@ -769,25 +769,11 @@ export class PlayerController {
     async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("-------------- Get Room By Id --------------");
 
-        // 1- check if this room exists
         const room = await this.playerService.getRoomById(request.user.id, id_room['id']);
-        // console.log("room: \n", room);
         
-        // 2- check if this user is a member of this room
-        const permision = await this.playerService.getPermissions(request.user.id, id_room['id']);
-        if(!permision)
-        {
-            throw new NotFoundException("You can not a get infos of this room bcuz you are not member");
-        }
-
-        if(room === null)
-        {
-            throw new NotFoundException("No Room exists");
-        }
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }
-        )
+        })
         // console.log("-------------Finish Get Room By Id-------------");
         response.status(200).send(room);
     }

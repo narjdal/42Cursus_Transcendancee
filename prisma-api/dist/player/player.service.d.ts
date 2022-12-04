@@ -6,6 +6,19 @@ export declare class PlayerService {
     findPlayerById(userId: string): Promise<import(".prisma/client").Player>;
     findPlayerByNickname(login: string): Promise<import(".prisma/client").Player>;
     findRoomById(roomId: string): Promise<import(".prisma/client").ChatRoom>;
+    getRoomById(userId: string, room_id: string): Promise<{
+        name: string;
+        is_dm: boolean;
+        is_public: boolean;
+        is_private: boolean;
+        is_protected: boolean;
+        all_members: {
+            player: {
+                id: string;
+                nickname: string;
+            };
+        }[];
+    }>;
     getRoomBetweenTwoPlayers(useId: string, login: string): Promise<import(".prisma/client").ChatRoom>;
     getAllRooms(userId: string): Promise<{
         id: string;
@@ -41,19 +54,6 @@ export declare class PlayerService {
     blockFriendship(userId: string, friendname: string): Promise<void>;
     deleteFriendship(userId: string, friendname: string): Promise<void>;
     refuseFriendship(userId: string, friendname: string): Promise<void>;
-    getRoomById(userId: string, room_id: string): Promise<{
-        is_protected: boolean;
-        is_public: boolean;
-        all_members: {
-            player: {
-                id: string;
-                nickname: string;
-            };
-        }[];
-        name: string;
-        is_dm: boolean;
-        is_private: boolean;
-    }>;
     createPublicChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
     createPrivateChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
     createProtectedChatRoom(userId: string, Body: CreateProtectedRoomDto): Promise<import(".prisma/client").ChatRoom>;
