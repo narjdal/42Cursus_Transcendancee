@@ -364,7 +364,7 @@ await GetMembers()
 
     
       console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name )
-      console.log("CHATROOMBOX ROOM PERM : " + statusMember.data + " muted : " , props.statusMember.data)
+      // console.log("CHATROOMBOX ROOM PERM : " + statusMember.data + " muted : " , props.statusMember.data)
    
         if (props.room.is_dm) 
         {

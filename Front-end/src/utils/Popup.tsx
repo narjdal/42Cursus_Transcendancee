@@ -1,15 +1,16 @@
 import React from 'react';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import './Popup.css'
+import { useParams } from 'react-router-dom';
 const Pop = (props) => {
 const [Roompassword,setRoomPassword] = useState("");
 const [isUpdating,setIsUpdating] = useState(false);
 const [Updated,setUpadted] = useState(false);
 const [errorMessage,setErrorMessage] = useState("");
 
-
+const params = useParams();
 const [showinput,setInput] = useState(false);
 const HandleShowPassword = (e) => {
     e.preventDefault();
@@ -39,6 +40,20 @@ async function TryAccessRoom()
     console.log("The JoinprotectedRoom Response   is => " + JSON.stringify(json))
 
   // window.location.reload();
+  
+  if(json.statusCode == "401" || json.statusCode == "404")
+  {
+    setErrorMessage(json.message)
+  }
+  else
+  {
+    console.log("Room Access if now true.");
+    let text = "HasRoomAccess" + params.id
+
+    localStorage.setItem(text,"true");
+    window.location.reload();
+  }
+
     return json;
 })
 .catch((error) => {
@@ -62,15 +77,18 @@ const HandleEnterProtectedRoom = (e) => {
     }
 
 }
+
 return (
   <Popup trigger ={
-  <button type="button" className='ButtonPswd' onClick={HandleShowPassword}>
+      <button type="button" className='ButtonPswd' onClick={HandleShowPassword}>
       <span className="icon material-symbols-outlined">
      {"lock"}    {props.room.name}    </span>
       </button> 
+
       }    
     position="bottom center">
     <div className='ProfilePic-textBox'>
+
     <input type="password"
        className={`${Roompassword ? "has-value" : ""}`}
 	   id="textbox"

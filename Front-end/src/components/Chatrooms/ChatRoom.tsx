@@ -57,7 +57,8 @@ async function GetRoomById  ()  {
       if(json.data.is_protected)
       {
         setRoomName(json.data.name)
-        setIsProtected(true);
+        // setIsProtected(true);
+        GetPermissions();
         setIsDm(false);
       }
     else  if(json.data.is_dm == true)
@@ -106,11 +107,7 @@ async function GetRoomById  ()  {
   })
   .catch((error) => {
     setErrorMessage("An error occured ! You cannot access this room.");
-    if(localStorage.getItem("protected") == "true")
-    {
-      setIsProtected(true);
-      setErrorMessage("");
-    }
+  
       console.log("An error occured  while fetching the GetRoomById  : " + error)
       return error;
   })
@@ -245,6 +242,19 @@ useEffect (() =>
           {
             const current = JSON.parse(loggeduser);
         // if(localStorage.getItem("protected") == "false")
+        if(localStorage.getItem("protected") == "true")
+        {
+          setIsProtected(true);
+          setErrorMessage("");
+        }
+  let text = "HasRoomAccess" + params.id
+
+        if(localStorage.getItem(text) == "true")
+        {
+          console.log(" HE HAS ROOM ACCEEES")
+          setIsProtected(false);
+          // setErrorMessage(" YOU HAVE ACCESS");
+        }
             Waiit();
             // else if (localStorage.getItem("protected") == "true")
             // {
