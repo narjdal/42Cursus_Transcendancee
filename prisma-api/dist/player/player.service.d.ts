@@ -56,10 +56,31 @@ export declare class PlayerService {
     refuseFriendship(userId: string, friendname: string): Promise<void>;
     createPublicChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
     createPrivateChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
-    createProtectedChatRoom(userId: string, Body: CreateProtectedRoomDto): Promise<import(".prisma/client").ChatRoom>;
+    createProtectedChatRoom(userId: string, Body: CreateProtectedRoomDto): Promise<{
+        name: string;
+        is_dm: boolean;
+        is_public: boolean;
+        is_private: boolean;
+        is_protected: boolean;
+        id: string;
+    }>;
     DeletePwdToProtectedChatRoom(userId: string, room_id: string): Promise<import(".prisma/client").ChatRoom>;
-    SetPwdToPublicChatRoom(userId: string, Body: SetPwdToPublicChatRoomDto): Promise<import(".prisma/client").ChatRoom>;
-    UpdatePwdProtectedChatRoom(userId: string, Body: UpdateProtectedPasswordDto): Promise<import(".prisma/client").ChatRoom>;
+    SetPwdToPublicChatRoom(userId: string, Body: SetPwdToPublicChatRoomDto): Promise<{
+        name: string;
+        is_dm: boolean;
+        is_public: boolean;
+        is_private: boolean;
+        is_protected: boolean;
+        id: string;
+    }>;
+    UpdatePwdProtectedChatRoom(userId: string, Body: UpdateProtectedPasswordDto): Promise<{
+        name: string;
+        is_dm: boolean;
+        is_public: boolean;
+        is_private: boolean;
+        is_protected: boolean;
+        id: string;
+    }>;
     createDMRoom(userId: string, friendname: string): Promise<import(".prisma/client").ChatRoom>;
     getPermissions(userId: string, id_room: string): Promise<{
         statusMember: string;

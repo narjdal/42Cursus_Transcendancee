@@ -839,6 +839,20 @@ export class PlayerService {
                     ],
                 },
             },
+            select: {
+                id: true,
+                name: true,
+                is_dm: true,
+                is_protected: true,
+                is_private: true,
+                is_public: true,
+                // all_members: {
+                //     select: {
+                //         statusMember: true,
+                //         muted_until: true,
+                //     },
+                // },
+            },
         })
         return room;
     }
@@ -896,7 +910,7 @@ export class PlayerService {
        const room = await this.prisma.chatRoom.findFirst({
             where: {
                 id: Body.room_id,
-                is_private: true,
+                is_public: true,
             },
             select: {
                 id: true,
@@ -933,6 +947,20 @@ export class PlayerService {
                 is_public: false,
                 password: await bcrypt.hash(Body.pwd, 10),
             },
+            select: {
+                id: true,
+                name: true,
+                is_dm: true,
+                is_public: true,
+                is_private: true,
+                is_protected: true,
+                // all_members: {
+                //     select: {
+                //         statusMember: true,
+                //         playerId: true,
+                //     },
+                // },
+            }
         })
         return roomUpdated;
     }
@@ -978,6 +1006,20 @@ export class PlayerService {
             data: {
                 password: await bcrypt.hash(Body.new_password, 10)
             },
+            select: {
+                id: true,
+                name: true,
+                is_dm: true,
+                is_public: true,
+                is_private: true,
+                is_protected: true,
+                // all_members: {
+                //     select: {
+                //         statusMember: true,
+                //         playerId: true,
+                //     },
+                // },
+            }
         })
         return roomUpdated;
     }

@@ -645,6 +645,14 @@ let PlayerService = class PlayerService {
                     ],
                 },
             },
+            select: {
+                id: true,
+                name: true,
+                is_dm: true,
+                is_protected: true,
+                is_private: true,
+                is_public: true,
+            },
         });
         return room;
     }
@@ -692,7 +700,7 @@ let PlayerService = class PlayerService {
         const room = await this.prisma.chatRoom.findFirst({
             where: {
                 id: Body.room_id,
-                is_private: true,
+                is_public: true,
             },
             select: {
                 id: true,
@@ -725,6 +733,14 @@ let PlayerService = class PlayerService {
                 is_public: false,
                 password: await bcrypt.hash(Body.pwd, 10),
             },
+            select: {
+                id: true,
+                name: true,
+                is_dm: true,
+                is_public: true,
+                is_private: true,
+                is_protected: true,
+            }
         });
         return roomUpdated;
     }
@@ -763,6 +779,14 @@ let PlayerService = class PlayerService {
             data: {
                 password: await bcrypt.hash(Body.new_password, 10)
             },
+            select: {
+                id: true,
+                name: true,
+                is_dm: true,
+                is_public: true,
+                is_private: true,
+                is_protected: true,
+            }
         });
         return roomUpdated;
     }
