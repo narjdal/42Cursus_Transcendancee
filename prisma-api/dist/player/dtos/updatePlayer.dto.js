@@ -9,9 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdatePlayerDto = exports.UpdateProtectedPasswordDto = exports.JoinProtectedRoomDto = exports.SetPwdToPublicChatRoomDto = exports.CreateProtectedRoomDto = void 0;
+exports.UpdatePlayerDto = exports.UpdateProtectedPasswordDto = exports.JoinProtectedRoomDto = exports.SetPwdToPublicChatRoomDto = exports.CreateProtectedRoomDto = exports.MutePlayerInRoomDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+class MutePlayerInRoomDto {
+}
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], MutePlayerInRoomDto.prototype, "login", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], MutePlayerInRoomDto.prototype, "room_id", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], MutePlayerInRoomDto.prototype, "time_s", void 0);
+exports.MutePlayerInRoomDto = MutePlayerInRoomDto;
 class CreateProtectedRoomDto {
 }
 __decorate([

@@ -2,6 +2,16 @@ import {ApiProperty} from "@nestjs/swagger";
 import { Player } from "@prisma/client";
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
+export class MutePlayerInRoomDto {
+    @ApiProperty()
+    @IsNotEmpty()  login: string;
+
+    @ApiProperty()
+    @IsNotEmpty()  room_id: string;
+
+    @ApiProperty()
+    @IsNotEmpty()   time_s: number;
+}
 
 export class CreateProtectedRoomDto {
     @ApiProperty()

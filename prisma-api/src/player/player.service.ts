@@ -38,6 +38,7 @@ export class PlayerService {
 
     async findPlayerByNickname(login: string) //: Promise<any> {
     {
+        console.log("FindPlayerByNickname", login);  // userId ===> roomId
         const player = await this.prisma.player.findUnique({
             where: {
                 nickname: login

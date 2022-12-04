@@ -32,6 +32,7 @@ let PlayerService = class PlayerService {
         return player;
     }
     async findPlayerByNickname(login) {
+        console.log("FindPlayerByNickname", login);
         const player = await this.prisma.player.findUnique({
             where: {
                 nickname: login

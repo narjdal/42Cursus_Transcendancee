@@ -835,8 +835,9 @@ export class PlayerController {
     async SendMessageButton(@Param() login: string,@Req() request, @Res() response) {
         console.log("Send Message");
 
+        
         // 0- check if login exists
-        const user = await this.playerService.findPlayerByNickname(login['login']);
+        const user = await this.playerService.findPlayerByNickname(login['id']);
 
         let room = null;
         // 1- check if room already exists between those 2 users

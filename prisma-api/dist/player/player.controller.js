@@ -489,7 +489,7 @@ let PlayerController = class PlayerController {
     }
     async SendMessageButton(login, request, response) {
         console.log("Send Message");
-        const user = await this.playerService.findPlayerByNickname(login['login']);
+        const user = await this.playerService.findPlayerByNickname(login['id']);
         let room = null;
         room = await this.playerService.getRoomBetweenTwoPlayers(request.user.id, login['id']);
         if (room === null) {
