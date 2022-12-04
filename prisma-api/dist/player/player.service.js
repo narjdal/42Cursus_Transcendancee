@@ -1038,7 +1038,7 @@ let PlayerService = class PlayerService {
         return await this.getRoomById(userId, room.id);
     }
     async joinProtectedRoom(userId, { room_id, pwd }) {
-        const room = await this.prisma.chatRoom.findUnique({
+        const room = await this.prisma.chatRoom.findFirst({
             where: { id: room_id }
         });
         if (!room) {
