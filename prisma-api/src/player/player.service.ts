@@ -74,10 +74,10 @@ export class PlayerService {
         const rooms_exist = await this.findRoomById(room_id);
         // 2- check if user is a member of the room
         const is_member = await this.getPermissions(userId, room_id);
-        if (!is_member) {
+        if (!is_member && rooms_exist.is_private === true) {
             throw new UnauthorizedException("You are not a member of this room");
         }
-        if (is_member.is_banned === true)
+        if (is_member && is_member.is_banned === true)
             throw new UnauthorizedException("You are banned from this room");
         // 3- return room
         const room = await this.prisma.chatRoom.findFirst({
@@ -1347,6 +1347,7 @@ export class PlayerService {
         if (!room) {
             throw new NotFoundException("Room not found");
         }
+        console.log("room", room);
         // 2- check if The Room is not a dm
         if(room.is_dm === true)
         {

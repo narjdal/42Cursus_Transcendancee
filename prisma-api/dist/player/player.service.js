@@ -56,10 +56,10 @@ let PlayerService = class PlayerService {
     async getRoomById(userId, room_id) {
         const rooms_exist = await this.findRoomById(room_id);
         const is_member = await this.getPermissions(userId, room_id);
-        if (!is_member) {
+        if (!is_member && rooms_exist.is_private === true) {
             throw new common_1.UnauthorizedException("You are not a member of this room");
         }
-        if (is_member.is_banned === true)
+        if (is_member && is_member.is_banned === true)
             throw new common_1.UnauthorizedException("You are banned from this room");
         const room = await this.prisma.chatRoom.findFirst({
             where: {
@@ -1011,6 +1011,7 @@ let PlayerService = class PlayerService {
         if (!room) {
             throw new common_1.NotFoundException("Room not found");
         }
+        console.log("room", room);
         if (room.is_dm === true) {
             throw new common_1.NotFoundException("Cannot join a DM");
         }
