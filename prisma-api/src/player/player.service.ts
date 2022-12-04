@@ -74,7 +74,7 @@ export class PlayerService {
         const rooms_exist = await this.findRoomById(room_id);
         // 2- check if user is a member of the room
         const is_member = await this.getPermissions(userId, room_id);
-        if (!is_member && rooms_exist.is_private === true) {
+        if (!is_member) {
             throw new UnauthorizedException("You are not a member of this room");
         }
         if (is_member && is_member.is_banned === true)
@@ -1314,10 +1314,13 @@ export class PlayerService {
         }
         if(room.is_protected === true)
         {
-            throw new NotFoundException("You cann't join a protected room");
+            throw new NotFoundException("You can't join a protected room");
         }
         // 3- create a permission to user to join the room if not created before
         const member = await this.getPermissions(userId, room_id);
+        if (!member && room.is_private === true) {
+            throw new UnauthorizedException("You can't join a private room");
+        }
         if (member && member.is_banned === true) {
             throw new UnauthorizedException("You are banned from this room");
         }
