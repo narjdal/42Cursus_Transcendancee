@@ -16,6 +16,9 @@ const [open_rs,setOpenRs] = useState(false);
 const[msg,setMsg] = useState("");
 const [haspassword,setHasPassword] = useState(false);
 const [ispublic,setisPublic] = useState(false);
+
+const [updatepwd,setUpdatePwd] = useState(false);
+const [deletepwd,setDeletePwd] = useState(false);
 const [Roompassword,setRoompassword] = useState("");
 const [isUpdating, setIsUpdating] = useState(false);
 const [isroomPrivate, setIsRoomPrivate] = useState(false);
@@ -302,6 +305,19 @@ if(json.statusCode == "500")
 // }
 }
 }
+
+const HandleDeletePassword = (e) => {
+e.preventDefault();
+setDeletePwd(true);
+setUpdatePwd(false);
+}
+
+const HandleUpdatePassword = (e) => {
+  e.preventDefault();
+
+  setDeletePwd(false);
+setUpdatePwd(true);
+}
 const HandleUnmute = (e) => {
   e.preventDefault();
   if(username)
@@ -346,6 +362,69 @@ async function HandleSetPassword()
 
   }
 
+  async function HandleDeletePwd()
+{
+  
+  let text = ("http://localhost:5000/player/DeletePwdProtectedChatRoom/");
+  console.log(" DELETEPWD Ednpoint " + text + " ROOM ID IS : " + props.room.id)
+  await fetch(text,{
+    // mode:'no-cors',
+    method:'post',
+    credentials:"include",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(
+        { 
+      room_id: props.room.id,
+      // pwd: Roompassword,
+        }
+      )
+})
+
+.then((response) => response.json())
+.then(json => {
+    console.log("The DELETEPWD RESP    is => " + JSON.stringify(json))
+
+  // window.location.reload();
+    return json;
+})
+.catch((error) => {
+    console.log("An error occured : " + error)
+    return error;
+})
+
+  }
+
+  async function HandleUpadtePwd()
+  {
+    
+    let text = ("http://localhost:5000/player/UpdatePwdProtectedChatRoom/");
+    console.log(" UPDATEPWD Ednpoint " + text + " ROOM ID IS : " + props.room.id)
+    await fetch(text,{
+      // mode:'no-cors',
+      method:'post',
+      credentials:"include",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+          { 
+        room_id: props.room.id,
+        pwd: Roompassword,
+          }
+        )
+  })
+  
+  .then((response) => response.json())
+  .then(json => {
+      console.log("The UPDATEPWD RESP    is => " + JSON.stringify(json))
+  
+    // window.location.reload();
+      return json;
+  })
+  .catch((error) => {
+      console.log("An error occured : " + error)
+      return error;
+  })
+  
+    }
   useEffect(() => {
     
     const loggedUser  =localStorage.getItem("user");
@@ -433,6 +512,44 @@ async function HandleSetPassword()
     console.log("Updating room passwond ..." +Roompassword) 
     setErrorMessage("")    
     HandleSetPassword();
+    setTimeout(() => {
+      setIsUpdating(false);
+      setisUpdated(true);
+      setTimeout(() => setisUpdated(false), 2500);
+      // window.location.reload();
+   
+    }, 2000);
+  }
+  }
+
+  const setNewRoomPassword = (e) => {
+    e.preventDefault();
+
+  {
+    if(deletepwd)
+    {
+      console.log(" DELETE PWD FROM THIS CHATROOM");
+      HandleDeletePwd();
+    }
+    else if (updatepwd)
+    {
+      if(Roompassword)
+
+{
+console.log(" UPADTING PWD  PWD FROM THIS CHATROOM");
+  
+console.log("Updating SETNEWROOM  passwond ..." +Roompassword) 
+HandleUpadtePwd();
+}     
+
+else
+
+{
+  setErrorMessage(" Please enter a valid password.")
+}
+
+    }
+    
     setTimeout(() => {
       setIsUpdating(false);
       setisUpdated(true);
@@ -550,7 +667,55 @@ async function HandleSetPassword()
        onChange={event => setRoomName(event.target.value)}
        value={RoomName || ""}
        /> */}
-       <h3>Channel Type : </h3>
+       {props.room.is_protected ? (
+        <>
+              <h3>Channel Type : </h3>
+       <span>{msg}</span>
+         <input type="radio"
+        value ="Public"
+       placeholder="Room Name " 
+       checked = {deletepwd}
+       onChange={HandleDeletePassword}
+       />
+       Delete Password 
+       <input type="radio"
+        value ="Password"
+       placeholder="Room Name " 
+       checked = {updatepwd}
+       onChange={HandleUpdatePassword}
+       />
+       Update  Password
+       {updatepwd ? (
+          <>
+            <input type="password"
+       className={`${Roompassword ? "has-value" : ""}`}
+	   id="password"
+       onChange={event => setRoompassword(event.target.value)}
+       value={Roompassword || ""}
+       />
+
+        </>
+        ) : (
+          <>
+          </>
+        )}
+        <button
+      onClick={setNewRoomPassword}
+      className={isUpdating || Updated ? "sending" : ""}
+    >
+      <span className="icon material-symbols-outlined">
+        {Updated ? "check" : "send"}
+      </span>
+      <span className="text">
+        {isUpdating ? "Updating ..." : Updated ? "Updated" : ""}
+      </span>
+    </button>
+    {errorMessage && <div className="error"> {errorMessage} </div>}
+
+        </>
+       ) : (
+        <>
+        <h3>Channel Type : </h3>
        <span>{msg}</span>
          <input type="radio"
         value ="Public"
@@ -566,7 +731,6 @@ async function HandleSetPassword()
        onChange={HandleRoomPrivate}
        />
        Set a Password
-
        {haspassword ? (
           <>
             <input type="password"
@@ -575,7 +739,6 @@ async function HandleSetPassword()
        onChange={event => setRoompassword(event.target.value)}
        value={Roompassword || ""}
        />
-
 
 <button
       onClick={UpdateRoomPassword}
@@ -589,11 +752,20 @@ async function HandleSetPassword()
       </span>
     </button>
     {errorMessage && <div className="error"> {errorMessage} </div>}
+
           </>
         ) : (
           <>
           </>
         )}
+        </>
+        
+       )}
+     
+
+
+    
+   
         </>
 
         
@@ -606,6 +778,7 @@ async function HandleSetPassword()
 <>
 </>
       )}
+
        
         </div>
 

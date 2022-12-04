@@ -22,6 +22,8 @@ function ChatRoom() {
     const [isProtected,setIsProtected] = useState(false);
     const [statusMember,setStatusMember] = useState("");
     const [haspswd,setHaspsswd] = useState(false)
+    const [isPrivate,setIsPrivate] = useState(false)
+
 
     const [HasPermission,setHasPermissions] = useState(false);
  
@@ -85,6 +87,10 @@ async function GetRoomById  ()  {
       }
       else
       {
+        if(json.data.is_private)
+        {
+          setIsPrivate(true);
+        }
         // localStorage.setItem("isdm","false");
         setRoomName(json.data.name)
         GetPermissions();
@@ -307,9 +313,18 @@ useEffect (() =>
               </>
             ) : (
               <> 
+              {!userAdmin && isPrivate  ? (
+                <>
+                </>
+              ) : (
+                <>
                 <ChatRoomButton/>
+
+                </>
+              )}
 {userAdmin ? (
     <div>
+                <ChatRoomButton/>
       <AdminChatRoomDashboard room={testRoom} statusMember={roomPerm}  />
         </div>
 ) : (

@@ -563,7 +563,14 @@ async function BlockRelationship()
         <h3>Lose</h3>
         <h2>{userState.loses}</h2>
           </>
-       
+          <button type="button" className='' >
+                      <span className="icon material-symbols-outlined">
+                        {"History"}
+                      </span>
+                      <Link style={{ color: 'blue' }} to={`/Carreer/${userState.nickname}`} >
+                        <span>  {userState.nickname} Carreer </span>
+                      </Link>
+                    </button>
 
 
         <br />
@@ -590,9 +597,6 @@ async function BlockRelationship()
                   <span className="icon material-symbols-outlined">
                     {"History"}
                   </span>
-                  <Link style={{ color: 'blue' }} to={`/Carreer/${userState.nickname}`} >
-                    <span>  {userState.nickname} Carreer </span>
-                  </Link>
                 </button>
                 <br />
                 <h2>{userState.nickname} want to be your friend ! </h2>
@@ -652,14 +656,7 @@ async function BlockRelationship()
                   <span>{msg}</span>
                 </button>
                 <br/>
-                <button type="button" className='' >
-                      <span className="icon material-symbols-outlined">
-                        {"History"}
-                      </span>
-                      <Link style={{ color: 'blue' }} to={`/Carreer/${userState.nickname}`} >
-                        <span>  {userState.nickname} Carreer </span>
-                      </Link>
-                    </button>
+             
                   
         
                      <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleInviteToGame}>
