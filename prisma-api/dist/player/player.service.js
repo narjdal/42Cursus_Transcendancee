@@ -833,7 +833,7 @@ let PlayerService = class PlayerService {
                 ]
             },
         });
-        if (status.is_muted === true) {
+        if (status && status.is_muted === true) {
             if (status.muted_since.getTime() + 1000 * 60 * status.duration < new Date().getTime())
                 status = await this.prisma.permission.updateMany({
                     where: {
