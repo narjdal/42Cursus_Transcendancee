@@ -2,7 +2,8 @@
 
 
 import { HttpException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { compare, hash } from 'bcrypt';
+// import { compare, hash } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { RouterModule } from '@nestjs/core';
 import { stat } from 'fs';
 import { networkInterfaces } from 'os';
@@ -825,7 +826,7 @@ export class PlayerService {
                 is_dm: false,
                 name: Body.name,
                 is_protected: true,
-                password: await hash(Body.pwd, 10),
+                password: await bcrypt.hash(Body.pwd, 10),
 
                 all_members: {
                     create: [
@@ -930,7 +931,7 @@ export class PlayerService {
             data: {
                 is_protected: true,
                 is_public: false,
-                password: hash(Body.pwd, 10),
+                password: await bcrypt.hash(Body.pwd, 10),
             },
         })
         return roomUpdated;
@@ -975,7 +976,7 @@ export class PlayerService {
                 id: Body.room_id,
             },
             data: {
-                password: await hash(Body.new_password, 10)
+                password: await bcrypt.hash(Body.new_password, 10)
             },
         })
         return roomUpdated;
@@ -1314,7 +1315,8 @@ export class PlayerService {
             throw new NotFoundException("This is a not a protected room");
         }
         // 3- compare passwords
-        const areEqual = await compare(room.password, pwd);
+        // console.log("pwd", pwd);
+        const areEqual = await bcrypt.compare(pwd, room.password);
         if (!areEqual) {
             throw new UnauthorizedException("Wrong password");
         }

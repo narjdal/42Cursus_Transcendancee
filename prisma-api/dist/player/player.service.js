@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayerService = void 0;
 const common_1 = require("@nestjs/common");
-const bcrypt_1 = require("bcrypt");
+const bcrypt = require("bcrypt");
 const prisma_service_1 = require("../prisma.service");
 let PlayerService = class PlayerService {
     constructor(prisma) {
@@ -527,7 +527,7 @@ let PlayerService = class PlayerService {
                 data: {
                     senderId: userId,
                     receiverId: howa.id,
-                    status: "Blocked"
+                    status: "Block"
                 }
             });
         }
@@ -633,7 +633,7 @@ let PlayerService = class PlayerService {
                 is_dm: false,
                 name: Body.name,
                 is_protected: true,
-                password: await (0, bcrypt_1.hash)(Body.pwd, 10),
+                password: await bcrypt.hash(Body.pwd, 10),
                 all_members: {
                     create: [
                         {
@@ -723,7 +723,7 @@ let PlayerService = class PlayerService {
             data: {
                 is_protected: true,
                 is_public: false,
-                password: (0, bcrypt_1.hash)(Body.pwd, 10),
+                password: await bcrypt.hash(Body.pwd, 10),
             },
         });
         return roomUpdated;
@@ -761,7 +761,7 @@ let PlayerService = class PlayerService {
                 id: Body.room_id,
             },
             data: {
-                password: await (0, bcrypt_1.hash)(Body.new_password, 10)
+                password: await bcrypt.hash(Body.new_password, 10)
             },
         });
         return roomUpdated;
@@ -993,7 +993,7 @@ let PlayerService = class PlayerService {
         if (room.is_protected === false) {
             throw new common_1.NotFoundException("This is a not a protected room");
         }
-        const areEqual = await (0, bcrypt_1.compare)(room.password, pwd);
+        const areEqual = await bcrypt.compare(pwd, room.password);
         if (!areEqual) {
             throw new common_1.UnauthorizedException("Wrong password");
         }
