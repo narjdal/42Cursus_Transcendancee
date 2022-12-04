@@ -1081,25 +1081,39 @@ export class PlayerService {
     // 1- Get Permissions of the user in the room
 
     async getPermissions(userId: string, id_room: string) {
-        const status = await this.prisma.permission.findFirst({
+        let status = null;
+        
+        status = await this.prisma.permission.findFirst({
             where: {
                 AND: [
                     { playerId: userId },
                     { roomId: id_room },
                 ]
             },
-            select: {
-                statusMember: true,
-                is_banned: true,
-                is_muted: true,
-                // blocked_since: true,
-                // muted_until: true,
+            // select: {
+            //     statusMember: true,
+            //     is_banned: true,
+            //     is_muted: true,
+            //     // blocked_since: true,
+            //     // muted_until: true,
 
-            }
+            // }
         })
-        // if(status === null){
-        //     throw new NotFoundException("You are not a member of this room");
-        // }
+        if (status.is_muted === true)
+        {
+            if (status.muted_since.getTime() + 1000 * 60 * status.duration < new Date().getTime())
+            status = await this.prisma.permission.updateMany({
+                where: {
+                    AND: [
+                        { playerId: userId },
+                        { roomId: id_room },
+                    ],
+                },
+                data: {
+                    is_muted: false,
+                }
+            })
+        }
         return status;
     }
 

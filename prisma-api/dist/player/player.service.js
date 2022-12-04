@@ -824,19 +824,29 @@ let PlayerService = class PlayerService {
         return room;
     }
     async getPermissions(userId, id_room) {
-        const status = await this.prisma.permission.findFirst({
+        let status = null;
+        status = await this.prisma.permission.findFirst({
             where: {
                 AND: [
                     { playerId: userId },
                     { roomId: id_room },
                 ]
             },
-            select: {
-                statusMember: true,
-                is_banned: true,
-                is_muted: true,
-            }
         });
+        if (status.is_muted === true) {
+            if (status.muted_since.getTime() + 1000 * 60 * status.duration < new Date().getTime())
+                status = await this.prisma.permission.updateMany({
+                    where: {
+                        AND: [
+                            { playerId: userId },
+                            { roomId: id_room },
+                        ],
+                    },
+                    data: {
+                        is_muted: false,
+                    }
+                });
+        }
         return status;
     }
     async getMessagesOfRoom(userId, id_room) {

@@ -59,35 +59,31 @@ export declare class PlayerService {
     createPrivateChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
     createProtectedChatRoom(userId: string, Body: CreateProtectedRoomDto): Promise<{
         name: string;
+        id: string;
         is_dm: boolean;
         is_public: boolean;
         is_private: boolean;
         is_protected: boolean;
-        id: string;
     }>;
     DeletePwdToProtectedChatRoom(userId: string, room_id: string): Promise<import(".prisma/client").ChatRoom>;
     SetPwdToPublicChatRoom(userId: string, Body: SetPwdToPublicChatRoomDto): Promise<{
         name: string;
+        id: string;
         is_dm: boolean;
         is_public: boolean;
         is_private: boolean;
         is_protected: boolean;
-        id: string;
     }>;
     UpdatePwdProtectedChatRoom(userId: string, Body: UpdateProtectedPasswordDto): Promise<{
         name: string;
+        id: string;
         is_dm: boolean;
         is_public: boolean;
         is_private: boolean;
         is_protected: boolean;
-        id: string;
     }>;
     createDMRoom(userId: string, friendname: string): Promise<import(".prisma/client").ChatRoom>;
-    getPermissions(userId: string, id_room: string): Promise<{
-        statusMember: string;
-        is_banned: boolean;
-        is_muted: boolean;
-    }>;
+    getPermissions(userId: string, id_room: string): Promise<any>;
     getMessagesOfRoom(userId: string, id_room: string): Promise<{
         id: string;
         senderId: string;
@@ -129,7 +125,7 @@ export declare class PlayerService {
             };
         }[];
     }>;
-    joinProtectedRoom(userId: string, { room_id, pwd }: JoinProtectedRoomDto): Promise<import(".prisma/client").Permission | {
+    joinProtectedRoom(userId: string, { room_id, pwd }: JoinProtectedRoomDto): Promise<{
         name: string;
         is_dm: boolean;
         is_public: boolean;
@@ -141,7 +137,7 @@ export declare class PlayerService {
                 nickname: string;
             };
         }[];
-    }>;
+    } | import(".prisma/client").Permission>;
     setAdmin(login: string, room_id: string): Promise<void>;
     banMember(login: string, room_id: string): Promise<void>;
     kickMember(login: string, room_id: string): Promise<void>;

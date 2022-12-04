@@ -27,8 +27,8 @@ CREATE TABLE "Permission" (
     "statusMember" TEXT NOT NULL,
     "is_banned" BOOLEAN NOT NULL DEFAULT false,
     "is_muted" BOOLEAN NOT NULL DEFAULT false,
-    "muted_since" DATETIME NOT NULL,
-    "duration" INTEGER NOT NULL,
+    "muted_since" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "duration" INTEGER,
     "playerId" TEXT NOT NULL,
     "roomId" TEXT NOT NULL,
 
