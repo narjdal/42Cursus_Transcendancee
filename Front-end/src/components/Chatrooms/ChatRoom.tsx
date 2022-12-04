@@ -19,6 +19,7 @@ function ChatRoom() {
     const [testRoom,setRoom] = useState<any>([]);
     const [allgood,setAllgood] = useState(false);
     const [isDm,setIsDm] = useState(false);
+    const [isProtected,setIsProtected] = useState(false);
     const [statusMember,setStatusMember] = useState("");
     const [haspswd,setHaspsswd] = useState(false)
 
@@ -53,7 +54,13 @@ async function GetRoomById  ()  {
         // [json.data],
       }
       setRoom(room);
-      if(json.data.is_dm == true)
+      if(json.data.is_protected)
+      {
+        setRoomName(json.data.name)
+        setIsProtected(true);
+        setIsDm(false);
+      }
+    else  if(json.data.is_dm == true)
       {
         // testRoom.is_dm = true;
         console.log("This is a DM Room");
@@ -99,6 +106,11 @@ async function GetRoomById  ()  {
   })
   .catch((error) => {
     setErrorMessage("An error occured ! You cannot access this room.");
+    if(localStorage.getItem("protected") == "true")
+    {
+      setIsProtected(true);
+      setErrorMessage("");
+    }
       console.log("An error occured  while fetching the GetRoomById  : " + error)
       return error;
   })
@@ -232,7 +244,12 @@ useEffect (() =>
           if(loggeduser)
           {
             const current = JSON.parse(loggeduser);
+        // if(localStorage.getItem("protected") == "false")
             Waiit();
+            // else if (localStorage.getItem("protected") == "true")
+            // {
+            //   setIsProtected(true);
+            // }
           //  setHaspsswd(true);
             // GetRoomById();
             // HEre ADD contdition if user owner
@@ -249,16 +266,19 @@ useEffect (() =>
           //   }
        
           }
+          // if(testRoom.is_protected)
+          // setIsProtected(true);
       },[])
     return (
         <div className='ChatRoomMessageBox'>
         {errorMessage && <div className="error"> {errorMessage} </div>}
-      {testRoom.is_protected ? (
+      {isProtected ? (
         <>
-  HAS PASSWORD
+        <div className='PopUp-Card'>
+  Please Enter the Room Password : 
   <br/>
   <Pop room={testRoom}/> 
-
+  </div>
         </>
       ) :(
         <>

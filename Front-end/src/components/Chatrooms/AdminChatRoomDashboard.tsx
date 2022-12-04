@@ -313,6 +313,39 @@ const HandleUnmute = (e) => {
     setErrorMessage("Please enter a valid username.")
   }
 }
+
+async function HandleSetPassword()
+{
+  
+  let text = ("http://localhost:5000/player/SetPwdToPublicChatRoom/");
+  console.log(" SetPassword Ednpoint " + text + " ROOM ID IS : " + props.room.id)
+  await fetch(text,{
+    // mode:'no-cors',
+    method:'post',
+    credentials:"include",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(
+        { 
+      room_id: props.room.id,
+      pwd: Roompassword,
+        }
+      )
+})
+
+.then((response) => response.json())
+.then(json => {
+    console.log("The SetPasswordResponse   is => " + JSON.stringify(json))
+
+  // window.location.reload();
+    return json;
+})
+.catch((error) => {
+    console.log("An error occured : " + error)
+    return error;
+})
+
+  }
+
   useEffect(() => {
     
     const loggedUser  =localStorage.getItem("user");
@@ -377,6 +410,14 @@ const HandleUnmute = (e) => {
         setisPublic(false);
         setHasPassword(true);
       }
+      else
+      {
+        setisPublic(true);
+        setHasPassword(false);
+        setMsg("Your room has no  password ");
+
+
+      }
     }
   },[])
   const UpdateRoomPassword = (e) => {
@@ -391,7 +432,7 @@ const HandleUnmute = (e) => {
     
     console.log("Updating room passwond ..." +Roompassword) 
     setErrorMessage("")    
-
+    HandleSetPassword();
     setTimeout(() => {
       setIsUpdating(false);
       setisUpdated(true);

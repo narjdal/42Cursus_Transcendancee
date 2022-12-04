@@ -16,6 +16,38 @@ const HandleShowPassword = (e) => {
     setInput(!showinput)
 }
 
+async function TryAccessRoom()
+{
+
+  let text = ("http://localhost:5000/player/joinProtectedRoom/");
+  console.log("Joinprotected Link => " + text + " PSWD " + Roompassword);
+  await fetch(text,{
+    // mode:'no-cors',
+    method:'post',
+    credentials:"include",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(
+        { 
+      room_id: props.room.id,
+      pwd: Roompassword,
+        }
+      )
+})
+
+.then((response) => response.json())
+.then(json => {
+    console.log("The JoinprotectedRoom Response   is => " + JSON.stringify(json))
+
+  // window.location.reload();
+    return json;
+})
+.catch((error) => {
+    console.log("An error occured : " + error)
+    return error;
+})
+
+}
+
 const HandleEnterProtectedRoom = (e) => {
     e.preventDefault();
     console.log("Inside Protected room ")
@@ -23,12 +55,16 @@ const HandleEnterProtectedRoom = (e) => {
     {
         setErrorMessage("Please enter a valid password.");
     }
-    setErrorMessage("Waiting for backend endpoint ....");
+    else
+    {
+      console.log("Tring to enter this room with this psswd " + Roompassword);
+      TryAccessRoom();
+    }
 
 }
 return (
   <Popup trigger ={
-  <button type="button" className='has-border' onClick={HandleShowPassword}>
+  <button type="button" className='ButtonPswd' onClick={HandleShowPassword}>
       <span className="icon material-symbols-outlined">
      {"lock"}    {props.room.name}    </span>
       </button> 
@@ -43,7 +79,11 @@ return (
        />
        <label htmlFor='textbox'> Password : </label>
     {errorMessage && <div className="error"> {errorMessage} </div>}
-     <button onClick={HandleEnterProtectedRoom}> Submit</button>
+    <button type="button" id="ss" className='EnterPsswdButton' onClick={HandleEnterProtectedRoom}>
+    <span className="icon material-symbols-outlined">
+     {"Send"}  
+      </span>
+      </button>
     </div>
   </Popup>
 )

@@ -33,8 +33,10 @@ const DisplayRoomList =  (props) => {
 
     const HandleJoinRoom = (e) => {
         e.preventDefault();
+    localStorage.setItem("protected","false");
+        console.log("just set protected to false  ! ")
         console.log("Joining this room ..." + props.room.id + " ROOM INFO : DM :  " + props.room.is_dm, + " PROTECTED ? : "  +  props.room.is_protected)
-        if(!props.room.is_dm)
+        if(!props.room.is_dm && !props.room.is_protected)
        { JoinRoom()
         .then((resp) => {
             console.log( " JOINING IS DONE ! ")
@@ -42,6 +44,15 @@ const DisplayRoomList =  (props) => {
     window.location.href = "http://localhost:3000/room/" + props.room.id;
             
         })}
+        else if (props.room.is_protected)
+        {
+
+    localStorage.setItem("protected","true");
+    console.log("just set protected to TRUE  ! ")
+
+    window.location.href = "http://localhost:3000/room/" + props.room.id;
+
+        }
         else
         {
     window.location.href = "http://localhost:3000/room/" + props.room.id;
@@ -55,9 +66,9 @@ const DisplayRoomList =  (props) => {
         <li>
     {props.room.is_protected ? (
         <> 
-           <button type="button" className='has-border' >
+           <button type="button" className='has-border'  onClick={HandleJoinRoom}>
             <span className="icon material-symbols-outlined">
-             {"lock"}    {  <Link to={`/room/${props.room.id}`}>{props.room.name}</Link> }    </span>
+             {"lock"}    {  props.room.name}  </span>
               </button> 
         </>
     ) : (
@@ -71,7 +82,7 @@ const DisplayRoomList =  (props) => {
                       </button>
         </>
         
-    )}
+     )} 
     </li>
             </ul>
         </>

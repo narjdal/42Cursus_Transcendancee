@@ -5,7 +5,7 @@ import { useState } from "react";
 import './Friendprofile.css'
 import { Location } from 'react-router-dom';
 import { IsAuthOk } from '../../utils/utils';
-
+import axios from 'axios';
 const Friendprofile = () => {
   const params = useParams();
   const [errorMessage, setErrorMessage] = useState("");
@@ -479,6 +479,49 @@ async function BlockRelationship()
     console.log("invinting to play a game ...")
   }
 
+
+
+  async function FetchRoomId()
+  {
+    const text = "http://localhost:5000/player/sendMessageButton/" + params.nickname;
+    console.log("Api  Sendmessagebutton  Link :  =>  " + text);
+    
+
+    await axios.get(text,{
+      withCredentials:true
+      // mode:'no-cors',
+      // method:'get',
+      // credentials:"include"
+  })
+  
+  // .then((response) => response.json())
+  .then(json => {
+      // json.data.id = params.id;
+      // console.log("json" + json)
+      console.log("The response Of SendMessage  is  => " + JSON.stringify(json.data))
+      // SetUserAdmin(json);
+      if(json.data.room_id)
+      {
+        window.location.href = "http://localhost:3000/room/" + json.data.room_id;
+
+      }
+     
+  })
+  .catch((error) => {
+      console.log("An error occured  while fetching the SendMessage Id  ! : " + error)
+      setErrorMessage(" An error occured while fetching the SendMessage Room id  ");
+      return error;
+  })
+
+  }
+
+  const HandleSendMessage  =  (e) => {
+    e.preventDefault();
+    console.log("Fetching the room id !")
+    FetchRoomId();
+
+  }
+
   const HandleBlockUser = (e) => {
     e.preventDefault();
 
@@ -526,6 +569,7 @@ async function BlockRelationship()
         <br />
         {isMe ? (
           <>
+  
           </>
         ) : (
           <>
@@ -577,14 +621,7 @@ async function BlockRelationship()
 
                 {action ? (
                   <>
-                    <button type="button" className='' >
-                      <span className="icon material-symbols-outlined">
-                        {"History"}
-                      </span>
-                      <Link style={{ color: 'blue' }} to={`/Carreer/${userState.nickname}`} >
-                        <span>  {userState.nickname} Carreer </span>
-                      </Link>
-                    </button>
+                 
 
                   </>
                 ) : (
@@ -615,12 +652,28 @@ async function BlockRelationship()
                   <span>{msg}</span>
                 </button>
                 <br/>
-
+                <button type="button" className='' >
+                      <span className="icon material-symbols-outlined">
+                        {"History"}
+                      </span>
+                      <Link style={{ color: 'blue' }} to={`/Carreer/${userState.nickname}`} >
+                        <span>  {userState.nickname} Carreer </span>
+                      </Link>
+                    </button>
+                  
+        
                      <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleInviteToGame}>
     <span className="icon material-symbols-outlined">
      {"stadia_controller"}  
       </span>
       <span> Play  </span>
+      </button>
+
+      <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleSendMessage}>
+    <span className="icon material-symbols-outlined">
+     {"forward_to_inbox"}  
+      </span>
+      <span> Send Message  </span>
       </button>
       
               </>

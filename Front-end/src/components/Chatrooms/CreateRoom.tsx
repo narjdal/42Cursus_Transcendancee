@@ -74,7 +74,7 @@ const CreateRoom = () => {
               { 
             roomState: roomState,
             name: RoomName,
-            password: password,}
+            pwd: password,}
               )
       })
       
