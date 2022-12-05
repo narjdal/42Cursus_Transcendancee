@@ -16,6 +16,8 @@ function Navbar() {
     const [click,setClick]= useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isShown,setIsShown] = useState(false);
+  const [allgood,setAllgood] = useState(false);
+
   const[user42,setUser42] = useState <any >([]);
   const[friends,setFriends] = useState <any >([]);
   const[notifs,setNotifs] = useState<any>([]);
@@ -55,7 +57,7 @@ function Navbar() {
         // Toggle Shown state
         event.preventDefault();
         setIsShown(current => !current);
-  
+  FetchUserInfo();
          };
          //DOuble LogOut Component To Fixe 
         
@@ -138,7 +140,7 @@ await fetch((endpoint),{
         // }
     };
 
-    async function FetchUserInfo (nickname) {
+    async function FetchUserInfo () {
 
       // ]
     const loggeduser = localStorage.getItem("user");
@@ -164,8 +166,8 @@ await fetch((endpoint),{
        window.location.reload();
        }
           setFriends(json);
-  
-      return json;
+       setAllgood(true);
+      return json;  
   })
   .catch((error) => {
       console.log("An error occured : " + error)
@@ -189,7 +191,7 @@ await fetch((endpoint),{
           // console.log("Fetching Friends of this User " + Current_User.nickname);
           setUser42(JSON.parse(localStorage.getItem("user")!))
 
-      FetchUserInfo(Current_User.nickname)
+      // FetchUserInfo(Current_User.nickname)
       // .then((resp) => {
       //   console.log("resp => " + resp[0].id);
       //   setFriends(resp);
@@ -292,12 +294,22 @@ await fetch((endpoint),{
                       //Show the friendlist only if button is pressed
                       // Here : Send an array.map of the Friendlist of the user 
                       // get request to backend , JSON object -> parse 
-                      <div className='Contact'>
+                      <>
+                    {allgood ? (
+                      <>
+                        <div className='Contact'>
                         <span>
                         
                         <ContactList contacts={friends} />
                         </span>
                       </div>
+                      </>
+                    ) : (
+                      <>
+                      </>
+                    )}
+                    
+                      </>
                      )}
                   <button type="button" onClick={LogUserOut} style={{bottom:0}}>
                     <span className="icon material-symbols-outlined">
