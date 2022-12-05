@@ -22,6 +22,9 @@ async function TryAccessRoom()
 
   let text = ("http://localhost:5000/player/joinProtectedRoom/");
   console.log("Joinprotected Link => " + text + " PSWD " + Roompassword);
+  console.log(" THE ID IS " + params.id);
+
+  console.log( "THE PROP : " , props);
   await fetch(text,{
     // mode:'no-cors',
     method:'post',
@@ -29,7 +32,7 @@ async function TryAccessRoom()
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(
         { 
-      room_id: props.room.id,
+      room_id: params.id,
       pwd: Roompassword,
         }
       )
@@ -49,8 +52,14 @@ async function TryAccessRoom()
   {
     console.log("Room Access if now true.");
     let text = "HasRoomAccess" + params.id
-
+    let RoomText = "Room:" + params.id;
+    const room = {
+      id: params.id
+      ,...json.room
+      // [json.data],
+    }
     localStorage.setItem(text,"true");
+    localStorage.setItem(RoomText,JSON.stringify(room));
     window.location.reload();
   }
 
@@ -77,6 +86,10 @@ const HandleEnterProtectedRoom = (e) => {
     }
 
 }
+
+useEffect (() => {
+  
+},[])
 
 return (
   <Popup trigger ={

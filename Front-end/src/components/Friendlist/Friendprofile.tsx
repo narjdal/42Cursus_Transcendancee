@@ -500,9 +500,9 @@ async function BlockRelationship()
       // console.log("json" + json)
       console.log("The response Of SendMessage  is  => " + JSON.stringify(json.data))
       // SetUserAdmin(json);
-      if(json.data.room_id)
+      if(json.data)
       {
-        window.location.href = "http://localhost:3000/room/" + json.data.room_id;
+        window.location.href = "http://localhost:3000/room/" + json.data;
 
       }
      

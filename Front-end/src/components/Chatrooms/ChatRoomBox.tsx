@@ -363,6 +363,11 @@ await GetMembers()
   useEffect (() => {
 
     
+    // CONDITION  : 
+  //   let text = "HasRoomAccess" + props.room.id
+  // let RoomText = "Room:" + props.room.id;
+  // localStorage.setItem(text,"false");
+  // localStorage.setItem(RoomText,"");
       console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name )
       // console.log("CHATROOMBOX ROOM PERM : " + statusMember.data + " muted : " , props.statusMember.data)
    

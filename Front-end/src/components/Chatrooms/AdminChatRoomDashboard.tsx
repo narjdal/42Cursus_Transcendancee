@@ -97,46 +97,65 @@ const HandleMute = (e) => {
 
   async function MuteUserFromRoom() 
   {
-
-    const loggeduser = localStorage.getItem("user");
-  if(loggeduser)
-{
-  const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/muteMember/" + username + "/" + props.room.id;
-console.log("Api Fetch Link :  =>  " + text);
-
-
-await fetch(text,{
-  // mode:'no-cors',
-  method:'get',
-  credentials:"include"
+     let text = ("http://localhost:5000/player/muteMember/");
+  console.log(" MNutemember Ednpoint " + text + " ROOM ID IS : " + props.room.id + " TIME IS : " +time + "login is : " + username)
+  await fetch(text,{
+    // mode:'no-cors',
+    method:'post',
+    credentials:"include",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(
+        { 
+      room_id: props.room.id,
+      time: time,
+      login:username,
+        }
+      )
 })
 
 .then((response) => response.json())
 .then(json => {
-  console.log("The response is => " + JSON.stringify(json))
-// 
-if(json.statusCode == "500")
-{
-  setErrorMessage("An error occured in the backend.");
-}
+    console.log("The MutememberResponse   is => " + JSON.stringify(json))
 
-  return json;
+    if(json.statusCode == "404")
+    {
+      setErrorMessage(json.message);
+    }
+  // window.location.reload();
+    return json;
 })
 .catch((error) => {
-  console.log("An error occured : " + error)
-  return error;
+    console.log("An error occured : " + error)
+    return error;
 })
 
+
 // }
-}
   }
 
 
   const HandleMuteRequest = (e) => {
     e.preventDefault();
     console.log( username + " Will be  muted for : " + time);
-    setErrorMessage("An error occured !");
+    if(username)
+    { 
+
+      if(time)
+      {
+        MuteUserFromRoom();
+      }
+      else
+      {
+      setErrorMessage("Please enter a valid time duration for the mute.")
+
+      }
+
+    } 
+    else
+    {
+      setErrorMessage("Please enter a valid username.")
+    }
+    // setErrorMessage("An error occured !");
 
   }
   const HandleRoomSettings = (e) => {
@@ -352,7 +371,7 @@ async function HandleSetPassword()
 .then(json => {
     console.log("The SetPasswordResponse   is => " + JSON.stringify(json))
 
-  // window.location.reload();
+  window.location.reload();
     return json;
 })
 .catch((error) => {
@@ -384,7 +403,7 @@ async function HandleSetPassword()
 .then(json => {
     console.log("The DELETEPWD RESP    is => " + JSON.stringify(json))
 
-  // window.location.reload();
+  window.location.reload();
     return json;
 })
 .catch((error) => {
@@ -407,7 +426,7 @@ async function HandleSetPassword()
       body: JSON.stringify(
           { 
         room_id: props.room.id,
-        pwd: Roompassword,
+        new_password: Roompassword,
           }
         )
   })
@@ -432,11 +451,10 @@ async function HandleSetPassword()
     {
       const current = JSON.parse(loggedUser);
        const {id} = current;
-      console.log("THE ID USEEFFECT IS " + id + "  ROOM ID " + "PROPS =>   : " , props);
-      // // In JS == Ignores the Data Types 
-      // setMembers(props.room.all_members);
+      console.log("THE ID USEEFFECT IS " + id + "  ROOM  PRV " + props.room.is_private + "PROPS =>   : " , props);
       if(props.room.is_private)
       {
+        console.log("THIS IS A PRIVATE ROOM")
         setIsRoomPrivate(true);
       }
 
@@ -456,32 +474,7 @@ async function HandleSetPassword()
         setOwner("true");
 
       }
-      // if(statusMember == "owner")
-      // {
-      //   console.log(" i am owenr")
-
-      // }
-
-      // if(props.room.AdminIds == id)
-      // {
-      //   console.log(" i am Admin")
-
-      //   setOwner("true");
-      // }
-
-      //https://stackoverflow.com/questions/43309712/how-to-check-if-a-value-is-not-null-and-not-empty-string-in-js
-      //
-        //@Boolean Values that are intuitively “empty”, like 0, an empty string, null, undefined, and NaN, become false
-//Other values become true
-
-      //
-      // if((!props.room.password))
-      // {
-      //   console.log("Room has no password ! should not be  protected");
-      //   setMsg("Your room is public ! ");
-      //   setisPublic(true);
-      //   setHasPassword(false);
-      // }
+      
       if(props.room.is_protected) 
       {
         console.log("Room has a password ! should be protected");
@@ -559,11 +552,11 @@ else
     }, 2000);
   }
   }
-  const FilteredUsers = MembersAdmin.filter(friends => {
-    // Here A changer : person with friends from backend , 
-    //filter nickname not name 
-     return friends.player.nickname.toLowerCase().includes(username.toLowerCase());
-  })
+  // const FilteredUsers = MembersAdmin.filter(friends => {
+  //   // Here A changer : person with friends from backend , 
+  //   //filter nickname not name 
+  //    return friends.player.nickname.toLowerCase().includes(username.toLowerCase());
+  // })
     return (
         <div className='ChatRoomAdminDash-container'>
         <input

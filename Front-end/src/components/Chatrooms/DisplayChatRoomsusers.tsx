@@ -1,13 +1,14 @@
 import react, { useEffect } from 'react'
 import { useState } from 'react'; 
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './DisplayChatRoomsusers.css'
 // import blobz from 'blobz.css'
 const DisplayChatRoomusers = (props,roomownnership) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [action,setAction] = useState(false);
     const [display,setDisplay] = useState(false);
-
+    const params = useParams();
     const [isAdmin,setIsAdmin] = useState(JSON.stringify(roomownnership));
 //   console.log("isADmin" + JSON.stringify(isAdmin))
     const handleFriendClick  = (e) => {
@@ -25,6 +26,7 @@ const DisplayChatRoomusers = (props,roomownnership) => {
         setAction(!action);
         // Here request to know which button to display 
     }
+    
     useEffect(() => {
         const loggeduser = localStorage.getItem("user");
         if(loggeduser)
@@ -36,6 +38,11 @@ const DisplayChatRoomusers = (props,roomownnership) => {
             }
             else
             setDisplay(true);
+            let texttt = "HasRoomAccess" + params.id
+
+            console.log("SETTING TEXT TO FALSE " + texttt)
+          
+            localStorage.setItem(texttt,"false")
         }
     })
 console.log(" DIsplay ChatRoom Users >>> " + props.user + " nickname : " , props.user.nickname)
