@@ -1,3 +1,10 @@
+## Just 4 Testing Postgres => 
+    im using Postgres v 15,
+    env => DB_URL ... ==> 12345 is the password set on installation of postgres , PORT = 5432
+    u need to reinstall node_modeules,
+    run : npx prisma migrate dev
+    then : npm run start:dev
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
