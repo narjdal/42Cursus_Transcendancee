@@ -100,6 +100,24 @@ const HandleMute = (e) => {
   {
      let text = ("http://localhost:5000/player/muteMember/");
   console.log(" MNutemember Ednpoint " + text + " ROOM ID IS : " + props.room.id + " TIME IS : " +time + "login is : " + username)
+  // var date = new Date(time);
+
+  var hms = time   // your input string
+var a = hms.split(':'); // split it at the colons
+
+// minutes are worth 60 seconds. Hours are worth 60 minutes.
+var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60
+var minutes = seconds/ 60;
+
+console.log("seconds : " + seconds + " minutes :  " + minutes);
+// var hours = time.split(":")[0];
+//   var minutes = time.split(":")[1];
+
+//   var MinutesFromHours = Math.floor(hours  * 60);
+//   var FormatedTime = Math.floor(MinutesFromHours + minutes);
+
+// var FormatedTime  =( hours * 6 ) + minutes;
+  // console.log("THE NUMBER OF MINUTES IS : " + hours +  ": " + minutes + " Formated : " + seconds)
   await fetch(text,{
     // mode:'no-cors',
     method:'post',
@@ -108,7 +126,7 @@ const HandleMute = (e) => {
     body: JSON.stringify(
         { 
       room_id: props.room.id,
-      time: time,
+      time: minutes,
       login:username,
         }
       )
