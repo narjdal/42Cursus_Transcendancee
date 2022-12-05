@@ -50,8 +50,12 @@ const DisplayRoomList =  (props) => {
     localStorage.setItem("protected","true");
     console.log("just set protected to TRUE  ! ")
     let text = "HasRoomAccess" + props.room.id
+  let RoomText = "Room:" + props.room.id;
+
     console.log(" PARAMS ID IS : " + props.room.id)
     localStorage.setItem(text,"false");
+    localStorage.setItem(RoomText,"");
+
     window.location.href = "http://localhost:3000/room/" + props.room.id;
 
         }

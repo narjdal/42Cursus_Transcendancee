@@ -194,6 +194,7 @@ async function GetPermissions()
         SetUserAdmin(true);
       }
       // if ()
+      
       if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
         {
             console.log("an error occured");
@@ -214,6 +215,7 @@ async function GetPermissions()
       //    setAllgood(false);
       //  }
         }
+        setAllgood(true);
         // else
         // {
         //   setAllgood(true);
@@ -242,6 +244,7 @@ async function Waiit () {
     const room = localStorage.getItem(RoomText);
     if (room)
     {
+      setRoomName(JSON.parse(room).name)
     await  Waiter();
     }
     
@@ -265,16 +268,16 @@ async function Waiter()
   if (room)
   {
     console.log( "THE PLEASE WORK ROOM  IS " ,JSON.parse(room));
-  const RoomObj = JSON.parse(room);
+  const RoomObj = await JSON.parse(room);
   setRoom(RoomObj);
-  setAllgood(true);
-  console.log(" THE ROOM  NAME IS " , RoomObj)
-setRoomName(RoomObj.name);
+  console.log(" THE ROOM  NAME IS " , RoomObj.name)
   // GetPermissions();
   console.log("Setting the chatRoom Infos ...");
     // localStorag e.setItem(text,"false");
     // localStorage.setItem(RoomText,"");
     await GetPermissions();
+  // setAllgood(true);
+
     let text = "HasRoomAccess" + params.id
     // localStorage.setItem(text,"false")
   }
@@ -400,6 +403,11 @@ async function joinDM()
 {
   const text = "http://localhost:5000/player/joinDM/" + params.id;
   console.log("Api joinDM Link :  =>  " + text);
+  let loggedUser = localStorage.getItem("user");
+  if(loggedUser)
+  {
+  var current = JSON.parse(loggedUser);
+
   
 
   await axios.get(text,{withCredentials:true}
@@ -421,7 +429,21 @@ async function joinDM()
     setRoom(room);
     setAllgood(true);
     // GetPermissions();
-    setRoomName(json.data.room.name)
+    // GetPermissions();
+    console.log("This is a DM Room");
+    if(json.data.room.all_members)
+  {
+
+  if(current.id == json.data.room.all_members[0].player.id)
+  {
+    setRoomName(json.data.room.all_members[1].player.nickname);
+  }
+  else
+  {
+    setRoomName(json.data.room.all_members[0].player.nickname);
+  }
+}
+    // setRoomName(json.data.room.name)
     setIsDm(true);
     console.log(" THIS IS A DM GETTYPEOF ROOM");
   //   setAllgood(true)
@@ -437,6 +459,8 @@ async function joinDM()
     console.log("An error occured  while fetching the joinDM  : " + error)
     return error;
 })
+}
+
 }
 
 

@@ -2,6 +2,7 @@ import react from 'react';
 import { useState } from "react";
 import './CreateRoom.css'
 import person from '../users/users.json'
+import { useNavigate } from 'react-router-dom';
 
 const CreateRoom = () => {
     
@@ -12,6 +13,7 @@ const CreateRoom = () => {
     const [isRoomPrivate,setRoomPrivate] = useState(false);
     const [isRoomProtected,setRoomProtected] = useState(false);
     const [roomState,setRoomState] = useState("");
+    const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
     const [user,setUser] = useState([]);
     const HandleRoomPublic = (e) => {
@@ -81,8 +83,8 @@ const CreateRoom = () => {
       .then((response) => response.json())
       .then(json => {
           console.log("The createRoomResponse  is => " + JSON.stringify(json))
-      
-        window.location.reload();
+        navigate('/Landing')
+        // window.location.reload();
           return json;
       })
       .catch((error) => {

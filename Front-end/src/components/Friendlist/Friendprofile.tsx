@@ -665,7 +665,7 @@ async function BlockRelationship()
       </span>
       <span> Play  </span>
       </button>
-
+                  <br/>
       <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleSendMessage}>
     <span className="icon material-symbols-outlined">
      {"forward_to_inbox"}  

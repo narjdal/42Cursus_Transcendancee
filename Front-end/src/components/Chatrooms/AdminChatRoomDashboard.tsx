@@ -3,6 +3,7 @@ import { useState ,useEffect} from "react";
 import './AdminChatRoomDashboard.css'
 import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import person from '../users/users.json'
+import { useNavigate } from 'react-router-dom';
 
 const AdminChatRoomDashboard = (props) => {
   const[roomUsers,setRoomUsers] = useState <any >([]);
@@ -22,6 +23,8 @@ const [deletepwd,setDeletePwd] = useState(false);
 const [Roompassword,setRoompassword] = useState("");
 const [isUpdating, setIsUpdating] = useState(false);
 const [isroomPrivate, setIsRoomPrivate] = useState(false);
+
+const navigate = useNavigate();
 
 const [Updated, setisUpdated] = useState(false);
 const [MembersAdmin,setMembersAdmin] = useState <any>([]);
@@ -51,7 +54,8 @@ await fetch(text,{
 .then(json => {
   console.log("The AddAdminResponse is => " + JSON.stringify(json))
 // 
-setErrorMessage(json.nmessage)
+setErrorMessage("HHAHAHAHA")
+setErrorMessage(json.message)
 if(json.statusCode == "404")
 {
   setErrorMessage(json.message)
@@ -78,6 +82,58 @@ const HandleAddAdmin = (e ) => {
     if(username)
     {
       AddAdmin(username);
+    }
+    else
+    setErrorMessage("Could not find this user ! Are you sure u spelled it correcly ? ");
+}
+
+
+async function UnsetAdmin (username:string)
+{
+  const loggeduser = localStorage.getItem("user");
+  if(loggeduser)
+{
+  const current = JSON.parse(loggeduser);
+  const text = "http://localhost:5000/player/unsetAdmin/" + username + "/" + props.room.id;
+console.log("unsetAdmin   Link :  =>  " + text);
+
+
+await fetch(text,{
+  // mode:'no-cors',
+  method:'get',
+  credentials:"include"
+})
+
+.then((response) => response.json())
+.then(json => {
+  console.log("The unsetAdmin is => " + JSON.stringify(json))
+// 
+setErrorMessage("Admin Unset")
+if(json.statusCode == "404")
+{
+  setErrorMessage(json.message)
+}
+if(json.statusCode == "500")
+{
+  setErrorMessage("An error occured in the backend.");
+}
+
+  return json;
+})
+.catch((error) => {
+  console.log("An error occured unsetAdmin : " + error)
+  return error;
+})
+
+// }
+}
+}
+const HandleUnsetAdmin = (e ) => {
+  e.preventDefault();
+  console.log("Unseting this user  admin ...." + username);
+    if(username)
+    {
+      UnsetAdmin(username);
     }
     else
     setErrorMessage("Could not find this user ! Are you sure u spelled it correcly ? ");
@@ -136,6 +192,7 @@ console.log("seconds : " + seconds + " minutes :  " + minutes);
 .then(json => {
     console.log("The MutememberResponse   is => " + JSON.stringify(json))
 
+    setErrorMessage(json.message);
     if(json.statusCode == "404")
     {
       setErrorMessage(json.message);
@@ -325,6 +382,7 @@ await fetch(text,{
 .then(json => {
   console.log( " UnmuteUser Response is :  " + JSON.stringify(json))
 // 
+setErrorMessage(json.message)
 if(json.statusCode =="404")
 {
   setErrorMessage(json.message)
@@ -391,7 +449,8 @@ async function HandleSetPassword()
 .then(json => {
     console.log("The SetPasswordResponse   is => " + JSON.stringify(json))
 
-  window.location.reload();
+    navigate('/Landing');
+  // window.location.reload();
     return json;
 })
 .catch((error) => {
@@ -455,7 +514,7 @@ async function HandleSetPassword()
   .then(json => {
       console.log("The UPDATEPWD RESP    is => " + JSON.stringify(json))
   
-    // window.location.reload();
+    window.location.reload();
       return json;
   })
   .catch((error) => {
@@ -657,6 +716,13 @@ else
      {"admin_panel_settings"}  
       </span>
       <span> Add As Admin  </span>
+      </button>
+
+      <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleUnsetAdmin}>
+    <span className="icon material-symbols-outlined">
+     {"mood_bad"}  
+      </span>
+      <span> Unset As Admin  </span>
       </button>
       {isroomPrivate ? (
         <>

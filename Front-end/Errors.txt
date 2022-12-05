@@ -6,13 +6,14 @@ JOIN DM ROOM 404
 
 IF OWNER N9DR NCKIKI/BAN  RASSI MN ROOM 
 
-UNSET ADMIN 
 
 ////////---------------------------------OK-------------------///////////////////
 OWNER : 
 BAN MEMBERS OK BAN ADMIN √
 KICK MEMBERS OK KICK ADMIN √
 SET ADMIN √
+UNSET ADMIN √
+Mute √
 unmute √ 
 
 
