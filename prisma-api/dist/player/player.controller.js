@@ -287,6 +287,9 @@ let PlayerController = class PlayerController {
         response.status(200).send(friends);
     }
     async muteMember(Body, request, response) {
+        console.log("Body.room_id", Body.room_id);
+        console.log("Body.time", Body.time);
+        console.log("Body.login", Body.login);
         const room = await this.playerService.findRoomById(Body.room_id);
         if (room.is_dm === true) {
             throw new common_1.NotFoundException("Is a DM");

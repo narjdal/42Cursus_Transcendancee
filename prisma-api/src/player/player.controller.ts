@@ -449,6 +449,10 @@ export class PlayerController {
     async muteMember(@Body() Body: MutePlayerInRoomDto, @Req() request, @Res() response) {
        // console.log("Mute Member");
 
+       console.log("Body.room_id", Body.room_id);
+       console.log("Body.time", Body.time);
+       console.log("Body.login", Body.login);
+
         // 1- check if room_id exists
        const room = await this.playerService.findRoomById(Body.room_id);
        // 2- check if room_id is not a dm

@@ -18,17 +18,17 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], MutePlayerInRoomDto.prototype, "login", void 0);
-__decorate([
-    (0, swagger_1.ApiProperty)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
 ], MutePlayerInRoomDto.prototype, "room_id", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", Number)
 ], MutePlayerInRoomDto.prototype, "time", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], MutePlayerInRoomDto.prototype, "login", void 0);
 exports.MutePlayerInRoomDto = MutePlayerInRoomDto;
 class CreateProtectedRoomDto {
 }

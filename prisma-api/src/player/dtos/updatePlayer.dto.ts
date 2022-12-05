@@ -4,13 +4,13 @@ import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class MutePlayerInRoomDto {
     @ApiProperty()
-    @IsNotEmpty()  login: string;
-
-    @ApiProperty()
     @IsNotEmpty()  room_id: string;
 
     @ApiProperty()
     @IsNotEmpty()   time: number;
+
+    @ApiProperty()
+    @IsNotEmpty()  login: string;
 }
 
 export class CreateProtectedRoomDto {

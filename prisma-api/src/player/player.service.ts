@@ -1546,7 +1546,9 @@ export class PlayerService {
     // 7- mute OR umute member if u are admin or owner
 
     async muteMember(login: string, room_id: string, time: number) {
-        const palyer = await this.findPlayerById(login);
+        const palyer = await this.findPlayerByNickname(login);
+
+        console.log("time", time);
 
         const room = await this.prisma.permission.updateMany({
             where: {

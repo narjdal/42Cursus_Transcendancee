@@ -1120,7 +1120,8 @@ let PlayerService = class PlayerService {
         });
     }
     async muteMember(login, room_id, time) {
-        const palyer = await this.findPlayerById(login);
+        const palyer = await this.findPlayerByNickname(login);
+        console.log("time", time);
         const room = await this.prisma.permission.updateMany({
             where: {
                 AND: [
