@@ -142,6 +142,7 @@ let PlayerController = class PlayerController {
         response.status(200).send(friends);
     }
     async GetListOfMembers(id_room, request, response) {
+        console.log("List of Members id_room", id_room['id']);
         const room = await this.playerService.findRoomById(id_room['id']);
         if (room.is_dm === true) {
             throw new common_1.NotFoundException("Is a DM");
@@ -224,7 +225,7 @@ let PlayerController = class PlayerController {
         if (!status) {
             throw new common_1.NotFoundException("This player is not a member of this room");
         }
-        if (status.statusMember !== "member" || status.is_banned === true || status.is_muted === true) {
+        if (status.statusMember !== "member" || status.is_banned === true) {
             throw new common_1.NotFoundException("Cannot set this player as Admin bcuz is not a member and maybe he is muted or banned");
         }
         const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
@@ -235,6 +236,34 @@ let PlayerController = class PlayerController {
             throw new common_1.NotFoundException("You cannot set this player as Admin, you are not the Owner");
         }
         const result = await this.playerService.setAdmin(login['id1'], room_id['id2']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        response.status(200).send({
+            message: "Admin set"
+        });
+    }
+    async unsetAdmin(login, room_id, request, response) {
+        const room = await this.playerService.findRoomById(room_id['id2']);
+        if (room.is_dm === true) {
+            throw new common_1.NotFoundException("Is a DM");
+        }
+        const member = await this.playerService.findPlayerByNickname(login['id1']);
+        const status = await this.playerService.getPermissions(member.id, room_id['id2']);
+        if (!status) {
+            throw new common_1.NotFoundException("This player is not a member of this room");
+        }
+        if (status.statusMember !== "admin" || status.is_banned === true) {
+            throw new common_1.NotFoundException("This player is not an admin or is banned");
+        }
+        const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
+        if (!admin) {
+            throw new common_1.NotFoundException("You are not a member of this room");
+        }
+        if (admin && admin.statusMember !== "owner") {
+            throw new common_1.NotFoundException("You cannot unset this player from Admin position, you are not the Owner");
+        }
+        const result = await this.playerService.unsetAdmin(login['id1'], room_id['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
@@ -282,6 +311,9 @@ let PlayerController = class PlayerController {
         }
         if (admin.statusMember === "admin" && status.statusMember === "admin") {
             throw new common_1.NotFoundException("You cannot mute another admin");
+        }
+        if (admin.statusMember === "owner" && status.statusMember === "owner") {
+            throw new common_1.NotFoundException("The owner cannot mute himself");
         }
         const mute = await this.playerService.muteMember(Body.login, Body.room_id, Body.time);
         response.set({
@@ -395,6 +427,9 @@ let PlayerController = class PlayerController {
         if (admin.statusMember === "admin" && status.statusMember === "admin") {
             throw new common_1.NotFoundException("You cannot ban another admin");
         }
+        if (admin.statusMember === "owner" && status.statusMember === "owner") {
+            throw new common_1.NotFoundException("owner can not ban himself");
+        }
         const ban = await this.playerService.banMember(login['id1'], room['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -414,7 +449,7 @@ let PlayerController = class PlayerController {
             throw new common_1.NotFoundException("This player is not a member of this room");
         }
         if (status && status.is_banned === true) {
-            throw new common_1.NotFoundException("Cannot kick this player");
+            throw new common_1.NotFoundException("Cannot kick this player, bcuz he is banned from this room");
         }
         const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
         if (admin === null) {
@@ -428,6 +463,9 @@ let PlayerController = class PlayerController {
         }
         if (admin && admin.statusMember === "admin" && status.statusMember === "admin") {
             throw new common_1.NotFoundException("You cannot kick another admin");
+        }
+        if (admin && admin.statusMember === "owner" && status.statusMember === "owner") {
+            throw new common_1.NotFoundException("The owner cannot kick himself");
         }
         const kick = await this.playerService.kickMember(login['id1'], room_id['id2']);
         response.set({
@@ -527,6 +565,7 @@ let PlayerController = class PlayerController {
         });
     }
     async getMessages(room_id, request, response) {
+        console.log("get Messages id_room", room_id['id']);
         const room = await this.playerService.findRoomById(room_id['id']);
         if (!room) {
             throw new common_1.NotFoundException("Room not found");
@@ -568,8 +607,9 @@ let PlayerController = class PlayerController {
             message: "Player joined the room successfully"
         });
     }
-    async joinDM(login, request, response) {
-        const room = await this.playerService.joinDM(request.user.id, login['id']);
+    async joinDM(room_id, request, response) {
+        console.log("Join DM, login: ", room_id['id']);
+        const room = await this.playerService.joinDM(request.user.id, room_id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
@@ -725,6 +765,16 @@ __decorate([
     __metadata("design:paramtypes", [String, String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "setAdmin", null);
+__decorate([
+    (0, common_1.Get)('/unsetAdmin/:id1/:id2'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Param)()),
+    __param(2, (0, common_1.Req)()),
+    __param(3, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "unsetAdmin", null);
 __decorate([
     (0, common_1.Get)('/listToMute/:id'),
     __param(0, (0, common_1.Param)()),

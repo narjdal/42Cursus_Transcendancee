@@ -1321,29 +1321,65 @@ export class PlayerService {
         return permission;
     }
 
-    async joinDM(userId: string, login: string)
-    {
-        // 0- check if login exists
-        const user = await this.findPlayerByNickname(login);
+    // async joinDM(userId: string, login: string)
+    // {
+    //     // 0- check if login exists
+    //     const user = await this.findPlayerById(login);
 
-        let room = null;
-        // 1- check if room already exists between those 2 users
-        room = await this.getRoomBetweenTwoPlayers(userId, login);
-        // 2- if not create a new room
-        if (room === null)
-        {
-            const friendship = await this.getFriendshipStatus(userId, login);
-            if (!friendship) {
-                room = await this.createDMRoom(userId, login);
+    //     let room = null;
+    //     // 1- check if room already exists between those 2 users
+    //     room = await this.getRoomBetweenTwoPlayers(userId, login);
+    //     // 2- if not create a new room
+    //     if (room === null)
+    //     {
+    //         const friendship = await this.getFriendshipStatus(userId, login);
+    //         if (!friendship) {
+    //             room = await this.createDMRoom(userId, login);
+    //         }
+    //         // status friendship: 0: Friend, 1: Pending, 2: Block
+    //         else if (friendship.status === 'Pending') {
+    //             room = await this.createDMRoom(userId, login);
+    //         }
+    //         else if (friendship.status === 'Block') {
+    //             throw new NotFoundException("You can not send a message to this player");
+    //         }
+    //     }
+    //     return await this.getRoomById(userId, room.id);
+    // }
+
+    async joinDM(userId: string, room_id: string)
+    {
+        // // 0- check if login exists
+        // const user = await this.findPlayerById(login);
+
+        // let room = null;
+        // // 1- check if room already exists between those 2 users
+        // room = await this.getRoomBetweenTwoPlayers(userId, login);
+        // // 2- if not create a new room
+        // if (room === null)
+        // {
+        //     const friendship = await this.getFriendshipStatus(userId, login);
+        //     if (!friendship) {
+        //         room = await this.createDMRoom(userId, login);
+        //     }
+        //     // status friendship: 0: Friend, 1: Pending, 2: Block
+        //     else if (friendship.status === 'Pending') {
+        //         room = await this.createDMRoom(userId, login);
+        //     }
+        //     else if (friendship.status === 'Block') {
+        //         throw new NotFoundException("You can not send a message to this player");
+        //     }
+        // }
+        // return await this.getRoomById(userId, room.id);
+        // const room = await this.getRoomById(userId, room_id);
+        console.log("room_id ===>", room_id);
+        // const room = await this.findRoomById(room_id);
+        const room = await this.prisma.chatRoom.findUnique({
+            where: {
+                id: room_id,
             }
-            // status friendship: 0: Friend, 1: Pending, 2: Block
-            else if (friendship.status === 'Pending') {
-                room = await this.createDMRoom(userId, login);
-            }
-            else if (friendship.status === 'Block') {
-                throw new NotFoundException("You can not send a message to this player");
-            }
-        }
+        });
+        console.log("room ===>", room);
         return await this.getRoomById(userId, room.id);
     }
 
@@ -1452,6 +1488,23 @@ export class PlayerService {
             },
             data: {
                 statusMember: "admin",
+            },
+        });
+    }
+
+    async unsetAdmin(login: string, room_id: string) {
+        const palyer = await this.findPlayerByNickname(login);
+
+        const room = await this.prisma.permission.updateMany({
+            where: {
+                AND: [
+                    { playerId: palyer.id },
+                    { roomId: room_id }
+                ],
+
+            },
+            data: {
+                statusMember: "member",
             },
         });
     }

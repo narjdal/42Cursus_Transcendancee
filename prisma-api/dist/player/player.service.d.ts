@@ -99,7 +99,7 @@ export declare class PlayerService {
     sendMessage(userId: string, room_id: string, message: string): Promise<import(".prisma/client").Message>;
     sendMessageinRoom(userId: string, message: string, room_id: string): Promise<import(".prisma/client").Message>;
     addMember(login: string, room_id: string): Promise<import(".prisma/client").Permission>;
-    joinDM(userId: string, login: string): Promise<{
+    joinDM(userId: string, room_id: string): Promise<{
         name: string;
         is_dm: boolean;
         is_public: boolean;
@@ -139,6 +139,7 @@ export declare class PlayerService {
         }[];
     } | import(".prisma/client").Permission>;
     setAdmin(login: string, room_id: string): Promise<void>;
+    unsetAdmin(login: string, room_id: string): Promise<void>;
     banMember(login: string, room_id: string): Promise<void>;
     kickMember(login: string, room_id: string): Promise<void>;
     muteMember(login: string, room_id: string, time: number): Promise<void>;

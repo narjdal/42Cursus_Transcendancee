@@ -216,6 +216,7 @@ export class PlayerController {
     async GetListOfMembers(@Param() id_room: string, @Req() request, @Res() response) {
         // console.log("-------------------List of Members-------------------");
 
+        console.log("List of Members id_room", id_room['id']);
         // 1- check if room_id exists
         const room = await this.playerService.findRoomById(id_room['id']);
         // 2- check if room_id is not a dm
@@ -351,7 +352,7 @@ export class PlayerController {
             throw new NotFoundException("This player is not a member of this room");
         }
         // 3- check if login status is member and NOT Muted
-        if (status.statusMember !== "member" || status.is_banned === true || status.is_muted === true)
+        if (status.statusMember !== "member" || status.is_banned === true) // || status.is_muted === true)
         {
             throw new NotFoundException("Cannot set this player as Admin bcuz is not a member and maybe he is muted or banned");
         }
@@ -366,6 +367,48 @@ export class PlayerController {
         }
     
         const result = await this.playerService.setAdmin(login['id1'], room_id['id2']);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+            }
+        )
+        response.status(200).send({
+            message: "Admin set"
+        });
+    }
+
+    // //endpoint for setting a member as admin
+    @Get('/unsetAdmin/:id1/:id2')
+    async unsetAdmin(@Param() login: string, @Param() room_id: string, @Req() request, @Res() response) {
+        // console.log("---------------- Set Admin ----------------");
+
+        // 1- check if room_id exists and is not a DM
+        const room = await this.playerService.findRoomById(room_id['id2']);
+        if(room.is_dm === true)
+        {
+            throw new NotFoundException("Is a DM");
+        }
+        // 2- check if login is member of this room
+        const member = await this.playerService.findPlayerByNickname(login['id1']);
+        const status = await this.playerService.getPermissions(member.id, room_id['id2']);
+        if(!status){
+            throw new NotFoundException("This player is not a member of this room");
+        }
+        // 3- check if login status is an admin
+        if (status.statusMember !== "admin" || status.is_banned === true)
+        {
+            throw new NotFoundException("This player is not an admin or is banned");
+        }
+        // 4- check if user status permission is an owner or admin
+        const admin = await this.playerService.getPermissions(request.user.id, room_id['id2']);
+        if(!admin){
+            throw new NotFoundException("You are not a member of this room");
+        }
+        if (admin && admin.statusMember !== "owner")
+        {
+            throw new NotFoundException("You cannot unset this player from Admin position, you are not the Owner");
+        }
+    
+        const result = await this.playerService.unsetAdmin(login['id1'], room_id['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
             }
@@ -441,7 +484,10 @@ export class PlayerController {
         {
            throw new NotFoundException("You cannot mute another admin");
         }
-
+        if (admin.statusMember === "owner" && status.statusMember === "owner")
+        {
+           throw new NotFoundException("The owner cannot mute himself");
+        }
        //6- mute member
        const mute = await this.playerService.muteMember(Body.login, Body.room_id, Body.time);
        response.set({
@@ -612,6 +658,10 @@ export class PlayerController {
         {
            throw new NotFoundException("You cannot ban another admin");
         }
+        if (admin.statusMember === "owner" && status.statusMember === "owner")
+        {
+           throw new NotFoundException("owner can not ban himself");
+        }
        //6- ban
         const ban = await this.playerService.banMember(login['id1'], room['id2']);
         response.set({
@@ -644,7 +694,7 @@ export class PlayerController {
        //4- check if nickname status in room_id with status member And Muted
        if (status && status.is_banned === true)
        {
-           throw new NotFoundException("Cannot kick this player");
+           throw new NotFoundException("Cannot kick this player, bcuz he is banned from this room");
        }
 
        //5- check if user status permission is an owner or admin
@@ -664,6 +714,10 @@ export class PlayerController {
        if (admin && admin.statusMember === "admin" && status.statusMember === "admin")
        {
           throw new NotFoundException("You cannot kick another admin");
+       }
+       if (admin && admin.statusMember === "owner" && status.statusMember === "owner")
+       {
+          throw new NotFoundException("The owner cannot kick himself");
        }
        //6- kick member
         const kick = await this.playerService.kickMember(login['id1'], room_id['id2']);
@@ -842,6 +896,7 @@ export class PlayerController {
     async getMessages(@Param() room_id: string, @Req() request, @Res() response) {
         // console.log("----------------------- Get Messages -----------------------", room_id['id']);
 
+        console.log("get Messages id_room", room_id['id']);
         // 1- check if room_id exists
         const room = await this.playerService.findRoomById(room_id['id']);
         if(!room)
@@ -936,10 +991,11 @@ export class PlayerController {
     }
 
     @Get('joinDM/:id')
-    async joinDM(@Param() login: string, @Req() request, @Res() response) {
+    async joinDM(@Param() room_id: string, @Req() request, @Res() response) {
         // console.log("---------------- Join DM ----------------", login['id']);
+        console.log("Join DM, login: ", room_id['id']);
 
-        const room = await this.playerService.joinDM(request.user.id, login['id']);
+        const room = await this.playerService.joinDM(request.user.id, room_id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         })

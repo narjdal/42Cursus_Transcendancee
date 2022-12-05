@@ -18,6 +18,7 @@ export declare class PlayerController {
     addMember(login: string, room_id: string, request: any, response: any): Promise<void>;
     GetListOfSetAdmin(id_room: string, request: any, response: any): Promise<void>;
     setAdmin(login: string, room_id: string, request: any, response: any): Promise<void>;
+    unsetAdmin(login: string, room_id: string, request: any, response: any): Promise<void>;
     GetListOfMembersToMute(id_room: string, request: any, response: any): Promise<void>;
     muteMember(Body: MutePlayerInRoomDto, request: any, response: any): Promise<void>;
     GetListOfMembersToUnmute(id_room: string, request: any, response: any): Promise<void>;
@@ -39,7 +40,7 @@ export declare class PlayerController {
     getMessages(room_id: string, request: any, response: any): Promise<void>;
     SendMessageButton(login: string, request: any, response: any): Promise<void>;
     joinRoom(room_id: string, request: any, response: any): Promise<any>;
-    joinDM(login: string, request: any, response: any): Promise<any>;
+    joinDM(room_id: string, request: any, response: any): Promise<any>;
     joinNonProtectedRoom(room_id: string, request: any, response: any): Promise<any>;
     joinProtectedRoom(roomId_pwd: JoinProtectedRoomDto, request: any, response: any): Promise<any>;
 }

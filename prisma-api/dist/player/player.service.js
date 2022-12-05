@@ -986,22 +986,14 @@ let PlayerService = class PlayerService {
         });
         return permission;
     }
-    async joinDM(userId, login) {
-        const user = await this.findPlayerByNickname(login);
-        let room = null;
-        room = await this.getRoomBetweenTwoPlayers(userId, login);
-        if (room === null) {
-            const friendship = await this.getFriendshipStatus(userId, login);
-            if (!friendship) {
-                room = await this.createDMRoom(userId, login);
+    async joinDM(userId, room_id) {
+        console.log("room_id ===>", room_id);
+        const room = await this.prisma.chatRoom.findUnique({
+            where: {
+                id: room_id,
             }
-            else if (friendship.status === 'Pending') {
-                room = await this.createDMRoom(userId, login);
-            }
-            else if (friendship.status === 'Block') {
-                throw new common_1.NotFoundException("You can not send a message to this player");
-            }
-        }
+        });
+        console.log("room ===>", room);
         return await this.getRoomById(userId, room.id);
     }
     async joinRoom(userId, room_id) {
@@ -1085,6 +1077,20 @@ let PlayerService = class PlayerService {
             },
             data: {
                 statusMember: "admin",
+            },
+        });
+    }
+    async unsetAdmin(login, room_id) {
+        const palyer = await this.findPlayerByNickname(login);
+        const room = await this.prisma.permission.updateMany({
+            where: {
+                AND: [
+                    { playerId: palyer.id },
+                    { roomId: room_id }
+                ],
+            },
+            data: {
+                statusMember: "member",
             },
         });
     }
