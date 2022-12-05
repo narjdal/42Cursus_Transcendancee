@@ -1,5 +1,5 @@
 ## Just 4 Testing Postgres => 
-    im using Postgres v 15,
+    im using Postgres v 15.1,
     env => DB_URL ... ==> 12345 is the password set on installation of postgres , PORT = 5432
     u need to reinstall node_modeules,
     run : npx prisma migrate dev
