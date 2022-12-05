@@ -51,6 +51,7 @@ await fetch(text,{
 .then(json => {
   console.log("The AddAdminResponse is => " + JSON.stringify(json))
 // 
+setErrorMessage(json.nmessage)
 if(json.statusCode == "404")
 {
   setErrorMessage(json.message)
@@ -250,6 +251,7 @@ await fetch(text,{
 .then(json => {
   console.log( " KickUser Response is :  " + JSON.stringify(json))
 // 
+setErrorMessage(json.message)
 if(json.statusCode =="404")
 {
   setErrorMessage(json.message)

@@ -233,6 +233,25 @@ async function GetPermissions()
 async function Waiit () {
   // await GetRoomById();
   await GetTypeOfRoom();
+
+  let text = "HasRoomAccess" + params.id
+  let RoomText = "Room:" + params.id;
+  if (localStorage.getItem(text) == "true")
+  {
+    console.log( " ITS TRUE ")
+    const room = localStorage.getItem(RoomText);
+    if (room)
+    {
+    await  Waiter();
+    }
+    
+    // setRoom()
+  }
+  else if (localStorage.getItem(text) == "false")
+  {
+    // setIsProtected(true)
+    console.log(" WHAT IS HAPPENING ")
+  }
   // if(!isDm)
   // await GetPermissions();
 
@@ -333,7 +352,7 @@ async function GetTypeOfRoom()
     if(json.data == "dm")
     {
       console.log(" THIS IS A DM GETTYPEOF ROOM");
-      setAllgood(true)
+      // setAllgood(true)
       // localStorage.setItem("isdm","true");
       setIsDm(true);
       joinDM();
@@ -392,10 +411,19 @@ async function joinDM()
 // .then((response) => response.json())
 .then(json => {
     // json.data.id = params.id;
-  console.log("The joinDM esp : " + JSON.stringify(json.data));
+  console.log("The joinDM esp : " + JSON.stringify(json.data.room));
   // if(json.data == "dm")
   // {
-  //   console.log(" THIS IS A DM GETTYPEOF ROOM");
+    const room ={
+      ...json.data.room,
+      id:params.id
+    }
+    setRoom(room);
+    setAllgood(true);
+    // GetPermissions();
+    setRoomName(json.data.room.name)
+    setIsDm(true);
+    console.log(" THIS IS A DM GETTYPEOF ROOM");
   //   setAllgood(true)
   //   // localStorage.setItem("isdm","true");
   //   setIsDm(true);
@@ -420,6 +448,7 @@ useEffect (() =>
           if(loggeduser)
           {
             const current = JSON.parse(loggeduser);
+            Waiit();
         // if(localStorage.getItem("protected") == "false")
   //       if(localStorage.getItem("protected") == "true")
   //       {
@@ -428,31 +457,13 @@ useEffect (() =>
   //       }
   // let text = "HasRoomAccess" + params.id
             // if(localStorage.getItem(""))
-            let text = "HasRoomAccess" + params.id
-            let RoomText = "Room:" + params.id;
-            if (localStorage.getItem(text) == "true")
-            {
-              console.log( " ITS TRUE ")
-              const room = localStorage.getItem(RoomText);
-              if (room)
-              {
-                Waiter();
-              }
-              
-              // setRoom()
-            }
-            else if (localStorage.getItem(text) == "false")
-            {
-              // setIsProtected(true)
-              console.log(" WHAT IS HAPPENING ")
-            }
+          
   //       if(localStorage.getItem(text) == "true")
   //       {
   //         console.log(" HE HAS ROOM ACCEEES")
   //         setIsProtected(false);
   //         // setErrorMessage(" YOU HAVE ACCESS");
   //       }
-            Waiit();
             // else if (localStorage.getItem("protected") == "true")
             // {
             //   setIsProtected(true);

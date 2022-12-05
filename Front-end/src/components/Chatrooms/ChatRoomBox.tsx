@@ -311,8 +311,9 @@ async function init_socket()
 {
   // if(allMembers)
   // {
+    if(!props.room.is_dm)
 await GetMembers()
-.then((resp) => {
+// .then((resp) => {
 
   socket = io("http://localhost:5000/chat");
   socket.emit('joinroom', { room: props.room.id, user: JSON.parse(localStorage.getItem("user")!) });
@@ -327,8 +328,8 @@ await GetMembers()
     createdAt   Time
   }
   */
- const NewMembers = JSON.parse(localStorage.getItem("members")!);
-  console.log("ALL MEMBERS : ", NewMembers);
+//  const NewMembers = JSON.parse(localStorage.getItem("members")!);
+//   console.log("ALL MEMBERS : ", NewMembers);
   // let srch = NewMembers.filter((m: any) => {
   //   console.log("m.id : " + m.id + " data.senderId : " + data.message.senderId, data);
   //   return m.id === data.message.senderId
@@ -356,7 +357,7 @@ await GetMembers()
   // setMessages([...messages, msgObj]);
 
   });
-})
+
 // }
 }
 
@@ -368,7 +369,7 @@ await GetMembers()
   // let RoomText = "Room:" + props.room.id;
   // localStorage.setItem(text,"false");
   // localStorage.setItem(RoomText,"");
-      console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name )
+      console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name + "PROPS : ",props )
       // console.log("CHATROOMBOX ROOM PERM : " + statusMember.data + " muted : " , props.statusMember.data)
    
         if (props.room.is_dm) 
