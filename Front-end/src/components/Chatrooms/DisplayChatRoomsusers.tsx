@@ -21,6 +21,11 @@ const DisplayChatRoomusers = (props,roomownnership) => {
         e.preventDefault();
     }
     
+    const HandleInviteToGame = (e) => {
+        e.preventDefault();
+        console.log("invting this user to a game !");
+    }
+    
     const HandleShowAction = (e) => {
         e.preventDefault();
         setAction(!action);
@@ -65,8 +70,14 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user + " nickname : " , props
    <p> {props.user.nickname} </p>
      </Link> 
      </td> 
+
   <td>
-{isAdmin === "true"  ? (
+                <button>
+  <span className="icon material-symbols-outlined" onClick={HandleInviteToGame}>
+     {"stadia_controller"}  
+      </span>
+      </button>
+{/* {isAdmin === "true"  ? (
 <>
 
 <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleShowAction}>
@@ -102,7 +113,7 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user + " nickname : " , props
 <>
 
 </>
-)}
+)} */}
 
 
       

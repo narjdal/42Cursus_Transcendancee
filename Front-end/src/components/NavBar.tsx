@@ -203,6 +203,12 @@ await fetch((endpoint),{
           // console.log("=>>>>> FROM THE NAVBAR " + loggeduser   + Current_User.nickname + Current_User.UserId)
           // setUser42(Current_User);
         }
+        else
+        {
+          // console.log(" YOU ARE NOY LOGGED IN MY FRIEND NO USER FOUND TF IS THIS ")
+          localStorage.setItem("authenticated","false");
+          window.location.reload();
+        }
       //  const {UserId,usual_full_name} = user42;
 
       },[ localStorage.getItem("user"),isShown]);

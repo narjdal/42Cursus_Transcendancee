@@ -16,7 +16,7 @@ UNSET ADMIN √
 Mute √
 unmute √ 
 
-
+{% endif %}
 
 ADMIN : 
 BAN MEMBERS OK CANT BAN  ADMIN  OR HIMSELF √ 

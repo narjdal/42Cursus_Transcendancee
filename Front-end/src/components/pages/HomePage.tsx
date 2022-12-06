@@ -9,23 +9,29 @@ import './HomePage.css'
 
 const Home = () => {
   const [authenticated, setauthenticated] = useState("");
+  const [MatchHistory,setMatchHsitory] = useState<any>([]);
   const loggeduser = localStorage.getItem("user");
-if (loggeduser)
-{
-    var Current_User = JSON.parse(loggeduser);
-    
-}
 
-  const MatchHistory = [
-    {MatchId:0,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"10-8",winner:true},
-    {MatchId:1,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"12-8",winner:false},
-];
 
   useEffect(() => {
     const authenticated = localStorage.getItem("authenticated");
     const loggeduser = localStorage.getItem("user");
     // console.log("HomePage Is User Auth ?  " + authenticated);
   
+    if (loggeduser)
+{
+    var Current_User = JSON.parse(loggeduser);
+    const RandomHs = [
+      {MatchId:0,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"10-8",winner:true},
+      {MatchId:1,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"12-8",winner:false},
+    ];
+    setMatchHsitory(RandomHs)
+    
+}
+
+
+
+
     if (authenticated) {
       setauthenticated(authenticated);
     }

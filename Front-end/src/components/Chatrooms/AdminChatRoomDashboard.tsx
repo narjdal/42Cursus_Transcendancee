@@ -4,6 +4,7 @@ import './AdminChatRoomDashboard.css'
 import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import person from '../users/users.json'
 import { useNavigate } from 'react-router-dom';
+import { IsAuthOk } from '../../utils/utils';
 
 const AdminChatRoomDashboard = (props) => {
   const[roomUsers,setRoomUsers] = useState <any >([]);
@@ -54,7 +55,7 @@ await fetch(text,{
 .then(json => {
   console.log("The AddAdminResponse is => " + JSON.stringify(json))
 // 
-setErrorMessage("HHAHAHAHA")
+// setErrorMessage("HHAHAHAHA")
 setErrorMessage(json.message)
 if(json.statusCode == "404")
 {
@@ -64,6 +65,8 @@ if(json.statusCode == "500")
 {
   setErrorMessage("An error occured in the backend.");
 }
+if(IsAuthOk(json.statusCode) == 1)
+window.location.reload();
 
   return json;
 })
@@ -117,6 +120,8 @@ if(json.statusCode == "500")
 {
   setErrorMessage("An error occured in the backend.");
 }
+if(IsAuthOk(json.statusCode) == 1)
+window.location.reload();
 
   return json;
 })
@@ -197,6 +202,8 @@ console.log("seconds : " + seconds + " minutes :  " + minutes);
     {
       setErrorMessage(json.message);
     }
+    if(IsAuthOk(json.statusCode) == 1)
+window.location.reload();
   // window.location.reload();
     return json;
 })
@@ -268,6 +275,8 @@ if(json.statusCode == "500")
   setErrorMessage("An error occured in the backend.");
 }
 
+if(IsAuthOk(json.statusCode) == 1)
+window.location.reload();
   return json;
 })
 .catch((error) => {
@@ -335,7 +344,8 @@ if(json.statusCode == "500")
 {
   setErrorMessage("An error occured in the backend.");
 }
-
+if(IsAuthOk(json.statusCode) == 1)
+window.location.reload();
   return json;
 })
 .catch((error) => {
@@ -391,6 +401,8 @@ if(json.statusCode == "500")
 {
   setErrorMessage("An error occured in the backend.");
 }
+if(IsAuthOk(json.statusCode) == 1)
+window.location.reload();
 
   return json;
 })
@@ -449,7 +461,18 @@ async function HandleSetPassword()
 .then(json => {
     console.log("The SetPasswordResponse   is => " + JSON.stringify(json))
 
-    navigate('/Landing');
+    if(IsAuthOk(json.statusCode) == 1)
+    window.location.reload();
+
+    if(json.statusCode == "404")
+    setErrorMessage(json.message)
+    else
+    {
+      navigate('/Landing');
+
+    }
+
+
   // window.location.reload();
     return json;
 })
@@ -482,7 +505,18 @@ async function HandleSetPassword()
 .then(json => {
     console.log("The DELETEPWD RESP    is => " + JSON.stringify(json))
 
+    if(IsAuthOk(json.statusCode) == 1)
+    window.location.reload();
+
+    if(json.statusCode == "404")
+    setErrorMessage(json.message)
+    else
+    {
   window.location.reload();
+
+    }
+    
+
     return json;
 })
 .catch((error) => {
@@ -514,7 +548,18 @@ async function HandleSetPassword()
   .then(json => {
       console.log("The UPDATEPWD RESP    is => " + JSON.stringify(json))
   
+      if(IsAuthOk(json.statusCode) == 1)
+      window.location.reload();
+      
+      if(json.statusCode == "404")
+      setErrorMessage(json.message)
+      else
+      {
     window.location.reload();
+  
+      }
+
+    // window.location.reload();
       return json;
   })
   .catch((error) => {
