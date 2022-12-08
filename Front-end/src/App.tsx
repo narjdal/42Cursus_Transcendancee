@@ -30,13 +30,19 @@ import getProfile from './utils/fetchProfile'
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
+import QRcode from './components/QRCode';
+import axios from 'axios';
 
 const App = () => {
   const accessToken = "ss";
   const [isLogged, setIslogged] = useState(false);
   const [trylogin, settrylogin] = useState(false);
+  const [twofa, setTwoFa] = useState(false);
+  const [qrCode,setQR] = useState <any>([]);
+
 
   useEffect(() => {
+    
     if (localStorage.getItem("authenticated") === "true")
      {
 
@@ -48,9 +54,19 @@ const App = () => {
       setIslogged(true);
     }
     if (localStorage.getItem("trylogin") === "true") {
-      HandleProfile();
       console.log("trylogin is  true");
+
+      if(window.location.href == "http://localhost:3000/verify")
+      {
+        setTwoFa(true);
+      }
+      else
+      {
+      HandleProfile();
+      }
     }
+  
+  // if(window.location.url == "")
   }, [trylogin])
   async function HandleProfile() {
 
@@ -64,6 +80,56 @@ const App = () => {
 
   }
 
+async function EnableTwoFa () {
+
+
+  
+  
+
+  const text = "http://localhost:5000/player/2fa/enable/" ;
+  console.log("/2fa/enable Link :  =>  " + text);
+
+  
+
+  await axios.get(text,
+    {withCredentials:true}
+    // mode:'no-cors',
+    // method:'get',
+    // credentials:"include"
+  )
+
+// .then((response) => response.json())
+.then(json => {
+    // json.data.id = params.id;
+  console.log("The /2fa/enable esp : " + JSON.stringify(json.data));
+  setQR(json.data)
+})
+.catch((error) => {
+  // setErrorMessage("An error occured ! You cannot access this room.");
+
+    console.log("An error occured  while fetching the /2fa/enable  : " + error)
+    return error;
+})
+
+}
+
+  if(twofa)
+  {
+    EnableTwoFa();
+
+    console.log("TWO FA IS TRUE HE IS TRYING TO LOGIN.");
+    return (
+      <>
+      Fecth TWO FA QR CODE AND DISPLAY INPUT HERE 
+
+      </>
+    )
+  }
+  // else
+  // {
+    
+  // }
+
   if (!isLogged) {
     console.log("You are not logged in.");
     return (
@@ -76,6 +142,10 @@ const App = () => {
       </>
     )
   }
+  // else if (twofa)
+  // {
+
+  // }
   else {
 
 
@@ -121,6 +191,8 @@ const App = () => {
             <Route path="/users/:nickname" element={<Friendprofile />} />
             <Route path="/Achievements" element={<Achievements />} />
             <Route path="/Social" element={<Social />} />
+            <Route path="/verify" element={<QRcode />} />
+
 
 
           </Routes>

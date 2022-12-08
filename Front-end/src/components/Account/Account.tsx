@@ -151,7 +151,7 @@ async function EnableTwoFa () {
 // .then((response) => response.json())
 .then(json => {
     // json.data.id = params.id;
-  console.log("The /2fa/enable esp : " + JSON.stringify(json.data.room));
+  console.log("The /2fa/enable esp : " + JSON.stringify(json.data));
   // if(json.data == "dm")
 //   // {
 //     const room ={

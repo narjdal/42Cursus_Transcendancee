@@ -511,9 +511,8 @@ useEffect (() =>
           return () => {
     let text = "HasRoomAccess" + params.id
   let RoomText = "Room:" + params.id;
-localStorage.setItem(text,"");
+localStorage.setItem(text,"false");
 localStorage.setItem(RoomText,"");
-
           }
           // if(testRoom.is_protected)
           // setIsProtected(true);
