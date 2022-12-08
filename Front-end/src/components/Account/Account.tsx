@@ -9,6 +9,9 @@ import Login from '../login/login';
 import DisplayAchievementsList from './Account_pages/Achievements/DisplayAchievementsList';
 import DisplayMatchHistory from './Account_pages/DisplayMatchHistory';
 import { IsAuthOk } from '../../utils/utils';
+// import QRcode from '../QRCode';
+import QRCode from 'qrcode.react'
+
 import axios from 'axios';
 const Account = () => {
   const navigate = useNavigate();
@@ -20,6 +23,10 @@ const Account = () => {
   const [twoFa,setTwoFa] = useState(false);
   const [TwoFaDisable,setTwoFaDisable] = useState(false);
   const [TwoFaEnable,setTwoFaEnable] = useState(false);
+  const [done,setDone] = useState(false);
+
+  const [QRcodeText, setQRCodeText] = useState("");
+  const [msg, setMsg] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
   const [TwoFaMessage, setTwoFaMessage] = useState("");
@@ -45,6 +52,8 @@ const [minihistory,setMiniHistory] = useState<any>([])
       {
         setTwoFaMessage("Two Factor Authentification is activated !")
         setTwoFaDisable(true);
+        setMsg("Disable two FA.");
+
         // setTwoFa(false);
         setTwoFaEnable(false);
 
@@ -52,6 +61,7 @@ const [minihistory,setMiniHistory] = useState<any>([])
       else
       {
         setTwoFaMessage("Two Factor Authentification is not activated !")
+        setMsg("Activate two FA.");
         setTwoFaEnable(true);
         setTwoFaDisable(false);
         // setTwoFa(true);
@@ -152,6 +162,34 @@ async function EnableTwoFa () {
 .then(json => {
     // json.data.id = params.id;
   console.log("The /2fa/enable esp : " + JSON.stringify(json.data));
+  if (json.data.statusCode == "404")
+  {
+
+  }
+  const current = JSON.parse(localStorage.getItem("user")!);
+  const NewUser = [
+    {
+      id:current.id,
+      nickname:current.nickname,
+      avatar:current.avatar,
+      firstName:current.firstName,
+      lastName:current.lastName,
+      email:current.email,
+      wins:current.wins,
+      loses:current.loses,
+      tfa:true,
+      tfaSecret:current.tfaSecret
+    }
+  ]
+  console.log("USER : " + JSON.stringify(NewUser[0]))
+localStorage.setItem("user",JSON.stringify(NewUser[0]));
+window.location.reload();
+
+// localStorage.setItem("user","");
+// localStorage.setItem("user",JSON.stringify(NewUser));
+
+  // setQRCodeText(json.data);
+  // setDone(true);
   // if(json.data == "dm")
 //   // {
 //     const room ={
@@ -186,7 +224,7 @@ async function EnableTwoFa () {
    
 })
 .catch((error) => {
-  // setErrorMessage("An error occured ! You cannot access this room.");
+  setErrorMessage("An error occured ! .");
 
     console.log("An error occured  while fetching the /2fa/enable  : " + error)
     return error;
@@ -317,6 +355,7 @@ async function EnableTwoFa () {
        onChange={HandleTwoFa}
        />
        Enable
+       
        {twoFa ? (
         <>
                <button
@@ -328,9 +367,23 @@ async function EnableTwoFa () {
         {Updated ? "Priority" : "send"}
       </span>
       <span className="text">
-        {isUpdating ? "Updating ..." : Updated ? "Updated" : " Todo Backend ..."}
+        {isUpdating ? "Updating ..." : Updated ? "Updated" : msg}
       </span>
     </button>
+
+{/* {done ? (
+  <>
+      <QRCode
+        id="qrCodeEl"
+        size={150}
+        value={QRcodeText}
+      />
+  </>
+) : (
+  <>
+  </>
+)} */}
+
         </>
        ) : (
         <>
@@ -359,7 +412,7 @@ async function EnableTwoFa () {
         {Updated ? "Priority" : "send"}
       </span>
       <span className="text">
-        {isUpdating ? "Updating ..." : Updated ? "Updated" : " Todo Backend ..."}
+        {isUpdating ? "Updating ..." : Updated ? "Updated" : msg}
       </span>
     </button>
   </>

@@ -29,15 +29,27 @@ import { login } from './cookies/AuthProvider';
 import getProfile from './utils/fetchProfile'
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import QRcode from './components/QRCode';
 import axios from 'axios';
+import QRCode from 'qrcode.react'
+import { io } from "socket.io-client";
+import { Socket } from 'dgram';
+// import socket
+var socket:any;
 
 const App = () => {
   const accessToken = "ss";
   const [isLogged, setIslogged] = useState(false);
   const [trylogin, settrylogin] = useState(false);
+  const [done, setDone] = useState(false);
+
   const [twofa, setTwoFa] = useState(false);
+  const [QRcodeText, setQRCodeText] = useState("");
+  const [twoFAcode, setTwoFAcode] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [qrCode,setQR] = useState <any>([]);
 
 
@@ -68,6 +80,8 @@ const App = () => {
   
   // if(window.location.url == "")
   }, [trylogin])
+
+
   async function HandleProfile() {
 
     console.log("INSIDE HANDLE PROFILE");
@@ -80,11 +94,29 @@ const App = () => {
 
   }
 
+  useEffect(() => {
+
+    if(twofa)
+    {
+      console.log("Enable TWO FA && generate QR CODE ")
+          EnableTwoFa();
+        //  generateQRCode("sometext")
+    }
+  },[twofa])
+
+
+  const generateQRCode = (text:string) => {
+    setQRCodeText("inputText");
+  }
+
+  const SendtwoFaCode = (e) => {
+    e.preventDefault();
+    console.log("SENDING THE CODE ")
+  }
 async function EnableTwoFa () {
 
 
-  
-  
+
 
   const text = "http://localhost:5000/player/2fa/enable/" ;
   console.log("/2fa/enable Link :  =>  " + text);
@@ -102,26 +134,91 @@ async function EnableTwoFa () {
 .then(json => {
     // json.data.id = params.id;
   console.log("The /2fa/enable esp : " + JSON.stringify(json.data));
+  
   setQR(json.data)
+  generateQRCode(json.data)
+    // setQRCodeText(json.data);
+  setDone(true);
+  // generateQRCode(json.data)
 })
 .catch((error) => {
-  // setErrorMessage("An error occured ! You cannot access this room.");
+  // setErrorMessage("An error occured ! You cannot access this room.")
+  setErrorMessage("An error occured ! Cannot display the QR CODE .")
 
+  // generateQRCode(error)
+  
+  // setDone(true);
     console.log("An error occured  while fetching the /2fa/enable  : " + error)
     return error;
 })
 
 }
 
+useEffect(() => {
+  
+  if(isLogged)
+  {
+    // socket = io("http://localhost:5000");
+    // console.log("Hadik hya:",localStorage.getItem("user"));
+
+    // socket.emit("onlineUsersBack", 
+    // { 
+    //   user: JSON.parse(localStorage.getItem("user")!) 
+    //  });
+    
+    // console.log("socket is connecting ", socket);
+    
+    // socket.on("onlineUsersFront", (data: any) => {
+    //   console.log("OnLine e e e e e: ", data);
+    //   localStorage.setItem("online",JSON.stringify(data))
+
+    // });
+  }
+  return () => {
+    // localStorage.setItem("online","");
+  }
+
+},[isLogged])
+
   if(twofa)
   {
-    EnableTwoFa();
 
+  
     console.log("TWO FA IS TRUE HE IS TRYING TO LOGIN.");
     return (
       <>
-      Fecth TWO FA QR CODE AND DISPLAY INPUT HERE 
+      <div className='Account-card'>
+        
+        {done ? (
+          <>
+            <QRCode
+        id="qrCodeEl"
+        size={150}
+        value={QRcodeText}
+      />
+      <br/>
 
+        <input
+          type="text"
+          placeholder="Enter Two FA Password"
+          value={twoFAcode}
+          onChange={e => setTwoFAcode(e.target.value)}
+        />
+      <br/>
+
+        <button onClick={SendtwoFaCode} >
+          ENTER
+        </button>
+          </>
+        ) : (
+          <>
+          
+          </>
+        )}
+                {errorMessage && <div className="error"> {errorMessage} </div>}
+
+    
+        </div>
       </>
     )
   }
@@ -129,6 +226,7 @@ async function EnableTwoFa () {
   // {
     
   // }
+
 
   if (!isLogged) {
     console.log("You are not logged in.");
@@ -160,6 +258,7 @@ async function EnableTwoFa () {
     // socket.on("dm", () => {
     //   console.log("connected");
     // });
+ 
     return (
       <div className="App">
         {/* <link rel="stylesheet" href="toruskit.blobz/blobz.min.css" />
