@@ -87,7 +87,7 @@ const App = () => {
     console.log("INSIDE HANDLE PROFILE");
     await getProfile()
       .then((response) => {
-        console.log("Handle Profile response is => " + response)
+        // console.log("Handle Profile response is => " + response)
         settrylogin(!trylogin);
       })
 
@@ -99,27 +99,83 @@ const App = () => {
     if(twofa)
     {
       console.log("Enable TWO FA && generate QR CODE ")
-          EnableTwoFa();
+      GetTwoFa();
         //  generateQRCode("sometext")
     }
   },[twofa])
 
 
   const generateQRCode = (text:string) => {
-    setQRCodeText("inputText");
+    setQRCodeText(text);
   }
+async function verifyTwoFa ()
+{
+ let  text = ("http://localhost:5000/auth/2fa/verify");
+ console.log("/2fa/verify Link :  =>  " + text);
+
+  // console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + password + " Owner : " + Current_User.nickname);
+        await fetch(text,{
+          // mode:'no-cors',
+          method:'post',
+          credentials:"include",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(
+              { 
+            // roomState: roomState,
+            // name: RoomName,
+            code: twoFAcode,}
+              )
+      })
+      
+      .then((response) => response.json())
+      .then(json => {
+          console.log("The 2fa/verify resp  is => " + json)
+
+        // navigate('/Landing')
+        // window.location.reload();
+        if(json.statusCode == "401")
+        {
+          setErrorMessage("An Error occured ! Are you sure this is the correct code ? ")
+        }
+        else if (json.statusCode == "404")
+        {
+          setErrorMessage(json.message)
+        }
+        else
+        {
+          HandleProfile();
+          setTwoFa(false);
+          window.location.href = "http://localhost:3000/"
+
+        }
+          return json;
+      })
+      .catch((error) => {
+          console.log("An error occured in 2fa/verify  : " + error)
+          return error;
+      })
+    
+        }
 
   const SendtwoFaCode = (e) => {
     e.preventDefault();
     console.log("SENDING THE CODE ")
+    if(twoFAcode)
+    {
+      verifyTwoFa();
+    }
+    else
+    {
+      setErrorMessage("Code can't be empty !")
+    }
   }
-async function EnableTwoFa () {
+async function GetTwoFa () {
 
 
 
 
-  const text = "http://localhost:5000/player/2fa/enable/" ;
-  console.log("/2fa/enable Link :  =>  " + text);
+  const text = "http://localhost:5000/auth/2fa/QrCode" ;
+  console.log("/2fa/QrCode Link :  =>  " + text);
 
   
 
@@ -133,9 +189,9 @@ async function EnableTwoFa () {
 // .then((response) => response.json())
 .then(json => {
     // json.data.id = params.id;
-  console.log("The /2fa/enable esp : " + JSON.stringify(json.data));
+  console.log("The /2fa/QrCode esp : " + JSON.stringify(json.data));
   
-  setQR(json.data)
+  // setQR(json.data)
   generateQRCode(json.data)
     // setQRCodeText(json.data);
   setDone(true);
@@ -187,7 +243,7 @@ useEffect(() => {
     console.log("TWO FA IS TRUE HE IS TRYING TO LOGIN.");
     return (
       <>
-      <div className='Account-card'>
+      <div className='QR-card'>
         
         {done ? (
           <>

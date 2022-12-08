@@ -230,52 +230,65 @@ window.location.reload();
     return error;
 })
 }
-//   if(loggeduser)
-// {
-//   var Current_User = JSON.parse(loggeduser);
-//   const text = ("http://localhost:5000/player/2fa/enable");
-//   console.log("2fa ENABLE LINK  :  =>  " + text);
+}
+
+
+async function SendDisableTwoFa () {
+
+
+  
   
 
-//   await fetch(text,{
-//     // mode:'no-cors',
-//     method:'get',
-//     credentials:"include"
-// })
+  const text = "http://localhost:5000/player/2fa/disable/" ;
+  console.log("/2fa/disable Link :  =>  " + text);
+  let loggedUser = localStorage.getItem("user");
+  if(loggedUser)
+  {
+  var current = JSON.parse(loggedUser);
+
+  
+
+  await axios.get(text,{withCredentials:true}
+    // mode:'no-cors',
+    // method:'get',
+    // credentials:"include"
+  )
 
 // .then((response) => response.json())
-// .then(json => {
-//     console.log("The 2fa ENABLE RESP  is => " + JSON.stringify(json))
+.then(json => {
+    // json.data.id = params.id;
+  console.log("The /2fa/disable esp : " + JSON.stringify(json.data));
 
-//      if ( IsAuthOk(json.statusCode) == 1)
-//      {
-//      window.location.reload();
-//      }
+  const current = JSON.parse(localStorage.getItem("user")!);
+  const NewUser = [
+    {
+      id:current.id,
+      nickname:current.nickname,
+      avatar:current.avatar,
+      firstName:current.firstName,
+      lastName:current.lastName,
+      email:current.email,
+      wins:current.wins,
+      loses:current.loses,
+      tfa:false,
+      tfaSecret:current.tfaSecret
+    }
+  ]
+  console.log("USER : " + JSON.stringify(NewUser[0]))
+localStorage.setItem("user",JSON.stringify(NewUser[0]));
+window.location.reload();
 
-//     return json;  
-// })
-// .catch((error) => {
-//     console.log("An error occured : " + error)
-//     return error;
-// })
-
-  // }
-
-  // setRoomName(json.data.name)
-  // setIsDm(false);
-
-
-  // if(json.data == "dm")
-  // {
-  //   console.log(" THIS IS A DM GETTYPEOF ROOM");
-  //   setAllgood(true)
-  //   // localStorage.setItem("isdm","true");
-  //   setIsDm(true);
-  //   // console.log("the name should be : " )
-  // }
    
+})
+.catch((error) => {
+  setErrorMessage("An error occured ! .");
 
+    console.log("An error occured  while fetching the /2fa/disable  : " + error)
+    return error;
+})
+  }
 }
+
     const SendTwoFa = (e) => {
       e.preventDefault();
       // Setradiotwofa(!showradiotwofa);
@@ -283,7 +296,7 @@ window.location.reload();
       //if enable or not Ou je lai deja
       if(twoFa)
       {
-        setErrorMessage("POSTIF CHEF ENABLING")
+        // setErrorMessage("POSTIF CHEF ENABLING")
         setIsUpdating(true);
         EnableTwoFa();
 
@@ -296,8 +309,9 @@ window.location.reload();
       }
       else
       {
-        setErrorMessage("NEGATIF CHEF DISABLE")
+        // setErrorMessage("NEGATIF CHEF DISABLE")
         setIsUpdating(true);
+        SendDisableTwoFa();
         setTimeout(() => {
           setIsUpdating(false);
           setisUpdated(true);
