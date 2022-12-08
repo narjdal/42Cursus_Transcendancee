@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import Login from '../login/login';
 import DisplayAchievementsList from './Account_pages/Achievements/DisplayAchievementsList';
 import DisplayMatchHistory from './Account_pages/DisplayMatchHistory';
+import { IsAuthOk } from '../../utils/utils';
+import axios from 'axios';
 const Account = () => {
   const navigate = useNavigate();
   const [isUpdating, setIsUpdating] = useState(false);
@@ -17,7 +19,11 @@ const Account = () => {
   const [showradiotwofa,Setradiotwofa] = useState(false);
   const [twoFa,setTwoFa] = useState(false);
   const [TwoFaDisable,setTwoFaDisable] = useState(false);
+  const [TwoFaEnable,setTwoFaEnable] = useState(false);
+
   const [errorMessage, setErrorMessage] = useState("");
+  const [TwoFaMessage, setTwoFaMessage] = useState("");
+
 
 const [AchievementsList,setAchievementsList] = useState<any>([])
 const [minihistory,setMiniHistory] = useState<any>([])
@@ -35,6 +41,21 @@ const [minihistory,setMiniHistory] = useState<any>([])
 
       var Current_User = JSON.parse(loggeduser);
       console.log("=>>>>> FROM THE ACCOUNT " + loggeduser   + Current_User.nickname + Current_User.UserId)
+      if(Current_User.tfa)
+      {
+        setTwoFaMessage("Two Factor Authentification is activated !")
+        setTwoFaDisable(true);
+        // setTwoFa(false);
+        setTwoFaEnable(false);
+
+      }
+      else
+      {
+        setTwoFaMessage("Two Factor Authentification is not activated !")
+        setTwoFaEnable(true);
+        setTwoFaDisable(false);
+        // setTwoFa(true);
+      }
       SetUser42(Current_User);
     
     
@@ -54,6 +75,7 @@ const [minihistory,setMiniHistory] = useState<any>([])
     setAchievementsList(achievementss);
       
     }
+
     
     // console.log("I am navigating =>>> ");
     // navigate('/Account');
@@ -83,11 +105,13 @@ const [minihistory,setMiniHistory] = useState<any>([])
       
      }
      const HandleTwoFactor = () => {
+        // if(!showradiotwofa)
+      // {
+      //   setErrorMessage("An Error occured");
+      // }
       Setradiotwofa(!showradiotwofa);
-      if(!showradiotwofa)
-      {
-        setErrorMessage("An Error occured");
-      }
+      
+    
       // Here Request to GET Two FA if enable or not Ou je lai deja
     }
     const HandleTwoFa = () => {
@@ -103,7 +127,117 @@ const [minihistory,setMiniHistory] = useState<any>([])
       setTwoFaDisable(!TwoFaDisable);
       setTwoFa(false);
     }
+async function EnableTwoFa () {
 
+
+  
+  
+
+  const text = "http://localhost:5000/player/2fa/enable/" ;
+  console.log("/2fa/enable Link :  =>  " + text);
+  let loggedUser = localStorage.getItem("user");
+  if(loggedUser)
+  {
+  var current = JSON.parse(loggedUser);
+
+  
+
+  await axios.get(text,{withCredentials:true}
+    // mode:'no-cors',
+    // method:'get',
+    // credentials:"include"
+  )
+
+// .then((response) => response.json())
+.then(json => {
+    // json.data.id = params.id;
+  console.log("The /2fa/enable esp : " + JSON.stringify(json.data.room));
+  // if(json.data == "dm")
+//   // {
+//     const room ={
+//       ...json.data.room,
+//       id:params.id
+//     }
+//     setRoom(room);
+//     setAllgood(true);
+//     // GetPermissions();
+//     // GetPermissions();
+//     console.log("This is a DM Room");
+//     if(json.data.room.all_members)
+//   {
+
+//   if(current.id == json.data.room.all_members[0].player.id)
+//   {
+//     setRoomName(json.data.room.all_members[1].player.nickname);
+//   }
+//   else
+//   {
+//     setRoomName(json.data.room.all_members[0].player.nickname);
+//   }
+// }
+//     // setRoomName(json.data.room.name)
+//     setIsDm(true);
+//     console.log(" THIS IS A DM GETTYPEOF ROOM");
+  //   setAllgood(true)
+  //   // localStorage.setItem("isdm","true");
+  //   setIsDm(true);
+  //   // console.log("the name should be : " )
+  // }
+   
+})
+.catch((error) => {
+  // setErrorMessage("An error occured ! You cannot access this room.");
+
+    console.log("An error occured  while fetching the /2fa/enable  : " + error)
+    return error;
+})
+}
+//   if(loggeduser)
+// {
+//   var Current_User = JSON.parse(loggeduser);
+//   const text = ("http://localhost:5000/player/2fa/enable");
+//   console.log("2fa ENABLE LINK  :  =>  " + text);
+  
+
+//   await fetch(text,{
+//     // mode:'no-cors',
+//     method:'get',
+//     credentials:"include"
+// })
+
+// .then((response) => response.json())
+// .then(json => {
+//     console.log("The 2fa ENABLE RESP  is => " + JSON.stringify(json))
+
+//      if ( IsAuthOk(json.statusCode) == 1)
+//      {
+//      window.location.reload();
+//      }
+
+//     return json;  
+// })
+// .catch((error) => {
+//     console.log("An error occured : " + error)
+//     return error;
+// })
+
+  // }
+
+  // setRoomName(json.data.name)
+  // setIsDm(false);
+
+
+  // if(json.data == "dm")
+  // {
+  //   console.log(" THIS IS A DM GETTYPEOF ROOM");
+  //   setAllgood(true)
+  //   // localStorage.setItem("isdm","true");
+  //   setIsDm(true);
+  //   // console.log("the name should be : " )
+  // }
+   
+
+}
     const SendTwoFa = (e) => {
       e.preventDefault();
       // Setradiotwofa(!showradiotwofa);
@@ -111,7 +245,9 @@ const [minihistory,setMiniHistory] = useState<any>([])
       //if enable or not Ou je lai deja
       if(twoFa)
       {
+        setErrorMessage("POSTIF CHEF ENABLING")
         setIsUpdating(true);
+        EnableTwoFa();
 
         setTimeout(() => {
           setIsUpdating(false);
@@ -122,8 +258,8 @@ const [minihistory,setMiniHistory] = useState<any>([])
       }
       else
       {
+        setErrorMessage("NEGATIF CHEF DISABLE")
         setIsUpdating(true);
-
         setTimeout(() => {
           setIsUpdating(false);
           setisUpdated(true);
@@ -170,23 +306,20 @@ const [minihistory,setMiniHistory] = useState<any>([])
       </button>
       {showradiotwofa ? (
           <>
+                {TwoFaMessage && <div className="error"> {TwoFaMessage} </div>}
 		<form className='AccountTwoFa-form'>
-        <input type="radio"
+        {TwoFaEnable ? (
+          <>
+     <input type="radio"
         value ="Enable"
        placeholder="Room Name " 
        checked = {twoFa}
        onChange={HandleTwoFa}
        />
        Enable
-       <input type="radio"
-        value ="Disable"
-       placeholder="Room Name " 
-       checked = {TwoFaDisable}
-       onChange={DisableTwoFa}
-       />
-       Disable
-
-       <button
+       {twoFa ? (
+        <>
+               <button
 			   type="submit"
       onClick={SendTwoFa}
       className={isUpdating || Updated ? "sending" : ""}
@@ -198,6 +331,49 @@ const [minihistory,setMiniHistory] = useState<any>([])
         {isUpdating ? "Updating ..." : Updated ? "Updated" : " Todo Backend ..."}
       </span>
     </button>
+        </>
+       ) : (
+        <>
+        </>
+       )}
+          </>
+        ) : (
+          <>
+   
+       <input type="radio"
+        value ="Disable"
+       placeholder="Room Name " 
+       checked = {TwoFaDisable}
+       onChange={DisableTwoFa}
+       />
+       Disable
+
+{TwoFaDisable ? (
+  <>
+  <button
+			   type="submit"
+      onClick={SendTwoFa}
+      className={isUpdating || Updated ? "sending" : ""}
+    >
+      <span className="icon material-symbols-outlined">
+        {Updated ? "Priority" : "send"}
+      </span>
+      <span className="text">
+        {isUpdating ? "Updating ..." : Updated ? "Updated" : " Todo Backend ..."}
+      </span>
+    </button>
+  </>
+) : (
+  <>
+  </>
+)}
+       
+          </>
+        )}
+    
+ 
+
+      
                 {errorMessage && <div className="error"> {errorMessage} </div>}
         </form>
           </>
