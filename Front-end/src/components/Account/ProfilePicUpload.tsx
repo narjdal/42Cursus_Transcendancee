@@ -62,12 +62,12 @@ async function UploadPicture(selectedFile)
 
 	
 	formData.append('file', selectedFile);
-	formData.append('nickname',nickname);
-	formData.append('name',nickname);
+	// formData.append('nickname',nickname);
+	// formData.append('name',nickname);
 
 	console.log("The User  => " + JSON.stringify(UserObject))
-	formData.append('id',id);
-	formData.append('image_url',image_url)
+	// formData.append('id',id);
+	// formData.append('image_url',image_url)
 
 	// const MyForm = [
 	// 	{ file:selectedFile,
@@ -76,10 +76,10 @@ async function UploadPicture(selectedFile)
 	// 	image_url:Current_User.image_url
 	// 	}
 	// ]
-	const text = ("http://localhost:9000/upload_file");
-console.log("Api Post Link :  =>  " + text);
+	const text = ("http://localhost:9000/update/avatar");
+console.log("Api Post Link :  =>  " + text)np;
 
-const response = await axios.post("http://localhost:9000/upload", formData)
+const response = await axios.post("http://localhost:3000/update/avatar", formData)
 	
 // 	onUploadProgress: progressEvent => {
 // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);

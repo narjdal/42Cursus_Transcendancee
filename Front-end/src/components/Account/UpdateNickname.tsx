@@ -13,32 +13,88 @@ const UpdateNickname = (props) => {
 	const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   
-  async function UploadNickname (nickName)  {
+  async function UploadNickname ()  {
     
-
-    const loggedUser = localStorage.getItem("user");
-    if(loggedUser)
-    {
-
-    var Current_User = JSON.parse(loggedUser);
-    const post = {
-      nickName:nickName,
-      UserId:Current_User.UserId,
-      image_url:Current_User.image_url
-    }
-    console.log("LoggedUser " + Current_User.UserId);
-  const text = ("http://localhost:9000/update/nickname");
-  console.log("Api Post Link :  =>  " + text);
+    const loggeduser = localStorage.getItem("user");
   
-  const response = await axios.post(text,post)
-    
-  // // 	onUploadProgress: progressEvent => {
-  // // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
-  // // 	},
-  // // });
-  // // 	}
-    return response.data;
+    if(loggeduser)
+  {
+    var current = JSON.parse(loggeduser);
+   let  text = ("http://localhost:5000/player/update/nickname" );
+
+    console.log("Uploading the nickname ! of this user  + " +  current.nickname +  " + New Nickname " + nickName);
+        await fetch(text,{
+      // mode:'no-cors',
+      method:'post',
+      credentials:"include",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+          { 
+        nickname: nickName,
+      }
+          )
+  })
+  
+  .then((response) => response.json())
+  .then(json => {
+      console.log("The updateNickname Resp   is => " + JSON.stringify(json))
+      if( json.statusCode == "404")
+        {
+          setErrorMessage(json.message)
+        }
+    else if (json.statusCode == "401")
+    {
+      setErrorMessage(json.message)
     }
+    else
+    {
+      const test  = JSON.stringify(json);
+
+      console.log("The Resp Of Update Nickname is  => " + test);
+      localStorage.setItem("user","");
+      localStorage.setItem("user",test);
+      let UpdatedUser = localStorage.getItem("user");
+      console.log("Update Nick=>     " + JSON.stringify(UpdatedUser));
+      setTimeout(() => {
+        setIsUpdating(false);
+        setisUpdated(true);
+        setTimeout(() => setisUpdated(false), 2500);
+        window.location.reload();
+     
+      }, 2000);
+    }
+    // navigate('/Landing')
+    // window.location.reload();
+      return json;
+  })
+  .catch((error) => {
+      console.log("An error occured : " + error)
+      return error;
+  })
+}
+  //   const loggedUser = localStorage.getItem("user");
+  //   if(loggedUser)
+  //   {
+
+  //   var Current_User = JSON.parse(loggedUser);
+  //   const post = {
+  //     nickName:nickName,
+  //     UserId:Current_User.UserId,
+  //     image_url:Current_User.image_url
+  //   }
+  //   console.log("LoggedUser " + Current_User.UserId);
+  // const text = ("http://localhost:3000/player/update/nickname");
+  // console.log("Api Post Link :  =>  " + text);
+  
+  // const response = await axios.post(text,post)
+    
+  // // // 	onUploadProgress: progressEvent => {
+  // // // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
+  // // // 	},
+  // // // });
+  // // // 	}
+  //   return response.data;
+  //   }
   
   };
     const UpdateNickname = (e) => {
@@ -49,23 +105,8 @@ const UpdateNickname = (props) => {
      
       setIsUpdating(true);
 
-      UploadNickname(nickName)
-      .then((resp) => {
-				const test  = JSON.stringify(resp);
-
-				console.log("The Resp Of Update Nickname is  => " + test);
-				localStorage.setItem("user","");
-        localStorage.setItem("user",test);
-        let UpdatedUser = localStorage.getItem("user");
-				console.log("Update Nick=>     " + JSON.stringify(UpdatedUser));
-      	setTimeout(() => {
-          setIsUpdating(false);
-          setisUpdated(true);
-          setTimeout(() => setisUpdated(false), 2500);
-          window.location.reload();
-       
-        }, 2000);
-      })
+      UploadNickname()
+        
       
       
       }
