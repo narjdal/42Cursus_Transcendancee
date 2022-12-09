@@ -6,6 +6,7 @@ import './Friendprofile.css'
 import { Location } from 'react-router-dom';
 import { IsAuthOk } from '../../utils/utils';
 import axios from 'axios';
+
 const Friendprofile = () => {
   const params = useParams();
   const [errorMessage, setErrorMessage] = useState("");
@@ -77,7 +78,15 @@ async function BlockRelationship()
         // if (json.ok)
         // IsAuthOk(json);
         // window.location.reload();
+        if(json.statusCode == "404")
+        {
+          setErrorMessage(json.message)
+        }
+        else
+        {
         setErrorMessage("");
+          window.location.reload();
+        }
         return json;
       })
       .catch((error) => {

@@ -4,6 +4,8 @@
     text-align: center;
     overflow-y: scroll;
     height: 60vh;
+    width: 100%;
+    padding: 20px 20px 20px;
     
   }
   .locked-div > button > span {

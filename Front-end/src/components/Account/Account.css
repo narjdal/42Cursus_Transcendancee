@@ -79,7 +79,7 @@
   .intra-card{
     padding: 30px 30px 44px;
     height: 30vh;
-    width:  100vh;
+    max-width:  80%;
     margin-left: auto;
     gap: 3vh;
     margin-right: auto;
@@ -92,6 +92,7 @@
   .last-Achievements-card{
     z-index: 10;
     width: 50vh;
+    padding: 20px 20px 20px;
     position: relative;
     background-color: #00315b;
     overflow-y: scroll;
@@ -114,5 +115,5 @@
       overflow-y: scroll;
       margin-left: auto;
       margin-right: auto;
-      background-color: 00315b;
+      background-color: #00315b;
     }

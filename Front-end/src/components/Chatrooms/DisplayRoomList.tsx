@@ -74,7 +74,8 @@ const DisplayRoomList =  (props) => {
         <> 
            <button type="button" className='has-border'  onClick={HandleJoinRoom}>
             <span className="icon material-symbols-outlined">
-             {"lock"}    {  props.room.name}  </span>
+             {"lock"}     </span>
+             <span>{  props.room.name} </span>
               </button> 
         </>
     ) : (

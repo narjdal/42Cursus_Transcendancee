@@ -8,12 +8,58 @@ const DisplaySocial = (props) => {
 
 	const [OpenMsg, SetOpenMsg] = useState(false);
     const [Dmcount,SetDmCount] = useState(-1);
+    const [errorsMessage,setErrorMessage] = useState("");
 
     const handleFriendClick  = (e) => {
 
     };
-    const HandleBlock = (e) => {
 
+
+
+async function BlockRelationship()
+{
+   let endpoint = "http://localhost:5000/player/blockFriendship/"
+
+
+    console.log("BlockRelation  => " + endpoint + " \n user" + props.Friends.nickname)
+    //  setAction("");
+    endpoint = endpoint + props.Friends.nickname;
+    await fetch((endpoint
+    ), {
+      // mode:'no-cors',
+      method: 'get',
+      credentials: "include"
+    })
+
+
+      .then((response) => response.json())
+      .then(json => {
+        console.log("The response is => " + JSON.stringify(json))
+        // if (json.ok)
+        // IsAuthOk(json);
+        // window.location.reload();
+        if(json.statusCode == "404")
+        {
+            setErrorMessage(json.message)
+        }
+        else
+        {
+            setErrorMessage("");
+            window.location.reload();
+        }
+      
+        return json;
+      })
+      .catch((error) => {
+        console.log("An error occured : " + error)
+        setErrorMessage("An error occured! Can't Block Relationship    ! ");
+        return error;
+      })
+}
+    const HandleBlock = (e) => {
+        e.preventDefault();
+        console.log("Blocking this user ...." + props.Friends.nickname);
+        BlockRelationship();
     }
     const HandleOpenMsg = (e) => {
         e.preventDefault();

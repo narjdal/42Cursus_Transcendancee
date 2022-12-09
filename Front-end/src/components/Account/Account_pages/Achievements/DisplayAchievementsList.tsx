@@ -13,6 +13,7 @@ const DisplayAchievementsList = (props) => {
     console.log("inside Achievements     DDD");
     return (
         <>
+        <div className='Achievements-Back'>
             <div className='Achievements-container'>
         <ul className='AchievementsList'>
         
@@ -48,7 +49,7 @@ const DisplayAchievementsList = (props) => {
 </li>
         </ul>
         </div>
-
+        </div>
        
         </>
     )
