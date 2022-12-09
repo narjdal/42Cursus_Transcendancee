@@ -5,7 +5,10 @@ import { useState ,useEffect} from "react";
 import './ContactList.css'
 import SearchBar from '../users/SearchBar'
 
-
+import { io } from "socket.io-client";
+import { Socket } from 'dgram';
+// import socket
+var socket:any;
 const ContactList = (props) => 
 {
     const [AddFriend,setAddFriend] = useState("");
@@ -24,9 +27,15 @@ const ContactList = (props) =>
         if(loggeduser)
         {
           var Current_User = JSON.parse(loggeduser);
-          console.log("=>>>>> FROM THE ContactList "   + Current_User.nickname + Current_User.UserId)
+          console.log("=>>>>> FROM THE ContactList "   + Current_User.nickname + Current_User.id)
           SetUser42(Current_User);
           setContacts(props.contacts);
+    // socket = io("http://localhost:5000");
+    //       socket.on("onlineUsersFront", (data: any) => {
+    //         console.log("OnLine e e e e e: ", data);
+    //         localStorage.setItem("online",JSON.stringify(data))
+      
+    //       });
         }
     // localStorage.setItem("DmCount",Dmcount.toString());
 

@@ -3,10 +3,14 @@ import {Link} from'react-router-dom';
 import { useState ,useEffect} from "react";
 import DmWindow from "../DirectMsg/DmWindow"
 import './Contact.css'
-
+import { io } from "socket.io-client";
+import { Socket } from 'dgram';
+// import socket
+var socket:any;
 const Contact = (props) => {
 	const [OpenMsg, SetOpenMsg] = useState(false);
     const [OpenBox,setOpenBox] = useState(true);
+    const [imLogged,setImLogged] = useState(false);
     // console.log(props.name);
     const [Dmcount,SetDmCount] = useState(-1);
 const handleClick = (e) => {
@@ -60,8 +64,41 @@ if(OpenMsg)
     // SetDmCount("1");
     
 }
+useEffect(() => {
+
+    console.log("INSIDE SOCIAL SHOUD FETCH IF LOGEGD ")
+
+    
+    // socket.on("onlineUsersFront", (data: any) => {
+    //   console.log("OnLine e e e e e: ", data);
+    //   localStorage.setItem("online",JSON.stringify(data))
+},[])
 useEffect (() => {
 
+    let onlineUsers = localStorage.getItem("online");
+    if(onlineUsers)
+    {
+        let ParsedUsers = JSON.parse(onlineUsers);
+        console.log ( "PARSED USER : " , ParsedUsers);
+
+    let srch = ParsedUsers.filter((m: any) => {
+    console.log(" ME id : " + props.user.id + "  ME NICKNAME : " + props.user.nickname  +  " : " , ParsedUsers);
+    return m.id === props.user.id
+  })[0]
+
+    if(srch)
+    {
+        console.log(" THIS FRIEND IS LOGEED IN  ")
+        setImLogged(true);
+    }
+    else
+    {
+        console.log( " THIS FRIEND NOT LOGGED IN ");
+        setImLogged(false);
+    }
+        // const isInsideLoggedUsers = ParsedUsers.filter(s => s.id);
+    }
+    // if(props.user.id == )
     // SetDmCount(Dmcount  + 1);
 //     if(OpenMsg)
 //     {
@@ -118,7 +155,7 @@ return (
   
    <p> <button onClick={RedirFriendProfile}>{props.user.nickname}</button> </p>
     </td> 
-  {props.user.isActive ? (
+  {imLogged ? (
                  <td>  
                     <div className="icon-div">
 

@@ -443,9 +443,41 @@ async function BlockRelationship()
     SetRelationInfos();
     // FetchUserInfos();
 
+    
     // ExecuteRelationship();
   }, [])
 
+  useEffect(() => {
+    
+    let onlineUsers = localStorage.getItem("online");
+    if(userState)
+    {
+
+    if(onlineUsers)
+    {
+        let ParsedUsers = JSON.parse(onlineUsers);
+        console.log ( "PARSED USER : " , ParsedUsers);
+
+    let srch = ParsedUsers.filter((m: any) => {
+    console.log(" ME id : " + userState.id + "  ME NICKNAME : " + userState.nickname  +  " : " , ParsedUsers);
+    return m.id === userState.id
+  })[0]
+
+    if(srch)
+    {
+        console.log(" THIS USER IS LOGEED IN  " + JSON.stringify(srch))
+        // setImLogged(true);
+    }
+    else if (!srch)
+    {
+        console.log( " THIS USER NOT LOGGED IN ");
+        // setImLogged(false);
+    }
+        // const isInsideLoggedUsers = ParsedUsers.filter(s => s.id);
+    }
+  }
+
+  },[userState])
 
   const HandleAction = (e) => {
     e.preventDefault();

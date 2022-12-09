@@ -1,10 +1,6 @@
 ////////---------------------------------ERRORS-------------------///////////////////
 
-Mute 404 Error USER ID NOT FOUND 
 
-JOIN DM ROOM 404 
-
-IF OWNER N9DR NCKIKI/BAN  RASSI MN ROOM 
 
 
 ////////---------------------------------OK-------------------///////////////////
@@ -39,6 +35,12 @@ BLOCKED MESSAGES DONT DISPLAY √
 JOIN ROOMS : 
 JOIN NON PROTECTED ROOM √
  JOIN PROTECTED ROOM √
+
+ Mute 404 Error USER ID NOT FOUND  √
+
+JOIN DM ROOM 404  √
+
+IF OWNER N9DR NCKIKI/BAN  RASSI MN ROOM  √
 
 
 
