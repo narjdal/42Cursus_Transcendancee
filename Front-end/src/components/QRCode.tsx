@@ -5,7 +5,6 @@ console.log("INSIDE QR CODE PAGE")
 
     return (
         <>
-            INSIDE QR CODE PAGE
         </>
     )
 

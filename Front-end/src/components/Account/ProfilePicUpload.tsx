@@ -76,20 +76,29 @@ async function UploadPicture(selectedFile)
 		// image_url:Current_User.image_url
 		}
 	]
-	const text = ("http://localhost:5000/update/avatar");
+	const text = ("http://localhost:5000/player/update/avatar");
 console.log("Api Post Link :  =>  " + text);
 
-const response = await axios.post("http://localhost:5000/update/avatar", {
-	file:selectedFile
-})
+// const response = await axios.post("http://localhost:5000/player/update/avatar'", {
+// 	formData
+// })
 	
 // 	onUploadProgress: progressEvent => {
 // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
 // 	},
 // });
 
+await fetch(text,{
+	method:'post',
+	credentials:"include",
+	body:formData
+	
+	// body:{
+	// 	file:selectedFile
+	// }
+})
 // 	}
-	return response.data;
+	// return response.data;
 
 //   console.log("Uploading Picture For this User =>  " + Current_User.UserId);
 //   const text = ("http://localhost:9000/update/nickname");
@@ -131,15 +140,15 @@ const response = await axios.post("http://localhost:5000/update/avatar", {
 	// 				image_url:resp.image_url
 	// 			}]
 	// 			const bruh = JSON.stringify(new_user)
-				localStorage.setItem("user","");
-				localStorage.setItem("user",test);
-				let UpdatedUser = localStorage.getItem("user");
-			console.log("Updated User After Update Profile Pic =>     " + JSON.stringify(UpdatedUser));
+			// 	localStorage.setItem("user","");
+			// 	localStorage.setItem("user",test);
+			// 	let UpdatedUser = localStorage.getItem("user");
+			// console.log("Updated User After Update Profile Pic =>     " + JSON.stringify(UpdatedUser));
       	setTimeout(() => {
           setIsUpdating(false);
           setisUpdated(true);
           setTimeout(() => setisUpdated(false), 2500);
-          window.location.reload();
+        //   window.location.reload();
        
         }, 2000);
 

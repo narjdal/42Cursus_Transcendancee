@@ -192,7 +192,7 @@ async function GetTwoFa () {
   console.log("The /2fa/QrCode esp : " + JSON.stringify(json.data));
   
   // setQR(json.data)
-  generateQRCode(json.data)
+  generateQRCode(json.data.otpauth_url)
     // setQRCodeText(json.data);
   setDone(true);
   // generateQRCode(json.data)
