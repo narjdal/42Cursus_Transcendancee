@@ -1,3 +1,4 @@
 unshow blocked user msg in room;
+msg ila blocked;
 logout user from event;
 invite game;
