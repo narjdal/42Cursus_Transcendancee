@@ -38,11 +38,11 @@ export class EventsGateway {
 		if (index !== -1) {
 			const ind = onlineUsers[index].client.indexOf(client.id)
 			if (ind !== -1) {
-				if (onlineUsers[index].client.length === 0) {
-					client.broadcast.emit('onlineUsersFront', onlineUsers[index].id);
-					console.log("log out this is user: ", onlineUsers[index].id);
-				}
 				onlineUsers[index].client.splice(ind, 1);
+				if (onlineUsers[index].client.length === 0) {
+					client.broadcast.emit('onlineUsersFront', onlineUsers[index].user);
+					console.log("log out this is user: ", onlineUsers[index].user);
+				}
 			}
 		}
 	}
