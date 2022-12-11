@@ -10,52 +10,20 @@
 #                                                                              #
 # **************************************************************************** #
 
-# include .env
-all: $(NAME)
-	
+include .env
+# all: $(NAME)
+# 	docker-compose up &
+# 	npx prisma migrate dev --name init --preview-feature
+# 	npm run start --prefix srcs/client & npm run start --prefix srcs/server
 
-docker_start:
-	docker-compose start
+docker-build:
+	docker-compose up
 
-docker_up:
-	docker-compose up --build -d --remove-orphans
+docker-prisma:
+	npx prisma migrate dev --name init --preview-feature
 
-docker_stop:
-	docker-compose stop
+docker-server:
+	npm run start --prefix srcs/server
 
-docker_down:
-	docker-compose down
-
-docker_ps:
-	docker-compose ps
-
-docker_clean:
-	docker stop $$(docker ps -qa);\
-	docker rm $$(docker ps -qa);\
-	docker rmi -f $$(docker images -qa);\
-	docker system prune -a --force
-
-docker_restart:
-	docker-compose restart
-
-docker_logs:
-	docker-compose logs -f
-
-docker_build:
-	docker-compose build .
-
-docker_shell_client:
-	docker-compose exec client
-
-docker_shell_server:
-	docker-compose exec server
-
-run_client:
-	npm i --prefix srcs/client && npm run start --prefix srcs/client &
-
-run_server:
-	npm i --prefix srcs/server && nest start --prefix srcs/server &
-
-run:
-	docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
-	npm run start --prefix client & npm run start --prefix server
+docker-client:
+	npm run start --prefix srcs/client
