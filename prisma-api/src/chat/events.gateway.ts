@@ -5,7 +5,7 @@ import { PlayerService } from "src/player/player.service";
 
 
 //handle online users in array by socket
-let onlineUsers = [];
+var onlineUsers = [];
 
 @WebSocketGateway({
 	cors: {
@@ -35,9 +35,16 @@ export class EventsGateway {
 			return (u.client.includes(client.id));
 		});
 
-		const ind = onlineUsers[index].client.indexOf(client.id)
-		if (ind !== -1)
-			onlineUsers[index].client.splice(ind, 1);
+		if (index !== -1) {
+			const ind = onlineUsers[index].client.indexOf(client.id)
+			if (ind !== -1) {
+				if (onlineUsers[index].client.length === 0) {
+					client.broadcast.emit('onlineUsersFront', onlineUsers[index].id);
+					console.log("log out this is user: ", onlineUsers[index].id);
+				}
+				onlineUsers[index].client.splice(ind, 1);
+			}
+		}
 	}
 
 	@SubscribeMessage('onlineUsersBack')
@@ -46,9 +53,9 @@ export class EventsGateway {
 		if (!data.user || !data.user.id)
 			return;
 		const user = this.playerservice.findPlayerById(data.user.id);
-		console.log("this is user: ", user);
 		if (!user)
 			return;
+		console.log("this is user: ", user);
 
 		//push userid and his socketato
 		// [
@@ -78,9 +85,9 @@ export class EventsGateway {
 	}
 
 	//handle friend request
-	@SubscribeMessage('friendRequest')
-	async handleFriendRequest(client: Socket, data: any) {
-		//send friend request to the user
-		client.broadcast.emit('friendRequest', data);
-	}
+	// @SubscribeMessage('friendRequest')
+	// async handleFriendRequest(client: Socket, data: any) {
+	// 	//send friend request to the user
+	// 	client.broadcast.emit('friendRequest', data);
+	// }
 }
