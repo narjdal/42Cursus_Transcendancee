@@ -40,8 +40,9 @@ export class EventsGateway {
 			if (ind !== -1) {
 				onlineUsers[index].client.splice(ind, 1);
 				if (onlineUsers[index].client.length === 0) {
-					client.broadcast.emit('onlineUsersFront', onlineUsers[index].user);
-					console.log("log out this is user: ", onlineUsers[index].user);
+					// client.broadcast.emit('onlineUsersFront', onlineUsers[index].user);
+					// console.log("log out this is user: ", onlineUsers[index].user);
+					client.broadcast.emit('onlineUsersFront', onlineUsers.filter((u) => u.client.length > 0));
 				}
 			}
 		}
