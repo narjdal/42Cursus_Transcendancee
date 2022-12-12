@@ -39,6 +39,7 @@ const buttonRemove = (button: any) => {
 };
 
 export type IplayPong = {
+  gameId?: string;
   playerLeft: { name: string; position: number; score: number; };
   playerRight: {name: string; position: number; score: number;};
   ball: { x: number; y: number; };
@@ -176,9 +177,6 @@ const defaultState: IGameContextProps = {
 
 export default function Game(props: any) {
   const [gameState, setGameState] = useState(defaultState);
-  // const [isGameLoaded, setIsGameLoaded] = useState(false);
-  // let userPosition: number;
-  // let playerSide: string;
 
   let ctx: any;
 
@@ -236,7 +234,6 @@ export default function Game(props: any) {
   const draw = (p5: p5Types) => {
     p5.fill(42, 71, 137);
     p5.rect(0, 0, props.width, props.height);
-    // console.log(gameState.gameStatue, gameState.pongData);
     if (gameState.gameStatue === "Inloading") {
       if (gameState.mode === "offline" && gameState.difficulty === "" &&
         gameState.numberOfPlayers === 1 && gameState.playerTool !== "") {
@@ -261,10 +258,9 @@ export default function Game(props: any) {
     }
     else if (gameState.gameStatue === "WaitingPlayers") {
       if (gameState.socket) {
-          gameState.socket.on ("createGame", (data: any) => {
-          console.log("WaitingPlayers");
+          gameState.socket.emit ("newPlayer");
+          gameState.socket.on("matchFound", (data: any) => {
           gameState.gameStatue = "Playing";
-          // playerSide = data.playerSide;
         });
       }
       p5.textSize(32);
@@ -274,7 +270,6 @@ export default function Game(props: any) {
     else if (gameState.gameStatue === "loadingGameHorsLigne") {
       if (gameState.mode === "offline" && gameState.numberOfPlayers === 1) {
         gameState.pongClass = new pong("user", "IA");
-        // gameState.pongData = gameState.pongClass.onUpdate();
         gameState.gameStatue = "Playing";
       }
       else if (gameState.mode === "offline" && gameState.numberOfPlayers === 2) {
@@ -287,7 +282,7 @@ export default function Game(props: any) {
         if (gameState.playerTool === "mouse" && p5.mouseY > 0 &&
           p5.mouseY < props.height - props.height / 4) {
             gameState.playerPosition = p5.mouseY / props.height;
-          }
+        }
         else if (gameState.playerTool === "keybord") {
           if (p5.keyIsDown(p5.UP_ARROW) && gameState.playerPosition > 0) {
             gameState.pongData.playerLeft.position -= 0.03;
@@ -299,9 +294,13 @@ export default function Game(props: any) {
         if (gameState.socket && ((gameState.playerPosition !== gameState.pongData.playerLeft.position
           && gameState.pongData.userRool === "left") || (gameState.playerPosition !==
           gameState.pongData.playerRight.position && gameState.pongData.userRool === "right"))) {
-            gameState.socket.emit("playerPosition", gameState.playerPosition);
+            gameState.socket.emit("onUpdate", { positon: gameState.playerPosition});
+          }
+        if (gameState.socket) {
+            gameState.socket.on("update", (data: any) => {
+              gameState.pongData = data;
+            });
         }
-        gameState.pongData = gameState.pongClass.update(gameState.pongData.playerLeft.position);
       }
       else if (gameState.mode === "offline" && gameState.numberOfPlayers === 1) {
         if (gameState.playerTool === "mouse" && p5.mouseY > 0 &&

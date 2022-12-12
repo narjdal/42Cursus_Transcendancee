@@ -1,11 +1,11 @@
 import './App.css';
 import Navbar from './components/NavBar';
-import TempoNavbar from './components/TempoNav/NavbarGame';
+// import TempoNavbar from './components/TempoNav/NavbarGame';
 import Login from './components/login/login';
 import React, { useEffect } from 'react';
-import { Notification } from 'react-notifications'
+// import { Notification } from 'react-notifications'
 // import {addNotification} from 'react-notifications';
-import { iNotification } from 'react-notifications-component'
+// import { iNotification } from 'react-notifications-component'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/pages/HomePage';
 import Pong from './components/pages/Pong';
@@ -22,24 +22,24 @@ import Carreer from './components/Account/Account_pages/Carreer';
 import Achievements from './components/Account/Account_pages/Achievements/Achievements'
 import './AppStyle.css'
 import Social from './components/Account/Account_pages/Social/Social'
-import { getCookies } from './utils/utils';
-import Cookies from 'js-cookie';
-import jwt from 'jwt-decode'
-import { login } from './cookies/AuthProvider';
+// import { getCookies } from './utils/utils';
+// import Cookies from 'js-cookie';
+// import jwt from 'jwt-decode'
+// import { login } from './cookies/AuthProvider';
 import getProfile from './utils/fetchProfile'
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+// import { useNavigate, useLocation } from 'react-router-dom';
 // import { io } from 'socket.io-client';
 import QRcode from './components/QRCode';
 import axios from 'axios';
 import QRCode from 'qrcode.react'
 import { io } from "socket.io-client";
-import { Socket } from 'dgram';
+// import { Socket } from 'dgram';
 // import socket
 var socket:any;
 
 const App = () => {
-  const accessToken = "ss";
+  // const accessToken = "ss";
   const [isLogged, setIslogged] = useState(false);
   const [trylogin, settrylogin] = useState(false);
   const [done, setDone] = useState(false);
@@ -50,7 +50,7 @@ const App = () => {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [qrCode,setQR] = useState <any>([]);
+  // const [qrCode,setQR] = useState <any>([]);
 
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const App = () => {
     if (localStorage.getItem("trylogin") === "true") {
       console.log("trylogin is  true");
 
-      if(window.location.href == "http://localhost:3000/verify")
+      if(window.location.href === "http://localhost:3000/verify")
       {
         setTwoFa(true);
       }
@@ -86,7 +86,7 @@ const App = () => {
 
     console.log("INSIDE HANDLE PROFILE");
     await getProfile()
-      .then((response) => {
+      .then(() => {
         // console.log("Handle Profile response is => " + response)
         settrylogin(!trylogin);
       })
@@ -129,7 +129,7 @@ async function verifyTwoFa ()
       
       .then((response) => response.json())
       .then(json => {
-          console.log("The 2fa/verify resp  is => " + json)
+          console.log("The 2fa/verify resp  is => " + JSON.stringify(json))
 
         // navigate('/Landing')
         // window.location.reload();
@@ -139,6 +139,7 @@ async function verifyTwoFa ()
         }
         else if (json.statusCode == "404")
         {
+          console.log(" HELLO ITS ME ")
           setErrorMessage(json.message)
         }
         else
@@ -146,7 +147,6 @@ async function verifyTwoFa ()
           HandleProfile();
           setTwoFa(false);
           window.location.href = "http://localhost:3000/"
-
         }
           return json;
       })
@@ -210,25 +210,26 @@ async function GetTwoFa () {
 
 }
 
+
 useEffect(() => {
   
   if(isLogged)
   {
-    // socket = io("http://localhost:5000");
-    // console.log("Hadik hya:",localStorage.getItem("user"));
+    socket = io("http://localhost:5000");
+    console.log("Hadik hya:",localStorage.getItem("user"));
 
-    // socket.emit("onlineUsersBack", 
-    // { 
-    //   user: JSON.parse(localStorage.getItem("user")!) 
-    //  });
+    socket.emit("onlineUsersBack", 
+    { 
+      user: JSON.parse(localStorage.getItem("user")!) 
+     });
     
-    // console.log("socket is connecting ", socket);
-    
-    // socket.on("onlineUsersFront", (data: any) => {
-    //   console.log("OnLine e e e e e: ", data);
-    //   localStorage.setItem("online",JSON.stringify(data))
+    console.log("socket is connecting ", socket);
+      socket.on("onlineUsersFront", (data: any) => {
+      console.log("OnLine e e e e e: ", data);
+      localStorage.setItem("online",JSON.stringify(data))
+    });
+                // onlineUsersFront
 
-    // });
   }
   return () => {
     // localStorage.setItem("online","");
