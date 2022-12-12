@@ -142,8 +142,8 @@ export class ChatGateway {
 		// 
 
 		// user: Current_User, msgTxt: inputMsg, room: props.room.id
-		const newMessage = await this.playerservice.sendMessageinRoom(data.user.id, data.msgTxt, data.room);
 
+		const newMessage = await this.playerservice.sendMessageinRoom(data.user.id, data.msgTxt, data.room);
 
 		if (!newMessage) {
 			return ;

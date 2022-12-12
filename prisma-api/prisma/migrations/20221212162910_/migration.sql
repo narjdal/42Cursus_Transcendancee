@@ -8,6 +8,8 @@ CREATE TABLE "Player" (
     "email" TEXT NOT NULL,
     "wins" INTEGER NOT NULL DEFAULT 0,
     "loses" INTEGER NOT NULL DEFAULT 0,
+    "tfa" BOOLEAN NOT NULL DEFAULT false,
+    "tfaSecret" TEXT,
 
     CONSTRAINT "Player_pkey" PRIMARY KEY ("id")
 );
