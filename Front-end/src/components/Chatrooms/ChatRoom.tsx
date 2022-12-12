@@ -253,7 +253,7 @@ async function Waiit () {
   else if (localStorage.getItem(text) == "false")
   {
     // setIsProtected(true)
-    console.log(" WHAT IS HAPPENING ")
+    // console.log(" WHAT IS HAPPENING ")
   }
   // if(!isDm)
   // await GetPermissions();

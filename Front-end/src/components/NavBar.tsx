@@ -70,7 +70,7 @@ function Navbar() {
 
 let endpoint = 'http://localhost:5000/auth/logout';
 // endpoint = endpoint + userQuery;
-console.log(" this endpoint   " + endpoint)
+console.log(" LogOut endpoint   " + endpoint)
 
 
 await fetch((endpoint),{
@@ -82,6 +82,9 @@ await fetch((endpoint),{
 
 .then((response) => {
   localStorage.setItem("authenticated", "false");
+  localStorage.setItem("online", "");
+  localStorage.setItem("action","");
+
     localStorage.setItem("user","");
     window.location.reload();
 })
@@ -111,33 +114,9 @@ await fetch((endpoint),{
 
          }
 
-      const LogUserOut = () => {
-
+      const LogUserOut = (e) => {
+        e.preventDefault();
         LogOut();
-        // console.log("Inside LogUser Out =>>> ")
-        // const loggedInUser = localStorage.getItem("authenticated");
-        // console.log("Before  : " + loggedInUser);
-        // if (loggedInUser == "true")
-        // {   
-        //     localStorage.setItem("authenticated", "false");
-        //     localStorage.setItem("user","");
-        //     localStorage.setItem("token","");
-        //     setauthenticated("false");
-
-        // const loggeduser = localStorage.getItem("user");
-        // if(loggeduser)
-        //    var Current_User = JSON.parse(loggeduser);
-        //     console.log("Logging out ..." + authenticated);
-        //     if(Current_User)
-        //   console.log("=>>>>> FROM THE NAVBAR  LOGOUT "   + Current_User.nickname + Current_User.UserId)
-
-        //     // navigate("/");
-        //   // Remove Cookie On Log Out 
-        //    Cookies.remove('auth-cookie')
-        //   //  Cookies.remove('narjdal')
-
-
-        // }
     };
 
     async function FetchUserInfo () {
@@ -149,7 +128,7 @@ await fetch((endpoint),{
   {
     var Current_User = JSON.parse(loggeduser);
     const text = ("http://localhost:5000/player/listOfFriends");
-    console.log("Social Fetch  Link :  =>  " + text);
+    // console.log("Social Fetch  Link :  =>  " + text);
     
 
     await fetch(text,{
@@ -160,11 +139,12 @@ await fetch((endpoint),{
   
   .then((response) => response.json())
   .then(json => {
-      console.log("The response is => " + JSON.stringify(json))
+      // console.log("The response is => " + JSON.stringify(json))
        if ( IsAuthOk(json.statusCode) == 1)
        {
        window.location.reload();
        }
+       
           setFriends(json);
        setAllgood(true);
       return json;  
