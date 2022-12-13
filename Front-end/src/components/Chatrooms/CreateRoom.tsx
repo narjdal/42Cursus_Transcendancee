@@ -63,10 +63,10 @@ const CreateRoom = () => {
          text = ("http://localhost:5000/player/createChatRoom/Protected/");
         }
         //  text = ("http://localhost:5000/player/createChatRoom/" );const
-        console.log("Api Fetch Link :  =>  " + text);
+        // console.log("Api Fetch Link :  =>  " + text);
 
         
-        console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + password + " Owner : " + Current_User.nickname);
+        // console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + password + " Owner : " + Current_User.nickname);
         await fetch(text,{
           // mode:'no-cors',
           method:'post',

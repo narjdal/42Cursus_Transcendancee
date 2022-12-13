@@ -21,84 +21,41 @@ const DisplayUserHome = (props) => {
         transports: ['websocket']
     });
 
-    const senddMessage = () => {
-        socket.emit("message", {roomId: 1, 
-            sender: 4,
-            msg: "content msg arg[0]",
-        });
-    }
+    // const senddMessage = () => {
+    //     socket.emit("message", {roomId: 1, 
+    //         sender: 4,
+    //         msg: "content msg arg[0]",
+    //     });
+    // }
 
-    async function ExecuteFriendship (action:string) {
+//     async function ExecuteFriendship (action:string) {
 
-        console.log("Executing Friendship   Infos     => " + props.usertoshow.nickname + " is being  : " + action + "  Sender : " + props.usertoshow.sender);
+//         console.log("Executing Friendship   Infos     => " + props.usertoshow.nickname + " is being  : " + action + "  Sender : " + props.usertoshow.sender);
 
 
-        // const auth =   await 
-       
-let endpoint = 'http://localhost:5000/player/checkisghioua?nickname=';
-endpoint = endpoint + props.usertoshow.nickname + "?action=" + action;
-console.log(" this endpoint ( TODO ) " + endpoint)
+//         // const auth =   await 
+// let endpoint = 'http://localhost:5000/player/checkisghioua?nickname=';
+// endpoint = endpoint + props.usertoshow.nickname + "?action=" + action;
+// console.log(" this endpoint ( TODO ) " + endpoint)
 
-await fetch(endpoint,{
-    // mode:'no-cors',
-    method:'get',
-    credentials:"include"
-})
+// await fetch(endpoint,{
+//     // mode:'no-cors',
+//     method:'get',
+//     credentials:"include"
+// })
 
-.then((response) => { 
-    console.log("the response is " + JSON.stringify(response));;
-return response;
-  })
-.catch((error) => {
-  console.log("An error occured : " + error)
-  setErrorMessage("An error occured!");
-  return error;
-})
-        // await fetch(endpoint,{
-        //     // mode:'no-cors',
-        //     method:'get',
-        //     credentials:"include"
-        // })
+// .then((response) => { 
+//     console.log("the response is " + JSON.stringify(response));;
+// return response;
+//   })
+// .catch((error) => {
+//   console.log("An error occured : " + error)
+//   setErrorMessage("An error occured!");
+//   return error;
+// })
         
-        // .then((response) => response.json())
-        // .then(json => {
-        //     console.log("The response is => " + JSON.stringify(json))
-        //   localStorage.setItem("authenticated","true");
-        //   localStorage.setItem("user",JSON.stringify(json));
-        //   localStorage.setItem("trylogin","false");
-          
-        //     return json;
-        // })
-        // .catch((error) => {
-        //     console.log("An error occured : " + error)
-        //     return error;
-        // })
-    }
+//     }
 
-    const HandleAction = (e) => {
-        e.preventDefault();
-        // console.log("Executing actions for this person ..." + props.usertoshow.nickname +  " FS : " + props.usertoshow.friendship)
-
-
-        ExecuteFriendship(action);
-    }
-    const HandleBlockFriend = (e) => {
-        e.preventDefault();
-        console.log("Blocking this person ..." + props.user.nickname)
-        ExecuteFriendship("Block");
-   
-    }
-    const HandleAcceptFriend = (e) => {
-        e.preventDefault();
-        console.log ( "inside Accept friendship !");
-        ExecuteFriendship("accept");
-    };
-
-    const HandleRefuseFriend = (e) => {
-        e.preventDefault();
-        console.log ( "inside refuse friendship !");
-        ExecuteFriendship("refuse");
-    }
 useEffect(() => {
    const user =  localStorage.getItem("user");
    if(user)

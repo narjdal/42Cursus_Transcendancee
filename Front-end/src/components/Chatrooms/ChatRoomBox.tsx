@@ -16,11 +16,9 @@ var socket:any;
 
 //https://codeburst.io/tutorial-how-to-build-a-chat-app-with-react-native-and-backend-9b24d01ea62a
 const ChatRoomBox = (props,statusMember) => {
-  // localStorage.setItem("members","");
 
   const navigate = useNavigate();
   const [inputMsg,SetInputMsg] = useState("");
-  const [haspswd,setHaspswd] = useState(false);
   const [BanUser,SetBanUser] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [ifBlocked, setIfBlocked] = useState(false);
@@ -30,50 +28,30 @@ const ChatRoomBox = (props,statusMember) => {
   
   const[members,setMembers] = useState <any >([]);
 const [allMembers,setAllMembers] = useState <any>([]);
-  // var allMembers: any = [];
 
 
   const [messages, setMessages] = useState <any>([]);
   const [showInput,setShowInput] = useState(false)
-  // const [friendName,setFriendName] = useState("");
   const [userQuery,setUserQuery] = useState("");
-  const [user42,SetUser42] = useState<any>([])
-  const [UserAdmin,SetUserAdmin] = useState(false);
   const [allgood,setAllgood] = useState(false);
 
 
-
-  const HandleBlock = (e) => {
-    e.preventDefault();
-    console.log("Handle Ban Click !" + BanUser);
-
-  }
-  const handleFriendClick  = (e) => {
-    e.preventDefault();
-    console.log("Handle Mute Click !" + BanUser);
-  };
   
-    const[chatroomUsers,Setchatroomusers] = useState<any>([]);
-//   const MsgHistory = [
-//     {id:1,userId:3},
-//   ];
-// //GEt Request to Backend to get Message History of the room 
-// var MsgList =[...MsgHistory];
-
   const HandleInputMsg = (e) => {
     e.preventDefault();
     SetInputMsg(e.target[0].value);
 
-    console.log("INPUT MSG => ",inputMsg);
-    if (inputMsg)
-    {
-      //Post request to Backend
-    }
+    // console.log("INPUT MSG => ",inputMsg);
+    // if (inputMsg)
+    // {
+    //   //Post request to Backend
+    // }
   }
-  const HandleBanUser = (e) => {
-    e.preventDefault();
-    SetBanUser(e.target[0].value);
-  }
+  
+  // const HandleBanUser = (e) => {
+  //   e.preventDefault();
+  //   SetBanUser(e.target[0].value);
+  // }
 
 
 //   async function FetchUserInfo (id) {
@@ -113,17 +91,16 @@ const [allMembers,setAllMembers] = useState <any>([]);
 // }
 
 //   }
+
 async function GetMembers () 
 {
-
 
   const loggeduser = localStorage.getItem("user");
   if(loggeduser)
   {
     var Current_User = JSON.parse(loggeduser);
   const text = "http://localhost:5000/player/listOfMembers/" + props.room.id;
-    console.log("Api Fetch Link :  =>  " + text);
-    
+    // console.log("Api Fetch Link :  =>  " + text);
 try
 {
 
@@ -135,26 +112,17 @@ try
   
   .then((response) => response.json())
   .then(json => {
-      console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json))
-      // setMessages(json);
-      // setRoom(json);
-      // if(json.is_dm == true)
-      // {
-      //   testRoom.is_dm = true;
-      //   console.log("This is a DM Room");
-      
-      //   setAllgood(true)
-      //   setIsDm(true);
-      // }
+      // console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json))
+      if(IsAuthOk(json.statusCode) == 1)
+      window.location.reload();
+
       if(json.statusCode == "500" )
         {
             console.log("an error occured");
             setErrorMessage("an error occured");
             setAllgood(false)
-            if(IsAuthOk(json.statusCode) == 1)
-            window.location.reload();
+         
         }
-
         else
         {
           setAllgood(true);
@@ -168,8 +136,8 @@ try
           }
           setMembers(json);
           setAllMembers(json);
-          console.log("ALL GET MEMBERS ARE ", json, allMembers);
-          console.log("Setting the ChatRooms Members ...");
+          // console.log("ALL GET MEMBERS ARE ", json, allMembers);
+          // console.log("Setting the ChatRooms Members ...");
           return json;
         }
      
@@ -197,7 +165,7 @@ async function GetMessageHistory()
   {
     var Current_User = JSON.parse(loggeduser);
   const text = "http://localhost:5000/player/getmessages/" + props.room.id;
-    console.log("Api getmessages Link :  =>  " + text);
+    // console.log("Api getmessages Link :  =>  " + text);
     
 
     await fetch(text,{
@@ -208,7 +176,7 @@ async function GetMessageHistory()
   
   .then((response) => response.json())
   .then(json => {
-      console.log("getmessages :   => " + JSON.stringify(json))
+      // console.log("getmessages :   => " + JSON.stringify(json))
       
     
       if(json.statusCode == "500" || json.statusCode == "404")
@@ -224,7 +192,7 @@ async function GetMessageHistory()
         {
           setMessages(json);
           setAllgood(true);
-          console.log("Setting the ChatRooms Messages ...");
+          // console.log("Setting the ChatRooms Messages ...");
           return json;
         }
      
@@ -249,8 +217,8 @@ async function FetchRelationshipNarjdal(friendName : string) {
 
     let endpoint = 'http://localhost:5000/player/statusFriendship/' + friendName
     // let nicknametofetch: string = JSON.stringify(params.nickname);
-    console.log(" this endpoint   " + endpoint + " Fetching : " + friendName)
-    http://localhost:5000/statusFriendship/?id=narjdal
+    // console.log(" this endpoint   " + endpoint + " Fetching : " + friendName)
+    // http://localhost:5000/statusFriendship/?id=narjdal
 
     await fetch((endpoint
     ), {
@@ -263,7 +231,7 @@ async function FetchRelationshipNarjdal(friendName : string) {
 
       .then((response) => response.json())
       .then(json => {
-        console.log("The Realtionship is => " + JSON.stringify(json))
+        // console.log("The Realtionship is => " + JSON.stringify(json))
         setErrorMessage("");
       
 
@@ -277,7 +245,6 @@ async function FetchRelationshipNarjdal(friendName : string) {
           let text = friendName + " Has blocked you !";
         setErrorMessage(text)
         setShowInput(false);
-        console.log(" SALUT JE SUIS LA ")
         }
         else if(json == "unblockFriend")
         {
@@ -288,23 +255,8 @@ async function FetchRelationshipNarjdal(friendName : string) {
         }
         else
         {
-          console.log(" INPUT WILL BE TRUE")
           setShowInput(true);
         }
-        // else if(json == "blockFriend")
-        // {
-        //   setShowInput(true);
-        // }
-
-        // else
-        // {
-        //   // setShowInput(true);
-        //   console.log(" NO INPUT TO SHOW SORRY ")
-        // setShowInput(false);
-        // setErrorMessage("You are not friend with this user  \n You can't send him a message ! ")
-        // }
-        // localStorage.setItem("usertoshow",JSON.stringify(json));
-        // localStorage.setItem("choice", json);
         return json;
       })
       .catch((error) => {
@@ -380,13 +332,13 @@ await GetMembers()
   let RoomText = "Room:" + props.room.id;
   localStorage.setItem(text,"false");
   localStorage.setItem(RoomText,"");
-      console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name + "PROPS : ",props )
+      // console.log("INSIDE CHATROOMBOX  ID  :  " + props.room.id + " NANE : " + props.room.name + "PROPS : ",props )
       // console.log("CHATROOMBOX ROOM PERM : " + statusMember.data + " muted : " , props.statusMember.data)
    
         if (props.room.is_dm) 
         {
 
-          console.log("Fethcing Relationship of this chatroom.");
+          // console.log("Fethcing Relationship of this chatroom.");
           const loggedUser = localStorage.getItem("user");
             if(loggedUser)
             {
@@ -396,14 +348,14 @@ await GetMembers()
 
               if(current.id == props.room.all_members[0].player.id)
               {
-            console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[1].player.nickname);
+            // console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[1].player.nickname);
                 // setFriendName(props.room.all_members[1].player.nickname)
            FetchRelationshipNarjdal(props.room.all_members[1].player.nickname);
   
               }
               else
               {
-            console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[0].player.nickname);
+            // console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[0].player.nickname);
                 // setFriendName(props.room.all_members[0].player.nickname)
            FetchRelationshipNarjdal(props.room.all_members[0].player.nickname);
               }
@@ -453,7 +405,7 @@ const SendMessage = (e) => {
 async function LeaveRoom () {
 
   const text = "http://localhost:5000/player/leaveRoom/" + props.room.id
-console.log("Api Leave Rookm  Link :  =>  " + text);
+// console.log("Api Leave Rookm  Link :  =>  " + text);
 
 
 await axios.get(text,{withCredentials:true})
@@ -465,7 +417,7 @@ await axios.get(text,{withCredentials:true})
 
 // .then((response) => response.json())
 .then(json => {
-  console.log("json" + JSON.stringify(json.data))
+  // console.log("json" + JSON.stringify(json.data))
   
   // console.log("The response is => " + JSON.stringify(json))
 // 
@@ -488,7 +440,7 @@ if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
 
 const HandleLeaveRoom = (e) => {
   e.preventDefault();
-  console.log("Handle Leave Room Click !" );
+  // console.log("Handle Leave Room Click !" );
   LeaveRoom();
 
 }

@@ -66,7 +66,7 @@ if(OpenMsg)
 }
 useEffect(() => {
 
-    console.log("INSIDE SOCIAL SHOUD FETCH IF LOGEGD ")
+    // console.log("INSIDE SOCIAL SHOUD FETCH IF LOGEGD ")
 
     
     // socket.on("onlineUsersFront", (data: any) => {
@@ -82,7 +82,7 @@ useEffect (() => {
         console.log ( "PARSED USER : " , ParsedUsers);
 
     let srch = ParsedUsers.filter((m: any) => {
-    console.log(" ME id : " + props.user.id + " + " , m.user);
+    console.log(" ME id : " + props.user.id + "  ME NICKNAME : " + props.user.nickname  +  " : " , m.user);
     return m.user === props.user.id
   })[0] 
 
@@ -123,7 +123,6 @@ return (
    </tr>
    <tr>
    <td> <img src={props.user.avatar} 
-   alt="ss"
    height="20"
    className="avatar1"
    onClick={handleClick} /></td>

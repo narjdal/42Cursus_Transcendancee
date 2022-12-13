@@ -11,7 +11,6 @@ const AdminChatRoomDashboard = (props) => {
 const [username, setUsername] = useState("");
 const [errorMessage, setErrorMessage] = useState("");
 const [showmodal,setModal] = useState(false);
-const[muteTime,setMuteTime] = useState("0:00");
 const [time, setTime] = useState<any>("");
 const [owner,setOwner] = useState("");
 const [open_rs,setOpenRs] = useState(false);
@@ -29,11 +28,7 @@ const navigate = useNavigate();
 
 const [Updated, setisUpdated] = useState(false);
 const [MembersAdmin,setMembersAdmin] = useState <any>([]);
-const [members,setMembers] = useState<any>([]);
-const HandleAddUserAdmin = () => {
 
-
-};
 
 async function AddAdmin (username:string)
 {
@@ -54,8 +49,6 @@ await fetch(text,{
 .then((response) => response.json())
 .then(json => {
   console.log("The AddAdminResponse is => " + JSON.stringify(json))
-// 
-// setErrorMessage("HHAHAHAHA")
 setErrorMessage(json.message)
 if(json.statusCode == "404")
 {
@@ -81,7 +74,7 @@ window.location.reload();
 
 const HandleAddAdmin = (e ) => {
     e.preventDefault();
-    console.log("adding this user to be admin ...." + username);
+    // console.log("adding this user to be admin ...." + username);
     if(username)
     {
       AddAdmin(username);
@@ -135,7 +128,7 @@ window.location.reload();
 }
 const HandleUnsetAdmin = (e ) => {
   e.preventDefault();
-  console.log("Unseting this user  admin ...." + username);
+  // console.log("Unseting this user  admin ...." + username);
     if(username)
     {
       UnsetAdmin(username);
@@ -148,20 +141,16 @@ const HandleMute = (e) => {
     setModal(!showmodal)
 }
 
-// const FilteredUsers = person.filter(person => {
-//     // Here A changer : person with friends from backend , 
-//     //filter nickname not name 
-//     return person.nickname.toLowerCase().includes(username.toLowerCase());
-//   })
+
   useEffect(() => {
     setErrorMessage("");
   },[username])
+
 
   async function MuteUserFromRoom() 
   {
      let text = ("http://localhost:5000/player/muteMember/");
   console.log(" MNutemember Ednpoint " + text + " ROOM ID IS : " + props.room.id + " TIME IS : " +time + "login is : " + username)
-  // var date = new Date(time);
 
   var hms = time   // your input string
 var a = hms.split(':'); // split it at the colons
@@ -171,14 +160,8 @@ var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60
 var minutes = seconds/ 60;
 
 console.log("seconds : " + seconds + " minutes :  " + minutes);
-// var hours = time.split(":")[0];
-//   var minutes = time.split(":")[1];
 
-//   var MinutesFromHours = Math.floor(hours  * 60);
-//   var FormatedTime = Math.floor(MinutesFromHours + minutes);
 
-// var FormatedTime  =( hours * 6 ) + minutes;
-  // console.log("THE NUMBER OF MINUTES IS : " + hours +  ": " + minutes + " Formated : " + seconds)
   await fetch(text,{
     // mode:'no-cors',
     method:'post',
@@ -213,13 +196,12 @@ window.location.reload();
 })
 
 
-// }
   }
 
 
   const HandleMuteRequest = (e) => {
     e.preventDefault();
-    console.log( username + " Will be  muted for : " + time);
+    // console.log( username + " Will be  muted for : " + time);
     if(username)
     { 
 
@@ -238,14 +220,13 @@ window.location.reload();
     {
       setErrorMessage("Please enter a valid username.")
     }
-    // setErrorMessage("An error occured !");
 
   }
   const HandleRoomSettings = (e) => {
     e.preventDefault();
     setOpenRs(!open_rs)
-
   }
+
   async function BanUserFromRoom()
   {
     const loggeduser = localStorage.getItem("user");
@@ -253,7 +234,7 @@ window.location.reload();
 {
   const current = JSON.parse(loggeduser);
   const text = "http://localhost:5000/player/banMember/" + username + "/" + props.room.id;
-console.log("Api Fetch Link :  =>  " + text);
+console.log("Api BanUser Link :  =>  " + text);
 
 
 await fetch(text,{
@@ -266,6 +247,7 @@ await fetch(text,{
 .then(json => {
   console.log("The response is => " + JSON.stringify(json))
 // 
+setErrorMessage("User banned ! ");
 if(json.statusCode =="404")
 {
   setErrorMessage(json.message)
@@ -277,6 +259,8 @@ if(json.statusCode == "500")
 
 if(IsAuthOk(json.statusCode) == 1)
 window.location.reload();
+
+
   return json;
 })
 .catch((error) => {
@@ -284,12 +268,13 @@ window.location.reload();
   return error;
 })
 
-// }
 }
   }
+
+
   const HandleBanUser = (e) => {
     e.preventDefault();
-    console.log( username + " Will be  banned ! ");
+    // console.log( username + " Will be  banned ! ");
     if(username)
     {
       BanUserFromRoom();
@@ -299,22 +284,20 @@ window.location.reload();
       setErrorMessage("Please enter a valid username.")
     }
   }
+
   const HandleRoomPublic = (e) => {
     e.preventDefault();
     setisPublic(true);
     setHasPassword(false);
-    // setRoomPublic(!isRoomPublic);
-    // setRoomPrivate(false);
 } 
+
+
 const HandleRoomPrivate = (e) => {
   e.preventDefault();
-
-    // setRoomPrivate(!isRoomPrivate);
-    // setRoomPublic(false);
     setisPublic(false);
     setHasPassword(true);
-
 } 
+
 async function KickUserFromRoom() 
 {
   const loggeduser = localStorage.getItem("user");
@@ -353,14 +336,14 @@ window.location.reload();
   return error;
 })
 
-// }
 }
 }
+
 
 const HandleKickUser = (e) => {
   e.preventDefault();
 
-  console.log("Kicking this user ! " + username);
+  // console.log("Kicking this user ! " + username);
   if(username)
   {
     KickUserFromRoom();
@@ -391,7 +374,7 @@ await fetch(text,{
 .then((response) => response.json())
 .then(json => {
   console.log( " UnmuteUser Response is :  " + JSON.stringify(json))
-// 
+
 setErrorMessage(json.message)
 if(json.statusCode =="404")
 {
@@ -411,9 +394,9 @@ window.location.reload();
   return error;
 })
 
-// }
 }
 }
+
 
 const HandleDeletePassword = (e) => {
 e.preventDefault();
@@ -423,10 +406,10 @@ setUpdatePwd(false);
 
 const HandleUpdatePassword = (e) => {
   e.preventDefault();
-
   setDeletePwd(false);
 setUpdatePwd(true);
 }
+
 const HandleUnmute = (e) => {
   e.preventDefault();
   if(username)
@@ -469,11 +452,7 @@ async function HandleSetPassword()
     else
     {
       navigate('/Landing');
-
     }
-
-
-  // window.location.reload();
     return json;
 })
 .catch((error) => {
@@ -482,6 +461,7 @@ async function HandleSetPassword()
 })
 
   }
+
 
   async function HandleDeletePwd()
 {
@@ -575,7 +555,7 @@ async function HandleSetPassword()
     {
       const current = JSON.parse(loggedUser);
        const {id} = current;
-      console.log("THE ID USEEFFECT IS " + id + "  ROOM  PRV " + props.room.is_private + "PROPS =>   : " , props);
+      // console.log("THE ID USEEFFECT IS " + id + "  ROOM  PRV " + props.room.is_private + "PROPS =>   : " , props);
       if(props.room.is_private)
       {
         console.log("THIS IS A PRIVATE ROOM")
@@ -587,21 +567,19 @@ async function HandleSetPassword()
       if(getMembers)
       {
         const ParsedMembers = JSON.parse(getMembers);
-        console.log("THE GET MEMBERS IS " + getMembers +  " PARSED : "  + ParsedMembers.nickname);
+        // console.log("THE GET MEMBERS IS " + getMembers +  " PARSED : "  + ParsedMembers.nickname);
 
-        // localStorage.setItem("members","");
       }
       // // === Check condition + data types then true 
       if(props.statusMember.data.statusMember == "owner")
       {
-        console.log(" I AM OWNER ")
+        // console.log(" I AM OWNER ")
         setOwner("true");
-
       }
       
       if(props.room.is_protected) 
       {
-        console.log("Room has a password ! should be protected");
+        // console.log("Room has a password ! should be protected");
         setMsg("Your room is protected with a password ");
         setisPublic(false);
         setHasPassword(true);
@@ -616,17 +594,17 @@ async function HandleSetPassword()
       }
     }
   },[])
+
   const UpdateRoomPassword = (e) => {
     e.preventDefault();
     if(!Roompassword)
     {
-      console.log("ERROR");
+      // console.log("ERROR");
     setErrorMessage("Error ! No password inputed")    
   }
   else
   {
-    
-    console.log("Updating room passwond ..." +Roompassword) 
+    // console.log("Updating room passwond ..." +Roompassword) 
     setErrorMessage("")    
     HandleSetPassword();
     setTimeout(() => {
@@ -642,31 +620,23 @@ async function HandleSetPassword()
   const setNewRoomPassword = (e) => {
     e.preventDefault();
 
-  {
+  
     if(deletepwd)
     {
       console.log(" DELETE PWD FROM THIS CHATROOM");
       HandleDeletePwd();
     }
-    else if (updatepwd)
+  else if (updatepwd)
+  {
+    if(Roompassword)
     {
-      if(Roompassword)
-
-{
-console.log(" UPADTING PWD  PWD FROM THIS CHATROOM");
-  
-console.log("Updating SETNEWROOM  passwond ..." +Roompassword) 
-HandleUpadtePwd();
-}     
-
-else
-
-{
+      HandleUpadtePwd();
+    }     
+  else
+    {
   setErrorMessage(" Please enter a valid password.")
-}
-
     }
-    
+  }
     setTimeout(() => {
       setIsUpdating(false);
       setisUpdated(true);
@@ -674,13 +644,8 @@ else
       // window.location.reload();
    
     }, 2000);
+  
   }
-  }
-  // const FilteredUsers = MembersAdmin.filter(friends => {
-  //   // Here A changer : person with friends from backend , 
-  //   //filter nickname not name 
-  //    return friends.player.nickname.toLowerCase().includes(username.toLowerCase());
-  // })
     return (
         <div className='ChatRoomAdminDash-container'>
         <input
@@ -691,17 +656,6 @@ else
        value={username || ""}
         />
         {errorMessage && <div className="error"> {errorMessage} </div>}
-
-        {/* {username ? (
-            <>
-{FilteredUsers.map(c => < DisplayChatRoomusers key = {c} user = {c} />)}
-
-            </>
-        )  : (
-            <>
-            </>
-        )} */}
-
 
       <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleBanUser}>
     <span className="icon material-symbols-outlined">
@@ -737,8 +691,6 @@ else
           name="mute-time"
           value={time}
           onChange={(e) => setTime(e.target.value)}
-        //   onChange={HandleChange}
-        //   onChange={event => setTime(event.target.value)};
         min="00:00" max ="18:00" >
 
         </input>
@@ -785,12 +737,6 @@ else
 
       {open_rs ? (
         <>
-   {/* <input type="text"
-       className="form-control" 
-       placeholder="Room Name " 
-       onChange={event => setRoomName(event.target.value)}
-       value={RoomName || ""}
-       /> */}
        {props.room.is_protected ? (
         <>
               <h3>Channel Type : </h3>

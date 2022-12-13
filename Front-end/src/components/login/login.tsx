@@ -52,7 +52,7 @@ async function  HandleRef  ()  {
   console.log(" this endpoint " + endpoint)
   fetch(endpoint,{mode:'no-cors'})
   .then((response) => {
-console.log("response Isghouia backend " + JSON.stringify(response));
+// console.log("response Isghouia backend " + JSON.stringify(response));
   })
 
 }

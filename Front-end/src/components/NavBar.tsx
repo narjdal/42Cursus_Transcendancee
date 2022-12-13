@@ -25,47 +25,49 @@ function Navbar() {
     const [authenticated, setauthenticated] = useState("");
     const [sideBar,setSideBar] = useState(true);
     const [blur,SetBlur] = useState(false);
+
+
     const toggleSidebar = (e) => {
+      e.preventDefault();
         document.body.classList.toggle("open");
         setSideBar(!sideBar);
         SetBlur(!blur);
     }
     const loggedInUser = localStorage.getItem("authenticated");
     const navigate = useNavigate();
+
     const navigateHome = () => {
-        // 👇️ navigate to /contacts
-        console.log("NAVIGATE TO HOME ");
         navigate('/Home');
       };
       const navigateAccount = () => {
-        // 👇️ navigate to /contacts
         navigate('/');
       };
+
       const navigateChatRooms = () => {
-        // 👇️ navigate to /contacts
         navigate('/Landing');
       };
+
       const navigateLeaderBoard = () => {
-        // 👇️ navigate to /contacts
         navigate('/LeaderBoard');
       };
+
       const navigatePlay = () => {
-        // 👇️ navigate to /contacts
         navigate('/Pong');
       };
+
       const handleFriendClick = event => {
         // Toggle Shown state
         event.preventDefault();
         setIsShown(current => !current);
-  FetchUserInfo();
+       FetchUserInfo();
          };
-         //DOuble LogOut Component To Fixe 
-        
+
+
  async function LogOut ()
          {
           const tt = localStorage.getItem("user")
           const loggedUser =JSON.parse(tt!);
-          console.log(" Login Out this user   => "  + loggedUser.nickname);
+          // console.log(" Login Out this user   => "  + loggedUser.nickname);
 
 
 let endpoint = 'http://localhost:5000/auth/logout';
@@ -88,40 +90,22 @@ await fetch((endpoint),{
     localStorage.setItem("user","");
     window.location.reload();
 })
-// .then(json => {
-//     console.log("The response is => " + JSON.stringify(json))
-//   setErrorMessage(""); 
-//   if (IsAuthOk(json.statusCode) == 1)
-//   {
-//     console.log("SHOULD RELOAD  ....")
-//   window.location.reload();
-//   }
 
-//   localStorage.setItem("authenticated", "false");
-//   localStorage.setItem("user","");
-//   window.location.reload();
-
-//   // localStorage.setItem("usertoshow",JSON.stringify(json));
-
-//     return json;
-// })
 .catch((error) => {
   console.log("An error occured : " + error)
   setErrorMessage("An error occured! User not found ! ");
   return error;
 })
-
-
-         }
+}
 
       const LogUserOut = (e) => {
         e.preventDefault();
         LogOut();
     };
 
+
     async function FetchUserInfo () {
 
-      // ]
     const loggeduser = localStorage.getItem("user");
   
     if(loggeduser)
@@ -168,32 +152,16 @@ await fetch((endpoint),{
         {
           var Current_User = JSON.parse(loggeduser);
           const {id} = Current_User
-          // console.log("Fetching Friends of this User " + Current_User.nickname);
           setUser42(JSON.parse(localStorage.getItem("user")!))
-
-      // FetchUserInfo(Current_User.nickname)
-      // .then((resp) => {
-      //   console.log("resp => " + resp[0].id);
-      //   setFriends(resp);
-      //   console.log("user42.image_url" + user42.image_url)
-      // })
-
-          
-          // var Current_User = JSON.parse(loggeduser!);
-          // console.log("=>>>>> FROM THE NAVBAR " + loggeduser   + Current_User.nickname + Current_User.UserId)
-          // setUser42(Current_User);
         }
         else
         {
-          // console.log(" YOU ARE NOY LOGGED IN MY FRIEND NO USER FOUND TF IS THIS ")
           localStorage.setItem("authenticated","false");
           window.location.reload();
         }
-      //  const {UserId,usual_full_name} = user42;
 
       },[ localStorage.getItem("user"),isShown]);
       const location = useLocation();
-      // console.log("PATHNAME => " + location.pathname)
     return (
         <nav>
           <div>{( location.pathname=== "/Account_infos")  ? (

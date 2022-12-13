@@ -10,11 +10,6 @@ const DisplaySocial = (props) => {
     const [Dmcount,SetDmCount] = useState(-1);
     const [errorsMessage,setErrorMessage] = useState("");
 
-    const handleFriendClick  = (e) => {
-
-    };
-
-
 
 async function BlockRelationship()
 {

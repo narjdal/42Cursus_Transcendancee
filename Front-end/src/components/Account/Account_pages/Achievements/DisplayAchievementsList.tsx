@@ -3,14 +3,7 @@ import { useState,useEffect } from 'react';
 import './DisplayAchievementsList.css'
 const DisplayAchievementsList = (props) => {
 
-    const loggeduser = localStorage.getItem("user");
-    if (loggeduser)
-    {
-        var Current_User = JSON.parse(loggeduser);
-        
-    }
 
-    console.log("inside Achievements     DDD");
     return (
         <>
         <div className='Achievements-Back'>

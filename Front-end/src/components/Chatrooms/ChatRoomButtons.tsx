@@ -11,28 +11,13 @@ const ChatRoomButton = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const params = useParams();
 const [username, setUsername] = useState("");
-const HandleBanUser = () => {
 
-};
-const HandleMuteUser = () => {
-
-};
-const HandleBlockUser = () => {
-
-};
 
 
 async function FetchUserInfo (nickname) {
 
-  // ]
-// const loggeduser = localStorage.getItem("user");
-
-// if(loggeduser)
-// {
-// var Current_User = JSON.parse(loggeduser);
-// const text = "http://localhost:5000/player/listOfFriends";
 const text = ("http://localhost:5000/player/listToAddFriend/" + params.id);
-console.log("Api ListToAddFriend Link :  =>  " + text);
+// console.log("Api ListToAddFriend Link :  =>  " + text);
 
 await fetch(text,{
   // mode:'no-cors',
@@ -42,7 +27,7 @@ await fetch(text,{
 
 .then((response) => response.json())
 .then(json => {
-  console.log("The ListToAddFriends  is => " + JSON.stringify(json))
+  // console.log("The ListToAddFriends  is => " + JSON.stringify(json))
 if(json.statusCode == "500")
 {
   console.log("An error occured in the backend.");

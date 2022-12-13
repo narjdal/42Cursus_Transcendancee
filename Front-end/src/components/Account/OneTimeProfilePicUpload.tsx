@@ -90,28 +90,6 @@ const response = await axios.post("http://localhost:9000/upload", form)
 	}
 }
 
-// async function fetchProfilePicture(id,image_url,destination,filename)
-// {
-
-// 	const text = "http://localhost:9000/GetUserPicture?id=" + id +"&path=" + image_url;
-// 	const response =  await axios.get(text,{
-// 		headers:{
-// 			userId:id,
-// 			mypath:image_url,
-// 			destination:destination,
-// 			filename:filename
-// 		}
-// 	})
-// 	console.log("text is => " + text);
-// 	// Weir Response Here 
-// 	// console.log("resp => " + response.data);
-// 	return response.data;
-// }
-
-
-		// const loggeduser  = localStorage.getItem("user");
-
-	
 	const handleSubmission = () => {
         const formData = new FormData();
 		

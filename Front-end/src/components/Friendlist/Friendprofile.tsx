@@ -164,7 +164,7 @@ async function BlockRelationship()
         }
 
     }
-    console.log("ExecuteRelationship  => " + endpoint + " \n action" + execute)
+    // console.log("ExecuteRelationship  => " + endpoint + " \n action" + execute)
     //  setAction("");
     endpoint = endpoint + params.nickname;
     await fetch((endpoint
@@ -202,7 +202,7 @@ async function BlockRelationship()
 
       let endpoint = 'http://localhost:5000/player/statusFriendship/'
       let nicknametofetch: string = JSON.stringify(params.nickname);
-      console.log(" this endpoint   " + endpoint + " Fetching : " + nicknametofetch)
+      // console.log(" this endpoint   " + endpoint + " Fetching : " + nicknametofetch)
       http://localhost:5000/statusFriendship/?id=narjdal
 
       await fetch((`http://localhost:5000/player/statusFriendship/${params.nickname}`
@@ -313,7 +313,7 @@ async function BlockRelationship()
 
   }
   async function FetchUserInfos() {
-    console.log("Fetching User Profile  Infos  Home Page  => " + params.nickname);
+    // console.log("Fetching User Profile  Infos  Home Page  => " + params.nickname);
 
 
     const loggeduser = localStorage.getItem("user");
@@ -361,16 +361,6 @@ async function BlockRelationship()
 
     await FetchRelationship()
       .then(() => {
-        // console.log("relation is " + relation + "choice is "  + choice);
-        // if(choice === "AddFriend")
-        // {
-        //   console.log("ww khello")
-        //       setIcons("people")
-        //      setMsg("AddFriend");
-        //      setAction("Add");
-        //      setRelation("addFriend");
-        // }
-
       })
     const tt = localStorage.getItem("choice");
     if (tt === "addFriend") {
@@ -384,9 +374,6 @@ async function BlockRelationship()
 
     }
     if (tt === "blockFriend") {
-      // setAction("none");
-      // setRelation("Blocked");
-      // localStorage.setItem("action","none");
       setIcons("block")
       setMsg("Block friend ");
       setAction("blockFriend")

@@ -22,7 +22,7 @@ const UpdateNickname = (props) => {
     var current = JSON.parse(loggeduser);
    let  text = ("http://localhost:5000/player/update/nickname" );
 
-    console.log("Uploading the nickname ! of this user  + " +  current.nickname +  " + New Nickname " + nickName);
+    // console.log("Uploading the nickname ! of this user  + " +  current.nickname +  " + New Nickname " + nickName);
         await fetch(text,{
       // mode:'no-cors',
       method:'post',
@@ -50,7 +50,7 @@ const UpdateNickname = (props) => {
     {
       const test  = JSON.stringify(json);
 
-      console.log("The Resp Of Update Nickname is  => " + test);
+      // console.log("The Resp Of Update Nickname is  => " + test);
       localStorage.setItem("user","");
       localStorage.setItem("user",test);
       let UpdatedUser = localStorage.getItem("user");

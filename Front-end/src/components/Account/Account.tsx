@@ -8,24 +8,17 @@ import { Link } from 'react-router-dom';
 import Login from '../login/login';
 import DisplayAchievementsList from './Account_pages/Achievements/DisplayAchievementsList';
 import DisplayMatchHistory from './Account_pages/DisplayMatchHistory';
-import { IsAuthOk } from '../../utils/utils';
-// import QRcode from '../QRCode';
-import QRCode from 'qrcode.react'
 
 import axios from 'axios';
 const Account = () => {
   const navigate = useNavigate();
   const [isUpdating, setIsUpdating] = useState(false);
     const [Updated, setisUpdated] = useState(false);
-  const [authenticated, setauthenticated] = useState("");
 	 const [user42,SetUser42] = useState <any>([]);
   const [showradiotwofa,Setradiotwofa] = useState(false);
   const [twoFa,setTwoFa] = useState(false);
   const [TwoFaDisable,setTwoFaDisable] = useState(false);
   const [TwoFaEnable,setTwoFaEnable] = useState(false);
-  const [done,setDone] = useState(false);
-
-  const [QRcodeText, setQRCodeText] = useState("");
   const [msg, setMsg] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -39,22 +32,17 @@ const [minihistory,setMiniHistory] = useState<any>([])
 
     const authenticated = localStorage.getItem("authenticated");
   const loggeduser = localStorage.getItem("user");
-    console.log("NavBar : Is User  auth ?  " + authenticated);
-    if (authenticated === "true") {
-      setauthenticated(authenticated);
-    }
+
     if(loggeduser)
     {
 
       var Current_User = JSON.parse(loggeduser);
-      console.log("=>>>>> FROM THE ACCOUNT " + loggeduser   + Current_User.nickname + Current_User.UserId)
+      // console.log("=>>>>> FROM THE ACCOUNT " + loggeduser   + Current_User.nickname + Current_User.UserId)
       if(Current_User.tfa)
       {
         setTwoFaMessage("Two Factor Authentification is activated !")
         setTwoFaDisable(true);
         setMsg("Disable two FA.");
-
-        // setTwoFa(false);
         setTwoFaEnable(false);
 
       }
@@ -329,19 +317,7 @@ window.location.reload();
     // }
     }
 
-    if (authenticated === "false")
-    {
-      return (
-      <div>
-          <p>
-            Not logged in 
-          </p>
-      </div>
-      );
-    }
     //ProfilePicUpload : Send User infos here  Get from state ?
-    else
-    {
     return (
       <div>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
@@ -491,6 +467,5 @@ window.location.reload();
       </div>
     );
     }
-  };
   
 export default Account;

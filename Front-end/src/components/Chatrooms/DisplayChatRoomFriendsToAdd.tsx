@@ -33,7 +33,7 @@ async function InviteFriendToRoom () {
   {
     const current = JSON.parse(loggeduser);
     const text = "http://localhost:5000/player/addMember/" + props.user.nickname + "/" + params.id
-  console.log("Api Fetch Link :  =>  " + text);
+  // console.log("Api Fetch Link :  =>  " + text);
   
   
   await fetch(text,{
