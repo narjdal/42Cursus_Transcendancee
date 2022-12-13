@@ -66,3 +66,7 @@ const text = ("http://localhost:5000/player/listToAddFriend/" + params.id);
 const endpoint = 'http://localhost:5000/player/myprofile'
 
   let text = ("http://localhost:5000/player/joinProtectedRoom/");
+
+ let  text = ("http://localhost:5000/auth/2fa/verify");
+
+  const text = "http://localhost:5000/auth/2fa/QrCode" ;
