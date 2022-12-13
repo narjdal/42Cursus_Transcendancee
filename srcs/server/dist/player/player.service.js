@@ -13,6 +13,13 @@ exports.PlayerService = void 0;
 const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
 const prisma_service_1 = require("../prisma.service");
+const otplib_1 = require("otplib");
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+    cloud_name: process.env.CLD_CLOUD_NAME,
+    api_key: process.env.CLD_API_KEY,
+    api_secret: process.env.CLD_API_SECRET,
+});
 let PlayerService = class PlayerService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -32,7 +39,6 @@ let PlayerService = class PlayerService {
         return player;
     }
     async findPlayerByNickname(login) {
-        console.log("FindPlayerByNickname", login);
         const player = await this.prisma.player.findUnique({
             where: {
                 nickname: login
@@ -42,6 +48,79 @@ let PlayerService = class PlayerService {
             throw new common_1.NotFoundException('Profile not found');
         }
         return player;
+    }
+    async generate2faSecret(playerId) {
+        const player = await this.findPlayerById(playerId);
+        if (!player) {
+            throw new common_1.NotFoundException("Generate 2fa Secret User Id is not found");
+        }
+        if (player && player.tfa === true) {
+            throw new common_1.NotFoundException("2FA is already enabled");
+        }
+        const secret = otplib_1.authenticator.generateSecret();
+        const otpauth_url = otplib_1.authenticator.keyuri(player.email, process.env.TWO_FACTOR_AUTHENTICATION_APP_NAME, secret);
+        await this.prisma.player.update({
+            where: {
+                id: playerId,
+            },
+            data: {
+                tfa: true,
+                tfaSecret: secret,
+            }
+        });
+        return { secret, otpauth_url };
+    }
+    async disable2fa(playerId) {
+        const player = await this.findPlayerById(playerId);
+        if (!player) {
+            throw new common_1.NotFoundException("User Id is not found");
+        }
+        if (player && player.tfa === false) {
+            throw new common_1.NotFoundException("2FA is already disabled");
+        }
+        const tfa = await this.prisma.player.update({
+            where: {
+                id: playerId,
+            },
+            data: {
+                tfa: false,
+                tfaSecret: null,
+            }
+        });
+        return tfa;
+    }
+    async updateNickname(playerId, nickname) {
+        const user = await this.prisma.player.findUnique({
+            where: {
+                nickname: nickname
+            }
+        });
+        if (user) {
+            throw new common_1.UnauthorizedException("Nickname already exist");
+        }
+        const player = await this.prisma.player.update({
+            where: {
+                id: playerId,
+            },
+            data: {
+                nickname: nickname,
+            }
+        });
+        return player;
+    }
+    async uploadAvatar(playerId, avatar) {
+        const player = await this.findPlayerById(playerId);
+        const uploadedImage = await cloudinary.uploader.upload(avatar.path, { folder: "uploads" });
+        const avatar_url = uploadedImage.secure_url;
+        const player_avatar = await this.prisma.player.update({
+            where: {
+                id: playerId,
+            },
+            data: {
+                avatar: avatar_url,
+            }
+        });
+        return player_avatar;
     }
     async findRoomById(roomId) {
         const room = await this.prisma.chatRoom.findUnique({
@@ -605,6 +684,8 @@ let PlayerService = class PlayerService {
         });
     }
     async createPublicChatRoom(userId, nameOfRoom) {
+        console.log("userId\n", userId);
+        const me = await this.findPlayerById(userId);
         const room = await this.prisma.chatRoom.create({
             data: {
                 is_dm: false,
@@ -633,8 +714,12 @@ let PlayerService = class PlayerService {
                     create: [
                         {
                             statusMember: "owner",
+                            player: {
+                                connect: {
+                                    id: userId,
+                                }
+                            },
                             muted_since: new Date(),
-                            playerId: userId,
                         },
                     ],
                 },
@@ -993,7 +1078,9 @@ let PlayerService = class PlayerService {
                 id: room_id,
             }
         });
-        console.log("room ===>", room);
+        if (room && room.is_dm === false) {
+            throw new common_1.NotFoundException("This is not a DM room");
+        }
         return await this.getRoomById(userId, room.id);
     }
     async joinRoom(userId, room_id) {
@@ -1137,7 +1224,7 @@ let PlayerService = class PlayerService {
         });
     }
     async unmuteMember(login, room_id) {
-        const palyer = await this.findPlayerById(login);
+        const palyer = await this.findPlayerByNickname(login);
         const room = await this.prisma.permission.updateMany({
             where: {
                 AND: [

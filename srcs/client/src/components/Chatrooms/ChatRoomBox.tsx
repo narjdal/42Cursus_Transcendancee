@@ -266,14 +266,20 @@ async function FetchRelationshipNarjdal(friendName : string) {
         console.log("The Realtionship is => " + JSON.stringify(json))
         setErrorMessage("");
       
+
+        if(json.statusCode == "404" || IsAuthOk(json.statusCode) == 1)
+        {
+          setErrorMessage(json.mnessage);
+        }
         if(json == "YourBlocked")
         {
           setIfBlocked(true);
           let text = friendName + " Has blocked you !";
         setErrorMessage(text)
         setShowInput(false);
+        console.log(" SALUT JE SUIS LA ")
         }
-        if(json == "unblockFriend")
+        else if(json == "unblockFriend")
         {
           setIfBlocked(true);
           let text = "You blocked : " + friendName;
@@ -282,6 +288,7 @@ async function FetchRelationshipNarjdal(friendName : string) {
         }
         else
         {
+          console.log(" INPUT WILL BE TRUE")
           setShowInput(true);
         }
         // else if(json == "blockFriend")

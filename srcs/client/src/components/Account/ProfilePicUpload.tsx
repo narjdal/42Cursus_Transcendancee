@@ -65,7 +65,7 @@ async function UploadPicture(selectedFile)
 	// formData.append('nickname',nickname);
 	// formData.append('name',nickname);
 
-	console.log("The User  => " + JSON.stringify(UserObject))
+	// console.log("The User  => " + JSON.stringify(UserObject))
 	// formData.append('id',id);
 	// formData.append('image_url',image_url)
 
@@ -97,6 +97,62 @@ await fetch(text,{
 	// 	file:selectedFile
 	// }
 })
+.then((response) => response.json())
+.then(json => {
+	console.log("The update/Avatar Resp   is => " + JSON.stringify(json))
+	if( json.statusCode == "404")
+	{
+	  setErrorMessage(json.message)
+	}
+else if (json.statusCode == "401")
+{
+  setErrorMessage(json.message)
+}
+else
+{
+	const test  = JSON.stringify(json.image_url);
+
+	console.log("The Resp Of Update Avatar is  => " + test);
+	const current = JSON.parse(localStorage.getItem("user")!);
+	const NewUser = [
+	  {
+		id:current.id,
+		nickname:current.nickname,
+		avatar:json.image_url,
+		firstName:current.firstName,
+		lastName:current.lastName,
+		email:current.email,
+		wins:current.wins,
+		loses:current.loses,
+		tfa:current.tfa,
+		tfaSecret:current.tfaSecret
+	  }
+	]
+	console.log("NEWUSER : " + JSON.stringify(NewUser[0]))
+  localStorage.setItem("user",JSON.stringify(NewUser[0]));
+  setTimeout(() => {
+	  setIsUpdating(false);
+	  setisUpdated(true);
+	  setTimeout(() => setisUpdated(false), 2500);
+	  window.location.reload();
+   
+	}, 2000);
+	// localStorage.setItem("user","");
+	// localStorage.setItem("user",test);
+	// let UpdatedUser = localStorage.getItem("user");
+	// console.log("Update Nick=>     " + JSON.stringify(UpdatedUser));
+	
+}
+	return json;
+})
+.catch((error) => {
+	console.log(" Error Update Avatar" + error)
+
+})
+// .then((response) => response.json())
+// {
+	
+// })
 // 	}
 	// return response.data;
 
@@ -124,35 +180,35 @@ await fetch(text,{
 			console.log("Handle Submission Profile pic upload  : " + selectedFile['name'])
 			setIsUpdating(true);
 			UploadPicture(selectedFile)
-			.then((resp) => {
+	// 		.then((resp) => {
 
-				const test  = JSON.stringify(resp);
+	// 			// const test  = JSON.stringify(resp);
 
-				console.log("The Resp is => " +  test );
-	// 			// To fixe ...
-	// 			const loggedUser = localStorage.getItem("user");
-	// 			if(loggedUser)
-	// 			{
-    // var Current_User = JSON.parse(loggedUser);
-	// 			const new_user = [{
-	// 				nickname:resp.nickname,
-	// 				UserId:Current_User.UserId,
-	// 				image_url:resp.image_url
-	// 			}]
-	// 			const bruh = JSON.stringify(new_user)
-			// 	localStorage.setItem("user","");
-			// 	localStorage.setItem("user",test);
-			// 	let UpdatedUser = localStorage.getItem("user");
-			// console.log("Updated User After Update Profile Pic =>     " + JSON.stringify(UpdatedUser));
-      	setTimeout(() => {
-          setIsUpdating(false);
-          setisUpdated(true);
-          setTimeout(() => setisUpdated(false), 2500);
-        //   window.location.reload();
+	// 			// console.log("The Resp is => " +  test );
+	// // 			// To fixe ...
+	// // 			const loggedUser = localStorage.getItem("user");
+	// // 			if(loggedUser)
+	// // 			{
+    // // var Current_User = JSON.parse(loggedUser);
+	// // 			const new_user = [{
+	// // 				nickname:resp.nickname,
+	// // 				UserId:Current_User.UserId,
+	// // 				image_url:resp.image_url
+	// // 			}]
+	// // 			const bruh = JSON.stringify(new_user)
+	// 		// 	localStorage.setItem("user","");
+	// 		// 	localStorage.setItem("user",test);
+	// 		// 	let UpdatedUser = localStorage.getItem("user");
+	// 		// console.log("Updated User After Update Profile Pic =>     " + JSON.stringify(UpdatedUser));
+    //   	setTimeout(() => {
+    //       setIsUpdating(false);
+    //       setisUpdated(true);
+    //       setTimeout(() => setisUpdated(false), 2500);
+    //     //   window.location.reload();
        
-        }, 2000);
+    //     }, 2000);
 
-			})
+	// 		})
 			
             // setErrorMessage("Please chose a valid username ");
         }

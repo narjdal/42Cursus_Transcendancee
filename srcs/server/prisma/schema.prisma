@@ -20,6 +20,9 @@ model Player {
     wins      Int    @default(0)
     loses     Int    @default(0)
 
+    tfa     Boolean @default(false)
+    tfaSecret String?
+
     // explicit self relation many to many
     senders   Friendship[] @relation("SendRequest")
     receivers Friendship[] @relation("ReceiveRequest")

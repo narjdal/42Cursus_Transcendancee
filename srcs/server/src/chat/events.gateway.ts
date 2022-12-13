@@ -23,10 +23,8 @@ export class EventsGateway {
 		// onlineUsers.push(client.id);
 		// //send online users to all clients
 		// client.broadcast.emit('onlineUsersFront', onlineUsers);
-
 		// //show all online users
 		// console.log(onlineUsers);
-
 	}
 
 	async handleDisconnect(client: Socket) {
@@ -79,8 +77,8 @@ export class EventsGateway {
 
 
 		//send online users to all clients
-		client.broadcast.emit('onlineUsersFront', onlineUsers.filter((u) => u.client.length > 0));
-
+		// client.broadcast.emit('onlineUsersFront', onlineUsers.filter((u) => u.client.length > 0));
+		this.wss.emit('onlineUsersFront', onlineUsers.filter((u) => u.client.length > 0));
 		//show all online users
 		console.log(onlineUsers);
 	}

@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy,'jwt') {
                 if(!data){
                     return null;
                 }
-                return data;
+                return data;  ///  data is the token to return in request maybe
             }])
         });
     }

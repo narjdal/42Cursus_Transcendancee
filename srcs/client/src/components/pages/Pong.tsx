@@ -22,7 +22,7 @@ export function GameRooms(props: any) {
   const [rooms, setRooms] = useState<any>([]);
   let Socket = io('http://localhost:5000/game');
   Socket.on('connect', () => {});
-  Socket.on('getRooms', (data: any) => {
+  Socket.on('getAllGames', (data: any) => {
     console.log(rooms);
     setRooms(data.rooms);
   });
@@ -39,7 +39,6 @@ export function GameRooms(props: any) {
   );
 }
 
-
 const Pong = () => {
   const [roomId, setRoomId] = React.useState(0);
   return (
@@ -54,5 +53,5 @@ const Pong = () => {
     </>
   );
 };
-  
+
 export default Pong;

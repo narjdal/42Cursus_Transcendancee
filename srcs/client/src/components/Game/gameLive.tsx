@@ -30,7 +30,7 @@ export default function GameLive(props) {
         socket.on("connect", () => {
             console.log(socket); 
         });
-        socket.emit("wachGame", {roomId:props.roomId});
+        socket.emit("watchGame", {roomId:props.roomId});
     }
 
     const draw = (p5: p5Types) => {

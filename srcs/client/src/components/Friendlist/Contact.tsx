@@ -1,15 +1,15 @@
 import React from "react";
-import {Link} from'react-router-dom';
+// import {Link} from'react-router-dom';
 import { useState ,useEffect} from "react";
-import DmWindow from "../DirectMsg/DmWindow"
+// import DmWindow from "../DirectMsg/DmWindow"
 import './Contact.css'
-import { io } from "socket.io-client";
-import { Socket } from 'dgram';
+// import { io } from "socket.io-client";
+// import { Socket } from 'dgram';
 // import socket
-var socket:any;
+// var socket:any;
 const Contact = (props) => {
 	const [OpenMsg, SetOpenMsg] = useState(false);
-    const [OpenBox,setOpenBox] = useState(true);
+    // const [OpenBox,setOpenBox] = useState(true);
     const [imLogged,setImLogged] = useState(false);
     // console.log(props.name);
     const [Dmcount,SetDmCount] = useState(-1);
@@ -82,9 +82,9 @@ useEffect (() => {
         console.log ( "PARSED USER : " , ParsedUsers);
 
     let srch = ParsedUsers.filter((m: any) => {
-    console.log(" ME id : " + props.user.id + "  ME NICKNAME : " + props.user.nickname  +  " : " , ParsedUsers);
-    return m.id === props.user.id
-  })[0]
+    console.log(" ME id : " + props.user.id + " + " , m.user);
+    return m.user === props.user.id
+  })[0] 
 
     if(srch)
     {
@@ -99,27 +99,11 @@ useEffect (() => {
         // const isInsideLoggedUsers = ParsedUsers.filter(s => s.id);
     }
     // if(props.user.id == )
-    // SetDmCount(Dmcount  + 1);
-//     if(OpenMsg)
-//     {
-//     console.log("Dm Window opened !" + Dmcount);
-//     if(Dmcount < 2)
-//    { SetDmCount(Dmcount + 1);
-//     localStorage.setItem("DmCount",Dmcount.toString());
-//     }
-//     else 
-//     {
-//     SetDmCount(0);
-//     console.log("Inside UseEffect Dm Count  => " ,+ Dmcount)
-//     console.log("Inside UseEffect OpenMsg  => " ,+ OpenMsg)
-//     localStorage.setItem("DmCount",Dmcount.toString());
-//     }
-    console.log("Dm Window opened !" + Dmcount);
+    // console.log("Dm Window opened !" + Dmcount);
 
-localStorage.setItem("Dmcount",(Dmcount).toString());
+// localStorage.setItem("Dmcount",(Dmcount).toString());
 // }
-},[Dmcount
-])
+},[])
 // console.log("OPENBOX =>>>>>> " + OpenBox);
 const RedirFriendProfile = (e) => {
     e.preventDefault();
@@ -134,12 +118,12 @@ return (
         <tbody>
     <tr>
        <th></th>
-       <th></th>
        <th>Name</th>
        <th>Status </th>
    </tr>
    <tr>
    <td> <img src={props.user.avatar} 
+   alt="ss"
    height="20"
    className="avatar1"
    onClick={handleClick} /></td>

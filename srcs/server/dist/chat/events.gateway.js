@@ -48,7 +48,7 @@ let EventsGateway = class EventsGateway {
             onlineUsers.push({ user: data.user.id, client: [client.id] });
         else
             onlineUsers[index].client.push(client.id);
-        client.broadcast.emit('onlineUsersFront', onlineUsers.filter((u) => u.client.length > 0));
+        this.wss.emit('onlineUsersFront', onlineUsers.filter((u) => u.client.length > 0));
         console.log(onlineUsers);
     }
 };

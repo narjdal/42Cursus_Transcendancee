@@ -11,11 +11,12 @@ const common_1 = require("@nestjs/common");
 const player_module_1 = require("./player/player.module");
 const auth_module_1 = require("./auth/auth.module");
 const chat_module_1 = require("./chat/chat.module");
+const game_module_1 = require("./game/game.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [player_module_1.PlayerModule, auth_module_1.AuthModule, chat_module_1.MessagesModule],
+        imports: [player_module_1.PlayerModule, auth_module_1.AuthModule, chat_module_1.MessagesModule, game_module_1.GameModule],
     })
 ], AppModule);
 exports.AppModule = AppModule;

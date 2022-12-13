@@ -1,3 +1,4 @@
+/// <reference types="multer" />
 import { PrismaService } from 'src/prisma.service';
 import { CreateProtectedRoomDto, JoinProtectedRoomDto, SetPwdToPublicChatRoomDto, UpdateProtectedPasswordDto } from './dtos/updatePlayer.dto';
 export declare class PlayerService {
@@ -5,6 +6,13 @@ export declare class PlayerService {
     constructor(prisma: PrismaService);
     findPlayerById(userId: string): Promise<import(".prisma/client").Player>;
     findPlayerByNickname(login: string): Promise<import(".prisma/client").Player>;
+    generate2faSecret(playerId: string): Promise<{
+        secret: string;
+        otpauth_url: string;
+    }>;
+    disable2fa(playerId: string): Promise<import(".prisma/client").Player>;
+    updateNickname(playerId: string, nickname: string): Promise<import(".prisma/client").Player>;
+    uploadAvatar(playerId: string, avatar: Express.Multer.File): Promise<import(".prisma/client").Player>;
     findRoomById(roomId: string): Promise<import(".prisma/client").ChatRoom>;
     getTypeOfRoom(roomId: string): Promise<any>;
     getRoomById(userId: string, room_id: string): Promise<{

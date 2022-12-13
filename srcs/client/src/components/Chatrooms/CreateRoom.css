@@ -34,7 +34,8 @@
   }
   
   .CreateRoom-card {
-    position: relative;
+    /* position: relative; */
+    height: 80vh;
     z-index: 3;
     width: 100%;
     margin: 0 20px;
@@ -69,7 +70,7 @@
   .CreateRoom-form > input,
   .CreateRoom-form > button {
     width: 100%;
-    height: 56px;
+    height: 36px;
   }
   
   .CreateRoom-form > input {

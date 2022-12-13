@@ -13,6 +13,7 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const prisma_service_1 = require("../prisma.service");
+const otplib_1 = require("otplib");
 let AuthService = class AuthService {
     constructor(prisma, jwtService) {
         this.prisma = prisma;
@@ -34,8 +35,24 @@ let AuthService = class AuthService {
             });
         return player;
     }
-    async getJwtToken(player) {
-        return this.jwtService.sign({ id: player.id }, {
+    async findById(PlayerId) {
+        const player = await this.prisma.player.findUnique({
+            where: { id: PlayerId },
+        });
+        return player;
+    }
+    async generateQrCode(playerId) {
+        const player = await this.findById(playerId);
+        if (!player) {
+            throw new common_1.NotFoundException("User Id is not found");
+        }
+        const otpauth_url = otplib_1.authenticator.keyuri(player.email, process.env.TWO_FACTOR_AUTHENTICATION_APP_NAME, player.tfaSecret);
+        return { otpauth_url };
+    }
+    async JwtAccessToken(playerId) {
+        return this.jwtService.sign({
+            playerId,
+        }, {
             secret: process.env.JWT_SECRET,
             expiresIn: process.env.JWTEXPIRATION
         });
