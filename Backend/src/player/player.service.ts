@@ -207,8 +207,10 @@ export class PlayerService {
         if (!is_member) {
             throw new UnauthorizedException("You are not a member of this room");
         }
-        if (is_member && is_member.is_banned === true)
-            throw new UnauthorizedException("You are banned from this room");
+        // if (is_member && is_member.is_banned === true)
+        //     throw new UnauthorizedException("You are banned from this room");
+        if(is_member && rooms_exist.is_dm === false && is_member.is_banned === true)
+            throw new UnauthorizedException("Get Room by id : You are banned from this room");
         // 3- return room
         const room = await this.prisma.chatRoom.findFirst({
             where: {
@@ -302,6 +304,14 @@ export class PlayerService {
                         // is_dm: false,
                         is_protected: true,
                     },
+                    {
+                        is_dm: true,
+                        all_members: {
+                            some: {
+                                playerId: userId,
+                            }
+                        },
+                    }
                 ],
             },
             include: {
@@ -1460,40 +1470,57 @@ export class PlayerService {
 
     async joinDM(userId: string, room_id: string)
     {
-        // // 0- check if login exists
-        // const user = await this.findPlayerById(login);
+        const user = await this.findPlayerById(userId);
 
-        // let room = null;
-        // // 1- check if room already exists between those 2 users
-        // room = await this.getRoomBetweenTwoPlayers(userId, login);
-        // // 2- if not create a new room
-        // if (room === null)
-        // {
-        //     const friendship = await this.getFriendshipStatus(userId, login);
-        //     if (!friendship) {
-        //         room = await this.createDMRoom(userId, login);
-        //     }
-        //     // status friendship: 0: Friend, 1: Pending, 2: Block
-        //     else if (friendship.status === 'Pending') {
-        //         room = await this.createDMRoom(userId, login);
-        //     }
-        //     else if (friendship.status === 'Block') {
-        //         throw new NotFoundException("You can not send a message to this player");
-        //     }
-        // }
+        let DM = null;
+        // 1- check if DM already exists between those 2 users
+        DM = await this.getRoomBetweenTwoPlayers(userId, user.nickname);
+        // 2- if not create a new room
+        if (DM === null)
+        {
+            const friendship = await this.getFriendshipStatus(userId, user.nickname);
+            if (!friendship) {
+                DM = await this.createDMRoom(userId, user.nickname);
+            }
+            // status friendship: 0: Friend, 1: Pending, 2: Block
+            else if (friendship.status === 'Pending') {
+                DM = await this.createDMRoom(userId, user.nickname);
+            }
+            else if (friendship.status === 'Block') {
+                throw new NotFoundException("You can not send a message to this player");
+            }
+        }
         // return await this.getRoomById(userId, room.id);
         // const room = await this.getRoomById(userId, room_id);
-        console.log("room_id ===>", room_id);
+        // console.log("room_id ===>", room_id);
         // const room = await this.findRoomById(room_id);
-        const room = await this.prisma.chatRoom.findUnique({
+        const room = await this.prisma.chatRoom.findFirst({
             where: {
                 id: room_id,
+            },
+            select: {
+                name: true,
+                is_dm: true,
+                is_public: true,
+                is_private: true,
+                is_protected : true,
+                all_members: {
+                    select: {
+                        player: {
+                            select: {
+                                nickname: true,
+                                id: true,
+                                }
+                            },
+                        },
+                    },
+                },
             }
-        });
+        )
         if (room && room.is_dm === false) {
             throw new NotFoundException("This is not a DM room");
         }
-        return await this.getRoomById(userId, room.id);
+        return room;
     }
 
     async joinRoom(userId: string, room_id: string) {
@@ -1508,7 +1535,7 @@ export class PlayerService {
         if(room.is_dm === true)
         {
             // create or getRoomID
-            // throw new NotFoundException("Cannot join a DM");
+            throw new NotFoundException("Cannot join a DM");
         }
         // 2- check if the Room is not protected
         if(room.is_protected === true)
