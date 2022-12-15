@@ -1,6 +1,6 @@
 
 
-import { SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
+import { SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from "@nestjs/websockets";
 import { Socket } from "socket.io";
 
 //get the client id by jwt token
@@ -115,7 +115,7 @@ export class ChatGateway {
 	}
 
 	@SubscribeMessage("newmessage")
-	async handleMessage(client: Socket, data: any): Promise<void> {
+	async handleMessage(client: Socket, data: any) {
 		// emyconsole.log("Message received", data); //data contains the message sent and room from client (frontend)
 
 		// 
@@ -158,15 +158,51 @@ export class ChatGateway {
 			createdAt   Time
 		}
 		*/
+		
+
+		//jdid
+		// for(var sck of this.roomPrefix){
+		// 	// if user muted
+		// 	if(data.user.muted || data.user.banned){
+		// 		throw new WsException ("You are muted or banned");
+		// 	}
+		// 		this.wss.to(sck + data.roomId).emit("addmsg", 
+		// 		{
+		// 			sender:{
+		// 				id: data.user.id,
+		// 				avatar: data.user.avatar,
+		// 				nickname: data.user.nickname
+		// 			},
+		// 			message: newMessage // event name 
+		// 		});
+		// }
+
+		//get users in room
+		// const users = await this.playerservice.getAllMembersOfThisRoom(data.user.id, data.room);
+		// const numUsers = users ? users.length : 0;
+		// for(const user of users){
+		// 	const usersocket 
+		
+		// var MutedUsers = [];
+		// var userPermissions = await this.playerservice.getPermissions(data.user.id, data.room);
+		// if(userPermissions.statusMember == "muted"){
+		// 	MutedUsers.push(data.user.id);
+		// }
+		// console.log(await this.playerservice.getPermissions(data.user.id, data.room));
+		// console.log(userPermissions.statusMember);
+		//9dima
+		
+
 		this.wss.to(this.roomPrefix + data.roomId).emit("addmsg", 
 		{
 			sender:{
 				id: data.user.id,
 				avatar: data.user.avatar,
-				nickname: data.user.nickname
+				nickname: data.user.nickname,
 			},
+			// muteduser: MutedUsers,
 			message: newMessage // event name 
-		}); 
+		});
 	}
 
 	// @SubscribeMessage("message")

@@ -32,7 +32,8 @@ export class PlayerService {
             // throw new HttpException('User Id is required', 400);
             throw new NotFoundException('User Id is required');
         }
-        const player = await this.prisma.player.findUnique({
+       // deleted await cuz found deleting promise
+        const player =  this.prisma.player.findUnique({
             where: {
                 id: userId,
             }
@@ -1412,6 +1413,11 @@ export class PlayerService {
 
         // if player is member : is banned or Muted
         // else ( the palyer can write his msg )
+        const userStatus = await this.getPermissions(userId, room_id);
+        if (userStatus.is_banned === true || userStatus.is_muted === true) {
+            // throw new NotFoundException("You can not send a message in this room");
+            return;
+        }
         const messageSent = await this.prisma.message.create({
             data: {
                 msg: message,
