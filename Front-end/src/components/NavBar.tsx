@@ -51,6 +51,10 @@ function Navbar() {
         navigate('/LeaderBoard');
       };
 
+      const navigateGameLanding = () => {
+        navigate('/GameLanding');
+      };
+
       const navigatePlay = () => {
         navigate('/Pong');
       };
@@ -204,6 +208,13 @@ await fetch((endpoint),{
       </span>
       <span>Play</span>
                   </button>
+
+                  <button type="button" onClick={navigateGameLanding}>
+                    <span className="icon material-symbols-outlined">
+     {"videogame_asset"}  
+      </span>
+      <span>Ggane Landing</span>
+                  </button>
         
                   <button type="button" onClick={navigateLeaderBoard} className="has-border">
                     <span className="icon material-symbols-outlined">
@@ -218,6 +229,8 @@ await fetch((endpoint),{
       </span>
       <span>Channels</span>
                   </button>
+
+
   
                       <button type="button" className='has-border' onClick={handleFriendClick}>
                     <span className="icon material-symbols-outlined">

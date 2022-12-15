@@ -28,6 +28,8 @@ import QRcode from './components/QRCode';
 import axios from 'axios';
 import QRCode from 'qrcode.react'
 import { io } from "socket.io-client";
+import SpectateGame from './components/GamePages/SpectateGame';
+import GameLanding from './components/GamePages/GameLanding';
 var socket:any;
 
 const App = () => {
@@ -274,6 +276,10 @@ useEffect(() => {
             <Route path='/HowToPlay' element={<HowToPlay />} />
             <Route path="/Landing" element={<Landing />} />
             <Route path="/room/:id" element={<ChatRoom />} />
+            <Route path="/SpectateGame/:id" element={<SpectateGame />} />
+            <Route path="/GameLanding" element={<GameLanding />} />
+
+
             <Route path="/Carreer/:id" element={<Carreer />} />
 
             <Route path="/CreateRoom" element={<CreateRoom />} />
