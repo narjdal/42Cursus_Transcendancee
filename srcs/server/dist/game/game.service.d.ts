@@ -1,12 +1,9 @@
+import { Socket } from "socket.io";
 export declare class GameService {
     private games;
     private queue;
     private PlayersGames;
-    newPlayer(user: any): void;
-    onUpdate(player: any, position: number): void;
-    update(gameId: string): any;
-    getAllGames(): any;
-    watchGame(gameId: string, userId: string): any;
-    leaveGameAsWatcher(gameId: string, userId: string): void;
-    leaveGameAsPlayer(gameId: string, userId: string): void;
+    private WatchersGames;
+    private roomPrefix;
+    newPlayer(client: Socket, user: any): any;
 }

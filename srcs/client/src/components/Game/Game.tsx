@@ -177,6 +177,7 @@ const defaultState: IGameContextProps = {
 
 export default function Game(props: any) {
   const [gameState, setGameState] = useState(defaultState);
+  const [askToJoin, setAskToJoin] = useState(false);
 
   let ctx: any;
 
@@ -257,11 +258,14 @@ export default function Game(props: any) {
       }
     }
     else if (gameState.gameStatue === "WaitingPlayers") {
-      if (gameState.socket) {
-          gameState.socket.emit ("newPlayer");
-          gameState.socket.on("matchFound", (data: any) => {
-          gameState.gameStatue = "Playing";
-        });
+      if (gameState.socket && !askToJoin) {
+        const name = (Math.random() + 1).toString(36).substring(7);
+        console.log("name = ", name);
+          gameState.socket.emit ("newPlayer", name);
+          setAskToJoin(true);
+          // gameState.socket.on("matchFound", (data: any) => {
+          // gameState.gameStatue = "Playing";
+        // });
       }
       p5.textSize(32);
       p5.fill(255);

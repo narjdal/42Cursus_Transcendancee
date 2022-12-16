@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const width = 600;
 const height = 400;
 class pong {
-    constructor(id_1, id_2) {
+    constructor(player1, player2) {
         this.spectators = new Set();
         this.ball = {
             x: width / 2,
@@ -14,7 +14,7 @@ class pong {
             velocity_Y: 5,
         };
         this.player_left = {
-            id: id_1,
+            id: player1,
             x: 0,
             y: (height - 100) / 2,
             width: 10,
@@ -22,7 +22,7 @@ class pong {
             score: 0,
         };
         this.player_right = {
-            id: id_2,
+            id: player2,
             x: width - 10,
             y: (height - 100) / 2,
             width: 10,

@@ -18,6 +18,7 @@ let GameGateway = class GameGateway {
     constructor(gameService, playerservice) {
         this.gameService = gameService;
         this.playerservice = playerservice;
+        this.roomPrefix = 'roomGameSocket';
     }
     async handleConnection(client, ...args) {
         console.log("Client connected", client.id);
@@ -25,33 +26,9 @@ let GameGateway = class GameGateway {
     async handleDisconnect(client) {
         console.log("Client disconnected", client.id);
     }
-    async handleNewPlayer(client, data) {
-        if (!data.user)
-            return;
-        const user = await this.playerservice.findPlayerById(data.user.id);
-        if (!user)
-            return;
-        return this.gameService.newPlayer(user);
-    }
-    async handleOnUpdate(client, data) {
-        if (!data.user)
-            return;
-        const user = await this.playerservice.findPlayerById(data.user.id);
-        if (!user)
-            return;
-        return this.gameService.onUpdate(user, data.position);
-    }
-    async handleJoinRoom(client, data) {
-        if (!data.user)
-            return;
-        const user = await this.playerservice.findPlayerById(data.user.id);
-        if (!user)
-            return;
-        if (!data.room)
-            return;
-        const room = await this.playerservice.getRoomById(data.user.id, data.room);
-        if (!room)
-            return;
+    async handleNewPlayer(client, user) {
+        console.log("newPlayer", client.id, user);
+        return this.gameService.newPlayer(client, user);
     }
 };
 __decorate([
@@ -64,18 +41,6 @@ __decorate([
     __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "handleNewPlayer", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)("newPlayer"),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
-    __metadata("design:returntype", Promise)
-], GameGateway.prototype, "handleOnUpdate", null);
-__decorate([
-    (0, websockets_1.SubscribeMessage)("joinroom"),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
-    __metadata("design:returntype", Promise)
-], GameGateway.prototype, "handleJoinRoom", null);
 GameGateway = __decorate([
     (0, websockets_1.WebSocketGateway)({
         namespace: "game",

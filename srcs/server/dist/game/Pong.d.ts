@@ -4,7 +4,7 @@ export default class pong {
     ball: any;
     music: string;
     spectators: any;
-    constructor(id_1: string, id_2: string);
+    constructor(player1: any, player2: any);
     reset_ball(): void;
     collison(player: any): boolean;
     onUpdate(playerId: string, position_2: number): any;

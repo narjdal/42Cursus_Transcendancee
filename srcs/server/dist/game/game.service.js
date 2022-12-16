@@ -8,72 +8,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameService = void 0;
 const common_1 = require("@nestjs/common");
-const pong_1 = require("./pong");
 const uuid_1 = require("uuid");
+const socket_io_1 = require("socket.io");
 let GameService = class GameService {
     constructor() {
         this.games = new Map();
         this.queue = [];
         this.PlayersGames = [];
+        this.WatchersGames = [];
+        this.roomPrefix = 'roomGameSocket';
     }
-    newPlayer(user) {
-        this.queue.push(user);
+    newPlayer(client, user) {
+        this.queue.push({ user: user, client: socket_io_1.Socket });
         if (this.queue.length === 2) {
             let gameId = (0, uuid_1.v4)();
-            const id_1 = this.queue.shift();
-            const id_2 = this.queue.shift();
-            const game = new pong_1.default(id_1, id_2);
-            this.games.set(gameId, game);
-            this.PlayersGames[id_2] = gameId;
-            this.PlayersGames[id_1] = gameId;
         }
-    }
-    onUpdate(player, position) {
-        const gameId = this.PlayersGames[player];
-        const game = this.games.get(gameId);
-        if (game) {
-            game.onUpdate(player, position);
-        }
-    }
-    update(gameId) {
-        const game = this.games.get(gameId);
-        if (game) {
-            return game.update();
-        }
-    }
-    getAllGames() {
-        let games = [];
-        this.games.forEach((game, key) => {
-            games.push({
-                id: key,
-                player_left: game.player_left,
-                player_right: game.player_right,
-            });
-        });
-        return games;
-    }
-    watchGame(gameId, userId) {
-        const game = this.games.get(gameId);
-        if (game) {
-            game.spectators.add(userId);
-        }
-    }
-    leaveGameAsWatcher(gameId, userId) {
-        const game = this.games.get(gameId);
-        if (game) {
-            game.spectators.delete(userId);
-        }
-    }
-    leaveGameAsPlayer(gameId, userId) {
-        const game = this.games.get(gameId);
-        if (game) {
-            if (game.player_left.id === userId) {
-                this.games.delete(gameId);
-            }
-            else if (game.player_right.id === userId) {
-                this.games.delete(gameId);
-            }
-        }
+        return { client: client, user: user };
     }
 };
 GameService = __decorate([

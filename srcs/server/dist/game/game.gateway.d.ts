@@ -5,10 +5,9 @@ export declare class GameGateway {
     private readonly gameService;
     private readonly playerservice;
     wss: Socket;
+    private roomPrefix;
     constructor(gameService: GameService, playerservice: PlayerService);
     handleConnection(client: Socket, ...args: any[]): Promise<void>;
     handleDisconnect(client: Socket): Promise<void>;
-    handleNewPlayer(client: Socket, data: any): Promise<void>;
-    handleOnUpdate(client: Socket, data: any): Promise<void>;
-    handleJoinRoom(client: Socket, data: any): Promise<void>;
+    handleNewPlayer(client: Socket, user: any): Promise<void>;
 }
