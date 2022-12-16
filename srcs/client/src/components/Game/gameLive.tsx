@@ -75,4 +75,4 @@ export default function GameLive(props) {
       <Sketch setup={setup} draw={draw}/>
     </div>
     );
-}
+} 

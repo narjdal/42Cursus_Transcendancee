@@ -33,6 +33,16 @@ const buttonsStyle = (width: number, height: number, button: any,
   });
 };
 
+const handleNewPlayerPosition = (postion: number) : number => {
+  if (postion <= 0) {
+    return 0;
+  }
+  if (postion >= 0.75) {
+    return 0.75;
+  }
+  return postion;
+}
+
 const buttonRemove = (button: any) => {
   button.hide();
   button.remove(button);
@@ -225,12 +235,37 @@ export default function Game(props: any) {
     gameState.sound.wall = new Audio(require("./assets/wall.mp3"));
     gameState.sound.left = new Audio(require("./assets/left.mp3"));
     gameState.sound.right = new Audio(require("./assets/right.mp3"));
+    // gameState.socket = io("http://localhost:5000/game");
+    // gameState.socket.on("connect", () => {
+    //   console.log(gameState.socket); 
+    // });
+    p5.frameRate(24);
+  };
+
+  useEffect(() => {
+
     gameState.socket = io("http://localhost:5000/game");
     gameState.socket.on("connect", () => {
       console.log(gameState.socket); 
     });
-    // p5.frameRate(1);
-  };
+  
+  },[]);
+  const [JoinedQueue,setJoingedQueue] = useState(false);
+useEffect(() => {
+  if(JoinedQueue)
+  {
+
+      gameState.socket.emit ("newPlayer", localStorage.getItem("user")!);
+         gameState.socket.on("matchFound", (data: any) => {
+          console.log("A Match had been found ! ",data)
+          const PlayerLeft = JSON.parse(data.player_left);
+          const PlayerRight = JSON.parse(data.player_right);
+          console.log("Player Left :  ! ",PlayerLeft)
+          console.log("PlayerRight  :  ! ",PlayerRight)
+          gameState.gameStatue = "Playing";
+        });
+  }
+},[JoinedQueue])
 
   const draw = (p5: p5Types) => {
     p5.fill(42, 71, 137);
@@ -263,9 +298,10 @@ export default function Game(props: any) {
         console.log("name = ", name);
           gameState.socket.emit ("newPlayer", name);
           setAskToJoin(true);
-          // gameState.socket.on("matchFound", (data: any) => {
-          // gameState.gameStatue = "Playing";
-        // });
+          gameState.socket.on("matchFound", (data: any) => {
+          gameState.gameStatue = "Playing";
+          gameState.pongData = data.pongData;
+        });
       }
       p5.textSize(32);
       p5.fill(255);
@@ -283,16 +319,19 @@ export default function Game(props: any) {
     }
     if (gameState.gameStatue === "Playing") {
       if (gameState.mode === "online") {
-        if (gameState.playerTool === "mouse" && p5.mouseY > 0 &&
-          p5.mouseY < props.height - props.height / 4) {
-            gameState.playerPosition = p5.mouseY / props.height;
+        if (gameState.playerTool === "mouse"){
+          handleNewPlayerPosition(p5.mouseY / props.height);
+          console.log("game started !")
+            // gameState.playerPosition = p5.mouseY / props.height;
         }
         else if (gameState.playerTool === "keybord") {
           if (p5.keyIsDown(p5.UP_ARROW) && gameState.playerPosition > 0) {
-            gameState.pongData.playerLeft.position -= 0.03;
+            handleNewPlayerPosition(gameState.playerPosition -= 0.03);
+            // gameState.pongData.playerLeft.position -= 0.03;
           }
           else if (p5.keyIsDown(p5.DOWN_ARROW) && gameState.pongData.playerLeft.position < 0.75) {
-            gameState.playerPosition += 0.03;
+            handleNewPlayerPosition(gameState.playerPosition += 0.03);            
+            // gameState.playerPosition += 0.03;
           }
         }
         if (gameState.socket && ((gameState.playerPosition !== gameState.pongData.playerLeft.position
@@ -307,16 +346,18 @@ export default function Game(props: any) {
         }
       }
       else if (gameState.mode === "offline" && gameState.numberOfPlayers === 1) {
-        if (gameState.playerTool === "mouse" && p5.mouseY > 0 &&
-          p5.mouseY < props.height - props.height / 4) {
-          gameState.pongData.playerLeft.position = p5.mouseY / props.height;
+        if (gameState.playerTool === "mouse") {
+            gameState.pongData.playerLeft.position = handleNewPlayerPosition(p5.mouseY / props.height);
+          // gameState.pongData.playerLeft.position = p5.mouseY / props.height;
         }
         else if (gameState.playerTool === "keybord") {
-          if (p5.keyIsDown(p5.UP_ARROW) && gameState.pongData.playerLeft.position > 0) {
-            gameState.pongData.playerLeft.position -= 0.03;
+          if (p5.keyIsDown(p5.UP_ARROW)) {
+            gameState.pongData.playerLeft.position = handleNewPlayerPosition(gameState.pongData.playerLeft.position -= 0.03);
+            // gameState.pongData.playerLeft.position -= 0.03;
           }
           if (p5.keyIsDown(p5.DOWN_ARROW) && gameState.pongData.playerLeft.position < 0.75) {
-            gameState.pongData.playerLeft.position += 0.03;
+            // gameState.pongData.playerLeft.position += 0.03;
+            gameState.pongData.playerLeft.position = handleNewPlayerPosition(gameState.pongData.playerLeft.position += 0.03);
           }
         }
         gameState.pongData = gameState.pongClass.update(gameState.pongData.playerLeft.position);
@@ -324,12 +365,15 @@ export default function Game(props: any) {
       else if (gameState.mode === "offline" && gameState.numberOfPlayers === 2) {
         if (p5.mouseY > 0 && p5.mouseY < props.height - props.height / 4) {
           gameState.pongData.playerLeft.position = p5.mouseY / props.height;
+          gameState.pongData.playerLeft.position = handleNewPlayerPosition(p5.mouseY / props.height);
         }
         if (p5.keyIsDown(p5.UP_ARROW) && gameState.pongData.playerRight.position > 0) {
-          gameState.pongData.playerRight.position -= 0.03;
+          gameState.pongData.playerRight.position = handleNewPlayerPosition(gameState.pongData.playerRight.position -= 0.03);
+          // gameState.pongData.playerRight.position -= 0.03;
         }
         if (p5.keyIsDown(p5.DOWN_ARROW) && gameState.pongData.playerRight.position < 0.75) {
-          gameState.pongData.playerRight.position += 0.03;
+          // gameState.pongData.playerRight.position += 0.03;
+          gameState.pongData.playerRight.position = handleNewPlayerPosition(gameState.pongData.playerRight.position += 0.03);
         }
         gameState.pongData = gameState.pongClass.update(gameState.pongData.playerLeft.position,
           gameState.pongData.playerRight.position);

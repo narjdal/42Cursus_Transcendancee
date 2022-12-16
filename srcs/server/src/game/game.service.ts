@@ -14,29 +14,85 @@ export class GameService {
   private WatchersGames:any = [];
   private roomPrefix = 'roomGameSocket';
 
+  // newPlayer(client: Socket, user: any): any {
+  //   this.queue.push({user:user, client:Socket});
+  //   if (this.queue.length === 2) {
+  //     let gameId = uuidv4();
+  //   //   const playerLeft = this.queue.shift();
+  //   //   const playerRight = this.queue.shift();
+  //   //   const game = new Pong(playerLeft, playerRight);
+  //   //   this.games.set(gameId, game);
+  //   //   this.PlayersGames[playerLeft] = gameId;
+  //   //   this.PlayersGames[playerRight] = gameId;
+  //   //   playerLeft.client.join(this.roomPrefix + gameId);
+  //   //   playerRight.client.join(this.roomPrefix + gameId);
+
+  //   //   client.to(this.roomPrefix + gameId).emit('newGame', {
+  //   //     id: gameId,
+  //   //     player_left: game.player_left,
+  //   //     player_right: game.player_right,
+  //   //   });
+  //   }
+  //   return {client:client, user:user};
+  //   // return÷ null;
+  // }
   newPlayer(client: Socket, user: any): any {
-    this.queue.push({user:user, client:Socket});
+    console.log("Adding a new Player." ,user)
+    this.queue.push({user:user, client});
     if (this.queue.length === 2) {
       let gameId = uuidv4();
-    //   const playerLeft = this.queue.shift();
-    //   const playerRight = this.queue.shift();
-    //   const game = new Pong(playerLeft, playerRight);
-    //   this.games.set(gameId, game);
-    //   this.PlayersGames[playerLeft] = gameId;
-    //   this.PlayersGames[playerRight] = gameId;
+    console.log("QUEUE IS FULL ." )
+
+      const playerLeft = this.queue.shift();
+      const playerRight = this.queue.shift();
+      const game = new Pong(playerLeft, playerRight);
+      this.games.set(gameId, game);
+      this.PlayersGames[playerLeft] = gameId;
+      this.PlayersGames[playerRight] = gameId;
+      const LeftSock :Socket = playerLeft.client;
+      const RightSock :Socket = playerRight.client;
+      LeftSock.join(this.roomPrefix + gameId)
+      RightSock.join(this.roomPrefix + gameId)
+
+      console.log("-----------------------------------------------")
+      console.log("PlayerLeft : ",playerLeft.user)
+      console.log("PlayerRight : ",playerRight.user)
+
     //   playerLeft.client.join(this.roomPrefix + gameId);
     //   playerRight.client.join(this.roomPrefix + gameId);
+    const replacerFunc = () => {
+      const visited = new WeakSet();
+      return (key, value) => {
+        if (typeof value === "object" && value !== null) {
+          if (visited.has(value)) {
+            return;
+          }
+          visited.add(value);
+        }
+        return value;
+      };
+    };
+    
+   const PlayerLeftString =  JSON.stringify(game.player_left, replacerFunc());
+   const PlayerRightString =  JSON.stringify(game.player_right, replacerFunc());
 
-    //   client.to(this.roomPrefix + gameId).emit('newGame', {
-    //     id: gameId,
-    //     player_left: game.player_left,
-    //     player_right: game.player_right,
-    //   });
+      LeftSock.to(this.roomPrefix + gameId).emit('matchFound', {
+        id: gameId,
+        player_left: PlayerLeftString,
+        player_right: PlayerRightString,
+        pongData: this.games.get(gameId).update()
+      });
+      RightSock.to(this.roomPrefix + gameId).emit('matchFound', {
+        id: gameId,
+        player_left: PlayerLeftString,
+        player_right:PlayerRightString,
+        pongData: this.games.get(gameId).update()
+      });
     }
+    
     return {client:client, user:user};
     // return÷ null;
   }
-
   // onUpdate(player: any, position: number): void {
   //   const gameId = this.PlayersGames[player];
   //   const game = this.games.get(gameId);

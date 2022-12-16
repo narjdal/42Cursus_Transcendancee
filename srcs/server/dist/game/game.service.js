@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameService = void 0;
 const common_1 = require("@nestjs/common");
+const pong_1 = require("./pong");
 const uuid_1 = require("uuid");
-const socket_io_1 = require("socket.io");
 let GameService = class GameService {
     constructor() {
         this.games = new Map();
@@ -19,9 +19,50 @@ let GameService = class GameService {
         this.roomPrefix = 'roomGameSocket';
     }
     newPlayer(client, user) {
-        this.queue.push({ user: user, client: socket_io_1.Socket });
+        console.log("Adding a new Player.", user);
+        this.queue.push({ user: user, client });
         if (this.queue.length === 2) {
             let gameId = (0, uuid_1.v4)();
+            console.log("QUEUE IS FULL .");
+            const playerLeft = this.queue.shift();
+            const playerRight = this.queue.shift();
+            const game = new pong_1.default(playerLeft, playerRight);
+            this.games.set(gameId, game);
+            this.PlayersGames[playerLeft] = gameId;
+            this.PlayersGames[playerRight] = gameId;
+            const LeftSock = playerLeft.client;
+            const RightSock = playerRight.client;
+            LeftSock.join(this.roomPrefix + gameId);
+            RightSock.join(this.roomPrefix + gameId);
+            console.log("-----------------------------------------------");
+            console.log("PlayerLeft : ", playerLeft.user);
+            console.log("PlayerRight : ", playerRight.user);
+            const replacerFunc = () => {
+                const visited = new WeakSet();
+                return (key, value) => {
+                    if (typeof value === "object" && value !== null) {
+                        if (visited.has(value)) {
+                            return;
+                        }
+                        visited.add(value);
+                    }
+                    return value;
+                };
+            };
+            const PlayerLeftString = JSON.stringify(game.player_left, replacerFunc());
+            const PlayerRightString = JSON.stringify(game.player_right, replacerFunc());
+            LeftSock.to(this.roomPrefix + gameId).emit('matchFound', {
+                id: gameId,
+                player_left: PlayerLeftString,
+                player_right: PlayerRightString,
+                pongData: this.games.get(gameId).update()
+            });
+            RightSock.to(this.roomPrefix + gameId).emit('matchFound', {
+                id: gameId,
+                player_left: PlayerLeftString,
+                player_right: PlayerRightString,
+                pongData: this.games.get(gameId).update()
+            });
         }
         return { client: client, user: user };
     }
