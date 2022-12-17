@@ -144,6 +144,7 @@ export class ChatGateway {
 		// user: Current_User, msgTxt: inputMsg, room: props.room.id
 
 		const newMessage = await this.playerservice.sendMessageinRoom(data.user.id, data.msgTxt, data.room);
+		const oldMessage = await this.playerservice.getMessagesOfRoom(data.user.id, data.room);
 
 		if (!newMessage) {
 			return ;
@@ -200,6 +201,7 @@ export class ChatGateway {
 				avatar: data.user.avatar,
 				nickname: data.user.nickname,
 			},
+			OldMessages: oldMessage,
 			// muteduser: MutedUsers,
 			message: newMessage // event name 
 		});
