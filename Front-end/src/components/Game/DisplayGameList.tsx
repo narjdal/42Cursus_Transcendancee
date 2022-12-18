@@ -1,15 +1,15 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 import SpectateGame from "../GamePages/SpectateGame";
 
 const DisplayGameList = (props:any) => {
 
+    console.log("the props is : ",props)
     return(
         <>
-            GameList
             <ul className="chat-room-list">
                 <li>
-         {/* <Link to={`/SpectateGame/${props.gameId}`}> {props.game.player_1} VS {props.game.player_2}</Link>  */}
+         <Link to={`/SpectateGame/${props.game.id}`}> {props.game.player_left.id} VS {props.game.player_right.id}</Link> 
                 </li>
             </ul>
         </>

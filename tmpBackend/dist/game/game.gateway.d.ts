@@ -10,5 +10,7 @@ export declare class GameGateway {
     handleDisconnect(client: Socket): Promise<void>;
     handleNewPlayer(client: Socket, user: any): Promise<void>;
     handleUpdate(client: Socket, user: any): Promise<void>;
+    handleGetAllGames(client: Socket, data: any): Promise<void>;
+    handleWatchGame(client: Socket, data: any): Promise<void>;
     handleLeaveGameAsPlayer(client: Socket, data: any): Promise<void>;
 }

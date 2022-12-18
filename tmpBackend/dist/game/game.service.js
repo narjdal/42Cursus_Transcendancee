@@ -92,6 +92,44 @@ let GameService = class GameService {
             });
         }
     }
+    getAllGames(client) {
+        let games = [];
+        this.games.forEach((game, key) => {
+            games.push({
+                id: key,
+                player_left: game.player_left,
+                player_right: game.player_right,
+            });
+        });
+        client.emit('getAllGames', {
+            games: games
+        });
+        return games;
+    }
+    watchGame(client, user, gameId) {
+        this.watchGame[user] = gameId;
+        const game = this.games.get(gameId);
+        if (game) {
+            console.log("Game Exist Joining user", game);
+            console.log("User : ", user);
+            const parsed = JSON.parse(user);
+            client.join(this.roomPrefix + gameId);
+            game.spectators.add(user);
+            console.log("Before Pong Data ", user.nickname);
+            const gameUpData = game.update(parsed.nickname);
+            const pongData = JSON.stringify(game.update(game.player_left.id), replacerFunc());
+            console.log("pongData => ", pongData);
+            client.emit('WatchUpdate', {
+                pongData: pongData
+            });
+        }
+        else if (!game) {
+            console.log("Game not found !");
+            client.emit('GameNotFound', {
+                message: "Game Not found ! "
+            });
+        }
+    }
     leaveGameAsPlayer(client, user) {
         console.log('-----------------------------------------------');
         console.log("User : ", user);

@@ -36,7 +36,16 @@ let GameGateway = class GameGateway {
         return this.gameService.newPlayer(client, user);
     }
     async handleUpdate(client, user) {
+        console.log("Handle update", user);
         return this.gameService.update(client, user);
+    }
+    async handleGetAllGames(client, data) {
+        console.log("inside get all games ", data);
+        return this.gameService.getAllGames(client);
+    }
+    async handleWatchGame(client, data) {
+        console.log("Inside Watch game !", data);
+        return this.gameService.watchGame(client, data.user, data.gameId);
     }
     async handleLeaveGameAsPlayer(client, data) {
         console.log('-----------------------------------------------');
@@ -61,6 +70,18 @@ __decorate([
     __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "handleUpdate", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)("getAllGames"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
+    __metadata("design:returntype", Promise)
+], GameGateway.prototype, "handleGetAllGames", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)("watchGame"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
+    __metadata("design:returntype", Promise)
+], GameGateway.prototype, "handleWatchGame", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("leaveGameAsPlayer"),
     __metadata("design:type", Function),

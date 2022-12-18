@@ -211,9 +211,9 @@ await fetch((endpoint),{
 
                   <button type="button" onClick={navigateGameLanding}>
                     <span className="icon material-symbols-outlined">
-     {"videogame_asset"}  
+     {"live_tv"}  
       </span>
-      <span>Ggane Landing</span>
+      <span>Live Games</span>
                   </button>
         
                   <button type="button" onClick={navigateLeaderBoard} className="has-border">

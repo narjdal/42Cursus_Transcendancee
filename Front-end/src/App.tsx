@@ -29,7 +29,7 @@ import axios from 'axios';
 import QRCode from 'qrcode.react'
 import { io } from "socket.io-client";
 import SpectateGame from './components/GamePages/SpectateGame';
-import GameLanding from './components/GamePages/GameLanding';
+import GameLanding from './components/Game/GameLanding';
 var socket:any;
 
 const App = () => {

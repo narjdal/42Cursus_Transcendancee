@@ -167,26 +167,55 @@ export class GameService {
     // return game.update(user);
   }
 
-  // getAllGames(): any{
-  //   let games = [];
-  //   this.games.forEach((game, key) => {
-  //     games.push({
-  //       id: key,
-  //       player_left: game.player_left,
-  //       player_right: game.player_right,
-  //     });
-  //   });
-  //   return games;
-  // }
+  getAllGames(client:Socket): any{
+    let games = [];
 
-  // watchGame(client: Socket, user:any, gameId:any): any {
-  //   this.watchGame[user] = gameId;
-  //   const game = this.games.get(gameId);
-  //   if (game) {
-  //     client.join(this.roomPrefix + gameId);
-  //     game.spectators.add(user);
-  //   }
-  // }
+    this.games.forEach((game, key) => {
+      games.push({
+        id: key,
+        player_left: game.player_left,
+        player_right: game.player_right,
+      });
+    });
+
+    client.emit('getAllGames', {
+    games:games
+      });
+    return games;
+  }
+
+  watchGame(client: Socket, user:any, gameId:any): any {
+    this.watchGame[user] = gameId;
+    // console.log("USer infos ",user)
+
+    // console.log("Game infos ",gameId)
+
+    const game = this.games.get(gameId);
+    if (game) {
+      console.log("Game Exist Joining user" , game)
+      console.log("User : ",user)
+      const parsed = JSON.parse(user)
+      client.join(this.roomPrefix + gameId);
+      game.spectators.add(user);
+      console.log("Before Pong Data ",user.nickname)
+      const gameUpData = game.update(parsed.nickname);
+
+      const pongData = JSON.stringify(game.update(game.player_left.id), replacerFunc());
+      console.log("pongData => " ,pongData)
+      client.emit('WatchUpdate', {
+        pongData:pongData
+      });
+   
+    }
+    else if (!game)
+    {
+      console.log("Game not found !");
+      client.emit('GameNotFound', {
+        message:"Game Not found ! "
+      });
+   
+    }
+  }
 
   // leaveGameAsWatcher(client: Socket, userId:any): void {
   //   const gameId = this.watchGame[userId];

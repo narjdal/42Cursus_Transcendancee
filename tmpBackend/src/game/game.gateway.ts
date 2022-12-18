@@ -59,25 +59,27 @@ export class GameGateway {
 
   @SubscribeMessage("update")
 	async handleUpdate(client: Socket, user: any): Promise<void> {
-    // console.log ("Handle update",user)
+    console.log ("Handle update",user)
     return this.gameService.update(client, user);
 	}
 
-  // @SubscribeMessage("getAllGames")
-	// async handleGetAllGames(client: Socket, data: any): Promise<void> {
-  //   let user = await this.checkUSer(data.user);
-  //   if (user === null)
-  //     return;
-  //   return this.gameService.getAllGames();
-	// }
+  @SubscribeMessage("getAllGames")
+	async handleGetAllGames(client: Socket, data: any): Promise<void> {
+    // let user = await this.checkUSer(data.user);
+    // if (user === null)
+    //   return;
+    console.log("inside get all games ",data)
+    return this.gameService.getAllGames(client);
+	}
 
-  // @SubscribeMessage("watchGame")
-	// async handleWatchGame(client: Socket, data: any): Promise<void> {
-  //   let user = await this.checkUSer(data.user);
-  //   if (user === null)
-  //     return;
-  //   return this.gameService.watchGame(client, user, data.gameId);
-	// }
+  @SubscribeMessage("watchGame")
+	async handleWatchGame(client: Socket, data: any): Promise<void> {
+    // let user = await this.checkUSer(data.user);
+    // if (user === null)
+    //   return;
+    console.log("Inside Watch game !",data);
+    return this.gameService.watchGame(client, data.user, data.gameId);
+	}
 
   // @SubscribeMessage("leaveGameAsWatcher")
 	// async handleLeaveGameAsWatcher(client: Socket, data: any): Promise<void> {
