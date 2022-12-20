@@ -1749,4 +1749,44 @@ export class PlayerService {
     
     // 9- create a password to channel or delete password if is owner
 
+
+
+
+    //--------------------------------------------------------------------------------------------------------------------
+    // A- get all games history
+
+    async getAllGamesHistory() {
+        const gameHistory = await this.prisma.game_history.findMany();
+        return gameHistory;
+    }
+
+    // B - get games history By user
+    async getGamesHistoryByUser(login: string) {
+        const palyer = await this.findPlayerByNickname(login);
+
+        const gameHistory = await this.prisma.game_history.findMany({
+            where:
+            {
+                AND: [
+                    { winner_id: palyer.id },
+                    { looser_id: palyer.id },
+                ],
+            }
+        });
+        return gameHistory;
+    }
+
+    // C - get getAchivements by user
+    async getAchivements(login: string) {
+        const palyer = await this.findPlayerByNickname(login);
+
+        const achievements = await this.prisma.achievements.findMany({
+            where:
+            {
+                playerId: palyer.id ,
+            }
+        });
+        return achievements;
+    }
+
 }

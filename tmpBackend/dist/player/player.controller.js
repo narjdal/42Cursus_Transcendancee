@@ -674,6 +674,27 @@ let PlayerController = class PlayerController {
         });
         return response.status(200).send({ room });
     }
+    async allGameHistory(request, response) {
+        const history = await this.playerService.getAllGamesHistory();
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        return response.status(200).send({ history });
+    }
+    async gameHistoryById(id, request, response) {
+        const history = await this.playerService.getGamesHistoryByUser(id);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        return response.status(200).send({ history });
+    }
+    async achivement(id, request, response) {
+        const getAchivements = await this.playerService.getAchivements(id);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        return response.status(200).send({ getAchivements });
+    }
 };
 __decorate([
     (0, common_1.Get)('/2fa/enable'),
@@ -1087,6 +1108,32 @@ __decorate([
     __metadata("design:paramtypes", [updatePlayer_dto_1.JoinProtectedRoomDto, Object, Object]),
     __metadata("design:returntype", Promise)
 ], PlayerController.prototype, "joinProtectedRoom", null);
+__decorate([
+    (0, common_1.Get)('/allGameHistory'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "allGameHistory", null);
+__decorate([
+    (0, common_1.Get)('/gameHistoryById/:id'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "gameHistoryById", null);
+__decorate([
+    (0, common_1.Get)('/achivement/:id'),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], PlayerController.prototype, "achivement", null);
 PlayerController = __decorate([
     (0, common_1.Controller)('player'),
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),

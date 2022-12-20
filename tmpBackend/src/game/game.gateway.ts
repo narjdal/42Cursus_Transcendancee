@@ -22,6 +22,26 @@ export class GameGateway {
   private roomPrefix = 'roomGameSocket';
   private PlayersInQueue: any = [];
 
+  private PlayersLoggedIn: any = [];
+
+  private PlayersInvited: any = [];
+
+  private PlayersAccept: any = [];
+
+  private PlayersInGameFromInvite: any = [];
+
+  private GetPlayerNicknameFromSocket: any = [];
+
+  private Invates: any = [];
+
+  private InvateId : number = 0;
+
+
+
+
+
+
+
 
   constructor(
     private readonly gameService: GameService,
@@ -35,21 +55,48 @@ export class GameGateway {
   async handleDisconnect(client: Socket) {
 
 		console.log("Client disconnected", client.id);
+
     if(this.PlayersInQueue[client.id])
     {
-    console.log("This Plyaer is In Plyaer List  ... ",this.PlayersInQueue[client.id])
-    console.log("AAA")
+    // console.log("This Plyaer is In Plyaer List  ... ",this.PlayersInQueue[client.id])
     await this.handleLeaveGameAsPlayer(client,this.PlayersInQueue[client.id])
+    // console.log("deleting from Logged In Users ! ");
+    this.PlayersLoggedIn[this.PlayersInQueue[client.id]] = null;
+
+    this.PlayersInQueue[client.id] = null;
+
     //  console.log("BBBB")
 
     }
+    if(this.PlayersInGameFromInvite[client.id])
+    {
+      // console.log("This Plyaer is In PlayersInGame List  ... ",this.PlayersInGameFromInvite[client.id])
+    await this.handleLeaveGameAsPlayer(client,this.PlayersInGameFromInvite[client.id])
+    console.log("deleting from PlayersInQueue List ! ");
+    console.log('-----------------------------------------------');
+
+    // console.log("Array : ",this.PlayersInvited);
+     const leaver = this.PlayersInGameFromInvite[client.id]
+     const parse = JSON.parse(leaver);
+    this.PlayersInGameFromInvite[client.id] = null;
+    this.PlayersInvited[parse.nickname] = null;
+    console.log('-----------------------------------------------');
+
+    //  console.log( "Leaver is  : ",leaver)
+    //  console.log("Array : ",this.PlayersInvited);
+    //  console.log("ID SOCK : ",client.id)
+    //  this.PlayersInvited[leaver.username] = null;
+
+    }
+
+
 	}
 
   @SubscribeMessage("newPlayer")
   async handleNewPlayer(client: Socket, user: any): Promise<void> {
     console.log("newPlayer", client.id, user);
     this.PlayersInQueue[client.id] = user;
-    return this.gameService.newPlayer(client, user);
+    return this.gameService.newPlayer(client, user,this.PlayersInQueue);
   }
 
   // @SubscribeMessage("onUpdate")
@@ -59,7 +106,7 @@ export class GameGateway {
 
   @SubscribeMessage("update")
 	async handleUpdate(client: Socket, user: any): Promise<void> {
-    console.log ("Handle update",user)
+    // console.log ("Handle update",user)
     return this.gameService.update(client, user);
 	}
 
@@ -81,21 +128,6 @@ export class GameGateway {
     return this.gameService.watchGame(client, data.user, data.gameId);
 	}
 
-  // @SubscribeMessage("leaveGameAsWatcher")
-	// async handleLeaveGameAsWatcher(client: Socket, data: any): Promise<void> {
-	// 	if (!data.user)
-	// 		return;
-	// 	const user = await this.playerservice.findPlayerById(data.user.id);
-	// 	if (!user)
-	// 		return;
-	// 	if (!data.room)
-	// 		return;
-	// 	const room = await this.playerservice.getRoomById(data.user.id,data.room);
-	// 	if (!room)
-	// 		return;
-  //   return this.gameService.leaveGameAsWatcher(user);
-	// }
-
   @SubscribeMessage("leaveGameAsPlayer")
 	async handleLeaveGameAsPlayer(client: Socket, data: any): Promise<void> {
     // let user = await this.checkUSer(data.user);
@@ -104,12 +136,192 @@ export class GameGateway {
     // console.log("Inside Handle Leave Game",data)
     console.log('-----------------------------------------------');
 
-    console.log("This Player leave the game !" ,data)
+    // console.log("This Player leave the game !" ,data)
     console.log('-----------------------------------------------');
 
     return this.gameService.leaveGameAsPlayer(client,data);
 	}
 
+  @SubscribeMessage("AcceptGame")
+  async HandleAcceptInviteGame (client : Socket,data : any): Promise<void> 
+  {
+    
+    // console.log("Accepting the game ! ",data)
+
+    this.PlayersInGameFromInvite[client.id] = data.user;
+
+  await this.gameService.acceptInvite(client,data.user,data.sender,this.PlayersInvited,this.PlayersAccept)
+    // const parsed = JSON.parse(data.user);
+    // this.PlayersLoggedIn[parsed.nickname] = client;
+    // console.log("Adding To LoggedIn " , parsed)
+    // const parsed = JSON.parse(data.user);
+    // const nick : string = parsed.nickname
+
+    this.PlayersInvited[data.sender] = null;
+    const parsed = JSON.parse(data.user);
+    const sender  : string = data.sender;
+
+    let inviteeNickname  : string = parsed.nickname;
+    console.log('-----------------------------------------------');
+    // console.log("Deleting the invitation of this sender : ",sender)
+    // const text = '"user":"' + sender + '"'
+
+    // const result = this.Invates.includes(text)
+    // console.log("This Invates : ",result,"nick : ",sender)
+
+    console.log('-----------------------------------------------');
+    // const obj =  this.Invates[parsed.nickname];
+    // console.log( "OBJ : ",obj);
+
+    // const invite = data.invite
+    // const user =JSON.parse(data.user).nickname
+    // console.log("Inviter :  : ",inviteeNickname, "sender ",sender)
+    const obj = {
+      invite:inviteeNickname,
+      user:sender
+    }
+
+    for (var i = 0; i < this.Invates.length; i++) { 
+
+      if (this.Invates[i].invite == inviteeNickname && this.Invates[i].user == sender)
+      {
+        this.Invates[i] = 0;
+      }
+      // console.log(" br br " , this.Invates[i])
+      // console.log(xs[i]); 
+    }
+    // const clientobj = { user, client }
+    // this.Invates[] = null;
+    // this.PlayersInvited[data.user] = null;
+    this.PlayersAccept[inviteeNickname] = null;
+
+
+
+  }
+
+
+  @SubscribeMessage("OnlineGameUsersBack")
+  async HandleAddOnlineGameUsersBack (client : Socket,data : any): Promise<void> 
+  {
+    
+    const parsed = JSON.parse(data.user);
+    this.PlayersLoggedIn[parsed.nickname] = client;
+    // if(this.Invate)
+    const nick : string = parsed.nickname
+    console.log('-----------------------------------------------');
+    const obj = {
+      invite:nick
+    }
+    const text =  JSON.stringify(obj)
+
+    // const result = this.Invates.find(text)
+    // (customers.find(c => c.credit > 100)
+    for (var i = 0; i < this.Invates.length; i++) { 
+
+      if (this.Invates[i].invite == nick)
+      {
+  
+      client.emit('ReceivedInvite',{
+        Sendernickname : this.Invates[i].user
+  
+        })
+      }
+      // console.log(" br br " , this.Invates[i])
+      // console.log(xs[i]); 
+    }
+  
+    // let srch = this.Invates.filter((m: any) => {
+    //   console.log(" M IS : ",m)
+    //   // if (m.includes(text))
+    //   // {
+    //   //   console.log(" GGGGG")
+    //   //   return m;
+    //   // }
+    //   return m.includes(text)
+    // })[0] 
+    // if(srch)
+    // {
+    //     console.log(" THIS USER  HAS PENDING INVITES   ",srch)
+    // }
+    // else
+    // {
+    //     console.log( " THIS FRIEND  HAS NO INVITES  IN ");
+    // }
+  //  const result =  this.Invates.filter(c => c.invite === nick)
+    // console.log("Length : " , this.Invates.length, "This Invates : ",result,"nick : ",nick,"text: ",text)
+    console.log('-----------------------------------------------');
+
+    // console.log("This Invates : ",this.Invates,)
+
+    console.log('-----------------------------------------------');
+  
+    // console.log("Adding To LoggedIn " , parsed)
+
+  }
+
+  @SubscribeMessage("inviteGame")
+	async handleInviteGame(client: Socket, data: any): Promise<void> {
+    // let user = await this.checkUSer(data.user);
+    // if (user === null)
+    //   return;
+
+    this.PlayersInGameFromInvite[client.id] = data.user;
+
+
+    console.log("Inside inviteGame  !",data);
+    
+    // this.Invates[data.invite] = data.invite;
+    const invite = data.invite
+    const user =JSON.parse(data.user).nickname
+    // console.log("User : ",user, "invite ",invite)
+    const obj = {
+      invite:invite,
+      user:user
+    }
+
+
+    // const clientobj = { user, client }
+    const text = JSON.stringify(obj);
+    this.Invates[this.InvateId++] = obj
+
+    return this.gameService.inviteGame(client, data.user, data.invite,this.PlayersLoggedIn);
+	}
+
+
+  @SubscribeMessage("UserAcceptGame")
+	async HandleUserAcceptGame(client: Socket, data: any): Promise<void> {
+    // let user = await this.checkUSer(data.user);
+    // if (user === null)
+    //   return;
+    // console.log("Inside UserAcceptGame  !",data);
+    const parsed = JSON.parse(data.user);
+    // console.log(" : ",parsed.nickname)
+
+    this.PlayersAccept[parsed.nickname] = {
+      data,
+      client
+    }
+
+    // return this.gameService.inviteGame(client, data.user, data.invite,this.PlayersLoggedIn);
+	}
+  @SubscribeMessage("InvitedUser")
+	async HandleInvitedUser(client: Socket, data: any): Promise<void> {
+    // let user = await this.checkUSer(data.user);
+    // if (user === null)
+    //   return;
+
+    // console.log("Inside InvitedUser  !",data);
+    const parsed = JSON.parse(data.user);
+    console.log(" : ",parsed.nickname)
+    this.PlayersInvited[parsed.nickname] = {
+      data,
+      client
+    }
+
+
+
+    // return this.gameService.inviteGame(client, data.user, data.invite,this.PlayersLoggedIn);
+	}
   // async checkUSer(user:any): Promise<any>{
   //   if (!user)
 	// 		return (null);

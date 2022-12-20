@@ -66,8 +66,8 @@ export declare class PlayerService {
     createPublicChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
     createPrivateChatRoom(userId: string, nameOfRoom: string): Promise<import(".prisma/client").ChatRoom>;
     createProtectedChatRoom(userId: string, Body: CreateProtectedRoomDto): Promise<{
-        name: string;
         id: string;
+        name: string;
         is_dm: boolean;
         is_public: boolean;
         is_private: boolean;
@@ -75,16 +75,16 @@ export declare class PlayerService {
     }>;
     DeletePwdToProtectedChatRoom(userId: string, room_id: string): Promise<import(".prisma/client").ChatRoom>;
     SetPwdToPublicChatRoom(userId: string, Body: SetPwdToPublicChatRoomDto): Promise<{
-        name: string;
         id: string;
+        name: string;
         is_dm: boolean;
         is_public: boolean;
         is_private: boolean;
         is_protected: boolean;
     }>;
     UpdatePwdProtectedChatRoom(userId: string, Body: UpdateProtectedPasswordDto): Promise<{
-        name: string;
         id: string;
+        name: string;
         is_dm: boolean;
         is_public: boolean;
         is_private: boolean;
@@ -153,4 +153,7 @@ export declare class PlayerService {
     muteMember(login: string, room_id: string, time: number): Promise<void>;
     unmuteMember(login: string, room_id: string): Promise<void>;
     leaveChannel(userId: string, room_id: string): Promise<void>;
+    getAllGamesHistory(): Promise<import(".prisma/client").game_history[]>;
+    getGamesHistoryByUser(login: string): Promise<import(".prisma/client").game_history[]>;
+    getAchivements(login: string): Promise<import(".prisma/client").achievements[]>;
 }

@@ -5,6 +5,13 @@ export declare class GameGateway {
     wss: Socket;
     private roomPrefix;
     private PlayersInQueue;
+    private PlayersLoggedIn;
+    private PlayersInvited;
+    private PlayersAccept;
+    private PlayersInGameFromInvite;
+    private GetPlayerNicknameFromSocket;
+    private Invates;
+    private InvateId;
     constructor(gameService: GameService);
     handleConnection(client: Socket, ...args: any[]): Promise<void>;
     handleDisconnect(client: Socket): Promise<void>;
@@ -13,4 +20,9 @@ export declare class GameGateway {
     handleGetAllGames(client: Socket, data: any): Promise<void>;
     handleWatchGame(client: Socket, data: any): Promise<void>;
     handleLeaveGameAsPlayer(client: Socket, data: any): Promise<void>;
+    HandleAcceptInviteGame(client: Socket, data: any): Promise<void>;
+    HandleAddOnlineGameUsersBack(client: Socket, data: any): Promise<void>;
+    handleInviteGame(client: Socket, data: any): Promise<void>;
+    HandleUserAcceptGame(client: Socket, data: any): Promise<void>;
+    HandleInvitedUser(client: Socket, data: any): Promise<void>;
 }

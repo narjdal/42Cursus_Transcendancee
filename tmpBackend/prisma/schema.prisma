@@ -31,6 +31,27 @@ model Player {
 
     all_messages Message[] @relation("SendMsg")
     // explicit relation many to many
+    game_winned game_history [] @relation("game_winned")
+    game_losed game_history [] @relation("game_losed")
+    achivement achievements[] @relation("achivement")
+}
+
+model achievements {
+    id   String @id @default(uuid())
+    name String
+    playerId String
+    player Player @relation("achivement", fields: [playerId], references: [id])
+}
+
+model game_history {
+  id_game_history Int @id @default(autoincrement())
+  winner_id String
+  winner Player @relation("game_winned", fields: [winner_id], references: [id])
+  winner_score Int
+  looser_id String
+  looser Player @relation("game_losed", fields: [looser_id], references: [id])
+  losser_score Int
+  created_at DateTime @default(now())
 }
 
 model ChatRoom {
@@ -102,3 +123,10 @@ model Friendship {
 //message 2 route set message / get message ==> dm
 //dossier membershp && messages
 //messgae / rooms /  membership
+
+enum achievementsName {
+  MemberDhonneur
+  CleanSheet
+  Ziyech
+  hamdallah
+}

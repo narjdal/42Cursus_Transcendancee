@@ -1293,6 +1293,31 @@ let PlayerService = class PlayerService {
             },
         });
     }
+    async getAllGamesHistory() {
+        const gameHistory = await this.prisma.game_history.findMany();
+        return gameHistory;
+    }
+    async getGamesHistoryByUser(login) {
+        const palyer = await this.findPlayerByNickname(login);
+        const gameHistory = await this.prisma.game_history.findMany({
+            where: {
+                AND: [
+                    { winner_id: palyer.id },
+                    { looser_id: palyer.id },
+                ],
+            }
+        });
+        return gameHistory;
+    }
+    async getAchivements(login) {
+        const palyer = await this.findPlayerByNickname(login);
+        const achievements = await this.prisma.achievements.findMany({
+            where: {
+                playerId: palyer.id,
+            }
+        });
+        return achievements;
+    }
 };
 PlayerService = __decorate([
     (0, common_1.Injectable)(),

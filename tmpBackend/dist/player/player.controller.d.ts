@@ -48,4 +48,7 @@ export declare class PlayerController {
     joinDM(room_id: string, request: any, response: any): Promise<any>;
     joinNonProtectedRoom(room_id: string, request: any, response: any): Promise<any>;
     joinProtectedRoom(roomId_pwd: JoinProtectedRoomDto, request: any, response: any): Promise<any>;
+    allGameHistory(request: any, response: any): Promise<any>;
+    gameHistoryById(id: string, request: any, response: any): Promise<any>;
+    achivement(id: string, request: any, response: any): Promise<any>;
 }

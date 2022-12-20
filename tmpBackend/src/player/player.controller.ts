@@ -1127,6 +1127,44 @@ export class PlayerController {
         // console.log("--------------  Finish Join Room--------------------");
         return response.status(200).send({ room });
     }
+    //---------------------------------------------------------------------------------------------
+    @Get('/allGameHistory')
+    async allGameHistory(@Req() request, @Res() response) {
+        // console.log("---------------- Game History ----------------", login['id']);
+        // console.log("allGameHistory, login: ", request.user.playerId);
 
+        const history = await this.playerService.getAllGamesHistory();
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        })
+        // console.log("--------------  Finish allGameHistory--------------------");
+        return response.status(200).send({ history });
+    }
+
+    @Get('/gameHistoryById/:id')
+    async gameHistoryById(@Param() id: string, @Req() request, @Res() response){
+        // console.log("---------------- Game History ById ----------------", login['id']);
+        // console.log("Game History ById, login: ", request.user.playerId);
+
+        const history = await this.playerService.getGamesHistoryByUser(id);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        // console.log("--------------  Finish Game History ById--------------------");
+        return response.status(200).send({ history });
+    }
+
+    @Get('/achivement/:id')
+    async achivement(@Param() id: string, @Req() request, @Res() response) {
+        // console.log("---------------- Game achivement ----------------", login['id']);
+        // console.log("achivement, login: ", request.user.playerId);
+
+        const getAchivements = await this.playerService.getAchivements(id);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        });
+        // console.log("--------------  Finish achivement --------------------");
+        return response.status(200).send({ getAchivements });
+    }
 }
 

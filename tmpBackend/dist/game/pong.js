@@ -10,7 +10,7 @@ class pong {
             x: width / 2,
             y: height / 2,
             radius: 10,
-            speed: 11,
+            speed: 4,
             velocity_X: 5,
             velocity_Y: 5,
         };
@@ -31,11 +31,12 @@ class pong {
             score: 0,
         };
         this.music = '';
+        this.isPlaying = false;
     }
     reset_ball() {
         this.ball.x = width / 2;
         this.ball.y = height / 2;
-        this.ball.speed = 11;
+        this.ball.speed = 4;
         this.ball.velocity_X *= -1;
     }
     collison(player) {
@@ -111,6 +112,30 @@ class pong {
             isPlaying: this.player_left.score < 5 && this.player_right.score < 5,
             musicIndice: this.music,
             userRool: userRool,
+        };
+    }
+    getGameHistory() {
+        let winner;
+        let losser;
+        if (this.player_left.score > this.player_right.score) {
+            winner = this.player_left;
+            losser = this.player_right;
+        }
+        else {
+            winner = this.player_right;
+            losser = this.player_left;
+        }
+        console.log("HISTORY => ", this.gameId);
+        console.log("winner => ", winner.id);
+        console.log("win score => ", winner.score);
+        console.log("loser => ", losser.id);
+        console.log("loser score => ", losser.score);
+        return {
+            gameId: this.gameId,
+            winner: winner.id,
+            winnerScore: winner.score,
+            loser: losser.id,
+            loserScore: losser.score,
         };
     }
 }
