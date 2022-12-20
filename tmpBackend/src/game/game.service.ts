@@ -532,40 +532,42 @@ export class GameService {
       console.log('loser  gameHistory : ', _loser);
 
 
-    // const game_history = await this.prisma.game_history.create({
-    //   data: {
-    //     winner_id : data.winner,
-    //     winner_score : data.winnerScore,
-    //     looser_id : data.loser,
-    //     losser_score : data.loserScore,
-    //   }
-    // })
-    // console.log('History Created  game_history : ', game_history);
+    const game_history = await this.prisma.game_history.create({
+      data: {
+        winner_id : _winner.id,
+        winner_score : data.winnerScore,
+        looser_id : _loser.id,
+        losser_score : data.loserScore,
+      }
+    })
+    console.log('History Created  game_history : ', game_history);
 
   }
 
   async gameAchievements(data:any){
     console.log("this prisma achivemenvt", this.prisma.achievements)
+    const _winner = await this.findPlayerByNickname(data.winner);
+    const _loser = await this.findPlayerByNickname(data.loser);
     if (data.loserScore === 0){
-      // const CleanSheet = await this.prisma.achievements.create({
-      //   data: {
-      //     name : "Boono",
-      //     playerId: data.winner,
-      //   }
-      // });
+      const CleanSheet = await this.prisma.achievements.create({
+        data: {
+          name : "Boono",
+          playerId: _winner.id,
+        }
+      });
     }
-    // const ziyach = await this.prisma.achievements.create({
-    //   data: {
-    //     name : "Ziyach",
-    //     playerId : data.winner,
-    //   }
-    // });
-    // const hamdaLlah = await this.prisma.achievements.create({
-    //   data: {
-    //     name : "Hamda Llah",
-    //     playerId : data.loser,
-    //   }
-    // })
+    const ziyach = await this.prisma.achievements.create({
+      data: {
+        name : "Ziyach",
+        playerId : _winner.id,
+      }
+    });
+    const hamdaLlah = await this.prisma.achievements.create({
+      data: {
+        name : "Hamda Llah",
+        playerId : _loser.id,
+      }
+    })
   }
 
   async findPlayerById(userId: string)//: Promise<any> {
