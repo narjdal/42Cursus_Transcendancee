@@ -5,10 +5,35 @@ import {Link} from'react-router-dom';
 
 import './DisplayMatchHistory.css'
 const DisplayMatchHistory = (props) => {
+    const [isWinner,setIsWinner] = useState(false);
+    const [ennemyNickname,setEnnemyNickname] = useState("");
 
+    useEffect(() => {
+        const logged = localStorage.getItem("user");
+        if (logged){
+            const current = JSON.parse(logged)
+            {
+                if (props.match.winner_id == current.id)
+                {
+                    console.log( " I won ! ");
+                    setIsWinner(true);
+                    // setEnnemyNickname(props.match.losser.nickname)
+                }
+                else
+                {
+                    setIsWinner(false);
+                    // setEnnemyNickname(props.match.winner.nickname)
+
+                }
+
+            }
+        }
+
+    },[])
+console.log(" History Props : " , props)
     return (
         <>
- {props.match.winner ? (
+ {isWinner ? (
  <>
  <div className='winner-div'>
       <button type="button" className='has-border' >
@@ -59,14 +84,15 @@ const DisplayMatchHistory = (props) => {
    <img src = {props.match.image_url}  className="avatar1" height="35"/>
 </td>
 <td>
-{props.match.nickname}
+{/* {props.match.winner_id} */}
+winner Nickname 
 </td>
     
 <td>
-    {props.match.finalScore}
+    {props.match.winner_score}
 </td>
-
-<td> <Link style={{color:'#1e90fe'}} to={`/users/${props.match.P2UserId}`} >{props.match.P2nickname}</Link>
+ <td> {props.match.losser_score}</td>
+<td> <Link style={{color:'#1e90fe'}} to={`/users/${props.match.looser_id}`} >   Send Loser Nickname </Link>
 </td>
 
 

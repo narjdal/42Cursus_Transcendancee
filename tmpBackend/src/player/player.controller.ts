@@ -1130,8 +1130,8 @@ export class PlayerController {
     //---------------------------------------------------------------------------------------------
     @Get('/allGameHistory')
     async allGameHistory(@Req() request, @Res() response) {
-        // console.log("---------------- Game History ----------------", login['id']);
-        // console.log("allGameHistory, login: ", request.user.playerId);
+        console.log("---------------- Game History ----------------");
+        console.log("allGameHistory, login: ", request.user.playerId);
 
         const history = await this.playerService.getAllGamesHistory();
         response.set({
@@ -1143,23 +1143,23 @@ export class PlayerController {
 
     @Get('/gameHistoryById/:id')
     async gameHistoryById(@Param() id: string, @Req() request, @Res() response){
-        // console.log("---------------- Game History ById ----------------", login['id']);
-        // console.log("Game History ById, login: ", request.user.playerId);
+        console.log("---------------- Game History ById ----------------",id['id']);
+        console.log("Game History ById, login: ", request.user.playerId);
 
-        const history = await this.playerService.getGamesHistoryByUser(id);
+        const history = await this.playerService.getGamesHistoryByUser(id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
-        // console.log("--------------  Finish Game History ById--------------------");
+        console.log("--------------  Finish Game History ById--------------------",history);
         return response.status(200).send({ history });
     }
 
     @Get('/achivement/:id')
     async achivement(@Param() id: string, @Req() request, @Res() response) {
-        // console.log("---------------- Game achivement ----------------", login['id']);
-        // console.log("achivement, login: ", request.user.playerId);
+        console.log("---------------- Game achivement ----------------");
+        console.log("achivement, login: ", request.user.playerId);
 
-        const getAchivements = await this.playerService.getAchivements(id);
+        const getAchivements = await this.playerService.getAchivements(id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });

@@ -12,7 +12,45 @@ const Home = () => {
   const [MatchHistory,setMatchHsitory] = useState<any>([]);
   const loggeduser = localStorage.getItem("user");
 
+async function FetchAllGamesHistory()
+{
+  const loggeduser = localStorage.getItem("user");
+  if (loggeduser) {
+    const current = JSON.parse(loggeduser);
+    console.log(" allGameHistory        => " )
 
+
+    await fetch((`http://localhost:5000/player/allGameHistory/`
+    ), {
+      // mode:'no-cors',
+      method: 'get',
+      credentials: "include"
+    })
+
+
+
+      .then((response) => response.json())
+      .then(json => {
+        console.log("The allGameHistory is => " + JSON.stringify(json.history))
+    setMatchHsitory(json.history)
+
+        // if(json.statusCode == "404")
+        // {
+        // setErrorMessage(json.message);
+
+        // }
+
+        return json;
+      })
+      .catch((error) => {
+        console.log("An error occured : " + error)
+        // setRelation("error");
+        // setErrorMessage("An error occured! gameHistoryById not found ! ");
+        return error;
+      })
+
+  }
+}
   useEffect(() => {
     const authenticated = localStorage.getItem("authenticated");
     const loggeduser = localStorage.getItem("user");
@@ -21,11 +59,11 @@ const Home = () => {
     if (loggeduser)
 {
     var Current_User = JSON.parse(loggeduser);
-    const RandomHs = [
-      {MatchId:0,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"10-8",winner:true},
-      {MatchId:1,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"12-8",winner:false},
-    ];
-    setMatchHsitory(RandomHs)
+    // const RandomHs = [
+    //   {MatchId:0,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"10-8",winner:true},
+    //   {MatchId:1,userId:Current_User.id,nickname:Current_User.nickname,image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"12-8",winner:false},
+    // ];
+    FetchAllGamesHistory();
     
 }
 
@@ -164,7 +202,7 @@ const Home = () => {
 
             <div className='carreer-card'>
         <h3> Global History  </h3>
-      <span>{MatchHistory.map(c => < DisplayMatchHistory  key = {c.MatchId} match ={c} />)}</span>
+      <span>{MatchHistory.map(c => < DisplayMatchHistory  key = {c.id_game_history} match ={c} />)}</span>
       </div>
       
             </>

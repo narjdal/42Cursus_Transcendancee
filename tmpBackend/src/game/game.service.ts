@@ -312,7 +312,7 @@ export class GameService {
       if(upd.isPlaying)
       {
         console.log("they wre still playing !")
-        game.player_right.score = 20;
+        game.player_left.score = 20;
       }
       else
       {

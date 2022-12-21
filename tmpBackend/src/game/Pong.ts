@@ -135,6 +135,7 @@ export default class pong {
   getGameHistory(): any {
     let winner: any;
     let losser: any;
+    
     if (this.player_left.score > this.player_right.score){
       winner = this.player_left;
       losser = this.player_right;
@@ -154,8 +155,14 @@ export default class pong {
     return {
       gameId: this.gameId,
       winner: winner.id,
+      winnername:winner.nickname,
+      winnerAvatar:winner.avatar,
+
       winnerScore: winner.score,
       loser: losser.id,
+      losername:losser.nickname,
+      loserAvatar:losser.avatar,
+
       loserScore: losser.score,
     };
   }

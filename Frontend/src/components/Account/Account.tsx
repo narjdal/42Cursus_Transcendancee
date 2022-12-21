@@ -28,10 +28,97 @@ const Account = () => {
 const [AchievementsList,setAchievementsList] = useState<any>([])
 const [minihistory,setMiniHistory] = useState<any>([])
 
+async function FetchGameHistory() {
+
+   const loggeduser = localStorage.getItem("user");
+  if (loggeduser) {
+    const current = JSON.parse(loggeduser);
+    console.log("Fetching Game History Of this User :        => " ,current.nickname)
+
+
+    await fetch((`http://localhost:5000/player/gameHistoryById/${current.nickname}`
+    ), {
+      // mode:'no-cors',
+      method: 'get',
+      credentials: "include"
+    })
+
+
+
+      .then((response) => response.json())
+      .then(json => {
+        console.log("The gameHistoryById is => " + JSON.stringify(json))
+        if(json.history)
+        {
+        setMiniHistory(json.history)
+        }
+
+        if(json.statusCode == "404")
+        {
+        setErrorMessage(json.message);
+
+        }
+
+        return json;
+      })
+      .catch((error) => {
+        console.log("An error occured : " + error)
+        // setRelation("error");
+        setErrorMessage("An error occured! gameHistoryById not found ! ");
+        return error;
+      })
+
+  }
+}
+
+async function FetchAchivementsList  ()  {
+  const loggeduser = localStorage.getItem("user");
+  if (loggeduser) {
+    const current = JSON.parse(loggeduser);
+    console.log("Fetching AchievementsList  Of this User :        => " ,current.nickname)
+
+
+    await fetch((`http://localhost:5000/player/achivement/${current.nickname}`
+    ), {
+      // mode:'no-cors',
+      method: 'get',
+      credentials: "include"
+    })
+
+
+
+      .then((response) => response.json())
+      .then(json => {
+        console.log("The AchievementsList is => " + JSON.stringify(json))
+ 
+        if(json.getAchivements)
+        {
+        setAchievementsList(json.getAchivements);
+
+        }
+
+        if(json.statusCode == "404")
+        {
+        // setErrorMessage(json.message);
+
+        }
+
+        return json;
+      })
+      .catch((error) => {
+        console.log("An error occured : AchievementsList " + error)
+        // setRelation("error");
+        // setErrorMessage("An error occured! gameHistoryById not found ! ");
+        return error;
+      })
+
+  }
+}
   useEffect(() => {
 
     const authenticated = localStorage.getItem("authenticated");
   const loggeduser = localStorage.getItem("user");
+ 
 
     if(loggeduser)
     {
@@ -69,8 +156,10 @@ const [minihistory,setMiniHistory] = useState<any>([])
       {MatchId:2,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50229,P2nickname:"test56",P2image_url:"/images/AccountDefault.png",finalScore:"2-3",winner:false},
     
     ];
-    setMiniHistory(minihisto);
-    setAchievementsList(achievementss);
+    
+    FetchGameHistory();
+    FetchAchivementsList();
+    // setMiniHistory(minihisto);
       
     }
 
@@ -86,19 +175,19 @@ const [minihistory,setMiniHistory] = useState<any>([])
     const HandeAchievements = (e) => {
 
       e.preventDefault();
-      console.log("From Handle Achievements  ")
+      // console.log("From Handle Achievements  ")
         navigate('/Achievements')
     };
 
     const HandleMatchHistory = (e) => {
     e.preventDefault();
-    console.log("From Carreeeer ")
+    // console.log("From Carreeeer ")
       navigate('/Carreer')
     }
 
      const handleFriendClick = (e) => {
       e.preventDefault()
-      console.log("From Friend Click");
+      // console.log("From Friend Click");
       navigate("/Social");
       
      }
@@ -125,6 +214,7 @@ const [minihistory,setMiniHistory] = useState<any>([])
       setTwoFaDisable(!TwoFaDisable);
       setTwoFa(false);
     }
+
 async function EnableTwoFa () {
 
 
@@ -169,7 +259,7 @@ async function EnableTwoFa () {
       tfaSecret:current.tfaSecret
     }
   ]
-  console.log("USER : " + JSON.stringify(NewUser[0]))
+  // console.log("USER : " + JSON.stringify(NewUser[0]))
 localStorage.setItem("user",JSON.stringify(NewUser[0]));
 window.location.reload();
 
@@ -447,7 +537,7 @@ window.location.reload();
       </span> 
       <span>See All Achievements</span>
       </button>
-      <span>{AchievementsList.map(c => < DisplayAchievementsList  key = {c.AchievementsId} AchievementsList ={c} />)}</span>
+      <span>{AchievementsList.map(c => < DisplayAchievementsList  key = {c.id} AchievementsList ={c} />)}</span>
             </div>
             <div className='LastMatch-card'>
             <button type="button" className='' >  
@@ -458,7 +548,7 @@ window.location.reload();
    <span> See All </span>
     </Link>
       </button>
-      <span>{minihistory.map(c => < DisplayMatchHistory  key = {c.MatchId} match ={c} />)}</span>
+      <span>{minihistory.map(c => < DisplayMatchHistory  key = {c.id_game_history} match ={c} />)}</span>
 
             </div>
           </div>
