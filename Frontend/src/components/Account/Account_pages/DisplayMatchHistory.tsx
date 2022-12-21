@@ -44,12 +44,6 @@ console.log(" History Props : " , props)
  </>
 ) : (
     <>
-    <div className='loser-div'>
-      <button type="button" className='has-border' >
-      <span className="icon material-symbols-outlined">
-     {"smart_outlet"}  Defeat      </span> 
-      </button>
-      </div>
     </>
 )}
 
@@ -58,6 +52,8 @@ console.log(" History Props : " , props)
         <tbody>
    <tr>
     <th></th>
+    <th></th>
+    
     <th>   <div className='neutral-div'>
       <button type="button" className='has-border' >
       <span className="icon material-symbols-outlined">
@@ -81,24 +77,25 @@ console.log(" History Props : " , props)
 </tr>
 <tr>
 <td>
-   <img src = {props.match.image_url}  className="avatar1" height="35"/>
+   <img src = {props.match.winner_avatar}  className="avatar1" height="35"/>
 </td>
 <td>
-{/* {props.match.winner_id} */}
-winner Nickname 
+{props.match.winner_name}
+
 </td>
     
 <td>
-    {props.match.winner_score}
+<p className='lost-score'>   {props.match.winner_score}</p>
 </td>
- <td> {props.match.losser_score}</td>
-<td> <Link style={{color:'#1e90fe'}} to={`/users/${props.match.looser_id}`} >   Send Loser Nickname </Link>
+<td> | </td>
+ <td> <p className='lost-score'> {props.match.losser_score}</p></td>
+<td> <Link style={{color:'#1e90fe'}} to={`/users/${props.match.looser_name}`} >   {props.match.looser_name} </Link>
 </td>
 
 
 <td>
     
-   <img src = {props.match.P2image_url}  className="avatar"/>
+   <img src = {props.match.looser_avatar}  className="avatar"/>
 </td>
     </tr>
     </tbody>

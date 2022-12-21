@@ -39,6 +39,10 @@ model Player {
 model achievements {
     id   String @id @default(uuid())
     name String
+    description String
+    avatar String
+
+
     playerId String
     player Player @relation("achivement", fields: [playerId], references: [id])
 }
@@ -46,9 +50,15 @@ model achievements {
 model game_history {
   id_game_history Int @id @default(autoincrement())
   winner_id String
+  winner_name String
+  winner_avatar String
   winner Player @relation("game_winned", fields: [winner_id], references: [id])
   winner_score Int
   looser_id String
+  looser_name String
+  looser_avatar String
+
+
   looser Player @relation("game_losed", fields: [looser_id], references: [id])
   losser_score Int
   created_at DateTime @default(now())

@@ -151,7 +151,7 @@ try
     }
     catch(e)
 {
-  console.log("An error TryChat : " + e)
+  // console.log("An error TryChat : " + e)
   
 }
 }

@@ -9,6 +9,7 @@ export declare class GameGateway {
     private PlayersInvited;
     private PlayersAccept;
     private PlayersInGameFromInvite;
+    private PlayerInGame;
     private GetPlayerNicknameFromSocket;
     private Invates;
     private InvateId;

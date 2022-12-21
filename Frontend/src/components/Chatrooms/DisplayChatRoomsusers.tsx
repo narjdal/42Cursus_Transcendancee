@@ -1,14 +1,17 @@
 import react, { useEffect } from 'react'
 import { useState } from 'react'; 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import './DisplayChatRoomsusers.css'
+import { io } from 'socket.io-client';
 // import blobz from 'blobz.css'
 const DisplayChatRoomusers = (props,roomownnership) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [action,setAction] = useState(false);
     const [display,setDisplay] = useState(false);
+    const [inviteGame,setInviteGame] = useState(false);
     const params = useParams();
+    const navigate = useNavigate();
     const [isAdmin,setIsAdmin] = useState(JSON.stringify(roomownnership));
 //   console.log("isADmin" + JSON.stringify(isAdmin))
     const handleFriendClick  = (e) => {
@@ -24,6 +27,8 @@ const DisplayChatRoomusers = (props,roomownnership) => {
     const HandleInviteToGame = (e) => {
         e.preventDefault();
         console.log("invting this user to a game !");
+        setInviteGame(true);
+
     }
     
     const HandleShowAction = (e) => {
@@ -31,6 +36,33 @@ const DisplayChatRoomusers = (props,roomownnership) => {
         setAction(!action);
         // Here request to know which button to display 
     }
+    useEffect(() => {
+
+        if (inviteGame)
+        {
+            let socket = io("http://localhost:5000/game");
+
+   socket.on("connect",() => {
+    console.log("socket : ",socket);
+   })
+
+   socket.emit("inviteGame",{
+    user:localStorage.getItem("user")!,
+    invite:props.user.nickname
+   })
+
+   socket.on("InviteUpdate",(data:any) => {
+    setErrorMessage("");
+    console.log("Invite Update Data : ",data)
+    if(data.logged)
+    {
+    localStorage.setItem("inviteGame",data.inviteeNickname)
+   navigate('/Pong') 
+    }
+    
+   })
+  }
+    },[inviteGame])
     
     useEffect(() => {
         const loggeduser = localStorage.getItem("user");

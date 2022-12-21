@@ -54,3 +54,9 @@ color:#1cb380;;
     float :left;
     overflow: hidden;
   }
+  .lost-score{
+    color: red;
+    font-size: larger;
+    font-weight: bold;
+    font-style: italic;
+  }

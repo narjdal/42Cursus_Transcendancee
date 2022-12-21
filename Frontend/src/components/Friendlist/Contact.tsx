@@ -11,6 +11,8 @@ const Contact = (props) => {
 	const [OpenMsg, SetOpenMsg] = useState(false);
     // const [OpenBox,setOpenBox] = useState(true);
     const [imLogged,setImLogged] = useState(false);
+    const [inGame,setInGame] = useState(false);
+
     // console.log(props.name);
     const [Dmcount,SetDmCount] = useState(-1);
 const handleClick = (e) => {
@@ -74,6 +76,50 @@ useEffect(() => {
     //   localStorage.setItem("online",JSON.stringify(data))
 },[])
 useEffect (() => {
+    let InGameUsers = localStorage.getItem("InGame");
+    console.log("INside Use Effect ")
+    if (InGameUsers)
+    {
+        console.log("Inside In Game Users : ")
+        const parsedInGame = JSON.parse(InGameUsers);
+        
+        // console.log("They is some in game users !",parsedInGame);
+        // if(parsedInGame.length > 0)
+        // {
+        //     console.log("inside hh")
+        // }
+        // else
+        // {
+        //     console.log(" Not parsed in game ")
+        // }
+        if(parsedInGame.data[0])
+        {
+
+        let srch = parsedInGame.data.filter((m: any) => {
+            console.log(" ME id : " + m.id + "  User Nick : " + props.user.nickname  +  " : " , m);
+            return m.id === props.user.nickname
+          })[0] 
+        
+            if(srch)
+            {
+                console.log(" THIS FRIEND IS IN GAME  IN  ")
+                setInGame(true);
+                // setImLogged(true);
+            }
+            else
+            {
+                console.log( " THIS FRIEND IS NOT IN GAME" );
+                setInGame(false);
+                // setImLogged(false);
+            }
+        }
+        else
+        {
+            console.log("no PARSED IN GAME DATA")
+            setInGame(false);
+        }
+
+    }
 
     let onlineUsers = localStorage.getItem("online");
     if(onlineUsers)
@@ -138,13 +184,30 @@ return (
   
    <p> <button onClick={RedirFriendProfile}>{props.user.nickname}</button> </p>
     </td> 
-  {imLogged ? (
+    {inGame ? (
+        <>
+               <td>
+                <div className="inGame-div">
+
+<button type="button" className='has-border' >  
+<span className="icon material-symbols-outlined">
+{"radio_button_checked"}        </span> 
+<span> In Game</span>
+</button>
+</div>
+</td> 
+        </>
+    ) : (
+        <>
+              {imLogged ? (
                  <td>  
                     <div className="icon-div">
 
                          <button type="button" className='has-border' >  
                  <span className="icon material-symbols-outlined">
                 {"check_circle"}        </span> 
+<span> Online</span>
+
                  </button>
                  </div>
                  
@@ -155,10 +218,15 @@ return (
                  <button type="button" className='has-border' >  
               <span className="icon material-symbols-outlined">
              {"cancel"}        </span> 
+<span> Offline</span>
+
               </button>
               </div>
                  </td>
               )}
+        </>
+    )}
+
 
 </tr>
         </tbody>

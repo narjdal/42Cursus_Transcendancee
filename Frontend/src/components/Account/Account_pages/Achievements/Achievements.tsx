@@ -3,26 +3,70 @@ import { useState,useEffect } from 'react';
 import './Achievements.css'
 import DisplayAchievementsList from './DisplayAchievementsList';
 const Achievements = () => {
+const [AchievementsList,setAchievementsList] = useState<any>([])
 
+    async function FetchAchivementsList  ()  {
+        const loggeduser = localStorage.getItem("user");
+        if (loggeduser) {
+          const current = JSON.parse(loggeduser);
+          console.log("Fetching AchievementsList  Of this User : Inside Achievements Page         => " ,current.nickname)
+      
+      
+          await fetch((`http://localhost:5000/player/achivement/${current.nickname}`
+          ), {
+            // mode:'no-cors',
+            method: 'get',
+            credentials: "include"
+          })
+      
+      
+      
+            .then((response) => response.json())
+            .then(json => {
+              console.log("The AchievementsList is => " + JSON.stringify(json))
+       
+              
+              if(json.getAchivements)
+              {
+              setAchievementsList(json.getAchivements);
+      
+              }
+      
+              if(json.statusCode == "404")
+              {
+              // setErrorMessage(json.message);
+      
+              }
+      
+              return json;
+            })
+            .catch((error) => {
+              console.log("An error occured : AchievementsList " + error)
+              // setRelation("error");
+              // setErrorMessage("An error occured! gameHistoryById not found ! ");
+              return error;
+            })
+      
+        }
+      }
+useEffect(() => {
     const loggeduser = localStorage.getItem("user");
     if (loggeduser)
     {
         var Current_User = JSON.parse(loggeduser);
+    FetchAchivementsList();
         
     }
-    const AchievementsList = [
-        {AchievementsId:0,name:"First try",description:"Play your first game ",image_url:"images/1000_F_224798026_pByZntuv55dc3gxv1KArR6ReyognIyJx.jpeg",unlock:true},
-        {AchievementsId:1,name:"Payback",description:"Win a game against a player that you lost again ",image_url:"images/reaper-icon-icon-white-background-reaper-icon-graphic-web-design-reaper-icon-icon-white-background-reaper-icon-176386733.jpeg",unlock:false},
-        {AchievementsId:2,name:"Alpha",description:"Be the Top 1 player of the leaderboard",image_url:"images/reaper-icon-icon-white-background-reaper-icon-graphic-web-design-reaper-icon-icon-white-background-reaper-icon-176386733.jpeg",unlock:true},
-        {AchievementsId:3,name:"Alpha",description:"Be the Top 1 player of the leaderboard",image_url:"images/610295.png",unlock:false},
-        {AchievementsId:4,name:"Alpha",description:"Be the Top 1 player of the leaderboard",image_url:"images/610295.png",unlock:true},
-    ];
+
+},[])
+
+
     return (
         <>
         <div className='body'>
             <div className='Achievements-card'>
                 
-      <span>{AchievementsList.map(c => < DisplayAchievementsList  key = {c.AchievementsId} AchievementsList ={c} />)}</span>
+      <span>{AchievementsList.map(c => < DisplayAchievementsList  key = {c.id} AchievementsList ={c} />)}</span>
 
             </div>
         </div>

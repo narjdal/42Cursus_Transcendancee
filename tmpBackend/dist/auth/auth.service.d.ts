@@ -4,10 +4,10 @@ export declare class AuthService {
     private prisma;
     private jwtService;
     constructor(prisma: PrismaService, jwtService: JwtService);
-    findORcreate(data: any): Promise<any>;
-    findById(PlayerId: string): Promise<any>;
+    findORcreate(data: any): Promise<import(".prisma/client").Player>;
+    findById(PlayerId: string): Promise<import(".prisma/client").Player>;
     generateQrCode(playerId: string): Promise<{
-        otpauth_url: any;
+        otpauth_url: string;
     }>;
     JwtAccessToken(playerId: string): Promise<string>;
 }

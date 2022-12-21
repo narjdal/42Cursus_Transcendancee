@@ -36,8 +36,7 @@ useEffect(() => {
 
 },[])
 return (
-
-    <div className="Notif-Card">
+<>
 <ul className="chat-room-list">
         <li>
     {props.notifs.data.Sendernickname} has send you an invitation to play a game ! 
@@ -52,7 +51,7 @@ return (
       </button>
       </li>
       </ul>
-    </div>
+      </>
 )
 }
 

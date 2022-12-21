@@ -155,14 +155,10 @@ export default class pong {
     return {
       gameId: this.gameId,
       winner: winner.id,
-      winnername:winner.nickname,
-      winnerAvatar:winner.avatar,
-
+      winner_Player:winner,
       winnerScore: winner.score,
       loser: losser.id,
-      losername:losser.nickname,
-      loserAvatar:losser.avatar,
-
+      loser_Player:losser,
       loserScore: losser.score,
     };
   }

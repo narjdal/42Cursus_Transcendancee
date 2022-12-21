@@ -12,11 +12,10 @@ console.log("Achievements props . ", props)
         
             <li>
             
-  {props.AchievementsList.unlock ? (
-<>
+            <span>{props.AchievementsList.name} </span> 
+
 <div className='unlocked-div'>
-<img  className='avatar1' src={props.AchievementsList.image_url} /> 
-<span>{props.AchievementsList.name} </span> 
+<img  className='avatar1' src={props.AchievementsList.avatar} /> 
 <span>{props.AchievementsList.description} </span>
     
       <button type="button" className='has-border' >
@@ -24,21 +23,7 @@ console.log("Achievements props . ", props)
      {"lock_open"}        </span> 
       </button>
       </div>
-</>
-  ):(
-<>
-<div className='locked-div'>
-<img  className='avatar1' src={props.AchievementsList.image_url} /> 
-<span>{props.AchievementsList.name} </span> 
-<span>{props.AchievementsList.description} </span> 
-    
-      <button type="button" className='has-border' >
-      <span className="icon material-symbols-outlined">
-     {"lock"}        </span> 
-      </button>
-      </div>
-</>
-  )}
+
 </li>
         </ul>
         </div>

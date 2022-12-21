@@ -36,6 +36,10 @@
     color: #1cb380;
   }
 
+  .inGame-div >  button > span {
+    color: orange;
+  }
+
   .icon-off-div >  button > span {
     color: #a40221;
   }

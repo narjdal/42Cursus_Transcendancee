@@ -379,10 +379,11 @@ useEffect(() => {
     // })
 
   return() => {
-    // if(gameState.socket)
-    // {
-    //   console.log("Game Socket Still on ! ",gameState.socket)
-    // }
+    if(gameState.socket)
+    {
+      console.log("Game Socket Still on ! ",gameState.socket)
+      gameState.socket.disconnect();
+    }
   }
 
   },[])
@@ -396,6 +397,7 @@ useEffect(() => {
   useEffect(() => {
     if(JoinedQueue)
     {
+
       gameState.socket.emit ("newPlayer", localStorage.getItem("user")!);
       gameState.socket.on("matchFound", (data: any) => {
         gameState.pongData = JSON.parse(data.pongData);
@@ -413,6 +415,7 @@ useEffect(() => {
 
   useEffect(() => {
     if(Playing){
+
       console.log("update player",gameState);
 
       gameState.socket.on("update", (data: any) => 

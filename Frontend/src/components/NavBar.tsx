@@ -46,18 +46,26 @@ function Navbar() {
     const navigate = useNavigate();
 
     const navigateHome = () => {
-        navigate('/Home');
+        // navigate('/Home');
+        window.location.href = "http://localhost:3000/Home"
+
       };
       const navigateAccount = () => {
-        navigate('/');
+        // navigate('/');
+        window.location.href = "http://localhost:3000/"
+
       };
 
       const navigateChatRooms = () => {
-        navigate('/Landing');
+        // navigate('/Landing');
+        window.location.href = "http://localhost:3000/Landing"
+
       };
 
       const navigateLeaderBoard = () => {
-        navigate('/LeaderBoard');
+        // navigate('/LeaderBoard');
+        window.location.href = "http://localhost:3000/LeaderBoard"
+
       };
 
       const navigateGameLanding = () => {
@@ -67,7 +75,9 @@ function Navbar() {
       };
 
       const navigatePlay = () => {
-        navigate('/Pong');
+        window.location.href = "http://localhost:3000/Pong"
+
+        // navigate('/Pong');
       };
 
       const handleFriendClick = event => {
@@ -180,6 +190,20 @@ await fetch((endpoint),{
       user:localStorage.getItem("user")
     })
 
+    
+    gamesocket.on("UsersInGame", (data: any) => {
+
+      console.log(" Users currently in game  ! : ", data);
+      localStorage.setItem("InGame",JSON.stringify(data))
+
+      // localStorage.setItem("InviteGame",data.Sendernickname);
+      // setInvites(data);
+
+      // invites.push(data.Sendernickname);
+      // setInvites(data.Sendernickname)
+      // localStorage.setItem("online",JSON.stringify(data))
+    });
+    
     gamesocket.on("ReceivedInvite", (data: any) => {
       console.log(" You Have Been Invited to play a game ! : ", data);
       // localStorage.setItem("InviteGame",data.Sendernickname);
@@ -196,8 +220,9 @@ await fetch((endpoint),{
       // setInvites(data.Sendernickname)
       // localStorage.setItem("online",JSON.stringify(data))
     });
-                // onlineUsersFront
 
+           // onlineUsersFront
+            
 
   },[])
 
@@ -316,11 +341,13 @@ await fetch((endpoint),{
 
        {notifMessage && <div className="error"> {notifMessage} </div>}
        { OpenNotifs ? (
-        <>
+    <div className="Notif-Card">
+
   {invites.map(c => < Notifs  key = {c.id} notifs ={c} />)}
 
         {/* <Notifs notifs={invites}/> */}
-        </>
+    </div>
+
        ) : (
         <>
         </>

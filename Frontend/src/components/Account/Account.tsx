@@ -56,7 +56,7 @@ async function FetchGameHistory() {
         if(json.statusCode == "404")
         {
         setErrorMessage(json.message);
-
+        
         }
 
         return json;
@@ -91,6 +91,7 @@ async function FetchAchivementsList  ()  {
       .then(json => {
         console.log("The AchievementsList is => " + JSON.stringify(json))
  
+        
         if(json.getAchivements)
         {
         setAchievementsList(json.getAchivements);
@@ -99,7 +100,7 @@ async function FetchAchivementsList  ()  {
 
         if(json.statusCode == "404")
         {
-        // setErrorMessage(json.message);
+        setErrorMessage(json.message);
 
         }
 
@@ -142,20 +143,6 @@ async function FetchAchivementsList  ()  {
         // setTwoFa(true);
       }
       SetUser42(Current_User);
-    
-    
-      const achievementss = [
-        {AchievementsId:0,name:"First try",description:"Play your first game ",image_url:"images/1000_F_224798026_pByZntuv55dc3gxv1KArR6ReyognIyJx.jpeg",unlock:true},
-        {AchievementsId:1,name:"Payback",description:"Win a game against a player that you lost again ",image_url:"images/reaper-icon-icon-white-background-reaper-icon-graphic-web-design-reaper-icon-icon-white-background-reaper-icon-176386733.jpeg",unlock:false},
-        {AchievementsId:2,name:"Alpha",description:"Be the Top 1 player of the leaderboard",image_url:"images/reaper-icon-icon-white-background-reaper-icon-graphic-web-design-reaper-icon-icon-white-background-reaper-icon-176386733.jpeg",unlock:true},
-    ];
-    
-    const minihisto = [
-      {MatchId:0,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"10-8",winner:true},
-      {MatchId:1,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50227,P2nickname:"mazoko",P2image_url:"/images/AccountDefault.png",finalScore:"12-8",winner:true},
-      {MatchId:2,userId:50213,nickname:"narjdal",image_url:Current_User.avatar,P2UserId:50229,P2nickname:"test56",P2image_url:"/images/AccountDefault.png",finalScore:"2-3",winner:false},
-    
-    ];
     
     FetchGameHistory();
     FetchAchivementsList();
@@ -383,7 +370,6 @@ window.location.reload();
           setisUpdated(true);
           setTimeout(() => setisUpdated(false), 2500);
         }, 2000);
-        console.log("POSITIF CHEF")
       }
       else
       {
@@ -395,7 +381,6 @@ window.location.reload();
           setisUpdated(true);
           setTimeout(() => setisUpdated(false), 2500);
         }, 2000);
-        console.log("NEGATIF CHEF")
       }
     // if(twoFa)
     // {

@@ -13,7 +13,7 @@ const DisplayChatRoomFriendsToAdd = (props,roomownnership) => {
     const handleFriendClick  = (e) => {
         e.preventDefault();
         //if() Request to Add Friend , if already : 
-        setErrorMessage("You are alredy friend !");
+        // setErrorMessage("You are alredy friend !");
         
     };
     const HandleBlock = (e) => {
@@ -64,7 +64,7 @@ async function InviteFriendToRoom () {
   };
     const HandleInviteToRoom = (e) => {
         e.preventDefault();
-        console.log("Inviting this user to the chatroom " + props.user.nickname + " The room id is :" + params.id)
+        // console.log("Inviting this user to the chatroom " + props.user.nickname + " The room id is :" + params.id)
       
         if(props.user.nickname)
         {

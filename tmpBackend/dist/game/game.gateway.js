@@ -8,12 +8,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameGateway = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 const game_service_1 = require("./game.service");
+const replacerFunc = () => {
+    const visited = new WeakSet();
+    return (key, value) => {
+        if (typeof value === 'object' && value !== null) {
+            if (visited.has(value)) {
+                return;
+            }
+            visited.add(value);
+        }
+        return value;
+    };
+};
 let GameGateway = class GameGateway {
     constructor(gameService) {
         this.gameService = gameService;
@@ -23,6 +34,7 @@ let GameGateway = class GameGateway {
         this.PlayersInvited = [];
         this.PlayersAccept = [];
         this.PlayersInGameFromInvite = [];
+        this.PlayerInGame = new Map();
         this.GetPlayerNicknameFromSocket = [];
         this.Invates = [];
         this.InvateId = 0;
@@ -33,11 +45,13 @@ let GameGateway = class GameGateway {
     async handleDisconnect(client) {
         console.log("Client disconnected", client.id);
         if (this.PlayersInQueue[client.id]) {
+            console.log("This Plyaer is In Plyaer List  ... ", this.PlayersInQueue[client.id]);
             await this.handleLeaveGameAsPlayer(client, this.PlayersInQueue[client.id]);
             this.PlayersLoggedIn[this.PlayersInQueue[client.id]] = null;
             this.PlayersInQueue[client.id] = null;
         }
         if (this.PlayersInGameFromInvite[client.id]) {
+            console.log("This Plyaer is In PlayersInGame List  ... ", this.PlayersInGameFromInvite[client.id]);
             await this.handleLeaveGameAsPlayer(client, this.PlayersInGameFromInvite[client.id]);
             console.log("deleting from PlayersInQueue List ! ");
             console.log('-----------------------------------------------');
@@ -45,13 +59,20 @@ let GameGateway = class GameGateway {
             const parse = JSON.parse(leaver);
             this.PlayersInGameFromInvite[client.id] = null;
             this.PlayersInvited[parse.nickname] = null;
+            this.PlayerInGame[client.id] = 0;
             console.log('-----------------------------------------------');
         }
     }
     async handleNewPlayer(client, user) {
         console.log("newPlayer", client.id, user);
         this.PlayersInQueue[client.id] = user;
-        return this.gameService.newPlayer(client, user, this.PlayersInQueue);
+        this.PlayerInGame = this.gameService.newPlayer(client, user, this.PlayersInQueue);
+        console.log('-----------------------------------------------');
+        console.log(" PLAYERS IN PlayerInGame : ", this.PlayerInGame);
+        console.log('-----------------------------------------------');
+        console.log(" PLAYERS IN PlayerInGame : ", this.PlayersInQueue);
+        console.log('-----------------------------------------------');
+        return;
     }
     async handleUpdate(client, user) {
         return this.gameService.update(client, user);
@@ -67,11 +88,12 @@ let GameGateway = class GameGateway {
     async handleLeaveGameAsPlayer(client, data) {
         console.log('-----------------------------------------------');
         console.log('-----------------------------------------------');
-        return this.gameService.leaveGameAsPlayer(client, data);
+        this.PlayerInGame = await this.gameService.leaveGameAsPlayer(client, data);
+        console.log("Updated PlayersInGame fron LeaveGame : ", this.PlayerInGame);
     }
     async HandleAcceptInviteGame(client, data) {
         this.PlayersInGameFromInvite[client.id] = data.user;
-        await this.gameService.acceptInvite(client, data.user, data.sender, this.PlayersInvited, this.PlayersAccept);
+        this.PlayerInGame = await this.gameService.acceptInvite(client, data.user, data.sender, this.PlayersInvited, this.PlayersAccept);
         this.PlayersInvited[data.sender] = null;
         const parsed = JSON.parse(data.user);
         const sender = data.sender;
@@ -93,6 +115,7 @@ let GameGateway = class GameGateway {
         const parsed = JSON.parse(data.user);
         this.PlayersLoggedIn[parsed.nickname] = client;
         const nick = parsed.nickname;
+        console.log("Inside OnluneGameUsersBack");
         console.log('-----------------------------------------------');
         const obj = {
             invite: nick
@@ -105,6 +128,26 @@ let GameGateway = class GameGateway {
                 });
             }
         }
+        console.log(" Inside ONlne UserBack :");
+        let Ingame = [];
+        this.PlayerInGame.forEach((game, key) => {
+            Ingame.push({
+                id: key,
+                player_left: game.player_left,
+                player_right: game.player_right,
+            });
+        });
+        console.log(" EMTING USERS IN GAME FROM LEFT PLAYER ", this.PlayerInGame);
+        const PlayersInGameString = JSON.stringify(this.PlayerInGame, replacerFunc());
+        client.emit('UsersInGame', {
+            data: Ingame
+        });
+        console.log('-----------------------------------------------');
+        console.log("PlayersAccept : ", this.PlayersAccept);
+        console.log('-----------------------------------------------');
+        console.log("PlayersInvited : ", this.PlayersInvited);
+        console.log('-----------------------------------------------');
+        console.log("  : ", this.PlayersInGameFromInvite);
         console.log('-----------------------------------------------');
         console.log('-----------------------------------------------');
     }
@@ -113,6 +156,7 @@ let GameGateway = class GameGateway {
         console.log("Inside inviteGame  !", data);
         const invite = data.invite;
         const user = JSON.parse(data.user).nickname;
+        this.PlayerInGame[client.id] = user;
         const obj = {
             invite: invite,
             user: user
@@ -139,66 +183,66 @@ let GameGateway = class GameGateway {
 };
 __decorate([
     (0, websockets_1.WebSocketServer)(),
-    __metadata("design:type", typeof (_a = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _a : Object)
+    __metadata("design:type", socket_io_1.Socket)
 ], GameGateway.prototype, "wss", void 0);
 __decorate([
     (0, websockets_1.SubscribeMessage)("newPlayer"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_b = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _b : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "handleNewPlayer", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("update"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_c = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _c : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "handleUpdate", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("getAllGames"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_d = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _d : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "handleGetAllGames", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("watchGame"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_e = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _e : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "handleWatchGame", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("leaveGameAsPlayer"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_f = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _f : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "handleLeaveGameAsPlayer", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("AcceptGame"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_g = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _g : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "HandleAcceptInviteGame", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("OnlineGameUsersBack"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_h = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _h : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "HandleAddOnlineGameUsersBack", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("inviteGame"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_j = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _j : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "handleInviteGame", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("UserAcceptGame"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_k = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _k : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "HandleUserAcceptGame", null);
 __decorate([
     (0, websockets_1.SubscribeMessage)("InvitedUser"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_l = typeof socket_io_1.Socket !== "undefined" && socket_io_1.Socket) === "function" ? _l : Object, Object]),
+    __metadata("design:paramtypes", [socket_io_1.Socket, Object]),
     __metadata("design:returntype", Promise)
 ], GameGateway.prototype, "HandleInvitedUser", null);
 GameGateway = __decorate([
