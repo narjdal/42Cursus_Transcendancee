@@ -80,7 +80,8 @@ console.log(" History Props : " , props)
    <img src = {props.match.winner_avatar}  className="avatar1" height="35"/>
 </td>
 <td>
-{props.match.winner_name}
+<Link style={{color:'#1e90fe'}} to={`/users/${props.match.winner_name}`} >   {props.match.winner_name} </Link>
+
 
 </td>
     

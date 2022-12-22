@@ -1763,18 +1763,55 @@ export class PlayerService {
 
     // B - get games history By user
     async getGamesHistoryByUser(login: string) {
+        console.log('-----------------------------------------------');
+
         const palyer = await this.findPlayerByNickname(login);
+        console.log("The Player Of History is : ",palyer);
+    console.log('-----------------------------------------------');
 
         const gameHistory = await this.prisma.game_history.findMany({
             where:
             {
-                AND: [
-                    { winner_id: palyer.id },
-                    { looser_id: palyer.id },
-                ],
+                OR: [
+                    {
+                      winner_id: palyer.id
+                    //   {
+                    //     // endsWith: 'prisma.io',
+                    //   },
+                    },
+                    { looser_id:palyer.id },
+                  ],
+            //   winner_id: palyer.id ,
+            //     // AND: [
+            //   OR:[
+            //     {looser_id:palyer.id},
+            //   ]
+                    // { looser_id: palyer.id },
+                // ],
             }
         });
+
+        const LostHistory =  await this.prisma.game_history.findMany({
+            where:
+            {
+                // AND: [
+              looser_id: palyer.id ,
+            //   OR:[
+            //     {looser_id:palyer.id},
+            //   ]
+                    // { looser_id: palyer.id },
+                // ],
+            }
+        });
+    console.log('-----------------------------------------------');
+        // const history =  {
+        //     ...gameHistory,
+        //     ...LostHistory
+        // }
         console.log("--------------  Finish  getGamesHistoryByUser --------------------",gameHistory," : ",palyer);
+        // console.log("--------------  Finish  LostHistory --------------------",LostHistory," : ");
+
+    console.log('-----------------------------------------------');
 
         return gameHistory;
     }

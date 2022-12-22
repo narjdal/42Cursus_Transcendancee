@@ -50,6 +50,7 @@ async function FetchGameHistory() {
         console.log("The gameHistoryById is => " + JSON.stringify(json))
         if(json.history)
         {
+          // if(json.history[0])
         setMiniHistory(json.history)
         }
 

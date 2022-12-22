@@ -324,11 +324,13 @@ export class GameService {
         if(upd.isPlaying)
         {
           // console.log("they wre still playing !")
+        console.log("they wre still playing !",game.player_left ,"left   left updating right ")
+
           game.player_right.score = 20;
         }
         else
         {
-          // console.log("Game Already Ended  !")
+          console.log("Game Already Ended  !")
           
         }
       }
@@ -357,12 +359,12 @@ export class GameService {
 
       if(upd.isPlaying)
       {
-        // console.log("they wre still playing !")
+        console.log("they wre still playing !",game.player_right ,"right   left updating left ")
         game.player_left.score = 20;
       }
       else
       {
-        // console.log("Game Already Ended  !")
+        console.log("Game Already Ended  !")
         
       }
       }
@@ -504,12 +506,7 @@ return this.PlayerInGame;
       console.log('-----------------------------------------------');
       console.log("Game  :  ",game)
         
-      this.games.set(gameId, game);
-      this.PlayersGames[invitation.user] = gameId;
-      this.PlayersGames[user] = gameId;
-
-      this.currentGames[invitation.user] = gameId;
-      this.currentGames[user] = gameId;
+     
 
 
     
@@ -533,6 +530,8 @@ return this.PlayerInGame;
           left:"true",
           leaver:inviteeNickname
         })
+        // this.games.delete()
+
         return this.PlayerInGame;
       }
 
@@ -561,6 +560,13 @@ return this.PlayerInGame;
       return  this.PlayerInGame;
 
       }
+      this.games.set(gameId, game);
+      this.PlayersGames[invitation.user] = gameId;
+      this.PlayersGames[user] = gameId;
+
+      this.currentGames[invitation.user] = gameId;
+      this.currentGames[user] = gameId;
+
       
       const LeftSock: Socket = SocketAccept.client;
       const RightSock: Socket = SocketInviter.client;
@@ -648,6 +654,7 @@ return this.PlayerInGame
         id: _loser.id,
       },
       data: {
+
         loses: {
           increment: 1,
         },
@@ -696,7 +703,7 @@ return this.PlayerInGame
       });
     }
   }
-  if (data.loser.score === 4 ) {
+  if (data.losser_score === 4 ) {
     const loserWithFour = await this.prisma.achievements.findMany({
       where: {
         playerId: _loser.id,
@@ -707,7 +714,7 @@ return this.PlayerInGame
     const hamdaLlah = await this.prisma.achievements.create({
       data: {
         name : "Hamda Llah",
-        description:"lose a game",
+        description:"lose a game by one goal",
         avatar:"https://www.welovebuzz.com/wp-content/uploads/2020/01/1577693971Abderrazak__Hamdallah_vuC96Fd.image_corps_article.jpg",
         playerId : _loser.id,
       }

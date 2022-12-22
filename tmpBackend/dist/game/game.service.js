@@ -175,9 +175,11 @@ let GameService = class GameService {
                     pongData: pongData
                 });
                 if (upd.isPlaying) {
+                    console.log("they wre still playing !", game.player_left, "left   left updating right ");
                     game.player_right.score = 20;
                 }
                 else {
+                    console.log("Game Already Ended  !");
                 }
             }
             else if (game.player_right.id == nickname) {
@@ -189,9 +191,11 @@ let GameService = class GameService {
                     pongData: pongData
                 });
                 if (upd.isPlaying) {
+                    console.log("they wre still playing !", game.player_right, "right   left updating left ");
                     game.player_left.score = 20;
                 }
                 else {
+                    console.log("Game Already Ended  !");
                 }
             }
             const PlayersInGameString = JSON.stringify(this.PlayerInGame, replacerFunc());
@@ -259,11 +263,6 @@ let GameService = class GameService {
             const game = new pong_1.default(gameId, JSON.parse(invitation.user).nickname, JSON.parse(user).nickname);
             console.log('-----------------------------------------------');
             console.log("Game  :  ", game);
-            this.games.set(gameId, game);
-            this.PlayersGames[invitation.user] = gameId;
-            this.PlayersGames[user] = gameId;
-            this.currentGames[invitation.user] = gameId;
-            this.currentGames[user] = gameId;
             if (!SocketAccept) {
                 const RightSock = SocketInviter.client;
                 console.log("No Socket Accept");
@@ -286,6 +285,11 @@ let GameService = class GameService {
                 console.log('-----------------------------------------------');
                 return this.PlayerInGame;
             }
+            this.games.set(gameId, game);
+            this.PlayersGames[invitation.user] = gameId;
+            this.PlayersGames[user] = gameId;
+            this.currentGames[invitation.user] = gameId;
+            this.currentGames[user] = gameId;
             const LeftSock = SocketAccept.client;
             const RightSock = SocketInviter.client;
             LeftSock.join(this.roomPrefix + gameId);
@@ -395,7 +399,7 @@ let GameService = class GameService {
                 });
             }
         }
-        if (data.loser.score === 4) {
+        if (data.losser_score === 4) {
             const loserWithFour = await this.prisma.achievements.findMany({
                 where: {
                     playerId: _loser.id,
@@ -406,7 +410,7 @@ let GameService = class GameService {
                 const hamdaLlah = await this.prisma.achievements.create({
                     data: {
                         name: "Hamda Llah",
-                        description: "lose a game",
+                        description: "lose a game by one goal",
                         avatar: "https://www.welovebuzz.com/wp-content/uploads/2020/01/1577693971Abderrazak__Hamdallah_vuC96Fd.image_corps_article.jpg",
                         playerId: _loser.id,
                     }

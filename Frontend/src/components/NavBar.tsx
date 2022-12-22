@@ -168,10 +168,11 @@ await fetch((endpoint),{
   
   const HandleClickNotifs = (e) => {
     e.preventDefault();
+    setNotifsMessage("")
+    
     if(notifs)
     {
     setOpenNotifs(!OpenNotifs);
-    setNotifsMessage("")
     }
     else
     {

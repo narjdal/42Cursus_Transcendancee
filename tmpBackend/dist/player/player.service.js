@@ -1299,16 +1299,28 @@ let PlayerService = class PlayerService {
         return gameHistory;
     }
     async getGamesHistoryByUser(login) {
+        console.log('-----------------------------------------------');
         const palyer = await this.findPlayerByNickname(login);
+        console.log("The Player Of History is : ", palyer);
+        console.log('-----------------------------------------------');
         const gameHistory = await this.prisma.game_history.findMany({
             where: {
-                AND: [
-                    { winner_id: palyer.id },
+                OR: [
+                    {
+                        winner_id: palyer.id
+                    },
                     { looser_id: palyer.id },
                 ],
             }
         });
+        const LostHistory = await this.prisma.game_history.findMany({
+            where: {
+                looser_id: palyer.id,
+            }
+        });
+        console.log('-----------------------------------------------');
         console.log("--------------  Finish  getGamesHistoryByUser --------------------", gameHistory, " : ", palyer);
+        console.log('-----------------------------------------------');
         return gameHistory;
     }
     async getAchivements(login) {

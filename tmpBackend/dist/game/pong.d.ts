@@ -1,4 +1,4 @@
-export default class pong {
+export default class Pong {
     gameId: string;
     player_left: any;
     player_right: any;

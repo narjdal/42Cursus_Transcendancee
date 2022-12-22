@@ -679,11 +679,9 @@ useEffect(() => {
           <>
        <img src={userState.avatar} height="80" />
         <h2>{userState.nickname}</h2>
-        <h3>TotalGames: </h3>
+        <h3> Number Of Wins : </h3>
         <h2>{userState.wins}</h2>
-        <h3>Win:</h3>
-        <h2>{userState.wins}</h2>
-        <h3>Lose</h3>
+        <h3>Number of Loses : </h3>
         <h2>{userState.loses}</h2>
           </>
           <button type="button" className='' >

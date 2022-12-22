@@ -1150,6 +1150,7 @@ export class PlayerController {
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
+        
         console.log("--------------  Finish Game History ById--------------------",history);
         return response.status(200).send({ history });
     }

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const width = 600;
 const height = 400;
-class pong {
+class Pong {
     constructor(gameId, player1, player2) {
         this.spectators = new Set();
         this.gameId = gameId;
@@ -141,5 +141,5 @@ class pong {
         };
     }
 }
-exports.default = pong;
+exports.default = Pong;
 //# sourceMappingURL=pong.js.map
