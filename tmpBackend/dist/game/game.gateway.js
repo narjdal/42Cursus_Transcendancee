@@ -45,16 +45,12 @@ let GameGateway = class GameGateway {
     async handleDisconnect(client) {
         console.log("Client disconnected", client.id);
         if (this.PlayersInQueue[client.id]) {
-            console.log("This Plyaer is In Plyaer List  ... ", this.PlayersInQueue[client.id]);
             await this.handleLeaveGameAsPlayer(client, this.PlayersInQueue[client.id]);
             this.PlayersLoggedIn[this.PlayersInQueue[client.id]] = null;
             this.PlayersInQueue[client.id] = null;
         }
         if (this.PlayersInGameFromInvite[client.id]) {
-            console.log("This Plyaer is In PlayersInGame List  ... ", this.PlayersInGameFromInvite[client.id]);
             await this.handleLeaveGameAsPlayer(client, this.PlayersInGameFromInvite[client.id]);
-            console.log("deleting from PlayersInQueue List ! ");
-            console.log('-----------------------------------------------');
             const leaver = this.PlayersInGameFromInvite[client.id];
             const parse = JSON.parse(leaver);
             this.PlayersInGameFromInvite[client.id] = null;
@@ -67,29 +63,19 @@ let GameGateway = class GameGateway {
         console.log("newPlayer", client.id, user);
         this.PlayersInQueue[client.id] = user;
         this.PlayerInGame = this.gameService.newPlayer(client, user, this.PlayersInQueue);
-        console.log('-----------------------------------------------');
-        console.log(" PLAYERS IN PlayerInGame : ", this.PlayerInGame);
-        console.log('-----------------------------------------------');
-        console.log(" PLAYERS IN PlayerInGame : ", this.PlayersInQueue);
-        console.log('-----------------------------------------------');
         return;
     }
     async handleUpdate(client, user) {
         return this.gameService.update(client, user);
     }
     async handleGetAllGames(client, data) {
-        console.log("inside get all games ", data);
         return this.gameService.getAllGames(client);
     }
     async handleWatchGame(client, data) {
-        console.log("Inside Watch game !", data);
         return this.gameService.watchGame(client, data.user, data.gameId);
     }
     async handleLeaveGameAsPlayer(client, data) {
-        console.log('-----------------------------------------------');
-        console.log('-----------------------------------------------');
         this.PlayerInGame = await this.gameService.leaveGameAsPlayer(client, data);
-        console.log("Updated PlayersInGame fron LeaveGame : ", this.PlayerInGame);
     }
     async HandleAcceptInviteGame(client, data) {
         this.PlayersInGameFromInvite[client.id] = data.user;
@@ -98,8 +84,6 @@ let GameGateway = class GameGateway {
         const parsed = JSON.parse(data.user);
         const sender = data.sender;
         let inviteeNickname = parsed.nickname;
-        console.log('-----------------------------------------------');
-        console.log('-----------------------------------------------');
         const obj = {
             invite: inviteeNickname,
             user: sender
@@ -128,7 +112,6 @@ let GameGateway = class GameGateway {
                 });
             }
         }
-        console.log(" Inside ONlne UserBack :");
         let Ingame = [];
         this.PlayerInGame.forEach((game, key) => {
             Ingame.push({
@@ -137,23 +120,15 @@ let GameGateway = class GameGateway {
                 player_right: game.player_right,
             });
         });
-        console.log(" EMTING USERS IN GAME FROM LEFT PLAYER ", this.PlayerInGame);
         const PlayersInGameString = JSON.stringify(this.PlayerInGame, replacerFunc());
         client.emit('UsersInGame', {
             data: Ingame
         });
         console.log('-----------------------------------------------');
-        console.log("PlayersAccept : ", this.PlayersAccept);
-        console.log('-----------------------------------------------');
-        console.log("PlayersInvited : ", this.PlayersInvited);
-        console.log('-----------------------------------------------');
-        console.log("  : ", this.PlayersInGameFromInvite);
-        console.log('-----------------------------------------------');
         console.log('-----------------------------------------------');
     }
     async handleInviteGame(client, data) {
         this.PlayersInGameFromInvite[client.id] = data.user;
-        console.log("Inside inviteGame  !", data);
         const invite = data.invite;
         const user = JSON.parse(data.user).nickname;
         this.PlayerInGame[client.id] = user;

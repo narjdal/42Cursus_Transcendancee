@@ -41,8 +41,8 @@ export declare class PlayerService {
     getFriendships(userId: string): Promise<string[]>;
     getAllFriends(userId: string): Promise<{
         id: string;
-        avatar: string;
         nickname: string;
+        avatar: string;
     }[]>;
     getProfilesOfChatRooms(userId: string, room_id: string): Promise<{
         id: string;
@@ -51,8 +51,8 @@ export declare class PlayerService {
     }[]>;
     getAllMembersOfThisRoom(userId: string, room_id: string): Promise<string[]>;
     getListOfFriendsToAddinThisRoom(userId: string, room_id: string): Promise<{
-        avatar: string;
         nickname: string;
+        avatar: string;
     }[]>;
     getListOfFriendsToUpgradeAdmininThisRoom(userId: string, room_id: string): Promise<string[]>;
     getListOfFriendsToMuteinThisRoom(userId: string, room_id: string): Promise<string[]>;
@@ -97,8 +97,8 @@ export declare class PlayerService {
         senderId: string;
         sender: {
             id: string;
-            avatar: string;
             nickname: string;
+            avatar: string;
         };
         createdAt: Date;
         msg: string;

@@ -1,7 +1,7 @@
 const width = 600;
 const height = 400;
 
-export default class pong {
+export default class Pong {
   gameId: string;
   player_left: any;
   player_right: any;
@@ -149,8 +149,6 @@ export default class pong {
 
     console.log("loser => " ,losser.id)
     console.log("loser score => " ,losser.score)
-
-
 
     return {
       gameId: this.gameId,
