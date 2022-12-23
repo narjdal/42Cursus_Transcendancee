@@ -47,6 +47,7 @@ function getIdUserFromToken(cookie: string) {
 export class ChatGateway {
 	@WebSocketServer() wss: Socket;
 	private roomPrefix = 'roomSocket';
+	private allRooms = {};
 
 	constructor(private readonly playerservice: PlayerService) { }
 
@@ -109,7 +110,17 @@ export class ChatGateway {
 		if (!room)
 			return;
 
-		client.join(this.roomPrefix + data.roomId);
+		const perm = await this.playerservice.getPermissions(user.id, data.room);
+		if (perm.is_banned)
+			return;
+		// client.join(this.roomPrefix + data.room);
+		//create un array of rooms
+
+		if (!this.allRooms[this.roomPrefix + data.room])
+			this.allRooms[this.roomPrefix + data.room] = [];
+		this.allRooms[this.roomPrefix + data.room].push({ userId: user.id, socket: client.id });
+		console.log('ALL ROOMS', this.allRooms);
+
 	}
 
 	@SubscribeMessage("newmessage")
@@ -142,7 +153,7 @@ export class ChatGateway {
 		// user: Current_User, msgTxt: inputMsg, room: props.room.id
 
 		const newMessage = await this.playerservice.sendMessageinRoom(data.user.id, data.msgTxt, data.room);
-		const oldMessage = await this.playerservice.getMessagesOfRoom(data.user.id, data.room);
+		// const oldMessage = await this.playerservice.getMessagesOfRoom(data.user.id, data.room);
 
 		if (!newMessage) {
 			return;
@@ -192,17 +203,41 @@ export class ChatGateway {
 		//9dima
 
 
-		this.wss.to(this.roomPrefix + data.roomId).emit("addmsg",
-			{
-				sender: {
-					id: data.user.id,
-					avatar: data.user.avatar,
-					nickname: data.user.nickname,
-				},
-				OldMessages: oldMessage,
-				// muteduser: MutedUsers,
-				message: newMessage // event name 
-			});
+		for (var sck of this.allRooms[this.roomPrefix + data.room]) {
+
+			const perm = await this.playerservice.getPermissions(sck.userId, data.room);
+			if (!perm.is_banned) {
+				console.log("perm", perm, "sck", sck);
+
+				this.wss.to(sck.socket).emit("addmsg",
+					{
+						sender: {
+							id: data.user.id,
+							avatar: data.user.avatar,
+							nickname: data.user.nickname,
+						},
+						// OldMessages: oldMessage,
+						// muteduser: MutedUsers,
+						message: newMessage // event name 
+					});
+			}
+		}
+
+
+
+		// this.wss.to(this.roomPrefix + data.room).emit("addmsg",
+		// 			{
+		// 				sender: {
+		// 					id: data.user.id,
+		// 					avatar: data.user.avatar,
+		// 					nickname: data.user.nickname,
+		// 				},
+		// 				// OldMessages: oldMessage,
+		// 				// muteduser: MutedUsers,
+		// 				message: newMessage // event name 
+		// 			});
+
+
 	}
 
 	// @SubscribeMessage("message")
