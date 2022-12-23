@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "achievementsName" AS ENUM ('Bono', 'CleanSheet', 'Ziyech', 'hamdallah');
+
 -- CreateTable
 CREATE TABLE "Player" (
     "id" TEXT NOT NULL,
@@ -12,6 +15,33 @@ CREATE TABLE "Player" (
     "tfaSecret" TEXT,
 
     CONSTRAINT "Player_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "achievements" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "avatar" TEXT NOT NULL,
+    "playerId" TEXT NOT NULL,
+
+    CONSTRAINT "achievements_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "game_history" (
+    "id_game_history" SERIAL NOT NULL,
+    "winner_id" TEXT NOT NULL,
+    "winner_name" TEXT NOT NULL,
+    "winner_avatar" TEXT NOT NULL,
+    "winner_score" INTEGER NOT NULL,
+    "looser_id" TEXT NOT NULL,
+    "looser_name" TEXT NOT NULL,
+    "looser_avatar" TEXT NOT NULL,
+    "losser_score" INTEGER NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "game_history_pkey" PRIMARY KEY ("id_game_history")
 );
 
 -- CreateTable
@@ -73,6 +103,15 @@ CREATE UNIQUE INDEX "Permission_playerId_roomId_key" ON "Permission"("playerId",
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Friendship_senderId_receiverId_key" ON "Friendship"("senderId", "receiverId");
+
+-- AddForeignKey
+ALTER TABLE "achievements" ADD CONSTRAINT "achievements_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "Player"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "game_history" ADD CONSTRAINT "game_history_winner_id_fkey" FOREIGN KEY ("winner_id") REFERENCES "Player"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "game_history" ADD CONSTRAINT "game_history_looser_id_fkey" FOREIGN KEY ("looser_id") REFERENCES "Player"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Permission" ADD CONSTRAINT "Permission_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "Player"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
