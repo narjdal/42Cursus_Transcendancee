@@ -212,7 +212,7 @@ export class PlayerService {
         //     throw new UnauthorizedException("You are banned from this room");
         if (is_member && rooms_exist.is_dm === false && is_member.is_banned === true)
             return;
-            // throw new UnauthorizedException("Get Room by id : You are banned from this room");
+        // throw new UnauthorizedException("Get Room by id : You are banned from this room");
         // 3- return room
         const room = await this.prisma.chatRoom.findFirst({
             where: {
@@ -1316,7 +1316,7 @@ export class PlayerService {
                     select: {
                         id: true,
                         nickname: true,
-                        avatar: true, 
+                        avatar: true,
                     }
                 },
                 id: true,

@@ -5,6 +5,6 @@ import { MessagesModule } from './chat/chat.module';
 import { GameModule } from './game/game.module';
 
 @Module({
-  imports: [PlayerModule, AuthModule, MessagesModule,GameModule],
+  imports: [PlayerModule, AuthModule, MessagesModule, GameModule],
 })
-export class AppModule {}
+export class AppModule { }

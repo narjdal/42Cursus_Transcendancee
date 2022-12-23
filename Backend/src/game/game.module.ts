@@ -5,4 +5,4 @@ import { GameGateway } from './game.gateway';
 @Module({
   providers: [GameGateway, GameService]
 })
-export class GameModule {}
+export class GameModule { }

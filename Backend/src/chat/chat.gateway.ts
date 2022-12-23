@@ -1,5 +1,3 @@
-
-
 import { SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from "@nestjs/websockets";
 import { Socket } from "socket.io";
 
@@ -102,12 +100,12 @@ export class ChatGateway {
 			return;
 
 		//emyconsole.log('SOCKET JOIN', data);
-			
+
 		// validate room object passed in data
 		if (!data.room)
 			return;
 		// join room
-		const room = await this.playerservice.getRoomById(data.user.id,data.room);
+		const room = await this.playerservice.getRoomById(data.user.id, data.room);
 		if (!room)
 			return;
 
@@ -132,7 +130,7 @@ export class ChatGateway {
 		// IF ROOM EXISTS
 		if (!data.room)
 			return;
-		const room = await this.playerservice.getRoomById(data.user.id,data.room);
+		const room = await this.playerservice.getRoomById(data.user.id, data.room);
 		if (!room) {
 			// if user is member
 			return;
@@ -147,7 +145,7 @@ export class ChatGateway {
 		const oldMessage = await this.playerservice.getMessagesOfRoom(data.user.id, data.room);
 
 		if (!newMessage) {
-			return ;
+			return;
 		}
 
 		/*
@@ -159,7 +157,7 @@ export class ChatGateway {
 			createdAt   Time
 		}
 		*/
-		
+
 
 		//jdid
 		// for(var sck of this.roomPrefix){
@@ -183,7 +181,7 @@ export class ChatGateway {
 		// const numUsers = users ? users.length : 0;
 		// for(const user of users){
 		// 	const usersocket 
-		
+
 		// var MutedUsers = [];
 		// var userPermissions = await this.playerservice.getPermissions(data.user.id, data.room);
 		// if(userPermissions.statusMember == "muted"){
@@ -192,19 +190,19 @@ export class ChatGateway {
 		// console.log(await this.playerservice.getPermissions(data.user.id, data.room));
 		// console.log(userPermissions.statusMember);
 		//9dima
-		
 
-		this.wss.to(this.roomPrefix + data.roomId).emit("addmsg", 
-		{
-			sender:{
-				id: data.user.id,
-				avatar: data.user.avatar,
-				nickname: data.user.nickname,
-			},
-			OldMessages: oldMessage,
-			// muteduser: MutedUsers,
-			message: newMessage // event name 
-		});
+
+		this.wss.to(this.roomPrefix + data.roomId).emit("addmsg",
+			{
+				sender: {
+					id: data.user.id,
+					avatar: data.user.avatar,
+					nickname: data.user.nickname,
+				},
+				OldMessages: oldMessage,
+				// muteduser: MutedUsers,
+				message: newMessage // event name 
+			});
 	}
 
 	// @SubscribeMessage("message")

@@ -5,13 +5,13 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { request } from 'http';
 import { authenticator } from 'otplib';
-import { VeriftyTfaDto} from './dtos/tfa.dto';
+import { VeriftyTfaDto } from './dtos/tfa.dto';
 import { toFileStream } from 'qrcode';
 // import * as cookieParser from 'cookie-parser';
 
 @Controller('auth')
 export class AuthController {
-	constructor(private readonly authService: AuthService) {}
+	constructor(private readonly authService: AuthService) { }
 
 	@Get('/signup')
 	@UseGuards(AuthGuard('42'))
@@ -21,9 +21,9 @@ export class AuthController {
 
 	@Get('/redirect')
 	@UseGuards(AuthGuard('42'))
-	async login(@Req() request, @Res({passthrough:true}) res: Response) {
+	async login(@Req() request, @Res({ passthrough: true }) res: Response) {
 
-		const user =  await this.authService.findORcreate(request.user);
+		const user = await this.authService.findORcreate(request.user);
 
 		if (user.tfa === true) {
 			// redirect to 2fa page
@@ -31,7 +31,7 @@ export class AuthController {
 			res.cookie(
 				'2fa',
 				user.id,
-				{httpOnly:true,}
+				{ httpOnly: true, }
 			);
 			return res.status(302).redirect(`http://localhost:3000/verify`);   // url to 2fa page
 		}
@@ -46,7 +46,7 @@ export class AuthController {
 		res.cookie(
 			process.env.AUTHCOOKIE,
 			secretData.token,
-			{httpOnly:true,}
+			{ httpOnly: true, }
 		);
 
 		return res.status(302).redirect(`http://localhost:3000/`);
@@ -60,17 +60,17 @@ export class AuthController {
 			throw new UnauthorizedException('User not found');
 		}
 
-		const  otpauth_url = await this.authService.generateQrCode(user.id);
+		const otpauth_url = await this.authService.generateQrCode(user.id);
 
 		// // this.playerService.pipeQrCodeStream(otpauth_url, res);
-        // return toFileStream(res, otpauth_url);
+		// return toFileStream(res, otpauth_url);
 		console.log("otpauth_url", otpauth_url);
 		return res.status(200).send(otpauth_url);
-        // return response.send(
-        //     {
-        //         "message": "2FA enabled"
-        //     }
-        // );
+		// return response.send(
+		//     {
+		//         "message": "2FA enabled"
+		//     }
+		// );
 	}
 
 	@Post('/2fa/verify')
@@ -86,7 +86,7 @@ export class AuthController {
 			throw new UnauthorizedException('2fa not enabled');
 		}
 		console.log("Before Verify", body.code, user.tfaSecret);
-		const is_code_valid = await authenticator.verify({ token: body.code, secret: user.tfaSecret});
+		const is_code_valid = await authenticator.verify({ token: body.code, secret: user.tfaSecret });
 		if (!is_code_valid) {
 			throw new UnauthorizedException('Invalid code');
 		}
@@ -107,25 +107,25 @@ export class AuthController {
 		res.cookie(
 			process.env.AUTHCOOKIE,
 			secretData.token,
-			{httpOnly:true,}
+			{ httpOnly: true, }
 		);
 
 		// return res.status(302).redirect(`http://localhost:3000/`);
 
-        res.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }
-        )
-        // console.log("-------------- Finish Request Friendship ------------------");
-        res.status(200).send({
-                message: "2FA verified"
-            }
-        );
+		res.set({
+			'Access-Control-Allow-Origin': 'http://localhost:3000'
+		}
+		)
+		// console.log("-------------- Finish Request Friendship ------------------");
+		res.status(200).send({
+			message: "2FA verified"
+		}
+		);
 	}
 
 	@Get('/logout')
 	@UseGuards(AuthGuard('jwt'))
-	async logout(@Req() request, @Res({passthrough:true}) res: Response) {
+	async logout(@Req() request, @Res({ passthrough: true }) res: Response) {
 		res.clearCookie(process.env.AUTHCOOKIE);
 		return res.status(302).redirect(`http://localhost:3000/`);
 	}

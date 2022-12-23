@@ -1142,16 +1142,16 @@ export class PlayerController {
     }
 
     @Get('/gameHistoryById/:id')
-    async gameHistoryById(@Param() id: string, @Req() request, @Res() response){
-        console.log("---------------- Game History ById ----------------",id['id']);
+    async gameHistoryById(@Param() id: string, @Req() request, @Res() response) {
+        console.log("---------------- Game History ById ----------------", id['id']);
         console.log("Game History ById, login: ", request.user.playerId);
 
         const history = await this.playerService.getGamesHistoryByUser(id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
-        
-        console.log("--------------  Finish Game History ById--------------------",history);
+
+        console.log("--------------  Finish Game History ById--------------------", history);
         return response.status(200).send({ history });
     }
 

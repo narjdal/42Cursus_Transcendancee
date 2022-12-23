@@ -67,7 +67,7 @@ export default class Pong {
     }
   }
 
-  update(user:any): any {
+  update(user: any): any {
     this.music = '';
     if (this.ball.x - this.ball.radius < 0) {
       this.player_right.score++;
@@ -135,28 +135,28 @@ export default class Pong {
   getGameHistory(): any {
     let winner: any;
     let losser: any;
-    
-    if (this.player_left.score > this.player_right.score){
+
+    if (this.player_left.score > this.player_right.score) {
       winner = this.player_left;
       losser = this.player_right;
-    }else {
+    } else {
       winner = this.player_right;
       losser = this.player_left;
     }
-    console.log("HISTORY => " ,this.gameId)
-    console.log("winner => " ,winner.id)
-    console.log("win score => " ,winner.score)
+    console.log("HISTORY => ", this.gameId)
+    console.log("winner => ", winner.id)
+    console.log("win score => ", winner.score)
 
-    console.log("loser => " ,losser.id)
-    console.log("loser score => " ,losser.score)
+    console.log("loser => ", losser.id)
+    console.log("loser score => ", losser.score)
 
     return {
       gameId: this.gameId,
       winner: winner.id,
-      winner_Player:winner,
+      winner_Player: winner,
       winnerScore: winner.score,
       loser: losser.id,
-      loser_Player:losser,
+      loser_Player: losser,
       loserScore: losser.score,
     };
   }

@@ -13,4 +13,4 @@ import { jwtauthGuard } from 'src/auth/jwt-oauth.guard';
 	providers: [JwtStrategy, PrismaService, PlayerService],
 	controllers: [PlayerController]
 })
-export class PlayerModule {}
+export class PlayerModule { }
