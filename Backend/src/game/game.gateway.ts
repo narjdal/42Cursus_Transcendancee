@@ -3,7 +3,8 @@ import {
   WebSocketGateway,
   SubscribeMessage
 } from '@nestjs/websockets';
-import Pong from './pong';
+// import Pong from './pong';
+import  {Game} from './entities/game.entity';
 
 import { Socket } from "socket.io";
 import { GameService } from './game.service';
@@ -47,7 +48,7 @@ export class GameGateway {
 
 
 
-  private PlayerInGame: Map<string, Pong> = new Map();
+  private PlayerInGame: Map<string, Game> = new Map();
 
 
   // private PlayerInGame: Map<string, Pong> = new Map();
@@ -73,13 +74,13 @@ export class GameGateway {
     
 
   async handleConnection(client: Socket, ...args: any[]) {
-    // console.log("Client Game Connected", client.id);
+    console.log("Client Game Connected", client.id);
   }
 
   
   async handleDisconnect(client: Socket) {
 
-		// console.log("Client disconnected", client.id);
+		console.log("Client disconnected", client.id);
 
     if(this.PlayersInQueue[client.id])
     {
@@ -114,7 +115,7 @@ export class GameGateway {
     this.PlayerInGame[client.id] = 0;
 
     // this.PlayerInGame.delete(parse.nickname);
-    // console.log('-----------------------------------------------');
+    console.log('-----------------------------------------------');
 
     //  console.log( "Leaver is  : ",leaver)
     //  console.log("Array : ",this.PlayersInvited);
@@ -128,7 +129,7 @@ export class GameGateway {
 
   @SubscribeMessage("newPlayer")
   async handleNewPlayer(client: Socket, user: any): Promise<void> {
-    // console.log("newPlayer", client.id, user);
+    console.log("newPlayer", client.id, user);
     this.PlayersInQueue[client.id] = user;
     // this.PlayerInGame[client.id] = user.nickname
     this.PlayerInGame = this.gameService.newPlayer(client,user,this.PlayersInQueue);
@@ -262,8 +263,8 @@ export class GameGateway {
     this.PlayersLoggedIn[parsed.nickname] = client;
     // if(this.Invate)
     const nick : string = parsed.nickname
-    // console.log("Inside OnluneGameUsersBack")
-    // console.log('-----------------------------------------------');
+    console.log("Inside OnluneGameUsersBack")
+    console.log('-----------------------------------------------');
     const obj = {
       invite:nick
     }
@@ -345,11 +346,11 @@ export class GameGateway {
 
 
     // console.log("Length : " , this.Invates.length, "This Invates : ",result,"nick : ",nick,"text: ",text)
-    // console.log('-----------------------------------------------');
+    console.log('-----------------------------------------------');
 
     // console.log("This Invates : ",this.Invates,)
 
-    // console.log('-----------------------------------------------');
+    console.log('-----------------------------------------------');
   
     // console.log("Adding To LoggedIn " , parsed)
 
@@ -411,7 +412,7 @@ export class GameGateway {
 
     // console.log("Inside InvitedUser  !",data);
     const parsed = JSON.parse(data.user);
-    // console.log(" : ",parsed.nickname)
+    console.log(" : ",parsed.nickname)
     this.PlayersInvited[parsed.nickname] = {
       data,
       client

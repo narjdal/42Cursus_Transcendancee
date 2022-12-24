@@ -24,7 +24,7 @@ export default class Pong {
     };
     this.player_left = {
       id: player1,
-      x: 0,
+      x: 10,
       y: (height - 100) / 2,
       width: 10,
       height: 100,
@@ -32,7 +32,7 @@ export default class Pong {
     };
     this.player_right = {
       id: player2,
-      x: width - 10,
+      x: width - 20,
       y: (height - 100) / 2,
       width: 10,
       height: 100,
@@ -143,12 +143,12 @@ export default class Pong {
       winner = this.player_right;
       losser = this.player_left;
     }
-    // console.log("HISTORY => " ,this.gameId)
-    // console.log("winner => " ,winner.id)
-    // console.log("win score => " ,winner.score)
+    console.log("HISTORY => " ,this.gameId)
+    console.log("winner => " ,winner.id)
+    console.log("win score => " ,winner.score)
 
-    // console.log("loser => " ,losser.id)
-    // console.log("loser score => " ,losser.score)
+    console.log("loser => " ,losser.id)
+    console.log("loser score => " ,losser.score)
 
     return {
       gameId: this.gameId,

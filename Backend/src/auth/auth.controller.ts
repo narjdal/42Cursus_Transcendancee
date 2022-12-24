@@ -64,7 +64,7 @@ export class AuthController {
 
 		// // this.playerService.pipeQrCodeStream(otpauth_url, res);
         // return toFileStream(res, otpauth_url);
-		// console.log("otpauth_url", otpauth_url);
+		console.log("otpauth_url", otpauth_url);
 		return res.status(200).send(otpauth_url);
         // return response.send(
         //     {
@@ -85,12 +85,12 @@ export class AuthController {
 		if (!user.tfaSecret) {
 			throw new UnauthorizedException('2fa not enabled');
 		}
-		// console.log("Before Verify", body.code, user.tfaSecret);
+		console.log("Before Verify", body.code, user.tfaSecret);
 		const is_code_valid = await authenticator.verify({ token: body.code, secret: user.tfaSecret});
 		if (!is_code_valid) {
 			throw new UnauthorizedException('Invalid code');
 		}
-		// console.log("After Verify", body.code, user.tfaSecret);
+		console.log("After Verify", body.code, user.tfaSecret);
 		// return res.send({
 		// 	message: '2fa verified'
 		// });
