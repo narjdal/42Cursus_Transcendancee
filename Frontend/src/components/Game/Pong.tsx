@@ -19,7 +19,7 @@ export default class pong {
     };
     this.player_left = {
       id: id_1,
-      x: 0,
+      x: 20,
       y: (height - 100) / 2,
       width: 10,
       height: 100,
@@ -27,7 +27,7 @@ export default class pong {
     };
     this.player_right = {
       id: id_2,
-      x: width - 10,
+      x: width - 30,
       y: (height - 100) / 2,
       width: 10,
       height: 100,
@@ -35,7 +35,7 @@ export default class pong {
     };
     this.music = "";
     if (difficulty === "easy") {
-      this.compuerLevel = 0.25;
+      this.compuerLevel = 0.1;
     }
     if (difficulty === "medium") {
       this.compuerLevel = 0.5;
@@ -78,17 +78,22 @@ export default class pong {
       this.player_right.y +=
         (this.ball.y - (this.player_right.y + this.player_right.height / 2)) *
         this.compuerLevel;
+        // this.player_left.y = this.player_right.y;
     } else {
       this.player_right.y = position_2 * height;
     }
-
-    //wall collision
+    if (this.ball.y < 20 || this.ball.y > height - 20)
+    {
+      console.log('ball velocity Y: ', this.ball.velocity_Y);
+      this.ball.y = this.ball.y < 20 ? 22 : height - 22;
+    }
+    // wall collision
     if (
-      this.ball.y < this.ball.radius ||
-      this.ball.y + this.ball.radius > height
+      this.ball.y < this.ball.radius + 20 || this.ball.y + this.ball.radius + 20 > height
     ) {
       this.ball.velocity_Y *= -1;
       this.music = "wall";
+      this.ball.y = this.ball.y < this.ball.radius + 20 ?  this.ball.y-- : this.ball.y++; 
     }
     //player collision
     let player = this.ball.x < width / 2 ? this.player_left : this.player_right;
@@ -100,7 +105,7 @@ export default class pong {
       let direction = this.ball.x + this.ball.radius < width / 2 ? 1 : -1;
       this.ball.velocity_X = direction * this.ball.speed * Math.cos(angle_rad);
       this.ball.velocity_Y = this.ball.speed * Math.sin(angle_rad);
-      this.ball.speed += 0.3;
+      this.ball.speed += 0.6;
     }
     return this.onUpdate();
   }

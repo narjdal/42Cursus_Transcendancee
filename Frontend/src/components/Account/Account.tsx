@@ -1,11 +1,11 @@
-import React from 'react';
+// import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate} from 'react-router-dom';
 import ProfilePicUpload from '../Account/ProfilePicUpload';
 import UpdateNickname from '../Account/UpdateNickname';
 import './Account.css'
 import { Link } from 'react-router-dom';
-import Login from '../login/login';
+// import Login from '../login/login';
 import DisplayAchievementsList from './Account_pages/Achievements/DisplayAchievementsList';
 import DisplayMatchHistory from './Account_pages/DisplayMatchHistory';
 
@@ -54,7 +54,7 @@ async function FetchGameHistory() {
         setMiniHistory(json.history)
         }
 
-        if(json.statusCode == "404")
+        if(json.statusCode === "404")
         {
         setErrorMessage(json.message);
         
@@ -99,7 +99,7 @@ async function FetchAchivementsList  ()  {
 
         }
 
-        if(json.statusCode == "404")
+        if(json.statusCode === "404")
         {
         setErrorMessage(json.message);
 
@@ -118,7 +118,7 @@ async function FetchAchivementsList  ()  {
 }
   useEffect(() => {
 
-    const authenticated = localStorage.getItem("authenticated");
+    // const authenticated = localStorage.getItem("authenticated");
   const loggeduser = localStorage.getItem("user");
  
 

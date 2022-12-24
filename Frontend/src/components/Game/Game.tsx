@@ -15,19 +15,16 @@ const buttonsStyle = (width: number, height: number, button: any,
   button.style("width", `${width * 0.5}`.toString() + "px");
   button.position(x, y);
   button.style("height", `${height * 0.1}`.toString() + "px");
-  button.mouseOver(() => {
-    // button.style('background-color', '#f2f2f2');
-  });
 };
 
-const handleNewPlayerPosition = (postion: number) : number => {
-  if (postion <= 0) {
+const handelPostion = (postiton: number) => {
+  if (postiton <= 0) {
     return 0;
   }
-  if (postion >= 0.75) {
+  if (postiton >= 0.75) {
     return 0.75;
   }
-  return postion;
+  return postiton;
 }
 
 const buttonRemove = (button: any) => {
@@ -397,7 +394,7 @@ useEffect(() => {
   useEffect(() => {
     if(JoinedQueue)
     {
-
+      
       gameState.socket.emit ("newPlayer", localStorage.getItem("user")!);
       gameState.socket.on("matchFound", (data: any) => {
         gameState.pongData = JSON.parse(data.pongData);
@@ -405,19 +402,19 @@ useEffect(() => {
         gameState.gameStatue = "Playing";
         setPlaying(true);
       });
-
-
-
-
+      
+      
+      
+      
     }
-   
+    
   },[JoinedQueue])
-
+  
   useEffect(() => {
     if(Playing){
-
+      
       console.log("update player",gameState);
-
+      
       gameState.socket.on("update", (data: any) => 
       {
         gameState.pongData = JSON.parse(data.pongData);
@@ -433,24 +430,25 @@ useEffect(() => {
         else
         {
           console.log("Inside Else if Update ");
-      if (gameState.pongData.isPlaying)
+          if (gameState.pongData.isPlaying)
           setPlaying(true);
-        else
+          else
           setPlaying(false);
-      }
         }
+      }
       );
-
+      
       // return () => {
-      //   console.log("Leaving here");
-      //   gameState.socket.emit("leaveGameAsPlayer",{
-      //     user:localStorage.getItem("user")!
-      //   })
-      // }
-    }
-  },[Playing])
-
-  const draw = (p5: p5Types) => {
+        //   console.log("Leaving here");
+        //   gameState.socket.emit("leaveGameAsPlayer",{
+          //     user:localStorage.getItem("user")!
+          //   })
+          // }
+        }
+      },[Playing])
+      
+      const draw = (p5: p5Types) => {
+    p5.textAlign(p5.CENTER);
     p5.fill(42, 71, 137);
     p5.rect(0, 0, props.width, props.height);
     if (gameState.gameStatue === "Inloading") {
@@ -488,14 +486,14 @@ useEffect(() => {
         }
         else
         {
-      p5.text("Waiting for the invited player", props.width / 2 - 150, props.height / 4);
+      p5.text("Waiting for the invited player", props.width / 2 , props.height / 4);
 
           // console.log("BRRRRR");
         }
       }
       else
       {
-      p5.text("Waiting for a player", props.width / 2 - 150, props.height / 4);
+      p5.text("Waiting for a player", props.width / 2 , props.height / 4);
 
       }
     
@@ -519,15 +517,14 @@ useEffect(() => {
       {
       // console.log("ONLINE")
 
-        if (gameState.playerTool === "mouse" && p5.mouseY > 0 &&
-          p5.mouseY < props.height - props.height / 4) {
+        if (gameState.playerTool === "mouse" 
+          && p5.mouseY > 0 && p5.mouseY < props.height - props.height / 4) {
             gameState.playerPosition = p5.mouseY / props.height;
         }
         else if (gameState.playerTool === "keybord") {
           if (p5.keyIsDown(p5.UP_ARROW) && gameState.playerPosition > 0) {
             // gameState.pongData.playerLeft.position -= 0.03;
             gameState.playerPosition -= 0.03;
-
           }
           else if (p5.keyIsDown(p5.DOWN_ARROW) && gameState.pongData.playerLeft.position < 0.75) {
             gameState.playerPosition += 0.03;
@@ -555,27 +552,34 @@ useEffect(() => {
       else if (gameState.mode === "offline" && gameState.numberOfPlayers === 1) {
         if (gameState.playerTool === "mouse" && p5.mouseY > 0 &&
           p5.mouseY < props.height - props.height / 4) {
-          gameState.pongData.playerLeft.position = p5.mouseY / props.height;
+          // gameState.pongData.playerLeft.position = p5.mouseY / props.height;
+          gameState.pongData.playerLeft.position = handelPostion(p5.mouseY / props.height);
         }
         else if (gameState.playerTool === "keybord") {
-          if (p5.keyIsDown(p5.UP_ARROW) && gameState.pongData.playerLeft.position > 0) {
-            gameState.pongData.playerLeft.position -= 0.03;
+          if (p5.keyIsDown(p5.UP_ARROW)) {
+            // gameState.pongData.playerLeft.position -= 0.03;
+            gameState.pongData.playerLeft.position = handelPostion(gameState.pongData.playerLeft.position - 0.03);
           }
-          if (p5.keyIsDown(p5.DOWN_ARROW) && gameState.pongData.playerLeft.position < 0.75) {
-            gameState.pongData.playerLeft.position += 0.03;
+          if (p5.keyIsDown(p5.DOWN_ARROW) ) {
+            gameState.pongData.playerLeft.position = handelPostion(gameState.pongData.playerLeft.position + 0.03);
+            // gameState.pongData.playerLeft.position += 0.03;
+            
           }
         }
         gameState.pongData = gameState.pongClass.update(gameState.pongData.playerLeft.position);
       }
       else if (gameState.mode === "offline" && gameState.numberOfPlayers === 2) {
         if (p5.mouseY > 0 && p5.mouseY < props.height - props.height / 4) {
-          gameState.pongData.playerLeft.position = p5.mouseY / props.height;
+          // gameState.pongData.playerLeft.position = p5.mouseY / props.height;
+          gameState.pongData.playerLeft.position = handelPostion(p5.mouseY / props.height);
         }
         if (p5.keyIsDown(p5.UP_ARROW) && gameState.pongData.playerRight.position > 0) {
-          gameState.pongData.playerRight.position -= 0.03;
+          // gameState.pongData.playerRight.position -= 0.03;
+          gameState.pongData.playerRight.position = handelPostion(gameState.pongData.playerRight.position - 0.03);
         }
         if (p5.keyIsDown(p5.DOWN_ARROW) && gameState.pongData.playerRight.position < 0.75) {
-          gameState.pongData.playerRight.position += 0.03;
+          // gameState.pongData.playerRight.position += 0.03;
+          gameState.pongData.playerRight.position = handelPostion(gameState.pongData.playerRight.position + 0.03);
         }
         gameState.pongData = gameState.pongClass.update(gameState.pongData.playerLeft.position,
           gameState.pongData.playerRight.position);
@@ -586,19 +590,21 @@ useEffect(() => {
         p5.text(gameState.pongData.playerLeft.score, props.width / 4, props.height / 8);
         p5.text(gameState.pongData.playerRight.score, (props.width * 3) / 4, props.height / 8);
         p5.textSize(props.width / 20);
-        p5.text(gameState.pongData.playerLeft.name, (props.width * 3) / 16, (props.height * 2) / 8);
-        p5.text(gameState.pongData.playerRight.name, (props.width * 11) / 16, (props.height * 2) / 8);
+        p5.text(gameState.pongData.playerLeft.name, (props.width ) / 4, (props.height * 2) / 8);
+        p5.text(gameState.pongData.playerRight.name, (props.width * 3) / 4, (props.height * 2) / 8);
         for (let i = 0; i <= 10; i++) {
           p5.rect(props.width * 0.49, (i * props.height) / 8, props.width * 0.02, props.height / 20);
         }
+        p5.rect(props.width / 30, 0, props.width - props.width / 15, props.height / 20);
+        p5.rect(props.width / 30, props.height - props.height / 20, props.width - props.width / 15, props.height / 20);
         p5.fill(192, 238, 253);
         p5.circle(gameState.pongData.ball.x * props.width, gameState.pongData.ball.y * props.height,
           gameState.radius);
         p5.fill(102, 181, 255);
-        p5.rect(0, gameState.pongData.playerLeft.position * props.height, props.width / 60,
+        p5.rect(props.width /  60, gameState.pongData.playerLeft.position * props.height, props.width / 60,
         props.height / 4);
         p5.fill(77, 77, 255);
-        p5.rect(props.width - props.width / 60,
+        p5.rect(props.width - props.width / 30,
         gameState.pongData.playerRight.position * props.height, props.width / 60, props.height / 4);
         if (gameState.pongData.musicIndice === "hit") {
           gameState.sound.hit.play();
@@ -624,16 +630,19 @@ useEffect(() => {
       if(VersusLeave)
       {
         const text = leaverName  + " Has left the game "
-      p5.text(text, props.width / 4, props.height / 2);
-
+        p5.text(text, props.width / 4, props.height / 2);
+        
       }
       else
       {
-      p5.text("Game Over", props.width / 4, props.height / 2);
-
-        }
+        p5.text("Game Over", props.width / 2, props.height / 2);
+      }
       p5.textSize(props.width / 20);
-      p5.text("Press Space To Play Again", props.width / 4, (props.height * 3) / 4);
+      p5.text("Press Space To Play Again", props.width / 2, props.height / 4);
+      const result = gameState.pongData.playerLeft.name + ' [ ' +
+      gameState.pongData.playerLeft.score + ' : ' + gameState.pongData.playerRight.score + ' ] ' +
+      gameState.pongData.playerRight.name;
+      p5.text(result , props.width / 2, (props.height * 3) / 4);
       if (p5.keyIsDown(p5.ENTER)) {
         window.location.reload();
       }

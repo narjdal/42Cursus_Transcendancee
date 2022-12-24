@@ -24,7 +24,7 @@ export default class Pong {
     };
     this.player_left = {
       id: player1,
-      x: 0,
+      x: 10,
       y: (height - 100) / 2,
       width: 10,
       height: 100,
@@ -32,7 +32,7 @@ export default class Pong {
     };
     this.player_right = {
       id: player2,
-      x: width - 10,
+      x: width - 20,
       y: (height - 100) / 2,
       width: 10,
       height: 100,
