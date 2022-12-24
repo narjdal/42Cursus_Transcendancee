@@ -25,6 +25,36 @@ export class PlayerService {
 
     // ------------------ 0- Find Player && get Player ------------------
 
+    async getPlayerById(userId: string)//: Promise<any> {
+    {
+        // console.log("FindPlayerById", userId);  // userId ===> roomId
+        if (!userId) {
+            // throw new HttpException('User Id is required', 400);
+            throw new NotFoundException('User Id is required');
+        }
+        // deleted await cuz found deleting promise
+        const player = this.prisma.player.findUnique({
+            where: {
+                id: userId,
+            },
+            select: {
+                id: true,
+                nickname: true,
+                firstName: true,
+                lastName: true,
+                avatar: true,
+                wins: true,
+                loses: true,
+            }
+        });
+
+        if (!player) {
+            throw new NotFoundException("User Id is not found")
+            // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
+        }
+        return player;
+    }
+
     async findPlayerById(userId: string)//: Promise<any> {
     {
         // console.log("FindPlayerById", userId);  // userId ===> roomId
@@ -42,6 +72,29 @@ export class PlayerService {
         if (!player) {
             throw new NotFoundException("User Id is not found")
             // throw new HttpException('User ÷ found', HttpStatus.NOT_FOUND);
+        }
+        return player;
+    }
+
+    async getPlayerByNickname(login: string)//: Promise<any> {
+    {
+        const player = await this.prisma.player.findUnique({
+            where: {
+                nickname: login
+            },
+            select: {
+                id: true,
+                nickname: true,
+                firstName: true,
+                lastName: true,
+                avatar: true,
+                wins: true,
+                loses: true,
+            }
+        });
+
+        if (!player) {
+            throw new NotFoundException('Profile not found')
         }
         return player;
     }
@@ -127,6 +180,15 @@ export class PlayerService {
             },
             data: {
                 nickname: nickname,
+            },
+            select: {
+                id: true,
+                nickname: true,
+                firstName: true,
+                lastName: true,
+                avatar: true,
+                wins: true,
+                loses: true,
             }
         });
         return player;
@@ -158,7 +220,7 @@ export class PlayerService {
                 avatar: avatar_url,
             }
         });
-        // console.log("player withe new avatar ", player_avatar)
+        console.log("player withe new avatar ", player_avatar)
         return player_avatar;
     }
 
@@ -212,7 +274,7 @@ export class PlayerService {
         //     throw new UnauthorizedException("You are banned from this room");
         if (is_member && rooms_exist.is_dm === false && is_member.is_banned === true)
             return;
-            // throw new UnauthorizedException("Get Room by id : You are banned from this room");
+        // throw new UnauthorizedException("Get Room by id : You are banned from this room");
         // 3- return room
         const room = await this.prisma.chatRoom.findFirst({
             where: {
@@ -784,7 +846,7 @@ export class PlayerService {
         })
 
         // if (friendship) ==> status = friend
-        return friendship;
+        // return friendship;
     }
 
     // 3- block // ana blockit howa[friendname]
@@ -834,6 +896,7 @@ export class PlayerService {
                 },
             })
         }
+        // no return
     }
 
     // 4- delete aka unfriend [unblock]
@@ -1202,6 +1265,7 @@ export class PlayerService {
     // 1- Get Permissions of the user in the room
 
     async getPermissions(userId: string, id_room: string) {
+        console.log("------------------------getPermissions------------------");
         let status = null;
 
         status = await this.prisma.permission.findFirst({
@@ -1211,26 +1275,31 @@ export class PlayerService {
                     { roomId: id_room },
                 ]
             },
-            // select: {
-            //     statusMember: true,
-            //     is_banned: true,
-            //     is_muted: true,
-            //     // blocked_since: true,
-            //     // muted_until: true,
-
-            // }
+            select: {
+                statusMember: true,
+                is_banned: true,
+                is_muted: true,
+            }
         })
         if (status && status.is_muted === true) {
+            console.log("status.duration", status.duration); // en minutes
+            console.log("status.muted_since.getTime() + 1000 * 60 * status.duration", status.muted_since.getTime() + 1000 * 60 * status.duration);
+            console.log("new Date().getTime()", new Date().getTime());
             if (status.muted_since.getTime() + 1000 * 60 * status.duration < new Date().getTime())
-                status = await this.prisma.permission.updateMany({
+                status = await this.prisma.permission.update({
                     where: {
-                        AND: [
-                            { playerId: userId },
-                            { roomId: id_room },
-                        ],
+                        playerId_roomId: {
+                            playerId: userId,
+                            roomId: id_room,
+                        },
                     },
                     data: {
                         is_muted: false,
+                    },
+                    select: {
+                        statusMember: true,
+                        is_banned: true,
+                        is_muted: true,
                     }
                 })
         }
@@ -1316,7 +1385,7 @@ export class PlayerService {
                     select: {
                         id: true,
                         nickname: true,
-                        avatar: true, 
+                        avatar: true,
                     }
                 },
                 id: true,
@@ -1330,24 +1399,24 @@ export class PlayerService {
 
     // 3- send message in chat room 
 
-    async sendMessage(userId: string, room_id: string, message: string) {
-        const me = await this.findPlayerById(userId);
-        // const room = await this.prisma.chatRoom.findUnique({
-        //     where: { id: room_id }
-        // });
+    // async sendMessage(userId: string, room_id: string, message: string) {
+    //     const me = await this.findPlayerById(userId);
+    //     // const room = await this.prisma.chatRoom.findUnique({
+    //     //     where: { id: room_id }
+    //     // });
 
-        // ASlan wa faslan makatcrea DM room ta receiver accept accept Friendship request
-        // if friendship status is blocked
-        // else (friendship status is friend)
-        const messageSent = await this.prisma.message.create({
-            data: {
-                msg: message,
-                senderId: me.id,
-                roomId: room_id
-            }
-        })
-        return messageSent;
-    }
+    //     // ASlan wa faslan makatcrea DM room ta receiver accept accept Friendship request
+    //     // if friendship status is blocked
+    //     // else (friendship status is friend)
+    //     const messageSent = await this.prisma.message.create({
+    //         data: {
+    //             msg: message,
+    //             senderId: me.id,
+    //             roomId: room_id
+    //         }
+    //     })
+    //     return messageSent;
+    // }
 
     async sendMessageinRoom(userId: string, message: string, room_id: string) {
         const user = await this.findPlayerById(userId);
@@ -1589,6 +1658,7 @@ export class PlayerService {
                 statusMember: "admin",
             },
         });
+        // no return
     }
 
     async unsetAdmin(login: string, room_id: string) {
@@ -1606,6 +1676,7 @@ export class PlayerService {
                 statusMember: "member",
             },
         });
+        // no return
     }
 
     // 6- ban member if u are admin or owner
@@ -1625,6 +1696,7 @@ export class PlayerService {
                 is_banned: true,
             },
         });
+        // no return
     }
 
     // 6- ban member if u are admin or owner
@@ -1641,7 +1713,9 @@ export class PlayerService {
 
             },
         });
+        // no return
     }
+
     // 7- mute OR umute member if u are admin or owner
 
     async muteMember(login: string, room_id: string, time: number) {
@@ -1663,6 +1737,7 @@ export class PlayerService {
                 duration: time,
             },
         });
+        // no return
     }
 
     async unmuteMember(login: string, room_id: string) {
@@ -1681,6 +1756,7 @@ export class PlayerService {
                 muted_since: new Date(),
             },
         });
+        // no return
     }
 
     // 8- leave channel // delete the player from the permision
@@ -1697,13 +1773,8 @@ export class PlayerService {
 
             },
         });
+        // no return
     }
-
-
-    // 9- create a password to channel or delete password if is owner
-
-
-
 
     //--------------------------------------------------------------------------------------------------------------------
     // A- get all games history
