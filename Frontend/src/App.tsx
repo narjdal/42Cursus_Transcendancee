@@ -273,7 +273,7 @@ useEffect(() => {
           <Routes>
             <Route path='/' element={<Account />} />
             <Route path='/Pong' element={<Pong />} />
-            <Route path='/LeaderBoard' element={<LeaderBoard />} />
+            {/* <Route path='/LeaderBoard' element={<LeaderBoard />} /> */}
             <Route path='/Home' element={<Home />} />
             <Route path='/Account_infos' element={<Pseudo />} />
             <Route path='/AboutUs' element={<AboutUs />} />
