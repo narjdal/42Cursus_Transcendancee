@@ -8,23 +8,23 @@ import { AuthService } from './auth.service';
 export class OauthStrategy extends PassportStrategy(Strategy, '42') {
   constructor(private authService: AuthService) {
     super({
-      clientID: process.env.UID,
-      clientSecret: process.env.SECRET,
-      callbackURL: process.env.callback,
+        clientID: process.env.UID,
+        clientSecret: process.env.SECRET,
+        callbackURL: process.env.callback,
 
-      profileFields: {
-        'nickname': 'login',
-        'firstName': 'first_name',
-        'lastName': 'last_name',
-        'avatar': 'image.link',
-        'email': 'email',
-      }
+        profileFields: {
+            'nickname': 'login',
+            'firstName': 'first_name',
+            'lastName': 'last_name',
+            'avatar': 'image.link',
+            'email': 'email',
+        }
     });
   }
 
   async validate(accessToken: String, refreshToken: String, profile: any, cb: any) {
     if (!profile)
-      throw new UnauthorizedException("User not found");
+    	throw new UnauthorizedException("User not found");
     return profile;
   }
 }

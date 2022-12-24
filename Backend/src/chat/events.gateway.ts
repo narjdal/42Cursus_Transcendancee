@@ -54,7 +54,7 @@ export class EventsGateway {
 		const user = this.playerservice.findPlayerById(data.user.id);
 		if (!user)
 			return;
-		console.log("this is user: ", user);
+		// console.log("this is user: ", user);
 
 		//push userid and his socketato
 		// [
@@ -80,7 +80,7 @@ export class EventsGateway {
 		// client.broadcast.emit('onlineUsersFront', onlineUsers.filter((u) => u.client.length > 0));
 		this.wss.emit('onlineUsersFront', onlineUsers.filter((u) => u.client.length > 0));
 		//show all online users
-		console.log(onlineUsers);
+		// console.log(onlineUsers);
 	}
 
 	//handle friend request

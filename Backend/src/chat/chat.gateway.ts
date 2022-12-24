@@ -1,3 +1,5 @@
+
+
 import { SubscribeMessage, WebSocketGateway, WebSocketServer, WsException } from "@nestjs/websockets";
 import { Socket } from "socket.io";
 
@@ -113,13 +115,14 @@ export class ChatGateway {
 		const perm = await this.playerservice.getPermissions(user.id, data.room);
 		if (perm.is_banned)
 			return;
+
 		// client.join(this.roomPrefix + data.room);
 		//create un array of rooms
 
 		if (!this.allRooms[this.roomPrefix + data.room])
 			this.allRooms[this.roomPrefix + data.room] = [];
 		this.allRooms[this.roomPrefix + data.room].push({ userId: user.id, socket: client.id });
-		console.log('ALL ROOMS', this.allRooms);
+		// console.log('ALL ROOMS', this.allRooms);
 
 	}
 
@@ -202,12 +205,30 @@ export class ChatGateway {
 		// console.log(userPermissions.statusMember);
 		//9dima
 
+		const BlockFriends = [];
+
+		const all_member = await this.playerservice.getAllMembersOfThisRoom(data.user.id, data.room);
+		console.log("all_member", all_member);
+		for (const member of all_member) {
+			const fid = await this.playerservice.findPlayerById(member);
+			const fs = await this.playerservice.getFriendshipStatus(data.user.id, fid.nickname);
+			// console.log("fs", fs);
+			if (fs && fs.status == "Block")
+				BlockFriends.push(fid.id);
+		}
 
 		for (var sck of this.allRooms[this.roomPrefix + data.room]) {
 
+			// const BFriends = [];
+			// const all_members = await this.playerservice.getAllMembersOfThisRoom(sck.userId, data.room);
+			// for (const member of all_members) {
+			// 	const fs = await this.playerservice.getFriendshipStatus(sck.userId, member.nickname);
+			// 	if (fs.status == "Block")
+			// }
+
 			const perm = await this.playerservice.getPermissions(sck.userId, data.room);
-			if (!perm.is_banned) {
-				console.log("perm", perm, "sck", sck);
+			if (!perm.is_banned && !BlockFriends.includes(sck.userId)) {
+				// console.log("perm", perm, "sck", sck);
 
 				this.wss.to(sck.socket).emit("addmsg",
 					{

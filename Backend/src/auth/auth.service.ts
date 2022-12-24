@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/prisma.service';
 import { authenticator } from 'otplib';
@@ -6,29 +6,29 @@ import { authenticator } from 'otplib';
 @Injectable()
 export class AuthService {
     constructor(private prisma: PrismaService,
-        private jwtService: JwtService) { }
-
+        private jwtService:JwtService) {}
+    
     async findORcreate(data: any) // data is the user object from 42
     {
         // console.log("findORcreate");
         // console.log(data);
 
         const player = await this.prisma.player.findUnique
-            ({
-                where: { email: data.email },
-            });
-
+        ({
+            where: { email: data.email },
+        });
+    
         if (!player)
-            return this.prisma.player.create
-                ({
-                    data: {
-                        nickname: data.nickname,
-                        firstName: data.firstName,
-                        lastName: data.lastName,
-                        avatar: data.avatar,
-                        email: data.email,
-                    },
-                });
+        return this.prisma.player.create
+        ({
+            data :{
+                nickname : data.nickname,
+                firstName : data.firstName,
+                lastName : data.lastName,
+                avatar    : data.avatar,
+                email: data.email,
+            },
+        });
 
         return player;
     }
@@ -39,9 +39,9 @@ export class AuthService {
         // console.log(data);
 
         const player = await this.prisma.player.findUnique
-            ({
-                where: { id: PlayerId },
-            });
+        ({
+            where: { id: PlayerId },
+        });
         return player;
     }
 
@@ -69,8 +69,8 @@ export class AuthService {
         return { otpauth_url };
     }
 
-    public async JwtAccessToken(playerId: string/*, isSecondFactorAuthenticated = false*/): Promise<string> {
-
+    public async JwtAccessToken(playerId: string/*, isSecondFactorAuthenticated = false*/) : Promise<string> {
+        
         // const payload = {
         //     playerId,
         //     isSecondFactorAuthenticated,
@@ -81,10 +81,10 @@ export class AuthService {
                 // isSecondFactorAuthenticated,
             },
             {
-                secret: process.env.JWT_SECRET,
+                secret: process.env.JWT_SECRET, 
                 expiresIn: process.env.JWTEXPIRATION
             }
-        );
+        );   
     }
 }
 
