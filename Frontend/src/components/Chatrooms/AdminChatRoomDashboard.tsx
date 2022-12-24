@@ -136,7 +136,7 @@ const HandleUnsetAdmin = (e ) => {
     else
     setErrorMessage("Could not find this user ! Are you sure u spelled it correcly ? ");
 }
-const HandleMute = (e) => {
+const HandleMute = (e) => {
     e.preventDefault();
     setModal(!showmodal)
 }
