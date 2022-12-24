@@ -688,6 +688,7 @@ async function HandleSetPassword()
         <input
          type="time" 
          id="mute"
+         className='without_ampm'
           name="mute-time"
           value={time}
           onChange={(e) => setTime(e.target.value)}

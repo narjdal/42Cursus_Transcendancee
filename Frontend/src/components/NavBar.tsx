@@ -62,11 +62,11 @@ function Navbar() {
 
       };
 
-      const navigateLeaderBoard = () => {
-        // navigate('/LeaderBoard');
-        window.location.href = "http://localhost:3000/LeaderBoard"
+      // const navigateLeaderBoard = () => {
+      //   // navigate('/LeaderBoard');
+      //   window.location.href = "http://localhost:3000/LeaderBoard"
 
-      };
+      // };
 
       const navigateGameLanding = () => {
         window.location.href = "http://localhost:3000/GameLanding"
@@ -291,19 +291,19 @@ await fetch((endpoint),{
       <span>Play</span>
                   </button>
 
-                  <button type="button" onClick={navigateGameLanding}>
+                  <button type="button" className='has-border' onClick={navigateGameLanding}>
                     <span className="icon material-symbols-outlined">
      {"live_tv"}  
       </span>
       <span>Live Games</span>
                   </button>
         
-                  <button type="button" onClick={navigateLeaderBoard} className="has-border">
+                  {/* <button type="button" onClick={navigateLeaderBoard} className="has-border">
                     <span className="icon material-symbols-outlined">
      {"LeaderBoard"} 
       </span>
      <span>LeaderBoard</span> 
-                  </button>
+                  </button> */}
               
                   <button type="button" onClick={navigateChatRooms}>
                     <span className="icon material-symbols-outlined">

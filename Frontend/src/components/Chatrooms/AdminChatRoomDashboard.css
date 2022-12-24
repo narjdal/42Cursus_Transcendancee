@@ -24,3 +24,7 @@
     letter-spacing: 2px;
     transition: all 0.375s;
 }
+
+.without_ampm::-webkit-datetime-edit-ampm-field {
+   display: none;
+ }

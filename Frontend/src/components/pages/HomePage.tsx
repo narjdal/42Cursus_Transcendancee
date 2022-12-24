@@ -80,12 +80,12 @@ async function FetchAllGamesHistory()
     <>
           <SearchBar/>
 
-                <div className='Top3'>
+                {/* <div className='Top3'>
           <div className="box">
           <table className='center'>
             <tbody>
-            <tr>
-              <th>  </th>
+            <tr> */}
+              {/* <th>  </th>
               <th> </th>
               <th> Rank </th>
               <th> Name</th>
@@ -101,9 +101,9 @@ async function FetchAllGamesHistory()
                 <td> {Top[0].Rank}</td>
                 <td> {Top[0].name}</td>
                 <td>{Top[0].TotalGames}</td>
-                <td>{Top[0].Victories}</td>
-                <td>{Top[0].winrate}</td>
-              {Top[0].isActive ? (
+                <td>{Top[0].Victories}</td> */}
+                {/* <td>{Top[0].winrate}</td> */}
+              {/* {Top[0].isActive ? (
                       <td>  
                       <div className="icon-div">
   
@@ -123,9 +123,9 @@ async function FetchAllGamesHistory()
           </button>
           </div>
              </td>
-              )}
+              )} */}
 
-            </tr>
+            {/* </tr>
             <tr>
             <td>  <img src={Top[1].ProfilePic} height="35"/> </td>
               <td>  <img src={Top[1].TrophyPic} height="35"/> </td>
@@ -133,8 +133,8 @@ async function FetchAllGamesHistory()
                 <td> {Top[1].name}</td>
                 <td>{Top[1].TotalGames}</td>
                 <td>{Top[1].Victories}</td>
-                <td>{Top[1].winrate}</td>
-              {Top[1].isActive ? (
+                <td>{Top[1].winrate}</td> */}
+              {/* {Top[1].isActive ? (
                       <td>  
                       <div className="icon-div">
   
@@ -154,9 +154,9 @@ async function FetchAllGamesHistory()
           </button>
           </div>
              </td>
-              )}
+              )} */}
 
-            </tr>
+            {/* </tr>
             <tr>
             <td>  <img src={Top[2].ProfilePic} height="35"/> </td>
               <td>  <img src={Top[2].TrophyPic} height="35"/> </td>
@@ -164,8 +164,8 @@ async function FetchAllGamesHistory()
                <td> {Top[2].name}</td>
                 <td>{Top[2].TotalGames}</td>
                 <td>{Top[2].Victories}</td>
-                <td>{Top[2].winrate}</td>
-              {Top[2].isActive ? (
+                <td>{Top[2].winrate}</td> */}
+              {/* {Top[2].isActive ? (
                        <td>  
                        <div className="icon-div">
    
@@ -185,16 +185,13 @@ async function FetchAllGamesHistory()
               </button>
               </div>
                  </td>
-              )}
-
+              )} */}
+{/* 
             </tr>
             </tbody>
             </table>
             </div>
-<p>
-  
-  </p>  
-            </div>
+            </div> */}
 
 
             <div className='carreer-card'>
