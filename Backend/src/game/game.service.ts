@@ -1,7 +1,7 @@
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { PrismaService } from 'src/prisma.service';
-import Pong from './pong';
+import Pong from './Pong';
 import { v4 as uuidv4 } from 'uuid';
 import { HttpException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 

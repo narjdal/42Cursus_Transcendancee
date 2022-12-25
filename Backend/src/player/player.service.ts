@@ -951,7 +951,7 @@ export class PlayerService {
     // function to create a chat room between two players if they are friends
     async createPublicChatRoom(userId: string, nameOfRoom: string) {
         // console.log("createPublicChatRoom");
-        console.log("userId\n", userId);
+        console.log(" ---  -- -- -- - -- --  userId>>\n", userId);
         const me = await this.findPlayerById(userId);
 
         // owner create a room 
