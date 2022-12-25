@@ -302,18 +302,18 @@ export class PlayerController {
 
     // ----------------------------- List of Members ----------------
 
-    // @Get('/listOfFriends') // no checks for now
-    // async GetListOfFriends(@Req() request, @Res() response) {
-    //     // console.log("---------------- List of Friends ----------------", request.user.playerId);
-    //     const friends = await this.playerService.getAllFriends(request.user.playerId);
-    //     // console.log("List of Friends", friends);
-    //     response.set({
-    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
-    //     }
-    //     )
-    //     // console.log("-------------  Finish List of Friends   -------------------");
-    //     response.status(200).send(friends);
-    // }
+    @Get('/listOfFriends') // no checks for now
+    async GetListOfFriends(@Req() request, @Res() response) {
+        // console.log("---------------- List of Friends ----------------", request.user.playerId);
+        const friends = await this.playerService.getAllFriends(request.user.playerId);
+        // console.log("List of Friends", friends);
+        response.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        }
+        )
+        // console.log("-------------  Finish List of Friends   -------------------");
+        response.status(200).send(friends);
+    }
 
     @Get('/listOfMembers/:id') // check if id room exists ==> getProfilesOfChatRooms
     async GetListOfMembers(@Param() id_room: string, @Req() request, @Res() response) {
@@ -752,7 +752,7 @@ export class PlayerController {
             throw new NotFoundException("owner can not ban himself");
         }
         //6- ban
-        const ban = await this.playerService.banMember(login['id1'], room['id2']);
+        const ban = await this.playerService.banMember(login['id1'], room_id);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
