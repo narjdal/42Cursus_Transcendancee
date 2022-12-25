@@ -155,13 +155,20 @@ const HandleMute = (e) => {
   var hms = time   // your input string
 var a = hms.split(':'); // split it at the colons
 
-// minutes are worth 60 seconds. Hours are worth 60 minutes.
+// // minutes are worth 60 seconds. Hours are worth 60 minutes.
 var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60
 var minutes = seconds/ 60;
 
-console.log("seconds : " + seconds + " minutes :  " + minutes);
+// console.log("seconds : " + seconds + " minutes :  " + minutes , "time is : ",time);
+console.log("Time is : ",time)
 
 
+const parsed_time = parseInt(time,10);
+if(!parsed_time)
+{
+  setErrorMessage("Please enter a valid mute time.")
+  return ;
+}
   await fetch(text,{
     // mode:'no-cors',
     method:'post',
@@ -170,7 +177,7 @@ console.log("seconds : " + seconds + " minutes :  " + minutes);
     body: JSON.stringify(
         { 
       room_id: props.room.id,
-      time: minutes,
+      time: parsed_time,
       login:username,
         }
       )
@@ -685,7 +692,13 @@ async function HandleSetPassword()
       </button>
       {showmodal ? (
         <>
-        <input
+            <input
+        type='number'
+        value={time}
+        onChange={(e) => setTime(e.target.value)}
+        pattern="^-?[0-9]\d*\.?\d*$"
+      /> 
+        {/* <input
          type="time" 
          id="mute"
          className='without_ampm'
@@ -694,7 +707,7 @@ async function HandleSetPassword()
           onChange={(e) => setTime(e.target.value)}
         min="00:00" max ="18:00" >
 
-        </input>
+        </input>  */}
         <label htmlFor="mute"> Chose Mute Duration</label>
       
         <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleMuteRequest}>

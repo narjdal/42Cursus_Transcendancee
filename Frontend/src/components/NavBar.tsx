@@ -153,10 +153,18 @@ await fetch((endpoint),{
        {
        window.location.reload();
        }
+       else if (json.statusCode == "404")
+       {
+        setErrorMessage(json.message)
+       }
+       else
+       {
+        setFriends(json);
+        setAllgood(true);
+       return json;  
+       }
        
-          setFriends(json);
-       setAllgood(true);
-      return json;  
+        
   })
   .catch((error) => {
       console.log("An error occured : " + error)
