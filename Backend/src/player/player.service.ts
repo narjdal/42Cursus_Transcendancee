@@ -1275,11 +1275,11 @@ export class PlayerService {
                     { roomId: id_room },
                 ]
             },
-            select: {
-                statusMember: true,
-                is_banned: true,
-                is_muted: true,
-            }
+            // select: {
+            //     statusMember: true,
+            //     is_banned: true,
+            //     is_muted: true,
+            // }
         })
         if (status && status.is_muted === true) {
             console.log("status.duration", status.duration); // en minutes
@@ -1303,6 +1303,22 @@ export class PlayerService {
                     }
                 })
         }
+        else (
+            status = await this.prisma.permission.findFirst({
+                where: {
+                    AND: [
+                        { playerId: userId },
+                        { roomId: id_room },
+                    ]
+                },
+                select: {
+                    statusMember: true,
+                    is_banned: true,
+                    is_muted: true,
+                }
+            })
+        )
+
         return status;
     }
 
