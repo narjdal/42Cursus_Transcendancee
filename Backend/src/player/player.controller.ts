@@ -752,7 +752,7 @@ export class PlayerController {
             throw new NotFoundException("owner can not ban himself");
         }
         //6- ban
-        const ban = await this.playerService.banMember(login['id1'], room_id);
+        const ban = await this.playerService.banMember(login['id1'], room_id['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }

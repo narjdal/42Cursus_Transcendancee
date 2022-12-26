@@ -1347,10 +1347,15 @@ export class PlayerService {
                 }
             }
         })
+        const room = await this.prisma.chatRoom.findFirst({
+            where: {
+                id: id_room,
+            },
+        })
         if (status === null) {
             throw new NotFoundException("You can not a get a msgs of this room bcuz you are not member");
         }
-        if (status && status.is_banned === true)
+        if (status && status.is_banned === true && room.is_dm === false)
             return [];
         // You can check if banned
         const blocked_list = await this.prisma.friendship.findMany({
@@ -1698,7 +1703,11 @@ export class PlayerService {
     // 6- ban member if u are admin or owner
 
     async banMember(login: string, room_id: string/*, fix_date: Date*/) {
+        console.log("user login", login, "room id ", room_id);
+        
         const palyer = await this.findPlayerByNickname(login);
+        // if(!palyer)
+        //   return ;
 
         const room = await this.prisma.permission.updateMany({
             where: {
