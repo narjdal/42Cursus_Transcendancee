@@ -1,5 +1,4 @@
 import React from 'react';
-import TempoNav from '../TempoNav/NavbarGame';
 import Game from '../Game/Game'
 import './PongPage.css'
 const Pong = () => {

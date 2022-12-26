@@ -1,22 +1,14 @@
 import './App.css';
 import Navbar from './components/NavBar';
-// import TempoNavbar from './components/TempoNav/NavbarGame';
 import Login from './components/login/login';
 import React, { useEffect } from 'react';
-// import { Notification } from 'react-notifications'
-// import {addNotification} from 'react-notifications';
-// import { iNotification } from 'react-notifications-component'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/pages/HomePage';
 import Pong from './components/pages/Pong';
-import LeaderBoard from './components/pages/LeaderBoard';
 import Account from './components/Account/Account';
-import AboutUs from './components/pages/AboutUs';
-import HowToPlay from './components/pages/HowToPlay';
 import { Landing } from './components/Chatrooms/Landing';
 import { ChatRoom } from './components/Chatrooms/ChatRoom';
 import Friendprofile from './components/Friendlist/Friendprofile';
-import Pseudo from './components/Account/Account_infos';
 import CreateRoom from './components/Chatrooms/CreateRoom';
 import Carreer from './components/Account/Account_pages/Carreer';
 import Achievements from './components/Account/Account_pages/Achievements/Achievements'
@@ -30,6 +22,8 @@ import QRCode from 'qrcode.react'
 import { io } from "socket.io-client";
 import SpectateGame from './components/GamePages/SpectateGame';
 import GameLanding from './components/Game/GameLanding';
+import { IsAuthOk } from './utils/utils';
+
 var socket:any;
 
 
@@ -45,24 +39,30 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
 
+  // console.log(" URL FROM ENV : ",process.env.REACT_APP_IP_URL,"PORT FRT : ",process.env.REACT_APP_FRONT_PORT,"PORT BACK : ",process.env.REACT_APP_BACK_PORT)
+const Front_url = process.env.REACT_APP_IP_URL + ":" + process.env.REACT_APP_FRONT_PORT;
+console.log("FRONT URL FROM ENV : ",process.env.REACT_APP_FRONT_URL)
+
+console.log("BACK URL FROM ENV : ",process.env.REACT_APP_BACK_URL)
+
+
+
 
   useEffect(() => {
     
     if (localStorage.getItem("authenticated") === "true")
      {
 
-      //config socket client on front end
- 
-
-
-      console.log("Loggin the user");
+      // console.log("Loggin the user");
       setIslogged(true);
+      localStorage.setItem("trylogin","false");
     }
     if (localStorage.getItem("trylogin") === "true") {
-      console.log("trylogin is  true");
+      // console.log("trylogin is  true");
 
-      if(window.location.href === "http://localhost:3000/verify")
+      if(window.location.href === process.env.REACT_APP_FRONT_URL +"/"+"verify")
       {
+        console.log("HELLO ITS ALL GOOD")
         setTwoFa(true);
       }
       else
@@ -71,6 +71,9 @@ const App = () => {
       }
     }
   
+    return() => {
+      // localStorage.setItem("authenticated","false");
+    }
   // if(window.location.url == "")
   }, [trylogin])
 
@@ -103,7 +106,9 @@ const App = () => {
   }
 async function verifyTwoFa ()
 {
- let  text = ("http://localhost:5000/auth/2fa/verify");
+
+ let  text = ( process.env.REACT_APP_BACK_URL + "/auth/2fa/verify");
+
  console.log("/2fa/verify Link :  =>  " + text);
 
   // console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + password + " Owner : " + Current_User.nickname);
@@ -126,6 +131,7 @@ async function verifyTwoFa ()
 
         // navigate('/Landing')
         // window.location.reload();
+        IsAuthOk(json.statusCode)
         if(json.statusCode == "401")
         {
           setErrorMessage("An Error occured ! Are you sure this is the correct code ? ")
@@ -139,7 +145,7 @@ async function verifyTwoFa ()
         {
           HandleProfile();
           setTwoFa(false);
-          window.location.href = "http://localhost:3000/"
+          window.location.href = process.env.REACT_APP_FRONT_URL + "/"
         }
           return json;
       })
@@ -164,7 +170,7 @@ async function verifyTwoFa ()
   }
 async function GetTwoFa () {
 
-  const text = "http://localhost:5000/auth/2fa/QrCode" ;
+  const text = process.env.REACT_APP_BACK_URL  + "/auth/2fa/QrCode" ;
   console.log("/2fa/QrCode Link :  =>  " + text);
 
   await axios.get(text,
@@ -189,7 +195,8 @@ useEffect(() => {
   
   if(isLogged)
   {
-    socket = io("http://localhost:5000");
+    const back_url :string = process.env.REACT_APP_BACK_URL! 
+    socket = io(back_url);
   
     socket.emit("onlineUsersBack", 
     { 
@@ -202,14 +209,8 @@ useEffect(() => {
       console.log("OnLine e e e e e: ", data);
       localStorage.setItem("online",JSON.stringify(data))
     });
-
-
-
-                // onlineUsersFront
-
   }
   return () => {
-    // localStorage.setItem("online","");
   }
 
 },[isLogged])
@@ -243,12 +244,9 @@ useEffect(() => {
           </>
         ) : (
           <>
-          
           </>
         )}
                 {errorMessage && <div className="error"> {errorMessage} </div>}
-
-    
         </div>
       </>
     )
@@ -273,27 +271,17 @@ useEffect(() => {
           <Routes>
             <Route path='/' element={<Account />} />
             <Route path='/Pong' element={<Pong />} />
-            {/* <Route path='/LeaderBoard' element={<LeaderBoard />} /> */}
             <Route path='/Home' element={<Home />} />
-            <Route path='/Account_infos' element={<Pseudo />} />
-            <Route path='/AboutUs' element={<AboutUs />} />
-            <Route path='/HowToPlay' element={<HowToPlay />} />
             <Route path="/Landing" element={<Landing />} />
             <Route path="/room/:id" element={<ChatRoom />} />
             <Route path="/SpectateGame/:id" element={<SpectateGame />} />
             <Route path="/GameLanding" element={<GameLanding />} />
-
-
             <Route path="/Carreer/:id" element={<Carreer />} />
-
             <Route path="/CreateRoom" element={<CreateRoom />} />
             <Route path="/users/:nickname" element={<Friendprofile />} />
             <Route path="/Achievements" element={<Achievements />} />
             <Route path="/Social" element={<Social />} />
             <Route path="/verify" element={<QRcode />} />
-
-
-
           </Routes>
         </Router>
       </div>

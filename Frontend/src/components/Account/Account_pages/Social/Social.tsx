@@ -16,7 +16,7 @@ const Social = () => {
       if(loggeduser)
     {
       var Current_User = JSON.parse(loggeduser);
-      const text = ("http://localhost:5000/player/listOfFriends");
+      const text = (process.env.REACT_APP_BACK_URL + "/player/listOfFriends");
       console.log("Api ListOfFriends Link :  =>  " + text);
       
   

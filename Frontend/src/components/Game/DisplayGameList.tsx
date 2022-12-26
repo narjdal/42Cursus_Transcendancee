@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SpectateGame from "../GamePages/SpectateGame";
 
 const DisplayGameList = (props:any) => {
 

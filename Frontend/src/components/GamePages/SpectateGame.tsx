@@ -28,9 +28,9 @@ useEffect(() => {
     if(gameId)
     {
         setgameId(gameId)
-        let socket = io("http://localhost:5000/game");
+        const back_url :string = process.env.REACT_APP_BACK_URL + "/game";
+        let socket = io(back_url);
 
-        // GET LIST OF ROOMS SET IN STATE AND MAP OVER THE LINKS
             socket.on("connect", () => {
       
         }); 

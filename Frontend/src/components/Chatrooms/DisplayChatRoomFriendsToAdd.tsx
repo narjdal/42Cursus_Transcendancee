@@ -5,34 +5,18 @@ import './DisplayChatRoomsusers.css'
 // import blobz from 'blobz.css'
 const DisplayChatRoomFriendsToAdd = (props,roomownnership) => {
     const [errorMessage, setErrorMessage] = useState("");
-    const [action,setAction] = useState(false);
+
     const [display,setDisplay] = useState(false);
     const params = useParams();
-    const [isAdmin,setIsAdmin] = useState(JSON.stringify(roomownnership));
-//   console.log("isADmin" + JSON.stringify(isAdmin))
-    const handleFriendClick  = (e) => {
-        e.preventDefault();
-        //if() Request to Add Friend , if already : 
-        // setErrorMessage("You are alredy friend !");
-        
-    };
-    const HandleBlock = (e) => {
-        e.preventDefault();
-    }
-    
-    const HandleShowAction = (e) => {
-        e.preventDefault();
-        setAction(!action);
-        // Here request to know which button to display 
-    }
 
+//   console.log("isADmin" + JSON.stringify(isAdmin))
 
 async function InviteFriendToRoom () {
     const loggeduser = localStorage.getItem("user");
     if(loggeduser)
   {
     const current = JSON.parse(loggeduser);
-    const text = "http://localhost:5000/player/addMember/" + props.user.nickname + "/" + params.id
+    const text = process.env.REACT_APP_BACK_URL + "/player/addMember/" + props.user.nickname + "/" + params.id
   // console.log("Api Fetch Link :  =>  " + text);
   
   

@@ -10,7 +10,7 @@ import axios from 'axios';
 const ProfilePicUpload = (props) => {
 	// const [user42,SetUser42] = useState <any>([]);
 	const[user42,setUser42] = useState <any >([]);
-    const [authenticated, setauthenticated] = useState("");
+ 
 	const [selectedFile, setSelectedFile] = useState([]);
 	const [nickName, setNickName] = useState("");
 	const [isFilePicked, setIsFilePicked] = useState("");
@@ -24,12 +24,6 @@ const ProfilePicUpload = (props) => {
         navigate('/Account');
       };
 
-    const handlePseudoChange = (e) => {
-        e.preventDefault()
-        console.log("nickame :" + e.target[0].value);
-        setNickName(e.target[0].value);
-
-      }
 	const changeHandler = (event) => {
         event.preventDefault()
 		console.log("Setting the file => " + event.target.files[0])
@@ -40,17 +34,8 @@ const ProfilePicUpload = (props) => {
 		else
 		setIsFilePicked2(false)
 	};
-// useEffect (() => {
-// 	const authenticated = localStorage.getItem("authenticated");
-// 	const loggeduser = localStorage.getItem("user");
-// 	if(loggeduser)
-// 	{
-// 		var Current_User = JSON.parse(loggeduser);
-// 		console.log("=>>>>> FROM THE DashBoard "   + Current_User.usual_full_name + Current_User.UserId)
-// 		SetUser42(Current_User);
-// 	}
 
-// },[])
+	
 async function UploadPicture(selectedFile)
 {
 	 const loggedUser = localStorage.getItem("user");
@@ -62,12 +47,7 @@ async function UploadPicture(selectedFile)
 
 	
 	formData.append('file', selectedFile);
-	// formData.append('nickname',nickname);
-	// formData.append('name',nickname);
-
-	// console.log("The User  => " + JSON.stringify(UserObject))
-	// formData.append('id',id);
-	// formData.append('image_url',image_url)
+	
 
 	const MyForm = [
 		{ file:selectedFile,
@@ -76,17 +56,10 @@ async function UploadPicture(selectedFile)
 		// image_url:Current_User.image_url
 		}
 	]
-	const text = ("http://localhost:5000/player/update/avatar");
+	const text = (process.env.REACT_APP_BACK_URL + "/player/update/avatar");
 console.log("Api Post Link :  =>  " + text);
 
-// const response = await axios.post("http://localhost:5000/player/update/avatar'", {
-// 	formData
-// })
-	
-// 	onUploadProgress: progressEvent => {
-// 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
-// 	},
-// });
+
 
 await fetch(text,{
 	method:'post',
@@ -149,20 +122,7 @@ else
 	console.log(" Error Update Avatar" + error)
 
 })
-// .then((response) => response.json())
-// {
-	
-// })
-// 	}
-	// return response.data;
 
-//   console.log("Uploading Picture For this User =>  " + Current_User.UserId);
-//   const text = ("http://localhost:9000/update/nickname");
-//   console.log("Api Post Link :  =>  " + text);
-  
-//   const response = await axios.post(text,formData)
-
-//     return response.data;
     }
   
 }
@@ -180,37 +140,7 @@ else
 			console.log("Handle Submission Profile pic upload  : " + selectedFile['name'])
 			setIsUpdating(true);
 			UploadPicture(selectedFile)
-	// 		.then((resp) => {
-
-	// 			// const test  = JSON.stringify(resp);
-
-	// 			// console.log("The Resp is => " +  test );
-	// // 			// To fixe ...
-	// // 			const loggedUser = localStorage.getItem("user");
-	// // 			if(loggedUser)
-	// // 			{
-    // // var Current_User = JSON.parse(loggedUser);
-	// // 			const new_user = [{
-	// // 				nickname:resp.nickname,
-	// // 				UserId:Current_User.UserId,
-	// // 				image_url:resp.image_url
-	// // 			}]
-	// // 			const bruh = JSON.stringify(new_user)
-	// 		// 	localStorage.setItem("user","");
-	// 		// 	localStorage.setItem("user",test);
-	// 		// 	let UpdatedUser = localStorage.getItem("user");
-	// 		// console.log("Updated User After Update Profile Pic =>     " + JSON.stringify(UpdatedUser));
-    //   	setTimeout(() => {
-    //       setIsUpdating(false);
-    //       setisUpdated(true);
-    //       setTimeout(() => setisUpdated(false), 2500);
-    //     //   window.location.reload();
-       
-    //     }, 2000);
-
-	// 		})
-			
-            // setErrorMessage("Please chose a valid username ");
+	
         }
 		else
 	{

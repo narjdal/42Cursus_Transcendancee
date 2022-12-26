@@ -25,14 +25,12 @@ const Friendprofile = () => {
   const [choice, setChoice] = useState("");
   localStorage.setItem("choice", "");
   localStorage.setItem("action2", "");
-  //We send the Id as the params of the Link , 
-  //ICi request Au Backend Avec l'ID de l'user demander stocker les infos dans const user 
 
   const navigate = useNavigate();
 
   async function AcceptRelationship() {
 
-    let endpoint = "http://localhost:5000/player/acceptFriendship/"
+    let endpoint = process.env.REACT_APP_BACK_URL + "/player/acceptFriendship/"
 
     console.log("AcceptRelationship  => " + endpoint + " \n user:" + params.nickname)
     //  setAction("");
@@ -64,7 +62,7 @@ const Friendprofile = () => {
 
 async function BlockRelationship()
 {
-   let endpoint = "http://localhost:5000/player/blockFriendship/"
+   let endpoint = process.env.REACT_APP_BACK_URL + "/player/blockFriendship/"
 
 
     console.log("BlockRelation  => " + endpoint + " \n user" + params.nickname)
@@ -105,7 +103,7 @@ async function BlockRelationship()
   async function RefuseRelationship() {
 
 
-    let endpoint = "http://localhost:5000/player/refuseFriendship/"
+    let endpoint = process.env.REACT_APP_BACK_URL + "/player/refuseFriendship/"
 
     console.log("RefuseRelationship  => " + endpoint + " \n user" + params.nickname)
     //  setAction("");
@@ -142,30 +140,30 @@ async function BlockRelationship()
     switch (action) {
       case "addFriend":
         {
-          endpoint = "http://localhost:5000/player/requestFriendship/"
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/requestFriendship/"
           break;
         }
       case "blockFriend":
         {
-          endpoint = "http://localhost:5000/player/blockFriendship/"
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/blockFriendship/"
           break;
 
         }
       case "Accept":
         {
-          endpoint = "http://localhost:5000/player/acceptFriendship/"
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/acceptFriendship/"
           break;
 
         }
       case "Refuse":
         {
-          endpoint = "http://localhost:5000/player/refuseFriendship/"
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/refuseFriendship/"
           break;
 
         }
       case "unblockFriend":
         {
-          endpoint = "http://localhost:5000/player/unblockFriendship/";
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/unblockFriendship/";
           break;
         }
 
@@ -185,7 +183,6 @@ async function BlockRelationship()
       .then(json => {
         console.log("The response is => " + JSON.stringify(json))
         IsAuthOk(json);
-        // if (json.ok)
         window.location.reload();
         setErrorMessage("");
         return json;
@@ -206,12 +203,11 @@ async function BlockRelationship()
       const current = JSON.parse(loggeduser);
       console.log("Fetching Relationship    Infos   => " + params.nickname + " I am : " + current.nickname);
 
-      let endpoint = 'http://localhost:5000/player/statusFriendship/'
+      let endpoint = process.env.REACT_APP_BACK_URL + '/player/statusFriendship/'
       let nicknametofetch: string = JSON.stringify(params.nickname);
       // console.log(" this endpoint   " + endpoint + " Fetching : " + nicknametofetch)
-      http://localhost:5000/statusFriendship/?id=narjdal
 
-      await fetch((`http://localhost:5000/player/statusFriendship/${params.nickname}`
+      await fetch((process.env.REACT_APP_BACK_URL + `/player/statusFriendship/${params.nickname}`
       ), {
         // mode:'no-cors',
         method: 'get',
@@ -231,85 +227,11 @@ async function BlockRelationship()
           }
           // localStorage.setItem("usertoshow",JSON.stringify(json));
           localStorage.setItem("choice", json);
-          // setRelation(json);
-          // setChoice(json);
           return json;
-          // setRelation("AcceptOrRefuse");
-          //  if(json)
-          //  {
-          //  console.log("The Relationship is => " + json)
-          //   setRelation(JSON.stringify(json));
-          //   setChoice(json);
-          //   setRelation(json);
-          //  }
-
-          //     if (resp === "AddFriend")
-          //     {
-          //       console.log("GGS");
-          //     }
-          //     switch(JSON.stringify(json))
-          //  {
-          //   case "AddFriend":
-          //    {
-          //     console.log("ww khello")
-          //     setIcons("people")
-          //    setMsg("AddFriend");
-          //    setAction("Add");
-          //    setRelation("addFriend");
-          //    break;
-          //    }  
-
-          //   case "blockFriend":
-
-          //   {  
-          //     setIcons("block")
-          //    setMsg("block");
-          //    setAction("block")
-          //      setRelation("blockFriend");
-          //    break;
-
-          //   }
-
-          //      case"unblockFriend":
-
-          //     {
-          //    setMsg("unblock");
-          //       setAction("unblock")
-          //     setIcons("unblock")
-
-          //        setRelation("unblockFriend");
-          //    break;
-
-          //     }
-          //     case "pendingFriend":
-          //      { 
-          //     setIcons("people")
-          //     setMsg("pending ...")
-          //     setAction("pending")
-          //      setRelation("pendingFriend")
-          //    break;
-
-          //     }
-          //     case"acceptFriend":
-          //     {
-          //   //  setMsg("Accept");
-          //     // setIcons("people")
-          //     // setAction("");
-          //        setRelation("AcceptOrRefuse");
-          //    break;
-
-          //     }
-          //   default:
-
-          //    {
-          //     console.log("ERROR DEFAULT" + json) 
-          //     setRelation("error");
-          //    break;
-          //   }
-          //    }
         })
         .catch((error) => {
           console.log("An error occured : " + error)
+          localStorage.setItem("choice","");
           // setRelation("error");
           setErrorMessage("An error occured! Relationship not found ! ");
           return error;
@@ -324,9 +246,9 @@ async function BlockRelationship()
 
     const loggeduser = localStorage.getItem("user");
     if (loggeduser) {
-      let endpoint = 'http://localhost:5000/player/profile/?id=';
+      let endpoint = process.env.REACT_APP_BACK_URL + '/player/profile/?id=';
       console.log(" this endpoint   " + endpoint)
-      await fetch((`http://localhost:5000/player/profile/${params.nickname}`), {
+      await fetch((process.env.REACT_APP_BACK_URL + `/player/profile/${params.nickname}`), {
         // mode:'no-cors',
         method: 'get',
         credentials: "include"
@@ -336,8 +258,7 @@ async function BlockRelationship()
         .then((response) => response.json())
         .then(json => {
           console.log("The User  is => " + JSON.stringify(json))
-          // setErrorMessage("");
-          // localStorage.setItem("usertoshow",JSON.stringify(json));
+          IsAuthOk(json.statusCode)
           if(json.statusCode == "404")
           {
             setAllGood(false);
@@ -519,7 +440,8 @@ async function BlockRelationship()
 
     if(InvitingGame)
     {
-   let socket = io("http://localhost:5000/game");
+      const back_url = process.env.REACT_APP_BACK_URL + "/game"
+   let socket = io(back_url);
 
    socket.on("connect",() => {
     console.log("socket : ",socket);
@@ -606,7 +528,7 @@ useEffect(() => {
 },[userState])
   async function FetchRoomId()
   {
-    const text = "http://localhost:5000/player/sendMessageButton/" + params.nickname;
+    const text = process.env.REACT_APP_BACK_URL + "/player/sendMessageButton/" + params.nickname;
     console.log("Api  Sendmessagebutton  Link :  =>  " + text);
     
 
@@ -625,7 +547,7 @@ useEffect(() => {
       // SetUserAdmin(json);
       if(json.data)
       {
-        window.location.href = "http://localhost:3000/room/" + json.data;
+        window.location.href = process.env.REACT_APP_FRONT_URL + "/room/" + json.data;
 
       }
      
@@ -671,7 +593,6 @@ useEffect(() => {
     // console.log("B4" + userState['nickname'] + params.nickname);
     return (
       <div className='FriendProfile'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         {errorMessage && <div className="error"> {errorMessage} </div>}
   
     {allgood ? (

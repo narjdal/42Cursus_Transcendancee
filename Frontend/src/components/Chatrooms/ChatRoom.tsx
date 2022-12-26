@@ -28,7 +28,7 @@ async function GetPermissions()
 {
 
 
-  const text = "http://localhost:5000/player/Permission/" + params.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/Permission/" + params.id;
     console.log("Api Get Permission  Link :  =>  " + text);
     await axios.get(text,{
       withCredentials:true
@@ -124,11 +124,6 @@ async function Waiter()
     // console.log( "THE PLEASE WORK ROOM  IS " ,JSON.parse(room));
   const RoomObj = await JSON.parse(room);
   setRoom(RoomObj);
-  // console.log(" THE ROOM  NAME IS " , RoomObj.name)
-  // GetPermissions();
-  // console.log("Setting the chatRoom Infos ...");
-    // localStorag e.setItem(text,"false");
-    // localStorage.setItem(RoomText,"");
     await GetPermissions();
   // setAllgood(true);
 
@@ -140,7 +135,7 @@ async function Waiter()
 }
 async function  joinNonProtectedRoom()
 {
-  const text = "http://localhost:5000/player/joinNonProtectedRoom/" + params.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/joinNonProtectedRoom/" + params.id;
   // console.log("Api joinNonProtectedRoom Link :  =>  " + text);
   
 
@@ -152,8 +147,7 @@ async function  joinNonProtectedRoom()
 
 // .then((response) => response.json())
 .then(json => {
-    // json.data.id = params.id;
-  // console.log("The joinNonProtectedRoom esp : " + JSON.stringify(json.data.room));
+
   const room = {
     id: params.id
     ,...json.data.romm
@@ -166,18 +160,7 @@ async function  joinNonProtectedRoom()
   setAllgood(true);
   GetPermissions();
   setRoomName(json.data.room.name)
-  // setRoomName(json.data.name)
-  // setIsDm(false);
 
-
-  // if(json.data == "dm")
-  // {
-  //   console.log(" THIS IS A DM GETTYPEOF ROOM");
-  //   setAllgood(true)
-  //   // localStorage.setItem("isdm","true");
-  //   setIsDm(true);
-  //   // console.log("the name should be : " )
-  // }
    
 })
 .catch((error) => {
@@ -190,7 +173,7 @@ async function  joinNonProtectedRoom()
 }
 async function GetTypeOfRoom()
 {
-  const text = "http://localhost:5000/player/GetTypeOfRoom/" + params.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/GetTypeOfRoom/" + params.id;
     // console.log("Api GetTypeOfRoom Link :  =>  " + text);
     
 
@@ -202,15 +185,8 @@ async function GetTypeOfRoom()
   
   // .then((response) => response.json())
   .then(json => {
-    // let statusCode = json.status,
-    // success = json.ok;
-      // json.data.id = params.id;
-    // console.log("The type of this room resp : " + JSON.stringify(json.data));
     if(json.data == "dm")
     {
-      // console.log(" THIS IS A DM GETTYPEOF ROOM");
-      // setAllgood(true)
-      // localStorage.setItem("isdm","true");
       setIsDm(true);
       joinDM();
       // console.log("the name should be : " )
@@ -255,7 +231,7 @@ async function GetTypeOfRoom()
 
 async function joinDM()
 {
-  const text = "http://localhost:5000/player/joinDM/" + params.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/joinDM/" + params.id;
   // console.log("Api joinDM Link :  =>  " + text);
   let loggedUser = localStorage.getItem("user");
   if(loggedUser)
@@ -273,9 +249,6 @@ async function joinDM()
 // .then((response) => response.json())
 .then(json => {
     // json.data.id = params.id;
-  // console.log("The joinDM esp : " + JSON.stringify(json.data.room));
-  // if(json.data == "dm")
-  // {
     const room ={
       ...json.data.room,
       id:params.id
@@ -299,12 +272,6 @@ async function joinDM()
 }
     // setRoomName(json.data.room.name)
     setIsDm(true);
-    // console.log(" THIS IS A DM GETTYPEOF ROOM");
-  //   setAllgood(true)
-  //   // localStorage.setItem("isdm","true");
-  //   setIsDm(true);
-  //   // console.log("the name should be : " )
-  // }
    
 })
 .catch((error) => {

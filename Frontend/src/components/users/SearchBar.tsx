@@ -10,8 +10,6 @@ const SearchBar = () => {
     const[display,setDisplay] = useState(false);
     const [allgood,setAllgood] = useState(false);
 
-
-
   async function FetchUserInfos ()  {
 
 
@@ -19,16 +17,14 @@ const SearchBar = () => {
 if(loggeduser)
 {
      
-let endpoint = 'http://localhost:5000/player/profile/?id=';
-// endpoint = endpoint + userQuery;
-// console.log(" this endpoint   " + endpoint)
+let endpoint = process.env.REACT_APP_BACK_URL + '/player/profile/?id=';
 
 
 try
 {
 
 
-await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
+await fetch((process.env.REACT_APP_BACK_URL + `/player/profile/${userQuery}`),{
     // mode:'no-cors',
     method:'get',
     credentials:"include"

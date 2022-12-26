@@ -7,40 +7,26 @@ import { io } from 'socket.io-client';
 // import blobz from 'blobz.css'
 const DisplayChatRoomusers = (props,roomownnership) => {
     const [errorMessage, setErrorMessage] = useState("");
-    const [action,setAction] = useState(false);
+   
     const [display,setDisplay] = useState(false);
     const [inviteGame,setInviteGame] = useState(false);
     const params = useParams();
     const navigate = useNavigate();
     const [isAdmin,setIsAdmin] = useState(JSON.stringify(roomownnership));
-//   console.log("isADmin" + JSON.stringify(isAdmin))
-    const handleFriendClick  = (e) => {
-        e.preventDefault();
-        //if() Request to Add Friend , if already : 
-        setErrorMessage("You are alredy friend !");
-        
-    };
-    const HandleBlock = (e) => {
-        e.preventDefault();
-    }
-    
+
     const HandleInviteToGame = (e) => {
         e.preventDefault();
         console.log("invting this user to a game !");
         setInviteGame(true);
 
     }
-    
-    const HandleShowAction = (e) => {
-        e.preventDefault();
-        setAction(!action);
-        // Here request to know which button to display 
-    }
+ 
     useEffect(() => {
 
         if (inviteGame)
         {
-            let socket = io("http://localhost:5000/game");
+            const back_url = process.env.REACT_APP_BACK_URL + "/game";
+            let socket = io(back_url);
 
    socket.on("connect",() => {
     console.log("socket : ",socket);

@@ -20,11 +20,11 @@ const HandleShowPassword = (e) => {
 async function TryAccessRoom()
 {
 
-  let text = ("http://localhost:5000/player/joinProtectedRoom/");
+  let text = (process.env.REACT_APP_BACK_URL + "/player/joinProtectedRoom/");
   console.log("Joinprotected Link => " + text + " PSWD " + Roompassword);
-  console.log(" THE ID IS " + params.id);
+  // console.log(" THE ID IS " + params.id);
 
-  console.log( "THE PROP : " , props);
+  // console.log( "THE PROP : " , props);
   await fetch(text,{
     // mode:'no-cors',
     method:'post',

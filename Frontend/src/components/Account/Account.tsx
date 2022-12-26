@@ -36,7 +36,7 @@ async function FetchGameHistory() {
     console.log("Fetching Game History Of this User :        => " ,current.nickname)
 
 
-    await fetch((`http://localhost:5000/player/gameHistoryById/${current.nickname}`
+    await fetch((process.env.REACT_APP_BACK_URL + `/player/gameHistoryById/${current.nickname}`
     ), {
       // mode:'no-cors',
       method: 'get',
@@ -79,7 +79,7 @@ async function FetchAchivementsList  ()  {
     console.log("Fetching AchievementsList  Of this User :        => " ,current.nickname)
 
 
-    await fetch((`http://localhost:5000/player/achivement/${current.nickname}`
+    await fetch((process.env.REACT_APP_BACK_URL + `/player/achivement/${current.nickname}`
     ), {
       // mode:'no-cors',
       method: 'get',
@@ -167,11 +167,6 @@ async function FetchAchivementsList  ()  {
         navigate('/Achievements')
     };
 
-    const HandleMatchHistory = (e) => {
-    e.preventDefault();
-    // console.log("From Carreeeer ")
-      navigate('/Carreer')
-    }
 
      const handleFriendClick = (e) => {
       e.preventDefault()
@@ -209,7 +204,7 @@ async function EnableTwoFa () {
   
   
 
-  const text = "http://localhost:5000/player/2fa/enable/" ;
+  const text = process.env.REACT_APP_BACK_URL + "/player/2fa/enable/" ;
   console.log("/2fa/enable Link :  =>  " + text);
   let loggedUser = localStorage.getItem("user");
   if(loggedUser)
@@ -251,42 +246,7 @@ async function EnableTwoFa () {
 localStorage.setItem("user",JSON.stringify(NewUser[0]));
 window.location.reload();
 
-// localStorage.setItem("user","");
-// localStorage.setItem("user",JSON.stringify(NewUser));
 
-  // setQRCodeText(json.data);
-  // setDone(true);
-  // if(json.data == "dm")
-//   // {
-//     const room ={
-//       ...json.data.room,
-//       id:params.id
-//     }
-//     setRoom(room);
-//     setAllgood(true);
-//     // GetPermissions();
-//     // GetPermissions();
-//     console.log("This is a DM Room");
-//     if(json.data.room.all_members)
-//   {
-
-//   if(current.id == json.data.room.all_members[0].player.id)
-//   {
-//     setRoomName(json.data.room.all_members[1].player.nickname);
-//   }
-//   else
-//   {
-//     setRoomName(json.data.room.all_members[0].player.nickname);
-//   }
-// }
-//     // setRoomName(json.data.room.name)
-//     setIsDm(true);
-//     console.log(" THIS IS A DM GETTYPEOF ROOM");
-  //   setAllgood(true)
-  //   // localStorage.setItem("isdm","true");
-  //   setIsDm(true);
-  //   // console.log("the name should be : " )
-  // }
    
 })
 .catch((error) => {
@@ -305,7 +265,7 @@ async function SendDisableTwoFa () {
   
   
 
-  const text = "http://localhost:5000/player/2fa/disable/" ;
+  const text = process.env.REACT_APP_BACK_URL + "/player/2fa/disable/" ;
   console.log("/2fa/disable Link :  =>  " + text);
   let loggedUser = localStorage.getItem("user");
   if(loggedUser)
@@ -383,20 +343,14 @@ window.location.reload();
           setTimeout(() => setisUpdated(false), 2500);
         }, 2000);
       }
-    // if(twoFa)
-    // {
-    //   console.log("Enabling two fa in your account ....");
-    // }
-    // else
-    // {
-    //   console.log("Disabling two fa in your account ...")
+
     // }
     }
 
     //ProfilePicUpload : Send User infos here  Get from state ?
     return (
       <div>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+        
 <>
 
 <div className='body'>

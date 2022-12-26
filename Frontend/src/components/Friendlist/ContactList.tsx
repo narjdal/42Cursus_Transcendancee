@@ -11,13 +11,8 @@ import { Socket } from 'dgram';
 var socket:any;
 const ContactList = (props) => 
 {
-    const [AddFriend,setAddFriend] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
-    const [ContactList,setContactList] = useState([]);
-    const [username, setUsername] = useState("");
-    const [user, setUser] = useState(null);
-    const [err, setErr] = useState(false);
     const [user42,SetUser42] = useState<any>([])
     const [contacts ,setContacts] = useState <any>([]);
     useEffect(() => {
@@ -38,16 +33,10 @@ const ContactList = (props) =>
         e.preventDefault();
         console.log("inside Handle Select ",localStorage.getItem("Dmcount"));
       };
-    const handleKey = (e) => {
-        e.preventDefault();
-        // e.code === "Enter" && handleSearch();
-        SetUser42(null);
-    };
 
     return (
         
         <div className="FriendList-container">
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         
              <div className="search">
           <SearchBar/>

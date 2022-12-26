@@ -1,5 +1,6 @@
 import react from 'react'
 import { useState,useEffect } from 'react';
+import { IsAuthOk } from '../../../../utils/utils';
 import './Achievements.css'
 import DisplayAchievementsList from './DisplayAchievementsList';
 const Achievements = () => {
@@ -12,7 +13,7 @@ const [AchievementsList,setAchievementsList] = useState<any>([])
           console.log("Fetching AchievementsList  Of this User : Inside Achievements Page         => " ,current.nickname)
       
       
-          await fetch((`http://localhost:5000/player/achivement/${current.nickname}`
+          await fetch((process.env.REACT_APP_BACK_URL + `/player/achivement/${current.nickname}`
           ), {
             // mode:'no-cors',
             method: 'get',
@@ -26,6 +27,7 @@ const [AchievementsList,setAchievementsList] = useState<any>([])
               console.log("The AchievementsList is => " + JSON.stringify(json))
        
               
+              IsAuthOk(json.statusCode)
               if(json.getAchivements)
               {
               setAchievementsList(json.getAchivements);
@@ -53,7 +55,7 @@ useEffect(() => {
     const loggeduser = localStorage.getItem("user");
     if (loggeduser)
     {
-        var Current_User = JSON.parse(loggeduser);
+   
     FetchAchivementsList();
         
     }

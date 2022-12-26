@@ -259,6 +259,7 @@ useEffect(() => {
   useEffect(() => {
 
 
+    const back_url = process.env.REACT_APP_BACK_URL + "/game";
     if(localStorage.getItem("AcceptGame"))
     {
 
@@ -266,7 +267,8 @@ useEffect(() => {
       const obj = JSON.parse(localStorage.getItem("AcceptGame")!);
       localStorage.setItem("AcceptGame","");
 
-      gameState.socket = io("http://localhost:5000/game");
+      
+      gameState.socket = io(back_url);
       // const sock = gameState.socket;
       gameState.socket.on("connect", () => {
         // console.log(gameState.socket);
@@ -293,10 +295,9 @@ useEffect(() => {
       gameState.playerTool = "mouse";
       gameState.numberOfPlayers = 1;
 
-    // setWaitingforInvited(true);
+
     gameState.socket.on("OponentLeft", (data: any) => {
-      // gameState.pongData = JSON.parse(data);
-      // const obj = JSON.parse(data);
+
 
       if(data.left)
       {
@@ -306,10 +307,7 @@ useEffect(() => {
         setPlaying(false);
         gameState.gameStatue ="endGame";
       }
-
-      // console.log("PongData : ",data.pongData)
-      // gameState.gameStatue = "Playing";
-      // setPlaying(true);
+;
     });
 
       gameState.socket.on("matchFound", (data: any) => {
@@ -325,14 +323,10 @@ useEffect(() => {
 
     if(!localStorage.getItem("inviteGame"))
     {
-    gameState.socket = io("http://localhost:5000/game");
-    // const sock = gameState.socket;
+    gameState.socket = io(back_url);
     gameState.socket.on("connect", () => {
-      // console.log(gameState.socket);
     });
     console.log(" No Invite ")
-    // gameState.socket.disconnect(  () => {
-    //   gameState.socket.emit ("leaveGameAsPlayer");
   }
   else {
     // console.log(" There is a  Invite ")
@@ -342,7 +336,7 @@ useEffect(() => {
     // const parsedInvite = JSON.parse(inviteGame);
     console.log(" There is a  Invite ",inviteGame)
 
-    gameState.socket = io("http://localhost:5000/game");
+    gameState.socket = io(back_url);
     // const sock = gameState.socket;
     gameState.socket.on("connect", () => {
       // console.log(gameState.socket);
@@ -358,10 +352,6 @@ useEffect(() => {
     gameState.mode = "online";
    gameState.playerTool = "mouse";
      gameState.numberOfPlayers = 1;
-    // setWaitingforInvited(true);
-    // gameState.gameStatue = "WaitingPlayers";
-    // gameState.gameStatue
-    
   
     gameState.socket.on("matchFound", (data: any) => {
       gameState.pongData = JSON.parse(data.pongData);

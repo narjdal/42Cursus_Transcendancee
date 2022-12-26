@@ -41,56 +41,9 @@ const [allMembers,setAllMembers] = useState <any>([]);
     e.preventDefault();
     SetInputMsg(e.target[0].value);
 
-    // console.log("INPUT MSG => ",inputMsg);
-    // if (inputMsg)
-    // {
-    //   //Post request to Backend
-    // }
+
   }
   
-  // const HandleBanUser = (e) => {
-  //   e.preventDefault();
-  //   SetBanUser(e.target[0].value);
-  // }
-
-
-//   async function FetchUserInfo (id) {
-
-//     // ]
-//   const loggeduser = localStorage.getItem("user");
-
-//   if(loggeduser)
-// {
-//   var Current_User = JSON.parse(loggeduser);
-//   const text = ("http://localhost:9000/GetUserPicture");
-//   console.log("Api get Link :  =>  " + text);
-  
-//   const response = await axios.get("http://localhost:9000/GetUserPicture",{
-//   headers: {
-//     userId:id
-//   }
-//   }
-//   )
-//   const {nickname ,UserId,image_url,id42} = response.data;
-//   console.log("The Friends are " + JSON.stringify(response.data));
-// //   response.data.forEach( result => {
-// //     // console.log(result.data.name);
-// //     console.log(result.data.id);
-// //     console.log(result.data.image_url);
-// //     console.log(result.data.id42);
-
-// // })
-//     // console.log(" Nickname " + response.data[0].name + " IU => " + response.data[0].image_url  + " |id42 " + response.data[0].id42);
-//   // 	onUploadProgress: progressEvent => {
-//   // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
-//   // 	},
-//   // });
-  
-//   // 	}
-//     return response.data;
-// }
-
-//   }
 
 async function GetMembers () 
 {
@@ -99,7 +52,7 @@ async function GetMembers ()
   if(loggeduser)
   {
     var Current_User = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/listOfMembers/" + props.room.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/listOfMembers/" + props.room.id;
     // console.log("Api Fetch Link :  =>  " + text);
 try
 {
@@ -164,7 +117,7 @@ async function GetMessageHistory()
   if(loggeduser)
   {
     var Current_User = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/getmessages/" + props.room.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/getmessages/" + props.room.id;
     // console.log("Api getmessages Link :  =>  " + text);
     
 
@@ -176,9 +129,7 @@ async function GetMessageHistory()
   
   .then((response) => response.json())
   .then(json => {
-      // console.log("getmessages :   => " + JSON.stringify(json))
-      
-    
+
       if(json.statusCode == "500" || json.statusCode == "404")
         {
             console.log("an error occured");
@@ -216,7 +167,7 @@ async function FetchRelationshipNarjdal(friendName : string) {
     const current = JSON.parse(loggeduser);
     console.log("Fetching Relationship    Infos   => "  +  friendName +  " I am : " + current.nickname  );
 
-    let endpoint = 'http://localhost:5000/player/statusFriendship/' + friendName
+    let endpoint = process.env.REACT_APP_BACK_URL + '/player/statusFriendship/' + friendName
     // let nicknametofetch: string = JSON.stringify(params.nickname);
     // console.log(" this endpoint   " + endpoint + " Fetching : " + friendName)
     // http://localhost:5000/statusFriendship/?id=narjdal
@@ -279,7 +230,8 @@ async function init_socket()
 await GetMembers()
 // .then((resp) => {
 
-  socket = io("http://localhost:5000/chat");
+const chat_url = process.env.REACT_APP_BACK_URL + "/chat";
+  socket = io(chat_url);
   socket.emit('joinroom', { room: props.room.id, user: JSON.parse(localStorage.getItem("user")!) });
   socket.on("addmsg", (data: any) => {
     console.clear();
@@ -292,15 +244,7 @@ await GetMembers()
     createdAt   Time
   }
   */
-//  const NewMembers = JSON.parse(localStorage.getItem("members")!);
-//   console.log("ALL MEMBERS : ", NewMembers);
-  // let srch = NewMembers.filter((m: any) => {
-  //   console.log("m.id : " + m.id + " data.senderId : " + data.message.senderId, data);
-  //   return m.id === data.message.senderId
-  // })[0]
-  // if(!srch)
-  // srch = JSON.parse(localStorage.getItem("user")!);
-  //  console.log("SEARCH RESULT: ", srch);
+
   
   const msgObj = {
     id: data.message.id ,
@@ -312,9 +256,7 @@ await GetMembers()
   // console.log("SRCH IS " ,srch);
   console.log("OLD Messages : ", messages, 'NEW', msgObj);
 
-    // append new message to messages using previous state
-    // console.log(" DATA MESSAGE : ",data.message)
-  // if(data.message)
+
   if(props.room.id  == data.message.roomId)
     setMessages((prevMessages: any) => [...prevMessages, msgObj]);
 
@@ -382,6 +324,7 @@ await GetMembers()
     setShowInput(true);
   },[localStorage.getItem("noinput")])
 
+
 const SendMessage = (e) => {
   e.preventDefault();
   setIsUpdating(true);
@@ -405,23 +348,14 @@ const SendMessage = (e) => {
 
 async function LeaveRoom () {
 
-  const text = "http://localhost:5000/player/leaveRoom/" + props.room.id
+  const text = process.env.REACT_APP_BACK_URL + "/player/leaveRoom/" + props.room.id
 // console.log("Api Leave Rookm  Link :  =>  " + text);
 
 
 await axios.get(text,{withCredentials:true})
-  //{
-//   // mode:'no-cors',
-//   method:'get',
-//   credentials:"include"
-// })
 
-// .then((response) => response.json())
 .then(json => {
-  // console.log("json" + JSON.stringify(json.data))
-  
-  // console.log("The response is => " + JSON.stringify(json))
-// 
+
 if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
 {
   setErrorMessage("An error occured in the backend.");
@@ -445,22 +379,11 @@ const HandleLeaveRoom = (e) => {
   LeaveRoom();
 
 }
-const HandleFetchedFriend = (e) => {
-  e.preventDefault();
-}
 
-//-----------------------//
-//Filter User List 
-// const FilteredUsers =  useMemo (() => {
-//   const FilteredUsers = members.filter(members => {
-//   // Here A changer : person with friends from backend , 
-//   //filter nickname not name 
-//    return members.name.toLowerCase().includes(userQuery.toLowerCase());
-// })
-// console.log("PROPS IS DM " + props.room.is_dm);
+
 return (
   <div className='body'>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
    
         <>
     <div className='ChatRoomBox-card'>

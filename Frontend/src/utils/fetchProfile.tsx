@@ -7,7 +7,7 @@ console.log("Fetching Profile Infos   => ");
 
 
 // const auth =   await 
-const endpoint = 'http://localhost:5000/player/myprofile'
+const endpoint = process.env.REACT_APP_BACK_URL + '/player/myprofile'
 console.log(" this endpoint " + endpoint)
 
 await fetch(endpoint,{
@@ -19,12 +19,14 @@ await fetch(endpoint,{
 .then((response) => response.json())
 .then(json => {
     console.log("The response is => " + JSON.stringify(json))
+
     if(json.statusCode == "401")
     {
-        localStorage.setItem("authenticated","");
+    localStorage.setItem("authenticated","");
   localStorage.setItem("user","");
   localStorage.setItem("trylogin","false");
 
+    window.location.reload();
     }
     else
     {
@@ -38,6 +40,10 @@ await fetch(endpoint,{
 })
 .catch((error) => {
     console.log("An error occured : " + error)
+    localStorage.setItem("authenticated","");
+    localStorage.setItem("user","");
+    localStorage.setItem("trylogin","false");
+
     return error;
 })
 

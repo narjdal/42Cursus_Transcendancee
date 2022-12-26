@@ -1,8 +1,7 @@
 import react from 'react';
 import { useState ,useEffect} from "react";
 import './ChatRoomButtons.css'
-import DisplayChatRoomusers from './DisplayChatRoomsusers';
-import person from '../users/users.json'
+
 import { useParams } from 'react-router-dom';
 import DisplayChatRoomFriendsToAdd from './DisplayChatRoomFriendsToAdd';
 
@@ -16,7 +15,7 @@ const [username, setUsername] = useState("");
 
 async function FetchUserInfo (nickname) {
 
-const text = ("http://localhost:5000/player/listToAddFriend/" + params.id);
+const text = (process.env.REACT_APP_BACK_URL + "/player/listToAddFriend/" + params.id);
 // console.log("Api ListToAddFriend Link :  =>  " + text);
 
 await fetch(text,{

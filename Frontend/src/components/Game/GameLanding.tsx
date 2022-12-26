@@ -11,7 +11,8 @@ const GameLanding = () => {
 
 useEffect(() => {
     // console.log("Inside Game Landing ! HHHHHHHHHHHHHWWWWW ")
-    let socket = io("http://localhost:5000/game");
+    const back_url = process.env.REACT_APP_BACK_URL + "/game";
+    let socket = io(back_url);
 
     // GET LIST OF ROOMS SET IN STATE AND MAP OVER THE LINKS
         socket.on("connect", () => {
@@ -31,7 +32,7 @@ useEffect(() => {
     return(
         <>
            <div className='Games-card'>
-            {/* HHHHHHHHHHHHH */}
+        
             GameList
       {GamesArray.map((c:any) => < DisplayGameList  key = {c.id} game ={c} />)}
 

@@ -15,6 +15,7 @@ const   IsAuthOk = (key:string) => {
         localStorage.setItem("authenticated","");
         localStorage.setItem("user","");
         localStorage.setItem("trylogin","false");
+        window.location.reload();
         return(1);
     }
 return (0);

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { IsAuthOk } from '../../utils/utils';
 
 const AdminChatRoomDashboard = (props) => {
-  const[roomUsers,setRoomUsers] = useState <any >([]);
+
 const [username, setUsername] = useState("");
 const [errorMessage, setErrorMessage] = useState("");
 const [showmodal,setModal] = useState(false);
@@ -36,7 +36,7 @@ async function AddAdmin (username:string)
   if(loggeduser)
 {
   const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/setAdmin/" + username + "/" + props.room.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/setAdmin/" + username + "/" + props.room.id;
 console.log("Api Set Admin Link :  =>  " + text);
 
 
@@ -90,7 +90,7 @@ async function UnsetAdmin (username:string)
   if(loggeduser)
 {
   const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/unsetAdmin/" + username + "/" + props.room.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/unsetAdmin/" + username + "/" + props.room.id;
 console.log("unsetAdmin   Link :  =>  " + text);
 
 
@@ -149,7 +149,7 @@ const HandleMute = (e) => {
 
   async function MuteUserFromRoom() 
   {
-     let text = ("http://localhost:5000/player/muteMember/");
+     let text = (process.env.REACT_APP_BACK_URL + "/player/muteMember/");
   console.log(" MNutemember Ednpoint " + text + " ROOM ID IS : " + props.room.id + " TIME IS : " +time + "login is : " + username)
 
   var hms = time   // your input string
@@ -240,7 +240,7 @@ window.location.reload();
   if(loggeduser)
 {
   const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/banMember/" + username + "/" + props.room.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/banMember/" + username + "/" + props.room.id;
 console.log("Api BanUser Link :  =>  " + text);
 
 
@@ -311,7 +311,7 @@ async function KickUserFromRoom()
   if(loggeduser)
 {
   const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/kickMember/" + username + "/" + props.room.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/kickMember/" + username + "/" + props.room.id;
 console.log("kickUserFromRoom Link :  =>  " + text);
 
 
@@ -368,7 +368,7 @@ async function UnmuteUserFromRoom()
   if(loggeduser)
 {
   const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/unmuteMember/" + username + "/" + props.room.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/unmuteMember/" + username + "/" + props.room.id;
 console.log("kickUserFromRoom Link :  =>  " + text);
 
 
@@ -432,7 +432,7 @@ const HandleUnmute = (e) => {
 async function HandleSetPassword()
 {
   
-  let text = ("http://localhost:5000/player/SetPwdToPublicChatRoom/");
+  let text = (process.env.REACT_APP_BACK_URL + "/player/SetPwdToPublicChatRoom/");
   console.log(" SetPassword Ednpoint " + text + " ROOM ID IS : " + props.room.id)
   await fetch(text,{
     // mode:'no-cors',
@@ -473,7 +473,7 @@ async function HandleSetPassword()
   async function HandleDeletePwd()
 {
   
-  let text = ("http://localhost:5000/player/DeletePwdProtectedChatRoom/");
+  let text = (process.env.REACT_APP_BACK_URL + "/player/DeletePwdProtectedChatRoom/");
   console.log(" DELETEPWD Ednpoint " + text + " ROOM ID IS : " + props.room.id)
   await fetch(text,{
     // mode:'no-cors',
@@ -516,7 +516,7 @@ async function HandleSetPassword()
   async function HandleUpadtePwd()
   {
     
-    let text = ("http://localhost:5000/player/UpdatePwdProtectedChatRoom/");
+    let text = (process.env.REACT_APP_BACK_URL + "/player/UpdatePwdProtectedChatRoom/");
     console.log(" UPDATEPWD Ednpoint " + text + " ROOM ID IS : " + props.room.id)
     await fetch(text,{
       // mode:'no-cors',
@@ -698,16 +698,6 @@ async function HandleSetPassword()
         onChange={(e) => setTime(e.target.value)}
         pattern="^-?[0-9]\d*\.?\d*$"
       /> 
-        {/* <input
-         type="time" 
-         id="mute"
-         className='without_ampm'
-          name="mute-time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-        min="00:00" max ="18:00" >
-
-        </input>  */}
         <label htmlFor="mute"> Chose Mute Duration</label>
       
         <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleMuteRequest}>

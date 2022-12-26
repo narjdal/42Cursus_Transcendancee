@@ -1,33 +1,19 @@
 import react from 'react';
 import { useEffect, useState } from "react";
 import {Link} from'react-router-dom';
-import ChatRoomButton from '../Chatrooms/ChatRoomButtons'
+
 
 
 import './MesageList.css'
 const MessageList = (props) => {
     const[CurrentUser,SetCurrentUser] = useState<any>([]);
-    const [ShowActionsButtons,SetActionsButtons] = useState(false);
     const [UserId,SetUserId] = useState("");
     const [date,setDate] = useState("");
     const [image_url,SetImageUrl] = useState("");
-    const HandleRightClick = (e) => {
-        e.preventDefault();
-        if (e.type === 'click') {
-            console.log('Left click');
-          } else if (e.type === 'contextmenu') {
-            console.log('Right click');
-            SetActionsButtons(!ShowActionsButtons);
-          }
-        
-    } ;
   useEffect(() => {
     const authenticated = localStorage.getItem("authenticated");
     const loggeduser = (localStorage.getItem("user")!);
-    // if(props.user.userId == 0)
-    // {
-    // }
-    console.log("INSIDE MESSAGE LIST " + props.user.msg + " MSG USER ID " + props.user.senderId + " NICKNAME " + props.user.sender.nickname)
+
     if(loggeduser)
 		{
 
@@ -69,17 +55,6 @@ setDate(formattedDate)
     <img src={props.user.sender.avatar} className="avatar1" />     
  <Link style={{color:'purple',float:'left'}} to={`/users/${props.user.sender.nickname}`} >{props.user.sender.nickname} : </Link>
     <p>{props.user.msg}</p>
-        
-           {/* <p onClick={HandleRightClick} onContextMenu={HandleRightClick} > {props.user.msg} </p>
-           {ShowActionsButtons ? (
-            <div>
-            <ChatRoomButton/>
-            </div>
-           ) : (
-            <div>
-                
-                </div>
-           )} */}
        
             <span className="time-left"> {date}</span>
             </div>

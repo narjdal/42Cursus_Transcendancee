@@ -13,7 +13,7 @@ const DisplaySocial = (props) => {
 
 async function BlockRelationship()
 {
-   let endpoint = "http://localhost:5000/player/blockFriendship/"
+   let endpoint = process.env.REACT_APP_BACK_URL + "/player/blockFriendship/"
 
 
     console.log("BlockRelation  => " + endpoint + " \n user" + props.Friends.nickname)
@@ -93,19 +93,12 @@ if(OpenMsg)
     }
     return (
         <>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
         <ul className='SocialList'>
             <li>
         <ul>  </ul>
         <span>{props.Friends.nickname}          </span>
          <img className="avatar" src={props.Friends.avatar} />
-    {/* <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={handleFriendClick}>
-    <span className="icon material-symbols-outlined">
-     {"People"}  
-      </span>
-
-      </button> */}
       
       <button type="button" id="ss" className='ButtonSocial-block' onClick={HandleBlock}>
     <span className="icon material-symbols-outlined">
@@ -115,22 +108,6 @@ if(OpenMsg)
       </button>
 
 
-      {/* <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleOpenMsg}>
-    <span className="icon material-symbols-outlined">
-     {"Chat"}  
-      </span> */}
-
-
-      {/* </button> */}
-      {/* {OpenMsg ? (
-        <li>
-            <DmWindow contact = {props.Friends} /> 
-            </li>
-      ) : (
-        <li>
-
-            </li>
-      )} */}
       </li>
       <li>
         

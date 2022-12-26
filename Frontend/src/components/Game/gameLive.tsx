@@ -75,7 +75,8 @@ export default function GameLive(props: any) {
   const [gameState, setGameState] = useState(defaultState);
 
   useEffect(() => {
-    gameState.socket = io("http://localhost:5000/game");
+    const back_url = process.env.REACT_APP_BACK_URL + "/game";
+    gameState.socket = io(back_url);
 
     gameState.socket.on("connect", () => {
         console.log(gameState.socket); 
@@ -167,19 +168,19 @@ export default function GameLive(props: any) {
           gameState.socket.emit("watchGame", {gameId:props.roomId
             ,user:localStorage.getItem("user")!});
             
-          console.log("Width : ",props.width , "Height " , props.height)
+          // console.log("Width : ",props.width , "Height " , props.height)
 
         gameState.socket.on("WatchUpdate", (data: any) => {
           console.log("Update : ",data)
           const pongParsed = JSON.parse(data.pongData);
           if(pongParsed.isPlaying)
           {
-            console.log("they are still playing !")
+            // console.log("they are still playing !")
           gameState.pongData = pongParsed;
           }
           else
           {
-            console.log("Game ended !")
+            // console.log("Game ended !")
             gameState.gameStatue = "endGame";
             p5.background(0);
             p5.fill(255);

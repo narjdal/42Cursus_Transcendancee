@@ -15,7 +15,7 @@ const CreateRoom = () => {
     const [roomState,setRoomState] = useState("");
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
-    const [user,setUser] = useState([]);
+
     const HandleRoomPublic = (e) => {
         setRoomPublic(!isRoomPublic);
         setRoomPrivate(false);
@@ -52,21 +52,17 @@ const CreateRoom = () => {
         let text ;
         if(roomState == "Public")
         {
-         text = ("http://localhost:5000/player/createChatRoom/Public/" );
+         text = (process.env.REACT_APP_BACK_URL + "/player/createChatRoom/Public/" );
         }
         else if (roomState == "Private")
         {
-         text = ("http://localhost:5000/player/createChatRoom/Private/" );
+         text = (process.env.REACT_APP_BACK_URL + "/player/createChatRoom/Private/" );
         }
         else if (roomState == "Protected")
         {
-         text = ("http://localhost:5000/player/createChatRoom/Protected/");
+         text = (process.env.REACT_APP_BACK_URL + "/player/createChatRoom/Protected/");
         }
-        //  text = ("http://localhost:5000/player/createChatRoom/" );const
-        // console.log("Api Fetch Link :  =>  " + text);
-
-        
-        // console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + password + " Owner : " + Current_User.nickname);
+       
         await fetch(text,{
           // mode:'no-cors',
           method:'post',
@@ -132,21 +128,6 @@ const CreateRoom = () => {
         CreateRoom("");
             setRoomPassword("");
         }
-        // Here Post Request to Backend , with the Room infos  + creating use infos 
-        // fetch(
-		// 	'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',
-		// 	{
-		// 		method: 'POST',
-		// 		body: formData,
-		// 	}
-		// )
-		// 	.then((response) => response.json())
-		// 	.then((result) => {
-		// 		console.log('Success:', result);
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error('Error:', error);
-		// 	});
 
     }
     else

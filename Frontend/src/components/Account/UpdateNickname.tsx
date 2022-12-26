@@ -20,7 +20,7 @@ const UpdateNickname = (props) => {
     if(loggeduser)
   {
     var current = JSON.parse(loggeduser);
-   let  text = ("http://localhost:5000/player/update/nickname" );
+   let  text = (process.env.REACT_APP_BACK_URL + "/player/update/nickname" );
 
     // console.log("Uploading the nickname ! of this user  + " +  current.nickname +  " + New Nickname " + nickName);
         await fetch(text,{
@@ -72,29 +72,7 @@ const UpdateNickname = (props) => {
       return error;
   })
 }
-  //   const loggedUser = localStorage.getItem("user");
-  //   if(loggedUser)
-  //   {
 
-  //   var Current_User = JSON.parse(loggedUser);
-  //   const post = {
-  //     nickName:nickName,
-  //     UserId:Current_User.UserId,
-  //     image_url:Current_User.image_url
-  //   }
-  //   console.log("LoggedUser " + Current_User.UserId);
-  // const text = ("http://localhost:3000/player/update/nickname");
-  // console.log("Api Post Link :  =>  " + text);
-  
-  // const response = await axios.post(text,post)
-    
-  // // // 	onUploadProgress: progressEvent => {
-  // // // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
-  // // // 	},
-  // // // });
-  // // // 	}
-  //   return response.data;
-  //   }
   
   };
     const UpdateNickname = (e) => {
@@ -118,7 +96,6 @@ const UpdateNickname = (props) => {
 
     return (
         <>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         <form className='UpdateNickname-form'>
        <br>
        </br>
@@ -143,7 +120,7 @@ const UpdateNickname = (props) => {
       </span>
     </button>
     {errorMessage && <div className="error"> {errorMessage} </div>}
-       {/* <button type="submit" onClick={UpdateNickname}> Submit</button> */}
+      
        </form>
         </>
 

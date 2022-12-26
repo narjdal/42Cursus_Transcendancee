@@ -2,7 +2,7 @@ import react from 'react'
 import { useState,useEffect } from 'react';
 import './DisplayAchievementsList.css'
 const DisplayAchievementsList = (props) => {
-console.log("Achievements props . ", props)
+// console.log("Achievements props . ", props)
 
     return (
         <>
