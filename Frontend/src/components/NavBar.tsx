@@ -229,7 +229,10 @@ await fetch((endpoint),{
     return (
         <nav>
             <div>  {loggedInUser == "true" ? (
+              
               <div>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
                  <div className="body">
             <nav className="sidebar">
@@ -295,6 +298,11 @@ await fetch((endpoint),{
       <span>
       Social
       </span>
+      
+      <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
                       </button>
 
     <button type="button" className='has-border' onClick={HandleClickNotifs}>
