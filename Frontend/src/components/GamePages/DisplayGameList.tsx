@@ -1,6 +1,5 @@
 import React from "react";
 
-import SpectateGame from "./SpectateGame";
 
 const DisplayGameList = (props) => {
 

@@ -39,7 +39,7 @@ const createTokenProvider = () => {
 
     const setToken = (token: typeof _token )  => {
         if (token) {
-            console.log("SETTING HERE ")
+            // console.log("SETTING HERE ")
             localStorage.setItem('REACT_TOKEN_AUTH', JSON.stringify(token));
         } else {
             localStorage.removeItem('REACT_TOKEN_AUTH');

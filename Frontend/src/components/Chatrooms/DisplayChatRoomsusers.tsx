@@ -1,49 +1,33 @@
-import react, { useEffect } from 'react'
+import  { useEffect } from 'react'
 import { useState } from 'react'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import './DisplayChatRoomsusers.css'
 import { io } from 'socket.io-client';
 // import blobz from 'blobz.css'
-const DisplayChatRoomusers = (props,roomownnership) => {
-    const [errorMessage, setErrorMessage] = useState("");
-    const [action,setAction] = useState(false);
+const DisplayChatRoomusers = (props) => {
+   
     const [display,setDisplay] = useState(false);
     const [inviteGame,setInviteGame] = useState(false);
     const params = useParams();
     const navigate = useNavigate();
-    const [isAdmin,setIsAdmin] = useState(JSON.stringify(roomownnership));
-//   console.log("isADmin" + JSON.stringify(isAdmin))
-    const handleFriendClick  = (e) => {
-        e.preventDefault();
-        //if() Request to Add Friend , if already : 
-        setErrorMessage("You are alredy friend !");
-        
-    };
-    const HandleBlock = (e) => {
-        e.preventDefault();
-    }
-    
+
     const HandleInviteToGame = (e) => {
         e.preventDefault();
-        console.log("invting this user to a game !");
+        // console.log("invting this user to a game !");
         setInviteGame(true);
 
     }
-    
-    const HandleShowAction = (e) => {
-        e.preventDefault();
-        setAction(!action);
-        // Here request to know which button to display 
-    }
+ 
     useEffect(() => {
 
         if (inviteGame)
         {
-            let socket = io("http://localhost:5000/game");
+            const back_url = process.env.REACT_APP_BACK_URL + "/game";
+            let socket = io(back_url);
 
    socket.on("connect",() => {
-    console.log("socket : ",socket);
+    // console.log("socket : ",socket);
    })
 
    socket.emit("inviteGame",{
@@ -52,8 +36,7 @@ const DisplayChatRoomusers = (props,roomownnership) => {
    })
 
    socket.on("InviteUpdate",(data:any) => {
-    setErrorMessage("");
-    console.log("Invite Update Data : ",data)
+    // console.log("Invite Update Data : ",data)
     if(data.logged)
     {
     localStorage.setItem("inviteGame",data.inviteeNickname)
@@ -62,6 +45,7 @@ const DisplayChatRoomusers = (props,roomownnership) => {
     
    })
   }
+  // eslint-disable-next-line
     },[inviteGame])
     
     useEffect(() => {
@@ -69,7 +53,7 @@ const DisplayChatRoomusers = (props,roomownnership) => {
         if(loggeduser)
         {
             const current = JSON.parse(loggeduser);
-            if (current.id == props.user.id)
+            if (current.id === props.user.id)
             {
                 setDisplay(false);
             }
@@ -77,12 +61,13 @@ const DisplayChatRoomusers = (props,roomownnership) => {
             setDisplay(true);
             let texttt = "HasRoomAccess" + params.id
 
-            console.log("SETTING TEXT TO FALSE " + texttt)
+            // console.log("SETTING TEXT TO FALSE " + texttt)
           
             localStorage.setItem(texttt,"false")
         }
-    })
-console.log(" DIsplay ChatRoom Users >>> " + props.user + " nickname : " , props.user.nickname)
+        // eslint-disable-next-line
+    },[])
+// console.log(" DIsplay ChatRoom Users >>> " + props.user + " nickname : " , props.user.nickname)
     return (
         <>
 <div className="ChatRoom-HELP"> 
@@ -95,7 +80,8 @@ console.log(" DIsplay ChatRoom Users >>> " + props.user + " nickname : " , props
    <tr>
    <td> <img src={props.user.avatar!} 
    height="20" 
-   className='avatarsidebar'/>
+   className='avatarsidebar'
+   alt="AvatarSideBar"/>
    </td>
    <td>
     <Link style={{color:'white'}} to={`/users/${props.user.nickname}`} > 

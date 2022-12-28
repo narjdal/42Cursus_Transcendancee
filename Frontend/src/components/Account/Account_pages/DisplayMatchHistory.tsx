@@ -1,21 +1,18 @@
-import { match } from 'assert';
-import react from 'react'
 import {useState, useEffect} from 'react'
 import {Link} from'react-router-dom';
 
 import './DisplayMatchHistory.css'
 const DisplayMatchHistory = (props) => {
     const [isWinner,setIsWinner] = useState(false);
-    const [ennemyNickname,setEnnemyNickname] = useState("");
 
     useEffect(() => {
         const logged = localStorage.getItem("user");
-        if (logged){
+        if (logged)
+        {
             const current = JSON.parse(logged)
-            {
-                if (props.match.winner_id == current.id)
+                if (props.match.winner_id === current.id)
                 {
-                    console.log( " I won ! ");
+                    // console.log( " I won ! ");
                     setIsWinner(true);
                     // setEnnemyNickname(props.match.losser.nickname)
                 }
@@ -26,11 +23,10 @@ const DisplayMatchHistory = (props) => {
 
                 }
 
-            }
         }
-
+        // eslint-disable-next-line
     },[])
-console.log(" History Props : " , props)
+// console.log(" History Props : " , props)
     return (
         <>
  {isWinner ? (
@@ -77,7 +73,7 @@ console.log(" History Props : " , props)
 </tr>
 <tr>
 <td>
-   <img src = {props.match.winner_avatar}  className="avatar1" height="35"/>
+   <img src = {props.match.winner_avatar}  className="avatar1" height="35" alt="WinnerAvatar"/>
 </td>
 <td>
 <Link style={{color:'#1e90fe'}} to={`/users/${props.match.winner_name}`} >   {props.match.winner_name} </Link>
@@ -96,7 +92,7 @@ console.log(" History Props : " , props)
 
 <td>
     
-   <img src = {props.match.looser_avatar}  className="avatar"/>
+   <img src = {props.match.looser_avatar}  className="avatar" alt="loseravatar"/>
 </td>
     </tr>
     </tbody>

@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import { Link } from "@mui/material";
-import SpectateGame from "../GamePages/SpectateGame";
 import { useState } from "react";
 import DisplayGameList from "./DisplayGameList";
 import io from "socket.io-client";
@@ -11,19 +9,20 @@ const GameLanding = () => {
 
 useEffect(() => {
     // console.log("Inside Game Landing ! HHHHHHHHHHHHHWWWWW ")
-    let socket = io("http://localhost:5000/game");
+    const back_url = process.env.REACT_APP_BACK_URL + "/game";
+    let socket = io(back_url);
 
     // GET LIST OF ROOMS SET IN STATE AND MAP OVER THE LINKS
         socket.on("connect", () => {
   
     }); 
 
-    console.log("Emiting here ! ")
+    // console.log("Emiting here ! ")
     socket.emit ("getAllGames", localStorage.getItem("user")!);
 
 
     socket.on("getAllGames", (data: any) => {
-      console.log("GetALlRooms data : ",data)
+    //   console.log("GetALlRooms data : ",data)
       setGamesArray(data.games);
       }); 
 
@@ -31,7 +30,7 @@ useEffect(() => {
     return(
         <>
            <div className='Games-card'>
-            {/* HHHHHHHHHHHHH */}
+        
             GameList
       {GamesArray.map((c:any) => < DisplayGameList  key = {c.id} game ={c} />)}
 

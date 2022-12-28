@@ -25,7 +25,7 @@ if(!OpenMsg)
     // const tt = Dmcount + 1;
     
      tt = tt + 1;
-    console.log(" TRUE " + tt);
+    // console.log(" TRUE " + tt);
     SetDmCount(tt);
     // let tt = parseInt(localStorage.getItem("Dmcount")!);
     // console.log("Parsed => "  + tt);
@@ -33,89 +33,48 @@ if(!OpenMsg)
     // console.log(" => "  + tt);
 
     localStorage.setItem("Dmcount",(tt).toString());
-    // var = var  - 1;
-    // localStorage.setItem("Dmcount",var.toString());
 }
 
 if(OpenMsg)
 {
        const tt = Dmcount - 1
-    // tt = tt - 1;
     SetDmCount(tt);
-    console.log(" FALSE "   + tt);
-    // localStorage.setItem("Dmcount",(tt).toString());
 }
 
     SetOpenMsg(!OpenMsg);
 
     
-   // if(!OpenMsg)
-    // SetDmCount(Dmcount - 1);
-        // if(Dmcount === "1" )
-    // {
-    //     console.log("Inside Dm Count")
-    //     SetDmCount("0");
-    
-    // }
-    // else if ( Dmcount === "0")
-    // {
-    //     // localStorage.setItem("DmCount","1");
-    // SetDmCount("1");
-    // }
-    // if(Dmcount == "0")
-    // SetDmCount("1");
-    
 }
-useEffect(() => {
-
-    // console.log("INSIDE SOCIAL SHOUD FETCH IF LOGEGD ")
-
-    
-    // socket.on("onlineUsersFront", (data: any) => {
-    //   console.log("OnLine e e e e e: ", data);
-    //   localStorage.setItem("online",JSON.stringify(data))
-},[])
 useEffect (() => {
     let InGameUsers = localStorage.getItem("InGame");
-    console.log("INside Use Effect ")
     if (InGameUsers)
     {
-        console.log("Inside In Game Users : ")
+        // console.log("Inside In Game Users : ")
         const parsedInGame = JSON.parse(InGameUsers);
-        
-        // console.log("They is some in game users !",parsedInGame);
-        // if(parsedInGame.length > 0)
-        // {
-        //     console.log("inside hh")
-        // }
-        // else
-        // {
-        //     console.log(" Not parsed in game ")
-        // }
         if(parsedInGame.data[0])
         {
 
         let srch = parsedInGame.data.filter((m: any) => {
-            console.log(" ME id : " + m.id + "  User Nick : " + props.user.nickname  +  " : " , m);
+            // console.log(" ME id : " + m.id + "  User Nick : " + props.user.nickname  +  " : " , m);
             return m.id === props.user.nickname
           })[0] 
         
             if(srch)
             {
-                console.log(" THIS FRIEND IS IN GAME  IN  ")
+                // console.log(" THIS FRIEND IS IN GAME  IN  ")
                 setInGame(true);
                 // setImLogged(true);
             }
             else
             {
-                console.log( " THIS FRIEND IS NOT IN GAME" );
+                // console.log( " THIS FRIEND IS NOT IN GAME" );
                 setInGame(false);
                 // setImLogged(false);
             }
         }
         else
         {
-            console.log("no PARSED IN GAME DATA")
+            // console.log("no PARSED IN GAME DATA")
             setInGame(false);
         }
 
@@ -128,34 +87,29 @@ useEffect (() => {
         console.log ( "PARSED USER : " , ParsedUsers);
 
     let srch = ParsedUsers.filter((m: any) => {
-    console.log(" ME id : " + props.user.id + "  ME NICKNAME : " + props.user.nickname  +  " : " , m.user);
+    // console.log(" ME id : " + props.user.id + "  ME NICKNAME : " + props.user.nickname  +  " : " , m.user);
     return m.user === props.user.id
   })[0] 
 
     if(srch)
     {
-        console.log(" THIS FRIEND IS LOGEED IN  ")
+        // console.log(" THIS FRIEND IS LOGEED IN  ")
         setImLogged(true);
     }
     else
     {
-        console.log( " THIS FRIEND NOT LOGGED IN ");
+        // console.log( " THIS FRIEND NOT LOGGED IN ");
         setImLogged(false);
     }
         // const isInsideLoggedUsers = ParsedUsers.filter(s => s.id);
     }
-    // if(props.user.id == )
-    // console.log("Dm Window opened !" + Dmcount);
-
-// localStorage.setItem("Dmcount",(Dmcount).toString());
-// }
+    // eslint-disable-next-line
 },[])
-// console.log("OPENBOX =>>>>>> " + OpenBox);
+
 const RedirFriendProfile = (e) => {
     e.preventDefault();
-    window.location.href = "http://localhost:3000/users/" + props.user.nickname;
-    // window.location./// <reference path="" />
-    // ("http://localhost:3000/")
+    window.location.href = process.env.REACT_APP_FRONT_URL + "/users/" + props.user.nickname;
+
 
 }
 return (
@@ -171,6 +125,7 @@ return (
    <td> <img src={props.user.avatar} 
    height="20"
    className="avatar1"
+   alt="ContactAvatar"
    onClick={handleClick} /></td>
     {/* {OpenMsg ? (
                     <td> 

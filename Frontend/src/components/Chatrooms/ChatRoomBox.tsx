@@ -1,25 +1,20 @@
-import React, { useMemo } from 'react';
-import {Routes, Route, useNavigate} from 'react-router-dom';
+import React from 'react';
+import { useNavigate} from 'react-router-dom';
 import { useState,useEffect } from "react";
-import person from '../users/users.json'
 import './ChatRoomBox.css'
 import MessageList from '../DirectMsg/MessageList';
 import DisplayChatRoomusers from './DisplayChatRoomsusers';
 import axios from 'axios';
 import { IsAuthOk } from '../../utils/utils';
-import { set } from 'date-fns';
 import { io } from "socket.io-client";
-import { Socket } from 'dgram';
-import { any } from 'prop-types';
 
 var socket:any;
 
 //https://codeburst.io/tutorial-how-to-build-a-chat-app-with-react-native-and-backend-9b24d01ea62a
-const ChatRoomBox = (props,statusMember) => {
+const ChatRoomBox = (props) => {
 
   const navigate = useNavigate();
   const [inputMsg,SetInputMsg] = useState("");
-  const [BanUser,SetBanUser] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [ifBlocked, setIfBlocked] = useState(false);
 
@@ -27,13 +22,13 @@ const ChatRoomBox = (props,statusMember) => {
 	const [errorMessage, setErrorMessage] = useState("");
   
   const[members,setMembers] = useState <any >([]);
-const [allMembers,setAllMembers] = useState <any>([]);
+// const [allMembers,setAllMembers] = useState <any>([]);
 
 
   const [messages, setMessages] = useState <any>([]);
   const [showInput,setShowInput] = useState(false)
   const [userQuery,setUserQuery] = useState("");
-  const [allgood,setAllgood] = useState(false);
+  // const [allgood,setAllgood] = useState(false);
 
 
   
@@ -41,56 +36,9 @@ const [allMembers,setAllMembers] = useState <any>([]);
     e.preventDefault();
     SetInputMsg(e.target[0].value);
 
-    // console.log("INPUT MSG => ",inputMsg);
-    // if (inputMsg)
-    // {
-    //   //Post request to Backend
-    // }
+
   }
   
-  // const HandleBanUser = (e) => {
-  //   e.preventDefault();
-  //   SetBanUser(e.target[0].value);
-  // }
-
-
-//   async function FetchUserInfo (id) {
-
-//     // ]
-//   const loggeduser = localStorage.getItem("user");
-
-//   if(loggeduser)
-// {
-//   var Current_User = JSON.parse(loggeduser);
-//   const text = ("http://localhost:9000/GetUserPicture");
-//   console.log("Api get Link :  =>  " + text);
-  
-//   const response = await axios.get("http://localhost:9000/GetUserPicture",{
-//   headers: {
-//     userId:id
-//   }
-//   }
-//   )
-//   const {nickname ,UserId,image_url,id42} = response.data;
-//   console.log("The Friends are " + JSON.stringify(response.data));
-// //   response.data.forEach( result => {
-// //     // console.log(result.data.name);
-// //     console.log(result.data.id);
-// //     console.log(result.data.image_url);
-// //     console.log(result.data.id42);
-
-// // })
-//     // console.log(" Nickname " + response.data[0].name + " IU => " + response.data[0].image_url  + " |id42 " + response.data[0].id42);
-//   // 	onUploadProgress: progressEvent => {
-//   // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
-//   // 	},
-//   // });
-  
-//   // 	}
-//     return response.data;
-// }
-
-//   }
 
 async function GetMembers () 
 {
@@ -99,7 +47,7 @@ async function GetMembers ()
   if(loggeduser)
   {
     var Current_User = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/listOfMembers/" + props.room.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/listOfMembers/" + props.room.id;
     // console.log("Api Fetch Link :  =>  " + text);
 try
 {
@@ -113,19 +61,23 @@ try
   .then((response) => response.json())
   .then(json => {
       // console.log(" Members Of ChatRoom  :   => " + JSON.stringify(json))
-      if(IsAuthOk(json.statusCode) == 1)
-      window.location.reload();
+      
+      // if(IsAuthOk(json.statusCode) == 1)
 
-      if(json.statusCode == "500" )
+      if(String(json.statusCode) === "500" )
         {
-            console.log("an error occured");
+            // console.log("an error occured");
             setErrorMessage("an error occured");
-            setAllgood(false)
+            // setAllgood(false)
          
+        }
+        else if (String(json.statusCode) === "404")
+        {
+          setErrorMessage(json.message)
         }
         else
         {
-          setAllgood(true);
+          // setAllgood(true);
           if(!json.nickname)
           {
             localStorage.setItem("members",JSON.stringify(Current_User));
@@ -135,7 +87,7 @@ try
           localStorage.setItem("members",JSON.stringify(json));
           }
           setMembers(json);
-          setAllMembers(json);
+          // setAllMembers(json);
           // console.log("ALL GET MEMBERS ARE ", json, allMembers);
           // console.log("Setting the ChatRooms Members ...");
           return json;
@@ -144,7 +96,7 @@ try
 
   })
   .catch((error) => {
-      console.log("An error occured : " + error)
+      // console.log("An error occured : " + error)
       return error;
   })
 
@@ -163,8 +115,7 @@ async function GetMessageHistory()
   const loggeduser = localStorage.getItem("user");
   if(loggeduser)
   {
-    var Current_User = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/getmessages/" + props.room.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/getmessages/" + props.room.id;
     // console.log("Api getmessages Link :  =>  " + text);
     
 
@@ -176,14 +127,12 @@ async function GetMessageHistory()
   
   .then((response) => response.json())
   .then(json => {
-      // console.log("getmessages :   => " + JSON.stringify(json))
-      
-    
-      if(json.statusCode == "500" || json.statusCode == "404")
+
+      if(String(json.statusCode) === "500" ||String(json.statusCode) === "404")
         {
-            console.log("an error occured");
+            // console.log("an error occured");
             setErrorMessage("an error occured");
-            setAllgood(false)
+            // setAllgood(false)
             // if(IsAuthOk(json.statusCode) == 1)
             // window.location.reload();
         }
@@ -191,7 +140,7 @@ async function GetMessageHistory()
         else
         {
           setMessages(json);
-          setAllgood(true);
+          // setAllgood(true);
           // console.log("Setting the ChatRooms Messages ...");
           return json;
           
@@ -200,7 +149,7 @@ async function GetMessageHistory()
 
   })
   .catch((error) => {
-      console.log("An error occured  get Message: " + error)
+      // console.log("An error occured  get Message: " + error)
       return error;
   })
 
@@ -213,10 +162,9 @@ async function FetchRelationshipNarjdal(friendName : string) {
 
   const loggeduser = localStorage.getItem("user");
   if (loggeduser) {
-    const current = JSON.parse(loggeduser);
-    console.log("Fetching Relationship    Infos   => "  +  friendName +  " I am : " + current.nickname  );
+    // console.log("Fetching Relationship    Infos   => "  +  friendName +  " I am : " + current.nickname  );
 
-    let endpoint = 'http://localhost:5000/player/statusFriendship/' + friendName
+    let endpoint = process.env.REACT_APP_BACK_URL + '/player/statusFriendship/' + friendName
     // let nicknametofetch: string = JSON.stringify(params.nickname);
     // console.log(" this endpoint   " + endpoint + " Fetching : " + friendName)
     // http://localhost:5000/statusFriendship/?id=narjdal
@@ -236,18 +184,18 @@ async function FetchRelationshipNarjdal(friendName : string) {
         setErrorMessage("");
       
 
-        if(json.statusCode == "404" || IsAuthOk(json.statusCode) == 1)
+        if(String(json.statusCode) === "404" || IsAuthOk(json.statusCode) === 1)
         {
           setErrorMessage(json.mnessage);
         }
-        if(json == "YourBlocked")
+        if(String(json) === "YourBlocked")
         {
           setIfBlocked(true);
           let text = friendName + " Has blocked you !";
         setErrorMessage(text)
         setShowInput(false);
         }
-        else if(json == "unblockFriend")
+        else if(String(json) === "unblockFriend")
         {
           setIfBlocked(true);
           let text = "You blocked : " + friendName;
@@ -261,7 +209,7 @@ async function FetchRelationshipNarjdal(friendName : string) {
         return json;
       })
       .catch((error) => {
-        console.log("An error occured : " + error)
+        // console.log("An error occured : " + error)
         // setRelation("error");
         setErrorMessage("An error occured! Relationship not found ! ");
         return error;
@@ -279,7 +227,8 @@ async function init_socket()
 await GetMembers()
 // .then((resp) => {
 
-  socket = io("http://localhost:5000/chat");
+const chat_url = process.env.REACT_APP_BACK_URL + "/chat";
+  socket = io(chat_url);
   socket.emit('joinroom', { room: props.room.id, user: JSON.parse(localStorage.getItem("user")!) });
   socket.on("addmsg", (data: any) => {
     console.clear();
@@ -292,15 +241,7 @@ await GetMembers()
     createdAt   Time
   }
   */
-//  const NewMembers = JSON.parse(localStorage.getItem("members")!);
-//   console.log("ALL MEMBERS : ", NewMembers);
-  // let srch = NewMembers.filter((m: any) => {
-  //   console.log("m.id : " + m.id + " data.senderId : " + data.message.senderId, data);
-  //   return m.id === data.message.senderId
-  // })[0]
-  // if(!srch)
-  // srch = JSON.parse(localStorage.getItem("user")!);
-  //  console.log("SEARCH RESULT: ", srch);
+
   
   const msgObj = {
     id: data.message.id ,
@@ -310,12 +251,10 @@ await GetMembers()
     createdAt: data.message.createdAt,
   }
   // console.log("SRCH IS " ,srch);
-  console.log("OLD Messages : ", messages, 'NEW', msgObj);
+  // console.log("OLD Messages : ", messages, 'NEW', msgObj);
 
-    // append new message to messages using previous state
-    // console.log(" DATA MESSAGE : ",data.message)
-  // if(data.message)
-  if(props.room.id  == data.message.roomId)
+
+  if(props.room.id  === data.message.roomId)
     setMessages((prevMessages: any) => [...prevMessages, msgObj]);
 
   // setMessages([...messages, msgObj]);
@@ -347,7 +286,7 @@ await GetMembers()
               if(props.room.all_members)
               {
 
-              if(current.id == props.room.all_members[0].player.id)
+              if(current.id === props.room.all_members[0].player.id)
               {
             // console.log(" THE NICKNAME OF THE FRIEND IS  OF THE ROOM   " +  props.room.all_members[1].player.nickname);
                 // setFriendName(props.room.all_members[1].player.nickname)
@@ -373,14 +312,17 @@ await GetMembers()
         init_socket();
         GetMessageHistory();
       
-
+// eslint-disable-next-line
   }, []);
+  const hasInput = localStorage.getItem("noinput");
   useEffect(() => {
-    if(localStorage.getItem("noinput") == "true")
+    if(String(localStorage.getItem("noinput")) === "true")
     setShowInput(false);
     else
     setShowInput(true);
-  },[localStorage.getItem("noinput")])
+
+  },[hasInput])
+
 
 const SendMessage = (e) => {
   e.preventDefault();
@@ -391,7 +333,7 @@ const SendMessage = (e) => {
     return ;
   }
   var Current_User = JSON.parse(loggeduser);
-  console.log(socket);
+  // console.log(socket);
   setTimeout(() => {
     setIsUpdating(false);
     setisUpdated(true);
@@ -405,24 +347,15 @@ const SendMessage = (e) => {
 
 async function LeaveRoom () {
 
-  const text = "http://localhost:5000/player/leaveRoom/" + props.room.id
+  const text = process.env.REACT_APP_BACK_URL + "/player/leaveRoom/" + props.room.id
 // console.log("Api Leave Rookm  Link :  =>  " + text);
 
 
 await axios.get(text,{withCredentials:true})
-  //{
-//   // mode:'no-cors',
-//   method:'get',
-//   credentials:"include"
-// })
 
-// .then((response) => response.json())
 .then(json => {
-  // console.log("json" + JSON.stringify(json.data))
-  
-  // console.log("The response is => " + JSON.stringify(json))
-// 
-if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
+
+if(String(json.data.statusCode) === "500" || IsAuthOk(json.data.statusCode) === 1)
 {
   setErrorMessage("An error occured in the backend.");
   window.location.reload();
@@ -432,7 +365,7 @@ if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
   return json;
 })
 .catch((error) => {
-  console.log("An error occured : " + error)
+  // console.log("An error occured : " + error)
   return error;
 })
 
@@ -445,22 +378,11 @@ const HandleLeaveRoom = (e) => {
   LeaveRoom();
 
 }
-const HandleFetchedFriend = (e) => {
-  e.preventDefault();
-}
 
-//-----------------------//
-//Filter User List 
-// const FilteredUsers =  useMemo (() => {
-//   const FilteredUsers = members.filter(members => {
-//   // Here A changer : person with friends from backend , 
-//   //filter nickname not name 
-//    return members.name.toLowerCase().includes(userQuery.toLowerCase());
-// })
-// console.log("PROPS IS DM " + props.room.is_dm);
+
 return (
   <div className='body'>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
    
         <>
     <div className='ChatRoomBox-card'>

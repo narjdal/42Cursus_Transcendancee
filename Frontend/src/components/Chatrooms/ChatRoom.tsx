@@ -8,7 +8,7 @@ import AdminChatRoomDashboard from './AdminChatRoomDashboard';
 import { IsAuthOk } from '../../utils/utils';
 import { Pop } from '../../utils/Popup';
 import axios from 'axios';
-
+import { containsSpecialChars2} from '../../utils/utils';
 function ChatRoom() {
     const params = useParams();
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,8 +19,7 @@ function ChatRoom() {
     const [allgood,setAllgood] = useState(false);
     const [isDm,setIsDm] = useState(false);
     const [isProtected,setIsProtected] = useState(false);
-    const [statusMember,setStatusMember] = useState("");
-    const [haspswd,setHaspsswd] = useState(false)
+    // const [statusMember,setStatusMember] = useState("");
     const [isPrivate,setIsPrivate] = useState(false)
 
 
@@ -28,50 +27,50 @@ async function GetPermissions()
 {
 
 
-  const text = "http://localhost:5000/player/Permission/" + params.id;
-    console.log("Api Get Permission  Link :  =>  " + text);
+  const text = process.env.REACT_APP_BACK_URL + "/player/Permission/" + params.id;
+    // console.log("Api Get Permission  Link :  =>  " + text);
     await axios.get(text,{
       withCredentials:true
   })
   
   .then(json => {
-      console.log("The response Of Permissions  is  => " + JSON.stringify(json.data))
+      // console.log("The response Of Permissions  is  => " + JSON.stringify(json.data))
       setRoomPerm(json);
 
-      if(json.data.statusMember == "You are not a member of this room ")
+      if(String(json.data.statusMember) === "You are not a member of this room ")
       {
-        console.log("ALLL GOOOOD FALSE ")
+        // console.log("ALLL GOOOOD FALSE ")
         setErrorMessage(" You are not a member of this room.");
 
         setAllgood(false);
       }
-      if(json.data.is_banned == true || json.data.is_muted == true )
+      if(Boolean(json.data.is_banned)  === true || Boolean(json.data.is_muted) === true )
       {
         localStorage.setItem("noinput","true");
         setErrorMessage(" You cnanot send a message in this room. You are either banned or muted ");
       }
-      if(json.data.statusMember  == "owner")
+      if(String(json.data.statusMember) === "owner")
       {
-        console.log("This is the owner of the room");
+        // console.log("This is the owner of the room");
         setRoomPerm(json);
         SetUserAdmin(true);
       }
-      else if(json.data.statusMember == "admin")
+      else if(String(json.data.statusMember) === "admin")
       {
-        setStatusMember("admin");
+        // setStatusMember("admin");
         SetUserAdmin(true);
       }
       // if ()
       
-      if(json.data.statusCode == "500" || IsAuthOk(json.data.statusCode) == 1)
+      if(String(json.data.statusCode) === "500" || IsAuthOk(json.data.statusCode) === 1)
         {
-            console.log("an error occured");
+            // console.log("an error occured");
             setErrorMessage("an error occured");
             setAllgood(false)
         }
-        if(json.data.statusCode == "404")
+        if(String(json.data.statusCode) === "404")
         {
-          if(json.data.message == "You are not a member of this room")
+          if(String(json.data.message) === "You are not a member of this room")
          { 
           setErrorMessage(" You are not a member of this room.");
           setAllgood(false);
@@ -80,7 +79,7 @@ async function GetPermissions()
         setAllgood(true);
   })
   .catch((error) => {
-      console.log("An error occured  while fetching the Pemissions ! : " + error)
+      // console.log("An error occured  while fetching the Pemissions ! : " + error)
       setErrorMessage(" An error occured while fetching the room data . You are not a member of this room.");
       setAllgood(false);
       return error;
@@ -93,7 +92,7 @@ async function Waiit () {
 
   let text = "HasRoomAccess" + params.id
   let RoomText = "Room:" + params.id;
-  if (localStorage.getItem(text) == "true")
+  if (String(localStorage.getItem(text)) === "true")
   {
     // console.log( " ITS TRUE ")
     const room = localStorage.getItem(RoomText);
@@ -104,11 +103,11 @@ async function Waiit () {
     }
     
   }
-  else if (localStorage.getItem(text) == "false")
-  {
-    // setIsProtected(true)
-    // console.log(" WHAT IS HAPPENING ")
-  }
+  // else if (String(localStorage.getItem(text)) === "false")
+  // {
+  //   // setIsProtected(true)
+  //   // console.log(" WHAT IS HAPPENING ")
+  // }
   // if(!isDm)
   // await GetPermissions();
 
@@ -124,15 +123,9 @@ async function Waiter()
     // console.log( "THE PLEASE WORK ROOM  IS " ,JSON.parse(room));
   const RoomObj = await JSON.parse(room);
   setRoom(RoomObj);
-  // console.log(" THE ROOM  NAME IS " , RoomObj.name)
-  // GetPermissions();
-  // console.log("Setting the chatRoom Infos ...");
-    // localStorag e.setItem(text,"false");
-    // localStorage.setItem(RoomText,"");
     await GetPermissions();
   // setAllgood(true);
 
-    let text = "HasRoomAccess" + params.id
     // localStorage.setItem(text,"false")
   }
 
@@ -140,7 +133,7 @@ async function Waiter()
 }
 async function  joinNonProtectedRoom()
 {
-  const text = "http://localhost:5000/player/joinNonProtectedRoom/" + params.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/joinNonProtectedRoom/" + params.id;
   // console.log("Api joinNonProtectedRoom Link :  =>  " + text);
   
 
@@ -152,13 +145,7 @@ async function  joinNonProtectedRoom()
 
 // .then((response) => response.json())
 .then(json => {
-    // json.data.id = params.id;
-  // console.log("The joinNonProtectedRoom esp : " + JSON.stringify(json.data.room));
-  const room = {
-    id: params.id
-    ,...json.data.romm
-    // [json.data],
-  }
+
   setRoom({
     id:params.id,
     ...json.data.room
@@ -166,31 +153,20 @@ async function  joinNonProtectedRoom()
   setAllgood(true);
   GetPermissions();
   setRoomName(json.data.room.name)
-  // setRoomName(json.data.name)
-  // setIsDm(false);
 
-
-  // if(json.data == "dm")
-  // {
-  //   console.log(" THIS IS A DM GETTYPEOF ROOM");
-  //   setAllgood(true)
-  //   // localStorage.setItem("isdm","true");
-  //   setIsDm(true);
-  //   // console.log("the name should be : " )
-  // }
    
 })
 .catch((error) => {
 
   setErrorMessage("An error occured ! You cannot access this room.");
 
-    console.log("An error occured  while fetching the joinNonProtectedRoom  : " + error)
+    // console.log("An error occured  while fetching the joinNonProtectedRoom  : " + error)
     return error;
 })
 }
 async function GetTypeOfRoom()
 {
-  const text = "http://localhost:5000/player/GetTypeOfRoom/" + params.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/GetTypeOfRoom/" + params.id;
     // console.log("Api GetTypeOfRoom Link :  =>  " + text);
     
 
@@ -202,38 +178,31 @@ async function GetTypeOfRoom()
   
   // .then((response) => response.json())
   .then(json => {
-    // let statusCode = json.status,
-    // success = json.ok;
-      // json.data.id = params.id;
-    // console.log("The type of this room resp : " + JSON.stringify(json.data));
-    if(json.data == "dm")
+    if(String(json.data) ==="dm")
     {
-      // console.log(" THIS IS A DM GETTYPEOF ROOM");
-      // setAllgood(true)
-      // localStorage.setItem("isdm","true");
       setIsDm(true);
       joinDM();
       // console.log("the name should be : " )
     }
-    if(json.data == "public" || json.data == "private")
+    if(String(json.data) === "public" || String(json.data) === "private")
     {
       setIsDm(false);
-        if(json.data == "private")
+        if(String(json.data) === "private")
         {
           // console.log("THIS IS A PRIVATE ROOM ! SETISPRIVATE TRUE ")
           setIsPrivate(true);
         }
-        else if (json.data == "public")
+        else if (String(json.data) === "public")
         {
           // console.log("THIS IS A PUBLIC ROOM !   ")
 
         }
       joinNonProtectedRoom();
     }
-    if(json.data  == "protected")
+    if(String(json.data) === "protected")
     {
     let text = "HasRoomAccess" + params.id
-      if(localStorage.getItem(text) == "false")
+      if(String(localStorage.getItem(text)) === "false")
       setIsProtected(true);
 
     }
@@ -243,7 +212,7 @@ async function GetTypeOfRoom()
     // setErrorMessage("An error occured ! You cannot access this room.");
     setErrorMessage("An error occured ! This room doesnt exist. ");
   
-      console.log("An error occured  while fetching the GetTypeOfRoom  : " + error)
+      // console.log("An error occured  while fetching the GetTypeOfRoom  : " + error)
     //   if(error.statusCode == "404")
     //   {
     // setErrorMessage("An error occured ! This room doesnt exist. ");
@@ -255,7 +224,7 @@ async function GetTypeOfRoom()
 
 async function joinDM()
 {
-  const text = "http://localhost:5000/player/joinDM/" + params.id;
+  const text = process.env.REACT_APP_BACK_URL + "/player/joinDM/" + params.id;
   // console.log("Api joinDM Link :  =>  " + text);
   let loggedUser = localStorage.getItem("user");
   if(loggedUser)
@@ -273,9 +242,6 @@ async function joinDM()
 // .then((response) => response.json())
 .then(json => {
     // json.data.id = params.id;
-  // console.log("The joinDM esp : " + JSON.stringify(json.data.room));
-  // if(json.data == "dm")
-  // {
     const room ={
       ...json.data.room,
       id:params.id
@@ -288,7 +254,7 @@ async function joinDM()
     if(json.data.room.all_members)
   {
 
-  if(current.id == json.data.room.all_members[0].player.id)
+  if(current.id === json.data.room.all_members[0].player.id)
   {
     setRoomName(json.data.room.all_members[1].player.nickname);
   }
@@ -299,18 +265,12 @@ async function joinDM()
 }
     // setRoomName(json.data.room.name)
     setIsDm(true);
-    // console.log(" THIS IS A DM GETTYPEOF ROOM");
-  //   setAllgood(true)
-  //   // localStorage.setItem("isdm","true");
-  //   setIsDm(true);
-  //   // console.log("the name should be : " )
-  // }
    
 })
 .catch((error) => {
   // setErrorMessage("An error occured ! You cannot access this room.");
 
-    console.log("An error occured  while fetching the joinDM  : " + error)
+    // console.log("An error occured  while fetching the joinDM  : " + error)
     return error;
 })
 }
@@ -322,11 +282,19 @@ useEffect (() =>
       {
         localStorage.setItem("noinput","false");
         setErrorMessage("");
+ 
         const loggeduser = localStorage.getItem("user");
           if(loggeduser)
           {
-            const current = JSON.parse(loggeduser);
+            if(containsSpecialChars2(params.id))
+            {
+              setErrorMessage("An error occured , Invalid ROOM ID .")
+            // console.log(" THERE IS SOME SPECIAL CHARS IN ROOM LINK ")
+            }
+            else
+            {
             Waiit();
+            }
           }
           return () => {
     let text = "HasRoomAccess" + params.id
@@ -334,8 +302,10 @@ useEffect (() =>
 localStorage.setItem(text,"false");
 localStorage.setItem(RoomText,"");
           }
+        // eslint-disable-next-line
       },[])
   
+
     return (
         <div className='ChatRoomMessageBox'>
         {errorMessage && <div className="error"> {errorMessage} </div>}

@@ -1,17 +1,13 @@
-import react from 'react'
 import { useState } from 'react';
 import './UpdateNickname.css'
-import {Routes, Route, useNavigate} from 'react-router-dom';
-import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+import { containsSpecialChars } from '../../utils/utils';
 
-const UpdateNickname = (props) => {
+const UpdateNickname = () => {
 
     const [nickName,setNickName] = useState("");
     const [isUpdating, setIsUpdating] = useState(false);
     const [Updated, setisUpdated] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
   
   async function UploadNickname ()  {
     
@@ -19,8 +15,7 @@ const UpdateNickname = (props) => {
   
     if(loggeduser)
   {
-    var current = JSON.parse(loggeduser);
-   let  text = ("http://localhost:5000/player/update/nickname" );
+   let  text = (process.env.REACT_APP_BACK_URL + "/player/update/nickname" );
 
     // console.log("Uploading the nickname ! of this user  + " +  current.nickname +  " + New Nickname " + nickName);
         await fetch(text,{
@@ -37,15 +32,20 @@ const UpdateNickname = (props) => {
   
   .then((response) => response.json())
   .then(json => {
-      console.log("The updateNickname Resp   is => " + JSON.stringify(json))
-      if( json.statusCode == "404")
+      // console.log("The updateNickname Resp   is => " + JSON.stringify(json))
+      // IsAuthOk(json.statusCode)
+      if( String(json.statusCode)=== "404")
         {
           setErrorMessage(json.message)
         }
-    else if (json.statusCode == "401")
-    {
-      setErrorMessage(json.message)
-    }
+    else  if(String(json.statusCode) === "401")
+     {
+      setErrorMessage(json.message);
+     }
+    // else if (String(json.statusCode) === "401")
+    // {
+    //   setErrorMessage(json.message)
+    // }
     else
     {
       const test  = JSON.stringify(json);
@@ -53,8 +53,7 @@ const UpdateNickname = (props) => {
       // console.log("The Resp Of Update Nickname is  => " + test);
       localStorage.setItem("user","");
       localStorage.setItem("user",test);
-      let UpdatedUser = localStorage.getItem("user");
-      console.log("Update Nick=>     " + JSON.stringify(UpdatedUser));
+      // console.log("Update Nick=>     " + JSON.stringify(UpdatedUser));
       setTimeout(() => {
         setIsUpdating(false);
         setisUpdated(true);
@@ -68,44 +67,38 @@ const UpdateNickname = (props) => {
       return json;
   })
   .catch((error) => {
-      console.log("An error occured : " + error)
+      // console.log("An error occured : " + error)
       return error;
   })
 }
-  //   const loggedUser = localStorage.getItem("user");
-  //   if(loggedUser)
-  //   {
 
-  //   var Current_User = JSON.parse(loggedUser);
-  //   const post = {
-  //     nickName:nickName,
-  //     UserId:Current_User.UserId,
-  //     image_url:Current_User.image_url
-  //   }
-  //   console.log("LoggedUser " + Current_User.UserId);
-  // const text = ("http://localhost:3000/player/update/nickname");
-  // console.log("Api Post Link :  =>  " + text);
-  
-  // const response = await axios.post(text,post)
-    
-  // // // 	onUploadProgress: progressEvent => {
-  // // // 		setLoaded(progressEvent.loaded / progressEvent.total!*100);
-  // // // 	},
-  // // // });
-  // // // 	}
-  //   return response.data;
-  //   }
   
   };
     const UpdateNickname = (e) => {
         e.preventDefault();
-        console.log("Hello from update nickname")
+        // console.log("Hello from update nickname")
        if(nickName)
        {
-     
-      setIsUpdating(true);
+     if(nickName.length > 2 && nickName.length < 10)
+    {  
+      if(containsSpecialChars(nickName))
+      {
+        console.log(" THERE IS SOME SPECIAL CHARS ! ")
+        setErrorMessage("Your nickname must contain only characters or numbers. ,")
+      }
+      else
+      {
+        console.log(" NO  SPECIAL CHARS ! ")
 
-      UploadNickname()
+        setIsUpdating(true);
+        UploadNickname()
+      }
+  
+    }
+      else
+      {
+        setErrorMessage("Your nickname must contain between 3 and 9 characteres")
+      }
         
       
       
@@ -118,7 +111,6 @@ const UpdateNickname = (props) => {
 
     return (
         <>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         <form className='UpdateNickname-form'>
        <br>
        </br>
@@ -143,7 +135,7 @@ const UpdateNickname = (props) => {
       </span>
     </button>
     {errorMessage && <div className="error"> {errorMessage} </div>}
-       {/* <button type="submit" onClick={UpdateNickname}> Submit</button> */}
+      
        </form>
         </>
 

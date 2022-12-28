@@ -24,12 +24,12 @@ const DmWindow = (props) => {
     // console.log("PROPS : " + props + props.contact.name + props.id)
     const SendMsg = (event) => {
         event.preventDefault();
-        console.log("Your DM IS " + event.target[0].value);
+        // console.log("Your DM IS " + event.target[0].value);
 
     };
     useEffect (() => {
         const vrcount = localStorage.getItem("Dmcount");
-    console.log("vrcount =>> " + JSON.stringify(vrcount));
+    // console.log("vrcount =>> " + JSON.stringify(vrcount));
         // SetClick
         // SetNbrPos(NbrPos + 1)
     // console.log("NbrPos =>> " + NbrPos);

@@ -1,15 +1,16 @@
-import React from 'react';
+// import React from 'react';
 import { useEffect, useState } from "react";
 import { useNavigate} from 'react-router-dom';
 import ProfilePicUpload from '../Account/ProfilePicUpload';
 import UpdateNickname from '../Account/UpdateNickname';
 import './Account.css'
 import { Link } from 'react-router-dom';
-import Login from '../login/login';
+// import Login from '../login/login';
 import DisplayAchievementsList from './Account_pages/Achievements/DisplayAchievementsList';
 import DisplayMatchHistory from './Account_pages/DisplayMatchHistory';
 
 import axios from 'axios';
+import { IsAuthOk } from "../../utils/utils";
 const Account = () => {
   const navigate = useNavigate();
   const [isUpdating, setIsUpdating] = useState(false);
@@ -33,10 +34,10 @@ async function FetchGameHistory() {
    const loggeduser = localStorage.getItem("user");
   if (loggeduser) {
     const current = JSON.parse(loggeduser);
-    console.log("Fetching Game History Of this User :        => " ,current.nickname)
+    // console.log("Fetching Game History Of this User :        => " ,current.nickname)
 
 
-    await fetch((`http://localhost:5000/player/gameHistoryById/${current.nickname}`
+    await fetch((process.env.REACT_APP_BACK_URL + `/player/gameHistoryById/${current.nickname}`
     ), {
       // mode:'no-cors',
       method: 'get',
@@ -47,23 +48,30 @@ async function FetchGameHistory() {
 
       .then((response) => response.json())
       .then(json => {
-        console.log("The gameHistoryById is => " + JSON.stringify(json))
-        if(json.history)
-        {
-          // if(json.history[0])
-        setMiniHistory(json.history)
-        }
-
-        if(json.statusCode == "404")
+        // console.log("The gameHistoryById is => " + JSON.stringify(json))
+        IsAuthOk(json.statusCode)
+        if(String(json.statusCode) === "404")
         {
         setErrorMessage(json.message);
         
         }
 
+        else
+        {
+          if(json.history)
+          {
+            // if(json.history[0])
+          setMiniHistory(json.history)
+          }
+        }
+      
+
+      
+
         return json;
       })
       .catch((error) => {
-        console.log("An error occured : " + error)
+        // console.log("An error occured : " + error)
         // setRelation("error");
         setErrorMessage("An error occured! gameHistoryById not found ! ");
         return error;
@@ -76,10 +84,10 @@ async function FetchAchivementsList  ()  {
   const loggeduser = localStorage.getItem("user");
   if (loggeduser) {
     const current = JSON.parse(loggeduser);
-    console.log("Fetching AchievementsList  Of this User :        => " ,current.nickname)
+    // console.log("Fetching AchievementsList  Of this User :        => " ,current.nickname)
 
 
-    await fetch((`http://localhost:5000/player/achivement/${current.nickname}`
+    await fetch((process.env.REACT_APP_BACK_URL + `/player/achivement/${current.nickname}`
     ), {
       // mode:'no-cors',
       method: 'get',
@@ -90,7 +98,7 @@ async function FetchAchivementsList  ()  {
 
       .then((response) => response.json())
       .then(json => {
-        console.log("The AchievementsList is => " + JSON.stringify(json))
+        // console.log("The AchievementsList is => " + JSON.stringify(json))
  
         
         if(json.getAchivements)
@@ -99,7 +107,7 @@ async function FetchAchivementsList  ()  {
 
         }
 
-        if(json.statusCode == "404")
+        if(json.statusCode === "404")
         {
         setErrorMessage(json.message);
 
@@ -108,7 +116,7 @@ async function FetchAchivementsList  ()  {
         return json;
       })
       .catch((error) => {
-        console.log("An error occured : AchievementsList " + error)
+        // console.log("An error occured : AchievementsList " + error)
         // setRelation("error");
         // setErrorMessage("An error occured! gameHistoryById not found ! ");
         return error;
@@ -118,7 +126,7 @@ async function FetchAchivementsList  ()  {
 }
   useEffect(() => {
 
-    const authenticated = localStorage.getItem("authenticated");
+    // const authenticated = localStorage.getItem("authenticated");
   const loggeduser = localStorage.getItem("user");
  
 
@@ -129,6 +137,7 @@ async function FetchAchivementsList  ()  {
       // console.log("=>>>>> FROM THE ACCOUNT " + loggeduser   + Current_User.nickname + Current_User.UserId)
       if(Current_User.tfa)
       {
+        console.log("two FA is ACTIVATED ! ")
         setTwoFaMessage("Two Factor Authentification is activated !")
         setTwoFaDisable(true);
         setMsg("Disable two FA.");
@@ -137,6 +146,7 @@ async function FetchAchivementsList  ()  {
       }
       else
       {
+        console.log("two FA is NOT ACTIVATED ! ")
         setTwoFaMessage("Two Factor Authentification is not activated !")
         setMsg("Activate two FA.");
         setTwoFaEnable(true);
@@ -167,11 +177,6 @@ async function FetchAchivementsList  ()  {
         navigate('/Achievements')
     };
 
-    const HandleMatchHistory = (e) => {
-    e.preventDefault();
-    // console.log("From Carreeeer ")
-      navigate('/Carreer')
-    }
 
      const handleFriendClick = (e) => {
       e.preventDefault()
@@ -209,15 +214,11 @@ async function EnableTwoFa () {
   
   
 
-  const text = "http://localhost:5000/player/2fa/enable/" ;
-  console.log("/2fa/enable Link :  =>  " + text);
+  const text = process.env.REACT_APP_BACK_URL + "/player/2fa/enable/" ;
+  // console.log("/2fa/enable Link :  =>  " + text);
   let loggedUser = localStorage.getItem("user");
   if(loggedUser)
   {
-  var current = JSON.parse(loggedUser);
-
-  
-
   await axios.get(text,{withCredentials:true}
     // mode:'no-cors',
     // method:'get',
@@ -228,71 +229,41 @@ async function EnableTwoFa () {
 .then(json => {
     // json.data.id = params.id;
   console.log("The /2fa/enable esp : " + JSON.stringify(json.data));
-  if (json.data.statusCode == "404")
+  IsAuthOk(json.data.statusCode);
+  if (String(json.data.statusCode) === "404")
   {
-
+    setErrorMessage(json.data.message)
   }
-  const current = JSON.parse(localStorage.getItem("user")!);
-  const NewUser = [
-    {
-      id:current.id,
-      nickname:current.nickname,
-      avatar:current.avatar,
-      firstName:current.firstName,
-      lastName:current.lastName,
-      email:current.email,
-      wins:current.wins,
-      loses:current.loses,
-      tfa:true,
-      tfaSecret:current.tfaSecret
-    }
-  ]
-  // console.log("USER : " + JSON.stringify(NewUser[0]))
-localStorage.setItem("user",JSON.stringify(NewUser[0]));
-window.location.reload();
+  else
+  {
+    const current = JSON.parse(localStorage.getItem("user")!);
+    const NewUser = [
+      {
+        id:current.id,
+        nickname:current.nickname,
+        avatar:current.avatar,
+        firstName:current.firstName,
+        lastName:current.lastName,
+        email:current.email,
+        wins:current.wins,
+        loses:current.loses,
+        tfa:true,
+        tfaSecret:current.tfaSecret
+      }
+    ]
+    console.log("USER : " + JSON.stringify(NewUser[0]))
+  localStorage.setItem("user",JSON.stringify(NewUser[0]));
+  window.location.reload();
+  }
+ 
 
-// localStorage.setItem("user","");
-// localStorage.setItem("user",JSON.stringify(NewUser));
 
-  // setQRCodeText(json.data);
-  // setDone(true);
-  // if(json.data == "dm")
-//   // {
-//     const room ={
-//       ...json.data.room,
-//       id:params.id
-//     }
-//     setRoom(room);
-//     setAllgood(true);
-//     // GetPermissions();
-//     // GetPermissions();
-//     console.log("This is a DM Room");
-//     if(json.data.room.all_members)
-//   {
-
-//   if(current.id == json.data.room.all_members[0].player.id)
-//   {
-//     setRoomName(json.data.room.all_members[1].player.nickname);
-//   }
-//   else
-//   {
-//     setRoomName(json.data.room.all_members[0].player.nickname);
-//   }
-// }
-//     // setRoomName(json.data.room.name)
-//     setIsDm(true);
-//     console.log(" THIS IS A DM GETTYPEOF ROOM");
-  //   setAllgood(true)
-  //   // localStorage.setItem("isdm","true");
-  //   setIsDm(true);
-  //   // console.log("the name should be : " )
-  // }
    
 })
 .catch((error) => {
   setErrorMessage("An error occured ! .");
 
-    console.log("An error occured  while fetching the /2fa/enable  : " + error)
+    // console.log("An error occured  while fetching the /2fa/enable  : " + error)
     return error;
 })
 }
@@ -305,14 +276,11 @@ async function SendDisableTwoFa () {
   
   
 
-  const text = "http://localhost:5000/player/2fa/disable/" ;
-  console.log("/2fa/disable Link :  =>  " + text);
+  const text = process.env.REACT_APP_BACK_URL + "/player/2fa/disable/" ;
+  // console.log("/2fa/disable Link :  =>  " + text);
   let loggedUser = localStorage.getItem("user");
   if(loggedUser)
   {
-  var current = JSON.parse(loggedUser);
-
-  
 
   await axios.get(text,{withCredentials:true}
     // mode:'no-cors',
@@ -349,7 +317,7 @@ window.location.reload();
 .catch((error) => {
   setErrorMessage("An error occured ! .");
 
-    console.log("An error occured  while fetching the /2fa/disable  : " + error)
+    // console.log("An error occured  while fetching the /2fa/disable  : " + error)
     return error;
 })
   }
@@ -383,20 +351,14 @@ window.location.reload();
           setTimeout(() => setisUpdated(false), 2500);
         }, 2000);
       }
-    // if(twoFa)
-    // {
-    //   console.log("Enabling two fa in your account ....");
-    // }
-    // else
-    // {
-    //   console.log("Disabling two fa in your account ...")
+
     // }
     }
 
     //ProfilePicUpload : Send User infos here  Get from state ?
     return (
       <div>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+        
 <>
 
 <div className='body'>
@@ -511,8 +473,7 @@ window.location.reload();
       </div>
         <UpdateNickname
         />
-      <ProfilePicUpload
-      ProfileInfo={{name:user42.nickname,ProfilePic:user42.image_url}}/>
+      <ProfilePicUpload/>
           </div>
           <br/>
           <div className='intra-card'>

@@ -1,18 +1,19 @@
-import react from 'react'
 import { useState,useEffect } from 'react';
+import { IsAuthOk } from '../../../../utils/utils';
 import './Achievements.css'
 import DisplayAchievementsList from './DisplayAchievementsList';
 const Achievements = () => {
 const [AchievementsList,setAchievementsList] = useState<any>([])
+const [errorMessage, setErrorMessage] = useState("");
 
     async function FetchAchivementsList  ()  {
         const loggeduser = localStorage.getItem("user");
         if (loggeduser) {
           const current = JSON.parse(loggeduser);
-          console.log("Fetching AchievementsList  Of this User : Inside Achievements Page         => " ,current.nickname)
+          // console.log("Fetching AchievementsList  Of this User : Inside Achievements Page         => " ,current.nickname)
       
       
-          await fetch((`http://localhost:5000/player/achivement/${current.nickname}`
+          await fetch((process.env.REACT_APP_BACK_URL + `/player/achivement/${current.nickname}`
           ), {
             // mode:'no-cors',
             method: 'get',
@@ -23,25 +24,31 @@ const [AchievementsList,setAchievementsList] = useState<any>([])
       
             .then((response) => response.json())
             .then(json => {
-              console.log("The AchievementsList is => " + JSON.stringify(json))
+              // console.log("The AchievementsList is => " + JSON.stringify(json))
        
               
-              if(json.getAchivements)
+              IsAuthOk(json.statusCode)
+              if(String(json.statusCode) === "404")
               {
-              setAchievementsList(json.getAchivements);
+              setErrorMessage(json.message);
       
               }
-      
-              if(json.statusCode == "404")
+              else
               {
-              // setErrorMessage(json.message);
-      
+                if(json.getAchivements)
+                {
+                setAchievementsList(json.getAchivements);
+        
+                }
               }
+           
+      
+           
       
               return json;
             })
             .catch((error) => {
-              console.log("An error occured : AchievementsList " + error)
+              // console.log("An error occured : AchievementsList " + error)
               // setRelation("error");
               // setErrorMessage("An error occured! gameHistoryById not found ! ");
               return error;
@@ -53,7 +60,7 @@ useEffect(() => {
     const loggeduser = localStorage.getItem("user");
     if (loggeduser)
     {
-        var Current_User = JSON.parse(loggeduser);
+   
     FetchAchivementsList();
         
     }
@@ -65,7 +72,7 @@ useEffect(() => {
         <>
         <div className='body'>
             <div className='Achievements-card'>
-                
+    {errorMessage && <div className="error"> {errorMessage} </div>}
       <span>{AchievementsList.map(c => < DisplayAchievementsList  key = {c.id} AchievementsList ={c} />)}</span>
 
             </div>

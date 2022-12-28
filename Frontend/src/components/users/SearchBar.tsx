@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
 import DisplayUserHome from "./DisplayUserHome";
 import { IsAuthOk } from '../../utils/utils';
+import { containsSpecialChars2 } from "../../utils/utils";
 
 const SearchBar = () => {
   const [userQuery,setUserQuery] = useState("");
@@ -10,8 +10,6 @@ const SearchBar = () => {
     const[display,setDisplay] = useState(false);
     const [allgood,setAllgood] = useState(false);
 
-
-
   async function FetchUserInfos ()  {
 
 
@@ -19,16 +17,19 @@ const SearchBar = () => {
 if(loggeduser)
 {
      
-let endpoint = 'http://localhost:5000/player/profile/?id=';
-// endpoint = endpoint + userQuery;
-// console.log(" this endpoint   " + endpoint)
-
 
 try
 {
-
-
-await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
+if(containsSpecialChars2(userQuery))
+{
+setErrorMessage("Invalid input !  please enter a valid nickname.")
+setAllgood(false);
+return ;
+}
+else
+{
+  
+await fetch((process.env.REACT_APP_BACK_URL + `/player/profile/${userQuery}`),{
     // mode:'no-cors',
     method:'get',
     credentials:"include"
@@ -54,12 +55,9 @@ await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
     // console.log("The response is => " + JSON.stringify(json))
   setErrorMessage(""); 
   // localStorage.setItem("usertoshow",JSON.stringify(json));
-  if (IsAuthOk(json.statusCode) == 1)
-  {
-    // console.log("SHOULD RELOAD  ....")
-  window.location.reload();
-  }
-  if(json.statusCode == "404")
+  IsAuthOk(json.statusCode)
+  
+  if(String(json.statusCode) === "404")
   {
     setAllgood(false);
   setErrorMessage(" User not found ! ");
@@ -72,7 +70,7 @@ await fetch((`http://localhost:5000/player/profile/${userQuery}`),{
 
 })
 
-
+}
 }
 catch(error)
 {

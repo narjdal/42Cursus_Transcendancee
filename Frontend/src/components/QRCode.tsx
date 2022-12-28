@@ -1,7 +1,7 @@
 import React from "react";
 
 const QRcode = () => {
-console.log("INSIDE QR CODE PAGE")
+// console.log("INSIDE QR CODE PAGE")
 
     return (
         <>

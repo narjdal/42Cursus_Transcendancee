@@ -1,10 +1,19 @@
-FROM node:14-alpine
-RUN mkdir -p /svr/app
-WORKDIR /svr/app
-RUN npm i --silent
-COPY package.json .
-COPY package-lock.json .
-RUN npm install --silent
-COPY . .
-EXPOSE $FRONTEND_PORT
-CMD ["npm", "run", "start:debug"]
+FROM node:latest
+
+WORKDIR /frontend
+
+COPY entrypoint.sh /
+
+RUN apt-get -y update
+
+RUN npm install -g npm@latest
+RUN npm install -g npm-check-updates
+RUN npm update
+
+# RUN npm i
+
+# debugging
+# RUN apt-get -y install curl vim
+
+RUN chmod +x /entrypoint.sh
+CMD ["/entrypoint.sh"]

@@ -1,4 +1,3 @@
-import react from 'react'
 import {useState,useEffect} from 'react'
 import './Social.css'
 import DisplaySocial from './DisplaySocialList'
@@ -8,16 +7,15 @@ const Social = () => {
   const[friends,setFriends] = useState <any >([]);
   const [errorMessage, setErrorMessage] = useState("");
 
-    async function FetchUserInfo (nickname) {
+    async function FetchUserInfo () {
 
         // ]
       const loggeduser = localStorage.getItem("user");
     
       if(loggeduser)
     {
-      var Current_User = JSON.parse(loggeduser);
-      const text = ("http://localhost:5000/player/listOfFriends");
-      console.log("Api ListOfFriends Link :  =>  " + text);
+      const text = (process.env.REACT_APP_BACK_URL + "/player/listOfFriends");
+      // console.log("Api ListOfFriends Link :  =>  " + text);
       
   
       await fetch(text,{
@@ -28,12 +26,12 @@ const Social = () => {
     
     .then((response) => response.json())
     .then(json => {
-        console.log("The response is => " + JSON.stringify(json))
-        if(IsAuthOk(json.satusCode) == 1)
-        {
-          window.location.reload();
-        }
-        if(json.statusCode == "404")
+        // console.log("The response is => " + JSON.stringify(json))
+        IsAuthOk(json.satusCode)
+        // {
+        //   window.location.reload();
+        // }
+        if(String(json.statusCode) === "404")
     {  
       setErrorMessage(json.message)
     }
@@ -45,7 +43,7 @@ const Social = () => {
         return json;
     })
     .catch((error) => {
-        console.log("An error occured : " + error)
+        // console.log("An error occured : " + error)
         return error;
     })
   
@@ -57,9 +55,8 @@ const Social = () => {
       
         if(loggeduser)
         {
-          var Current_User = JSON.parse(loggeduser);
 
-      FetchUserInfo(Current_User.nickname)
+      FetchUserInfo()
         }
     },[])
     return (

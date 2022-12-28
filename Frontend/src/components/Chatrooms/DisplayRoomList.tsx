@@ -1,67 +1,67 @@
 import React from "react";
-import { Link } from "react-router-dom";
 const DisplayRoomList =  (props) => {
 
-    async function JoinRoom()
-    {
+    // async function JoinRoom()
+    // {
      
       
-      const text = "http://localhost:5000/player/joinRoom/" + props.room.id;
-        console.log("THE  Join Room Link :  =>  " + text);
+    //   const text = process.env.REACT_APP_BACK_URL + "/player/joinRoom/" + props.room.id;
+    //     // console.log("THE  Join Room Link :  =>  " + text);
         
     
-        await fetch(text,{
-          // mode:'no-cors',
-          method:'get',
-          credentials:"include"
-      })
+    //     await fetch(text,{
+    //       // mode:'no-cors',
+    //       method:'get',
+    //       credentials:"include"
+    //   })
       
-      .then((response) => response.json())
-      .then(json => {
-          console.log("The Joining Room Response  is => " + JSON.stringify(json))
-        //   setSuccess(true);
-          if(json.statusCode == "")
+    //   .then((response) => response.json())
+    //   .then(json => {
+    //     //   console.log("The Joining Room Response  is => " + JSON.stringify(json))
+    //     //   setSuccess(true);
+    //       if(json.statusCode == "")
     
-          return json;
-      })
-      .catch((error) => {
-          console.log("An error occured  while joinin the room " + error)
-          return error;
-      })
+    //       return json;
+    //   })
+    //   .catch((error) => {
+    //     //   console.log("An error occured  while joinin the room " + error)
+    //       return error;
+    //   })
     
-    }
+    // }
 
     const HandleJoinRoom = (e) => {
         e.preventDefault();
     localStorage.setItem("protected","false");
-        console.log("just set protected to false  ! ")
-        console.log("Joining this room ..." + props.room.id + " ROOM INFO : DM :  " + props.room.is_dm, + " PROTECTED ? : "  +  props.room.is_protected)
-        if(!props.room.is_dm && !props.room.is_protected)
-       { JoinRoom()
-        .then((resp) => {
-            console.log( " JOINING IS DONE ! ")
-            // window.location.href="http:://localhost:3000/room/" + props.room.id;
-    window.location.href = "http://localhost:3000/room/" + props.room.id;
+        // console.log("just set protected to false  ! ")
+        // console.log("Joining this room ..." + props.room.id + " ROOM INFO : DM :  " + props.room.is_dm, + " PROTECTED ? : "  +  props.room.is_protected)
+    //     if(!props.room.is_dm && !props.room.is_protected)
+    //    { JoinRoom()
+    //     .then((resp) => {
+    //         // console.log( " JOINING IS DONE ! ")
+         
+    // window.location.href =process.env.REACT_APP_FRONT_URL +  "/room/" + props.room.id;
             
-        })}
-        else if (props.room.is_protected)
+    //     })}
+        // else 
+        if (props.room.is_protected)
         {
 
     localStorage.setItem("protected","true");
-    console.log("just set protected to TRUE  ! ")
+    // console.log("just set protected to TRUE  ! ")
     let text = "HasRoomAccess" + props.room.id
   let RoomText = "Room:" + props.room.id;
 
-    console.log(" PARAMS ID IS : " + props.room.id)
+    // console.log(" PARAMS ID IS : " + props.room.id)
     localStorage.setItem(text,"false");
     localStorage.setItem(RoomText,"");
 
-    window.location.href = "http://localhost:3000/room/" + props.room.id;
+    window.location.href = process.env.REACT_APP_FRONT_URL + "/room/" + props.room.id;
 
         }
         else
         {
-    window.location.href = "http://localhost:3000/room/" + props.room.id;
+    window.location.href = process.env.REACT_APP_FRONT_URL+ "/room/" + props.room.id;
 
         }
     }

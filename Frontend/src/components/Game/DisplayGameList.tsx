@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SpectateGame from "../GamePages/SpectateGame";
 
 const DisplayGameList = (props:any) => {
 
-    console.log("the props is : ",props)
+    // console.log("the props is : ",props)
     return(
         <>
             <ul className="chat-room-list">

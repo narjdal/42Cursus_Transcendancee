@@ -1,8 +1,6 @@
-import react from 'react'
-import { useState,useEffect } from 'react';
 import './DisplayAchievementsList.css'
 const DisplayAchievementsList = (props) => {
-console.log("Achievements props . ", props)
+// console.log("Achievements props . ", props)
 
     return (
         <>
@@ -15,7 +13,7 @@ console.log("Achievements props . ", props)
             <span>{props.AchievementsList.name} </span> 
 
 <div className='unlocked-div'>
-<img  className='avatar1' src={props.AchievementsList.avatar} /> 
+<img  className='avatar1' src={props.AchievementsList.avatar} alt="Achivementsavatar" /> 
 <span>{props.AchievementsList.description} </span>
     
       <button type="button" className='has-border' >

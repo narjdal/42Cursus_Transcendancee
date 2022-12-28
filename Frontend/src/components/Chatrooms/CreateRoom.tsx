@@ -1,21 +1,19 @@
-import react from 'react';
 import { useState } from "react";
 import './CreateRoom.css'
-import person from '../users/users.json'
 import { useNavigate } from 'react-router-dom';
+import { containsSpecialChars } from '../../utils/utils';
 
 const CreateRoom = () => {
     
     const [RoomName,setRoomName] = useState("");
     const [RoomPassword,setRoomPassword] = useState("");
-    const [RoomOwner,setRoomOwner] = useState("");
     const [isRoomPublic,setRoomPublic] = useState(false);
     const [isRoomPrivate,setRoomPrivate] = useState(false);
     const [isRoomProtected,setRoomProtected] = useState(false);
     const [roomState,setRoomState] = useState("");
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
-    const [user,setUser] = useState([]);
+
     const HandleRoomPublic = (e) => {
         setRoomPublic(!isRoomPublic);
         setRoomPrivate(false);
@@ -48,25 +46,20 @@ const CreateRoom = () => {
   
         if(loggeduser)
       {
-        var Current_User = JSON.parse(loggeduser);
         let text ;
-        if(roomState == "Public")
+        if(String(roomState) === "Public")
         {
-         text = ("http://localhost:5000/player/createChatRoom/Public/" );
+         text = (process.env.REACT_APP_BACK_URL + "/player/createChatRoom/Public/" );
         }
-        else if (roomState == "Private")
+        else if (String(roomState)  === "Private")
         {
-         text = ("http://localhost:5000/player/createChatRoom/Private/" );
+         text = (process.env.REACT_APP_BACK_URL + "/player/createChatRoom/Private/" );
         }
-        else if (roomState == "Protected")
+        else if (String(roomState)  === "Protected")
         {
-         text = ("http://localhost:5000/player/createChatRoom/Protected/");
+         text = (process.env.REACT_APP_BACK_URL + "/player/createChatRoom/Protected/");
         }
-        //  text = ("http://localhost:5000/player/createChatRoom/" );const
-        // console.log("Api Fetch Link :  =>  " + text);
-
-        
-        // console.log("creating this room : "  + roomState + " Name : " + RoomName + " Password : " + password + " Owner : " + Current_User.nickname);
+       
         await fetch(text,{
           // mode:'no-cors',
           method:'post',
@@ -82,13 +75,13 @@ const CreateRoom = () => {
       
       .then((response) => response.json())
       .then(json => {
-          console.log("The createRoomResponse  is => " + JSON.stringify(json))
+        //   console.log("The createRoomResponse  is => " + JSON.stringify(json))
         navigate('/Landing')
         // window.location.reload();
           return json;
       })
       .catch((error) => {
-          console.log("An error occured : " + error)
+        //   console.log("An error occured : " + error)
           return error;
       })
     
@@ -100,26 +93,36 @@ const CreateRoom = () => {
 
 
     const HandleCreateRoom = (e) => {
-        const user ="narjdal";
+        // const user ="narjdal";
         e.preventDefault();
-        setRoomOwner(user);
-        console.log("Room infos  : " + RoomName+   " Room Password "+ RoomPassword);
+        // setRoomOwner(user);
+        // console.log("Room infos  : " + RoomName+   " Room Password "+ RoomPassword);
     if(RoomName)
     {
+        if(RoomName.length > 2 && RoomName.length < 10 )
+        {
+            if(containsSpecialChars(RoomName))
+            {
+                setErrorMessage("The Room  Name  must contain only characters or numbers. ,")
+
+            }
+            else
+            {
         if(isRoomProtected && !RoomPassword)
         {
             setErrorMessage("Please enter a valid room password ! Can't be empty.")
         }
         if(RoomPassword && isRoomProtected)
         {
-            console.log("Setting a room with pws ! " + RoomPassword);
+            // console.log("Setting a room with pws ! " + RoomPassword);
             setRoomState("protected");
+        
         CreateRoom(RoomPassword);
 
         }
          if(isRoomPublic)
         {
-            console.log("Setting a public room ! ");
+            // console.log("Setting a public room ! ");
             setRoomState("public");
             setRoomPassword("");
         CreateRoom("");
@@ -127,26 +130,17 @@ const CreateRoom = () => {
         }
          if(isRoomPrivate)
         {
-            console.log("Setting a private room ! ");
+            // console.log("Setting a private room ! ");
             setRoomState("private");
         CreateRoom("");
             setRoomPassword("");
         }
-        // Here Post Request to Backend , with the Room infos  + creating use infos 
-        // fetch(
-		// 	'https://freeimage.host/api/1/upload?key=<YOUR_API_KEY>',
-		// 	{
-		// 		method: 'POST',
-		// 		body: formData,
-		// 	}
-		// )
-		// 	.then((response) => response.json())
-		// 	.then((result) => {
-		// 		console.log('Success:', result);
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error('Error:', error);
-		// 	});
+    }
+    }
+    else
+    {
+        setErrorMessage("the Room Name must contain between 3 and 10 charachteres.")
+    }
 
     }
     else

@@ -1,13 +1,10 @@
-import react from 'react';
 import { useState ,useEffect} from "react";
 import './AdminChatRoomDashboard.css'
-import DisplayChatRoomusers from './DisplayChatRoomsusers';
-import person from '../users/users.json'
 import { useNavigate } from 'react-router-dom';
-import { IsAuthOk } from '../../utils/utils';
+// import { IsAuthOk } from '../../utils/utils';
 
 const AdminChatRoomDashboard = (props) => {
-  const[roomUsers,setRoomUsers] = useState <any >([]);
+
 const [username, setUsername] = useState("");
 const [errorMessage, setErrorMessage] = useState("");
 const [showmodal,setModal] = useState(false);
@@ -27,7 +24,7 @@ const [isroomPrivate, setIsRoomPrivate] = useState(false);
 const navigate = useNavigate();
 
 const [Updated, setisUpdated] = useState(false);
-const [MembersAdmin,setMembersAdmin] = useState <any>([]);
+// const [MembersAdmin,setMembersAdmin] = useState <any>([]);
 
 
 async function AddAdmin (username:string)
@@ -35,9 +32,8 @@ async function AddAdmin (username:string)
   const loggeduser = localStorage.getItem("user");
   if(loggeduser)
 {
-  const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/setAdmin/" + username + "/" + props.room.id;
-console.log("Api Set Admin Link :  =>  " + text);
+  const text = process.env.REACT_APP_BACK_URL + "/player/setAdmin/" + username + "/" + props.room.id;
+// console.log("Api Set Admin Link :  =>  " + text);
 
 
 await fetch(text,{
@@ -48,23 +44,23 @@ await fetch(text,{
 
 .then((response) => response.json())
 .then(json => {
-  console.log("The AddAdminResponse is => " + JSON.stringify(json))
+  // console.log("The AddAdminResponse is => " + JSON.stringify(json))
 setErrorMessage(json.message)
-if(json.statusCode == "404")
+if(String(json.statusCode) === "404")
 {
   setErrorMessage(json.message)
 }
-if(json.statusCode == "500")
+if(String(json.statusCode) === "500")
 {
   setErrorMessage("An error occured in the backend.");
 }
-if(IsAuthOk(json.statusCode) == 1)
-window.location.reload();
+// if(IsAuthOk(json.statusCode) == 1)
+// window.location.reload();
 
   return json;
 })
 .catch((error) => {
-  console.log("An error occured : " + error)
+  // console.log("An error occured : " + error)
   return error;
 })
 
@@ -89,9 +85,8 @@ async function UnsetAdmin (username:string)
   const loggeduser = localStorage.getItem("user");
   if(loggeduser)
 {
-  const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/unsetAdmin/" + username + "/" + props.room.id;
-console.log("unsetAdmin   Link :  =>  " + text);
+  const text = process.env.REACT_APP_BACK_URL + "/player/unsetAdmin/" + username + "/" + props.room.id;
+// console.log("unsetAdmin   Link :  =>  " + text);
 
 
 await fetch(text,{
@@ -102,24 +97,24 @@ await fetch(text,{
 
 .then((response) => response.json())
 .then(json => {
-  console.log("The unsetAdmin is => " + JSON.stringify(json))
+  // console.log("The unsetAdmin is => " + JSON.stringify(json))
 // 
 setErrorMessage("Admin Unset")
-if(json.statusCode == "404")
+if(String(json.statusCode) === "404")
 {
   setErrorMessage(json.message)
 }
-if(json.statusCode == "500")
+if(String(json.statusCode)=== "500")
 {
   setErrorMessage("An error occured in the backend.");
 }
-if(IsAuthOk(json.statusCode) == 1)
-window.location.reload();
+// if(IsAuthOk(json.statusCode) == 1)
+// window.location.reload();
 
   return json;
 })
 .catch((error) => {
-  console.log("An error occured unsetAdmin : " + error)
+  // console.log("An error occured unsetAdmin : " + error)
   return error;
 })
 
@@ -136,7 +131,7 @@ const HandleUnsetAdmin = (e ) => {
     else
     setErrorMessage("Could not find this user ! Are you sure u spelled it correcly ? ");
 }
-const HandleMute = (e) => {
+const HandleMute = (e) => {
     e.preventDefault();
     setModal(!showmodal)
 }
@@ -149,19 +144,26 @@ const HandleMute = (e) => {
 
   async function MuteUserFromRoom() 
   {
-     let text = ("http://localhost:5000/player/muteMember/");
-  console.log(" MNutemember Ednpoint " + text + " ROOM ID IS : " + props.room.id + " TIME IS : " +time + "login is : " + username)
+     let text = (process.env.REACT_APP_BACK_URL + "/player/muteMember/");
+  // console.log(" MNutemember Ednpoint " + text + " ROOM ID IS : " + props.room.id + " TIME IS : " +time + "login is : " + username)
 
-  var hms = time   // your input string
-var a = hms.split(':'); // split it at the colons
+  // var hms = time   // your input string
+// var a = hms.split(':'); // split it at the colons
 
-// minutes are worth 60 seconds. Hours are worth 60 minutes.
-var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60
-var minutes = seconds/ 60;
+// // minutes are worth 60 seconds. Hours are worth 60 minutes.
+// var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60
+// var minutes = seconds/ 60;
 
-console.log("seconds : " + seconds + " minutes :  " + minutes);
+// console.log("seconds : " + seconds + " minutes :  " + minutes , "time is : ",time);
+// console.log("Time is : ",time)
 
 
+const parsed_time = parseInt(time,10);
+if(!parsed_time)
+{
+  setErrorMessage("Please enter a valid mute time.")
+  return ;
+}
   await fetch(text,{
     // mode:'no-cors',
     method:'post',
@@ -170,7 +172,7 @@ console.log("seconds : " + seconds + " minutes :  " + minutes);
     body: JSON.stringify(
         { 
       room_id: props.room.id,
-      time: minutes,
+      time: parsed_time,
       login:username,
         }
       )
@@ -178,20 +180,20 @@ console.log("seconds : " + seconds + " minutes :  " + minutes);
 
 .then((response) => response.json())
 .then(json => {
-    console.log("The MutememberResponse   is => " + JSON.stringify(json))
+    // console.log("The MutememberResponse   is => " + JSON.stringify(json))
 
     setErrorMessage(json.message);
-    if(json.statusCode == "404")
+    if(String(json.statusCode) === "404")
     {
       setErrorMessage(json.message);
     }
-    if(IsAuthOk(json.statusCode) == 1)
-window.location.reload();
+//     if(IsAuthOk(json.statusCode) == 1)
+// window.location.reload();
   // window.location.reload();
     return json;
 })
 .catch((error) => {
-    console.log("An error occured : " + error)
+    // console.log("An error occured : " + error)
     return error;
 })
 
@@ -232,9 +234,8 @@ window.location.reload();
     const loggeduser = localStorage.getItem("user");
   if(loggeduser)
 {
-  const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/banMember/" + username + "/" + props.room.id;
-console.log("Api BanUser Link :  =>  " + text);
+  const text = process.env.REACT_APP_BACK_URL + "/player/banMember/" + username + "/" + props.room.id;
+// console.log("Api BanUser Link :  =>  " + text);
 
 
 await fetch(text,{
@@ -245,26 +246,26 @@ await fetch(text,{
 
 .then((response) => response.json())
 .then(json => {
-  console.log("The response is => " + JSON.stringify(json))
+  // console.log("The response is => " + JSON.stringify(json))
 // 
 setErrorMessage("User banned ! ");
-if(json.statusCode =="404")
+if(String(json.statusCode) ==="404")
 {
   setErrorMessage(json.message)
 }
-if(json.statusCode == "500")
+if(String(json.statusCode)==="500")
 {
   setErrorMessage("An error occured in the backend.");
 }
 
-if(IsAuthOk(json.statusCode) == 1)
-window.location.reload();
+// if(IsAuthOk(json.statusCode) == 1)
+// window.location.reload();
 
 
   return json;
 })
 .catch((error) => {
-  console.log("An error occured : " + error)
+  // console.log("An error occured : " + error)
   return error;
 })
 
@@ -303,9 +304,8 @@ async function KickUserFromRoom()
   const loggeduser = localStorage.getItem("user");
   if(loggeduser)
 {
-  const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/kickMember/" + username + "/" + props.room.id;
-console.log("kickUserFromRoom Link :  =>  " + text);
+  const text = process.env.REACT_APP_BACK_URL + "/player/kickMember/" + username + "/" + props.room.id;
+// console.log("kickUserFromRoom Link :  =>  " + text);
 
 
 await fetch(text,{
@@ -316,23 +316,23 @@ await fetch(text,{
 
 .then((response) => response.json())
 .then(json => {
-  console.log( " KickUser Response is :  " + JSON.stringify(json))
+  // console.log( " KickUser Response is :  " + JSON.stringify(json))
 // 
 setErrorMessage(json.message)
-if(json.statusCode =="404")
+if(String(json.statusCode) ==="404")
 {
   setErrorMessage(json.message)
 }
-if(json.statusCode == "500")
+if(String(json.statusCode) === "500")
 {
   setErrorMessage("An error occured in the backend.");
 }
-if(IsAuthOk(json.statusCode) == 1)
-window.location.reload();
+// if(IsAuthOk(json.statusCode) == 1)
+// window.location.reload();
   return json;
 })
 .catch((error) => {
-  console.log("An error occured : " + error)
+  // console.log("An error occured : " + error)
   return error;
 })
 
@@ -360,9 +360,8 @@ async function UnmuteUserFromRoom()
   const loggeduser = localStorage.getItem("user");
   if(loggeduser)
 {
-  const current = JSON.parse(loggeduser);
-  const text = "http://localhost:5000/player/unmuteMember/" + username + "/" + props.room.id;
-console.log("kickUserFromRoom Link :  =>  " + text);
+  const text = process.env.REACT_APP_BACK_URL + "/player/unmuteMember/" + username + "/" + props.room.id;
+// console.log("kickUserFromRoom Link :  =>  " + text);
 
 
 await fetch(text,{
@@ -373,24 +372,24 @@ await fetch(text,{
 
 .then((response) => response.json())
 .then(json => {
-  console.log( " UnmuteUser Response is :  " + JSON.stringify(json))
+  // console.log( " UnmuteUser Response is :  " + JSON.stringify(json))
 
 setErrorMessage(json.message)
-if(json.statusCode =="404")
+if(String(json.statusCode) ==="404")
 {
   setErrorMessage(json.message)
 }
-if(json.statusCode == "500")
+if(String(json.statusCode) === "500")
 {
   setErrorMessage("An error occured in the backend.");
 }
-if(IsAuthOk(json.statusCode) == 1)
-window.location.reload();
+// if(IsAuthOk(json.statusCode) == 1)
+// window.location.reload();
 
   return json;
 })
 .catch((error) => {
-  console.log("An error occured : " + error)
+  // console.log("An error occured : " + error)
   return error;
 })
 
@@ -425,8 +424,8 @@ const HandleUnmute = (e) => {
 async function HandleSetPassword()
 {
   
-  let text = ("http://localhost:5000/player/SetPwdToPublicChatRoom/");
-  console.log(" SetPassword Ednpoint " + text + " ROOM ID IS : " + props.room.id)
+  let text = (process.env.REACT_APP_BACK_URL + "/player/SetPwdToPublicChatRoom/");
+  // console.log(" SetPassword Ednpoint " + text + " ROOM ID IS : " + props.room.id)
   await fetch(text,{
     // mode:'no-cors',
     method:'post',
@@ -442,12 +441,12 @@ async function HandleSetPassword()
 
 .then((response) => response.json())
 .then(json => {
-    console.log("The SetPasswordResponse   is => " + JSON.stringify(json))
+    // console.log("The SetPasswordResponse   is => " + JSON.stringify(json))
 
-    if(IsAuthOk(json.statusCode) == 1)
-    window.location.reload();
+    // if(IsAuthOk(json.statusCode) == 1)
+    // window.location.reload();
 
-    if(json.statusCode == "404")
+    if(String(json.statusCode) === "404")
     setErrorMessage(json.message)
     else
     {
@@ -456,7 +455,7 @@ async function HandleSetPassword()
     return json;
 })
 .catch((error) => {
-    console.log("An error occured : " + error)
+    // console.log("An error occured : " + error)
     return error;
 })
 
@@ -466,8 +465,8 @@ async function HandleSetPassword()
   async function HandleDeletePwd()
 {
   
-  let text = ("http://localhost:5000/player/DeletePwdProtectedChatRoom/");
-  console.log(" DELETEPWD Ednpoint " + text + " ROOM ID IS : " + props.room.id)
+  let text = (process.env.REACT_APP_BACK_URL + "/player/DeletePwdProtectedChatRoom/");
+  // console.log(" DELETEPWD Ednpoint " + text + " ROOM ID IS : " + props.room.id)
   await fetch(text,{
     // mode:'no-cors',
     method:'post',
@@ -483,12 +482,12 @@ async function HandleSetPassword()
 
 .then((response) => response.json())
 .then(json => {
-    console.log("The DELETEPWD RESP    is => " + JSON.stringify(json))
+    // console.log("The DELETEPWD RESP    is => " + JSON.stringify(json))
 
-    if(IsAuthOk(json.statusCode) == 1)
-    window.location.reload();
+    // if(IsAuthOk(json.statusCode) == 1)
+    // window.location.reload();
 
-    if(json.statusCode == "404")
+    if(String(json.statusCode) === "404")
     setErrorMessage(json.message)
     else
     {
@@ -500,7 +499,7 @@ async function HandleSetPassword()
     return json;
 })
 .catch((error) => {
-    console.log("An error occured : " + error)
+    // console.log("An error occured : " + error)
     return error;
 })
 
@@ -509,8 +508,8 @@ async function HandleSetPassword()
   async function HandleUpadtePwd()
   {
     
-    let text = ("http://localhost:5000/player/UpdatePwdProtectedChatRoom/");
-    console.log(" UPDATEPWD Ednpoint " + text + " ROOM ID IS : " + props.room.id)
+    let text = (process.env.REACT_APP_BACK_URL + "/player/UpdatePwdProtectedChatRoom/");
+    // console.log(" UPDATEPWD Ednpoint " + text + " ROOM ID IS : " + props.room.id)
     await fetch(text,{
       // mode:'no-cors',
       method:'post',
@@ -526,12 +525,12 @@ async function HandleSetPassword()
   
   .then((response) => response.json())
   .then(json => {
-      console.log("The UPDATEPWD RESP    is => " + JSON.stringify(json))
+      // console.log("The UPDATEPWD RESP    is => " + JSON.stringify(json))
   
-      if(IsAuthOk(json.statusCode) == 1)
-      window.location.reload();
+      // if(IsAuthOk(json.statusCode) == 1)
+      // window.location.reload();
       
-      if(json.statusCode == "404")
+      if(String(json.statusCode) === "404")
       setErrorMessage(json.message)
       else
       {
@@ -543,7 +542,7 @@ async function HandleSetPassword()
       return json;
   })
   .catch((error) => {
-      console.log("An error occured : " + error)
+      // console.log("An error occured : " + error)
       return error;
   })
   
@@ -553,25 +552,25 @@ async function HandleSetPassword()
     const loggedUser  =localStorage.getItem("user");
     if(loggedUser)
     {
-      const current = JSON.parse(loggedUser);
-       const {id} = current;
+      // const current = JSON.parse(loggedUser);
+      //  const {id} = current;
       // console.log("THE ID USEEFFECT IS " + id + "  ROOM  PRV " + props.room.is_private + "PROPS =>   : " , props);
       if(props.room.is_private)
       {
-        console.log("THIS IS A PRIVATE ROOM")
+        // console.log("THIS IS A PRIVATE ROOM")
         setIsRoomPrivate(true);
       }
 
-      setMembersAdmin(props.room.all_members);
-    const getMembers = localStorage.getItem("members");
-      if(getMembers)
-      {
-        const ParsedMembers = JSON.parse(getMembers);
-        // console.log("THE GET MEMBERS IS " + getMembers +  " PARSED : "  + ParsedMembers.nickname);
+      // setMembersAdmin(props.room.all_members);
+    // const getMembers = localStorage.getItem("members");
+    //   if(getMembers)
+    //   {
+    //     const ParsedMembers = JSON.parse(getMembers);
+    //     // console.log("THE GET MEMBERS IS " + getMembers +  " PARSED : "  + ParsedMembers.nickname);
 
-      }
+    //   }
       // // === Check condition + data types then true 
-      if(props.statusMember.data.statusMember == "owner")
+      if(String(props.statusMember.data.statusMember) === "owner")
       {
         // console.log(" I AM OWNER ")
         setOwner("true");
@@ -593,6 +592,7 @@ async function HandleSetPassword()
 
       }
     }
+    // eslint-disable-next-line
   },[])
 
   const UpdateRoomPassword = (e) => {
@@ -623,7 +623,7 @@ async function HandleSetPassword()
   
     if(deletepwd)
     {
-      console.log(" DELETE PWD FROM THIS CHATROOM");
+      // console.log(" DELETE PWD FROM THIS CHATROOM");
       HandleDeletePwd();
     }
   else if (updatepwd)
@@ -685,16 +685,12 @@ async function HandleSetPassword()
       </button>
       {showmodal ? (
         <>
-        <input
-         type="time" 
-         id="mute"
-         className='without_ampm'
-          name="mute-time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-        min="00:00" max ="18:00" >
-
-        </input>
+            <input
+        type='number'
+        value={time}
+        onChange={(e) => setTime(e.target.value)}
+        pattern="^-?[0-9]\d*\.?\d*$"
+      /> 
         <label htmlFor="mute"> Chose Mute Duration</label>
       
         <button type="button" id="ss" className='ButtonSocial-Unfriend' onClick={HandleMuteRequest}>

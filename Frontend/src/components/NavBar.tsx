@@ -1,11 +1,7 @@
 import React, {useState} from 'react';
-import { useNavigate,useLocation} from 'react-router-dom';
 import {useEffect} from "react";
 import './Navbar.css'
-import person from "./users/users.json"
 import ContactList from './Friendlist/ContactList';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 import { IsAuthOk } from '../utils/utils';
 import { io } from 'socket.io-client';
 import Notifs from './Notifs';
@@ -13,12 +9,8 @@ import Notifs from './Notifs';
 var gamesocket:any;
 let id = 0;
 
-// TODO :
-// Request to Backend pour avoir la FriendList 
-// Add Post request to Backend pour Ajouter un ami / Bloquer un ami 
 
 function Navbar() {
-    const [click,setClick]= useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [notifMessage, setNotifsMessage] = useState("");
 
@@ -30,8 +22,6 @@ function Navbar() {
   const[user42,setUser42] = useState <any >([]);
   const[friends,setFriends] = useState <any >([]);
   const[notifs,setNotifs] = useState(false);
-    const [button, setButton] = useState(true);
-    const [authenticated, setauthenticated] = useState("");
     const [sideBar,setSideBar] = useState(true);
     const [blur,SetBlur] = useState(false);
     const [invites,setInvites] = useState<any>([]);
@@ -42,40 +32,33 @@ function Navbar() {
         setSideBar(!sideBar);
         SetBlur(!blur);
     }
-    const loggedInUser = localStorage.getItem("authenticated");
-    const navigate = useNavigate();
 
     const navigateHome = () => {
         // navigate('/Home');
-        window.location.href = "http://localhost:3000/Home"
+        window.location.href = process.env.REACT_APP_FRONT_URL + "/Home"
 
       };
       const navigateAccount = () => {
         // navigate('/');
-        window.location.href = "http://localhost:3000/"
+        window.location.href = process.env.REACT_APP_FRONT_URL + "/"
 
       };
 
       const navigateChatRooms = () => {
         // navigate('/Landing');
-        window.location.href = "http://localhost:3000/Landing"
+        window.location.href =  process.env.REACT_APP_FRONT_URL + "/Landing"
 
       };
 
-      // const navigateLeaderBoard = () => {
-      //   // navigate('/LeaderBoard');
-      //   window.location.href = "http://localhost:3000/LeaderBoard"
-
-      // };
 
       const navigateGameLanding = () => {
-        window.location.href = "http://localhost:3000/GameLanding"
+        window.location.href = process.env.REACT_APP_FRONT_URL + "/GameLanding"
 
         // navigate('/GameLanding');
       };
 
       const navigatePlay = () => {
-        window.location.href = "http://localhost:3000/Pong"
+        window.location.href = process.env.REACT_APP_FRONT_URL + "/Pong"
 
         // navigate('/Pong');
       };
@@ -90,14 +73,10 @@ function Navbar() {
 
  async function LogOut ()
          {
-          const tt = localStorage.getItem("user")
-          const loggedUser =JSON.parse(tt!);
-          // console.log(" Login Out this user   => "  + loggedUser.nickname);
 
-
-let endpoint = 'http://localhost:5000/auth/logout';
+let endpoint = process.env.REACT_APP_BACK_URL + '/auth/logout';
 // endpoint = endpoint + userQuery;
-console.log(" LogOut endpoint   " + endpoint)
+// console.log(" LogOut endpoint   " + endpoint)
 
 
 await fetch((endpoint),{
@@ -117,7 +96,11 @@ await fetch((endpoint),{
 })
 
 .catch((error) => {
-  console.log("An error occured : " + error)
+  // console.log("An error occured : " + error)
+  localStorage.setItem("authenticated","false");
+  localStorage.setItem("online", "");
+
+  localStorage.setItem("action","");
   setErrorMessage("An error occured! User not found ! ");
   return error;
 })
@@ -135,10 +118,7 @@ await fetch((endpoint),{
   
     if(loggeduser)
   {
-    var Current_User = JSON.parse(loggeduser);
-    const text = ("http://localhost:5000/player/listOfFriends");
-    // console.log("Social Fetch  Link :  =>  " + text);
-    
+    const text = (process.env.REACT_APP_BACK_URL + "/player/listOfFriends");
 
     await fetch(text,{
       // mode:'no-cors',
@@ -149,17 +129,22 @@ await fetch((endpoint),{
   .then((response) => response.json())
   .then(json => {
       // console.log("The response is => " + JSON.stringify(json))
-       if ( IsAuthOk(json.statusCode) == 1)
+      IsAuthOk(json.statusCode)
+        if (String(json.statusCode) === "404")
        {
-       window.location.reload();
+        setErrorMessage(json.message)
+       }
+       else
+       {
+        setFriends(json);
+        setAllgood(true);
+       return json;  
        }
        
-          setFriends(json);
-       setAllgood(true);
-      return json;  
+        
   })
   .catch((error) => {
-      console.log("An error occured : " + error)
+      // console.log("An error occured : " + error)
       return error;
   })
 
@@ -176,39 +161,24 @@ await fetch((endpoint),{
     }
     else
     {
-      console.log("No notifs !")
+      // console.log("No notifs !")
       setNotifsMessage("You have no Invitation ! ")
     }
   }
   useEffect(() => {
-    gamesocket = io("http://localhost:5000/game")
-    // {:"name=my_img_name"})
-
-
-    // console.log("Hadik hya:",localStorage.getItem("user"));
-
+    const back_url = process.env.REACT_APP_BACK_URL + "/game"
+    gamesocket = io(back_url)
     gamesocket.emit("OnlineGameUsersBack",{
       user:localStorage.getItem("user")
     })
-
-    
     gamesocket.on("UsersInGame", (data: any) => {
 
-      console.log(" Users currently in game  ! : ", data);
+      // console.log(" Users currently in game  ! : ", data);
       localStorage.setItem("InGame",JSON.stringify(data))
-
-      // localStorage.setItem("InviteGame",data.Sendernickname);
-      // setInvites(data);
-
-      // invites.push(data.Sendernickname);
-      // setInvites(data.Sendernickname)
-      // localStorage.setItem("online",JSON.stringify(data))
     });
     
     gamesocket.on("ReceivedInvite", (data: any) => {
-      console.log(" You Have Been Invited to play a game ! : ", data);
-      // localStorage.setItem("InviteGame",data.Sendernickname);
-      // setInvites(data);
+      // console.log(" You Have Been Invited to play a game ! : ", data);
       const obj = {
         id: id++,
         data
@@ -217,27 +187,14 @@ await fetch((endpoint),{
     setInvites((prevData: any) => [...prevData, obj]);
     
       setNotifs(true);
-      // invites.push(data.Sendernickname);
-      // setInvites(data.Sendernickname)
-      // localStorage.setItem("online",JSON.stringify(data))
     });
-
-           // onlineUsersFront
-            
 
   },[])
 
       useEffect(() => {
-        const authenticated = localStorage.getItem("authenticated");
     const loggeduser = localStorage.getItem("user");
-      
-        if (authenticated == "true") {
-          setauthenticated(authenticated);
-        }
         if(loggeduser)
         {
-          var Current_User = JSON.parse(loggeduser);
-          const {id} = Current_User
           setUser42(JSON.parse(localStorage.getItem("user")!))
         }
         else
@@ -246,16 +203,14 @@ await fetch((endpoint),{
           window.location.reload();
         }
 
-      },[ localStorage.getItem("user"),isShown]);
-      const location = useLocation();
+      },[]);
     return (
         <nav>
-          <div>{( location.pathname=== "/Account_infos")  ? (
-           <div>
-            </div> 
-          ):(
-            <div>  {loggedInUser == "true" ? (
+            {/* <div>  {loggedInUser == "true" ? ( */}
+              
               <div>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
                  <div className="body">
             <nav className="sidebar">
@@ -267,9 +222,10 @@ await fetch((endpoint),{
                     onClick={toggleSidebar}
                   ></button>
                   
-                  <img src={user42.avatar}   className="avatarsidebar" />            
+                  <img src={user42.avatar}   className="avatarsidebar" alt="avatar"/>            
                <span> {user42.nickname}</span> 
                 </header>
+    {errorMessage && <div className="error"> {errorMessage} </div>}
                 <nav className="sidebar-menu">
                   
                   <button type="button" onClick={navigateHome} className="has-border" >
@@ -321,17 +277,17 @@ await fetch((endpoint),{
       <span>
       Social
       </span>
+      
+   
                       </button>
-                      <link
-      rel="stylesheet"
-      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
-    />
 
     <button type="button" className='has-border' onClick={HandleClickNotifs}>
     <span>
  
     <i   className="uil uil-heart"  >
-
+    <span className="icon material-symbols-outlined">
+     {"favorite"}  
+      </span>
 <div className={`${notifs  ? "em-notifs" : ""}`}>
       </div>
       </i>
@@ -388,12 +344,12 @@ await fetch((endpoint),{
             </nav>
             </div>
              </div>
-              ) : (
+              {/* ) : (
               <div>
                 </div>
-              )}</div>
+              )}</div> */}
                
-          )}</div>
+        
  
     
     </nav>

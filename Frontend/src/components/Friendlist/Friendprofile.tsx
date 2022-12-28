@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import person from '../users/users.json'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useState } from "react";
 import './Friendprofile.css'
-import { Location } from 'react-router-dom';
-import { IsAuthOk } from '../../utils/utils';
+import { containsSpecialChars2, IsAuthOk } from '../../utils/utils';
 import axios from 'axios';
 import { io } from 'socket.io-client';
 
@@ -22,19 +20,16 @@ const Friendprofile = () => {
   const [icons, setIcons] = useState("");
   const [msg, setMsg] = useState("");
   const [action, setAction] = useState("");
-  const [choice, setChoice] = useState("");
   localStorage.setItem("choice", "");
   localStorage.setItem("action2", "");
-  //We send the Id as the params of the Link , 
-  //ICi request Au Backend Avec l'ID de l'user demander stocker les infos dans const user 
 
   const navigate = useNavigate();
 
   async function AcceptRelationship() {
 
-    let endpoint = "http://localhost:5000/player/acceptFriendship/"
+    let endpoint = process.env.REACT_APP_BACK_URL + "/player/acceptFriendship/"
 
-    console.log("AcceptRelationship  => " + endpoint + " \n user:" + params.nickname)
+    // console.log("AcceptRelationship  => " + endpoint + " \n user:" + params.nickname)
     //  setAction("");
     endpoint = endpoint + params.nickname;
     await fetch((endpoint
@@ -47,14 +42,14 @@ const Friendprofile = () => {
 
       .then((response) => response.json())
       .then(json => {
-        console.log("The response  => " + JSON.stringify(json))
+        // console.log("The response  => " + JSON.stringify(json))
           IsAuthOk(json)
           window.location.reload();
         setErrorMessage("");
         return json;
       })
       .catch((error) => {
-        console.log("An error occured : " + error)
+        // console.log("An error occured : " + error)
         setErrorMessage("An error occured! Can't Accept Relationship    ! ");
         return error;
       })
@@ -64,10 +59,10 @@ const Friendprofile = () => {
 
 async function BlockRelationship()
 {
-   let endpoint = "http://localhost:5000/player/blockFriendship/"
+   let endpoint = process.env.REACT_APP_BACK_URL + "/player/blockFriendship/"
 
 
-    console.log("BlockRelation  => " + endpoint + " \n user" + params.nickname)
+    // console.log("BlockRelation  => " + endpoint + " \n user" + params.nickname)
     //  setAction("");
     endpoint = endpoint + params.nickname;
     await fetch((endpoint
@@ -80,11 +75,11 @@ async function BlockRelationship()
 
       .then((response) => response.json())
       .then(json => {
-        console.log("The response is => " + JSON.stringify(json))
+        // console.log("The response is => " + JSON.stringify(json))
         // if (json.ok)
         // IsAuthOk(json);
         // window.location.reload();
-        if(json.statusCode == "404")
+        if(String(json.statusCode) === "404")
         {
           setErrorMessage(json.message)
         }
@@ -96,7 +91,7 @@ async function BlockRelationship()
         return json;
       })
       .catch((error) => {
-        console.log("An error occured : " + error)
+        // console.log("An error occured : " + error)
         setErrorMessage("An error occured! Can't Refuse Relationship    ! ");
         return error;
       })
@@ -105,9 +100,9 @@ async function BlockRelationship()
   async function RefuseRelationship() {
 
 
-    let endpoint = "http://localhost:5000/player/refuseFriendship/"
+    let endpoint = process.env.REACT_APP_BACK_URL + "/player/refuseFriendship/"
 
-    console.log("RefuseRelationship  => " + endpoint + " \n user" + params.nickname)
+    // console.log("RefuseRelationship  => " + endpoint + " \n user" + params.nickname)
     //  setAction("");
     endpoint = endpoint + params.nickname;
     await fetch((endpoint
@@ -120,7 +115,7 @@ async function BlockRelationship()
 
       .then((response) => response.json())
       .then(json => {
-        console.log("The response is => " + JSON.stringify(json))
+        // console.log("The response is => " + JSON.stringify(json))
         // if (json.ok)
         IsAuthOk(json);
           window.location.reload();
@@ -128,7 +123,7 @@ async function BlockRelationship()
         return json;
       })
       .catch((error) => {
-        console.log("An error occured : " + error)
+        // console.log("An error occured : " + error)
         setErrorMessage("An error occured! Can't Refuse Relationship    ! ");
         return error;
       })
@@ -137,35 +132,34 @@ async function BlockRelationship()
 
   async function ExecuteRelationship() {
     let endpoint;
-    let execute = localStorage.getItem("action2");
-    console.log("Execute final " + action);
+    // console.log("Execute final " + action);
     switch (action) {
       case "addFriend":
         {
-          endpoint = "http://localhost:5000/player/requestFriendship/"
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/requestFriendship/"
           break;
         }
       case "blockFriend":
         {
-          endpoint = "http://localhost:5000/player/blockFriendship/"
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/blockFriendship/"
           break;
 
         }
       case "Accept":
         {
-          endpoint = "http://localhost:5000/player/acceptFriendship/"
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/acceptFriendship/"
           break;
 
         }
       case "Refuse":
         {
-          endpoint = "http://localhost:5000/player/refuseFriendship/"
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/refuseFriendship/"
           break;
 
         }
       case "unblockFriend":
         {
-          endpoint = "http://localhost:5000/player/unblockFriendship/";
+          endpoint = process.env.REACT_APP_BACK_URL + "/player/unblockFriendship/";
           break;
         }
 
@@ -183,15 +177,14 @@ async function BlockRelationship()
 
       .then((response) => response.json())
       .then(json => {
-        console.log("The response is => " + JSON.stringify(json))
+        // console.log("The response is => " + JSON.stringify(json))
         IsAuthOk(json);
-        // if (json.ok)
         window.location.reload();
         setErrorMessage("");
         return json;
       })
       .catch((error) => {
-        console.log("An error occured : " + error)
+        // console.log("An error occured : " + error)
         setErrorMessage("An error occured! Can't update Relationship    ! ");
         return error;
       })
@@ -203,15 +196,11 @@ async function BlockRelationship()
 
     const loggeduser = localStorage.getItem("user");
     if (loggeduser) {
-      const current = JSON.parse(loggeduser);
-      console.log("Fetching Relationship    Infos   => " + params.nickname + " I am : " + current.nickname);
+      // console.log("Fetching Relationship    Infos   => " + params.nickname + " I am : " + current.nickname);
 
-      let endpoint = 'http://localhost:5000/player/statusFriendship/'
-      let nicknametofetch: string = JSON.stringify(params.nickname);
       // console.log(" this endpoint   " + endpoint + " Fetching : " + nicknametofetch)
-      http://localhost:5000/statusFriendship/?id=narjdal
 
-      await fetch((`http://localhost:5000/player/statusFriendship/${params.nickname}`
+      await fetch((process.env.REACT_APP_BACK_URL + `/player/statusFriendship/${params.nickname}`
       ), {
         // mode:'no-cors',
         method: 'get',
@@ -222,94 +211,20 @@ async function BlockRelationship()
 
         .then((response) => response.json())
         .then(json => {
-          console.log("The Status Response is => " + JSON.stringify(json))
+          // console.log("The Status Response is => " + JSON.stringify(json))
           // setErrorMessage("");
-          if(json.statusCode == "404")
+          if(String(json.statusCode) === "404")
           {
           setErrorMessage(json.message);
 
           }
           // localStorage.setItem("usertoshow",JSON.stringify(json));
           localStorage.setItem("choice", json);
-          // setRelation(json);
-          // setChoice(json);
           return json;
-          // setRelation("AcceptOrRefuse");
-          //  if(json)
-          //  {
-          //  console.log("The Relationship is => " + json)
-          //   setRelation(JSON.stringify(json));
-          //   setChoice(json);
-          //   setRelation(json);
-          //  }
-
-          //     if (resp === "AddFriend")
-          //     {
-          //       console.log("GGS");
-          //     }
-          //     switch(JSON.stringify(json))
-          //  {
-          //   case "AddFriend":
-          //    {
-          //     console.log("ww khello")
-          //     setIcons("people")
-          //    setMsg("AddFriend");
-          //    setAction("Add");
-          //    setRelation("addFriend");
-          //    break;
-          //    }  
-
-          //   case "blockFriend":
-
-          //   {  
-          //     setIcons("block")
-          //    setMsg("block");
-          //    setAction("block")
-          //      setRelation("blockFriend");
-          //    break;
-
-          //   }
-
-          //      case"unblockFriend":
-
-          //     {
-          //    setMsg("unblock");
-          //       setAction("unblock")
-          //     setIcons("unblock")
-
-          //        setRelation("unblockFriend");
-          //    break;
-
-          //     }
-          //     case "pendingFriend":
-          //      { 
-          //     setIcons("people")
-          //     setMsg("pending ...")
-          //     setAction("pending")
-          //      setRelation("pendingFriend")
-          //    break;
-
-          //     }
-          //     case"acceptFriend":
-          //     {
-          //   //  setMsg("Accept");
-          //     // setIcons("people")
-          //     // setAction("");
-          //        setRelation("AcceptOrRefuse");
-          //    break;
-
-          //     }
-          //   default:
-
-          //    {
-          //     console.log("ERROR DEFAULT" + json) 
-          //     setRelation("error");
-          //    break;
-          //   }
-          //    }
         })
         .catch((error) => {
-          console.log("An error occured : " + error)
+          // console.log("An error occured : " + error)
+          localStorage.setItem("choice","");
           // setRelation("error");
           setErrorMessage("An error occured! Relationship not found ! ");
           return error;
@@ -324,9 +239,8 @@ async function BlockRelationship()
 
     const loggeduser = localStorage.getItem("user");
     if (loggeduser) {
-      let endpoint = 'http://localhost:5000/player/profile/?id=';
-      console.log(" this endpoint   " + endpoint)
-      await fetch((`http://localhost:5000/player/profile/${params.nickname}`), {
+      // console.log(" this endpoint   " + endpoint)
+      await fetch((process.env.REACT_APP_BACK_URL + `/player/profile/${params.nickname}`), {
         // mode:'no-cors',
         method: 'get',
         credentials: "include"
@@ -335,10 +249,9 @@ async function BlockRelationship()
 
         .then((response) => response.json())
         .then(json => {
-          console.log("The User  is => " + JSON.stringify(json))
-          // setErrorMessage("");
-          // localStorage.setItem("usertoshow",JSON.stringify(json));
-          if(json.statusCode == "404")
+          // console.log("The User  is => " + JSON.stringify(json))
+          IsAuthOk(json.statusCode)
+          if(String(json.statusCode) === "404")
           {
             setAllGood(false);
             setErrorMessage(json.message)
@@ -351,7 +264,7 @@ async function BlockRelationship()
           return json;
         })
         .catch((error) => {
-          console.log("An error occured : " + error)
+          // console.log("An error occured : " + error)
           setUserState([])
           // localStorage.setItem("usertoshow","");
           setErrorMessage("An error occured! User not found ! ");
@@ -426,7 +339,7 @@ async function BlockRelationship()
       // localStorage.setItem("action","noaction");
 
     }
-    console.log("TT is " + tt + " the action is " + action);
+    // console.log("TT is " + tt + " the action is " + action);
 
     // if(localStorage.getItem("choice"))
   };
@@ -435,18 +348,27 @@ async function BlockRelationship()
     if(loggedUser)
     {
       const current = JSON.parse(loggedUser);
-      if(current.nickname == params.nickname)
+      if(current.nickname === params.nickname)
       {
         setIsMe(true);
       }
     }
-    FetchUserInfos();
+    if(containsSpecialChars2(params.nickname))
+    {
+      setErrorMessage("invalid user nickname !")
+    }
+    else
+    {
+      FetchUserInfos();
 
-    SetRelationInfos();
+      SetRelationInfos();
+    }
+
     // FetchUserInfos();
 
     
     // ExecuteRelationship();
+    // eslint-disable-next-line 
   }, [])
 
   useEffect(() => {
@@ -458,21 +380,21 @@ async function BlockRelationship()
     if(onlineUsers)
     {
         let ParsedUsers = JSON.parse(onlineUsers);
-        console.log ( "PARSED USER : " , ParsedUsers);
+        // console.log ( "PARSED USER : " , ParsedUsers);
 
     let srch = ParsedUsers.filter((m: any) => {
-    console.log(" ME id : " + userState.id + "  ME NICKNAME : " + userState.nickname  +  " : " , ParsedUsers);
+    // console.log(" ME id : " + userState.id + "  ME NICKNAME : " + userState.nickname  +  " : " , ParsedUsers);
     return m.id === userState.id
   })[0]
 
     if(srch)
     {
-        console.log(" THIS USER IS LOGEED IN  " + JSON.stringify(srch))
+        // console.log(" THIS USER IS LOGEED IN  " + JSON.stringify(srch))
         // setImLogged(true);
     }
     else if (!srch)
     {
-        console.log( " THIS USER NOT LOGGED IN ");
+        // console.log( " THIS USER NOT LOGGED IN ");
         // setImLogged(false);
     }
         // const isInsideLoggedUsers = ParsedUsers.filter(s => s.id);
@@ -485,11 +407,11 @@ async function BlockRelationship()
     e.preventDefault();
 
     // const execute = localStorage.getItem("action")
-    console.log("Executing this command =>   " + action);
+    // console.log("Executing this command =>   " + action);
     if (action !== "error")
       ExecuteRelationship();
-    else
-      console.log("Error ! can't execute action.");
+    // else
+      // console.log("Error ! can't execute action.");
 
   }
 
@@ -503,14 +425,14 @@ async function BlockRelationship()
 
   const HandleAcceptFriendRequest = (e) => {
     e.preventDefault();
-    console.log("Accepting the request ...");
+    // console.log("Accepting the request ...");
     setAction("Accept")
     AcceptRelationship();
 
   }
   const HandleInviteToGame = (e) => {
     e.preventDefault();
-    console.log("invinting " + userState.nickname + "to play a game ...")
+    // console.log("invinting " + userState.nickname + "to play a game ...")
     setInvitingGame(true);
 
  
@@ -519,34 +441,35 @@ async function BlockRelationship()
 
     if(InvitingGame)
     {
-   let socket = io("http://localhost:5000/game");
+      const back_url = process.env.REACT_APP_BACK_URL + "/game"
+   let socket = io(back_url);
 
    socket.on("connect",() => {
-    console.log("socket : ",socket);
+    // console.log("socket : ",socket);
    })
 
    socket.emit("inviteGame",{
     user:localStorage.getItem("user")!,
     invite:userState.nickname
    })
-   function simpleStringify (object){
-    // stringify an object, avoiding circular structures
-    // https://stackoverflow.com/a/31557814
-    var simpleObject = {};
-    for (var prop in object ){
-        if (!object.hasOwnProperty(prop)){
-            continue;
-        }
-        if (typeof(object[prop]) == 'object'){
-            continue;
-        }
-        if (typeof(object[prop]) == 'function'){
-            continue;
-        }
-        simpleObject[prop] = object[prop];
-    }
-    return JSON.stringify(simpleObject); // returns cleaned up JSON
-};
+//    function simpleStringify (object){
+//     // stringify an object, avoiding circular structures
+//     // https://stackoverflow.com/a/31557814
+//     var simpleObject = {};
+//     for (var prop in object ){
+//         if (!object.hasOwnProperty(prop)){
+//             continue;
+//         }
+//         if (typeof(object[prop]) == 'object'){
+//             continue;
+//         }
+//         if (typeof(object[prop]) == 'function'){
+//             continue;
+//         }
+//         simpleObject[prop] = object[prop];
+//     }
+//     return JSON.stringify(simpleObject); // returns cleaned up JSON
+// };
 
 
 if(isFriendLogged)
@@ -554,7 +477,7 @@ if(isFriendLogged)
 
    socket.on("InviteUpdate",(data:any) => {
     setErrorMessage("");
-    console.log("Invite Update Data : ",data)
+    // console.log("Invite Update Data : ",data)
     if(data.logged)
     {
     localStorage.setItem("inviteGame",data.inviteeNickname)
@@ -574,7 +497,8 @@ if(isFriendLogged)
 	}, 3000);
   }
     }
-  },[InvitingGame])
+    // eslint-disable-next-line 
+  },[InvitingGame,isFriendLogged])
 
 
 useEffect(() => {
@@ -584,21 +508,21 @@ useEffect(() => {
   if(onlineUsers)
   {
       let ParsedUsers = JSON.parse(onlineUsers);
-      console.log ( "PARSED USER : " , ParsedUsers);
+      // console.log ( "PARSED USER : " , ParsedUsers);
 
   let srch = ParsedUsers.filter((m: any) => {
-  console.log(" ME id : " + userState.id + "  ME NICKNAME : " + userState.nickname  +  " : " , m.user);
+  // console.log(" ME id : " + userState.id + "  ME NICKNAME : " + userState.nickname  +  " : " , m.user);
   return m.user === userState.id
 })[0] 
 
   if(srch)
   {
-      console.log(" THIS FRIEND IS LOGEED IN  ")
+      // console.log(" THIS FRIEND IS LOGEED IN  ")
       setIsFriendLogged(true);
   }
   else
   {
-      console.log( " THIS FRIEND NOT LOGGED IN ");
+      // console.log( " THIS FRIEND NOT LOGGED IN ");
       setIsFriendLogged(false);
   }
       // const isInsideLoggedUsers = ParsedUsers.filter(s => s.id);
@@ -606,8 +530,8 @@ useEffect(() => {
 },[userState])
   async function FetchRoomId()
   {
-    const text = "http://localhost:5000/player/sendMessageButton/" + params.nickname;
-    console.log("Api  Sendmessagebutton  Link :  =>  " + text);
+    const text = process.env.REACT_APP_BACK_URL + "/player/sendMessageButton/" + params.nickname;
+    // console.log("Api  Sendmessagebutton  Link :  =>  " + text);
     
 
     await axios.get(text,{
@@ -621,17 +545,17 @@ useEffect(() => {
   .then(json => {
       // json.data.id = params.id;
       // console.log("json" + json)
-      console.log("The response Of SendMessage  is  => " + JSON.stringify(json.data))
+      // console.log("The response Of SendMessage  is  => " + JSON.stringify(json.data))
       // SetUserAdmin(json);
       if(json.data)
       {
-        window.location.href = "http://localhost:3000/room/" + json.data;
+        window.location.href = process.env.REACT_APP_FRONT_URL + "/room/" + json.data;
 
       }
      
   })
   .catch((error) => {
-      console.log("An error occured  while fetching the SendMessage Id  ! : " + error)
+      // console.log("An error occured  while fetching the SendMessage Id  ! : " + error)
       setErrorMessage(" An error occured while fetching the SendMessage Room id  ");
       return error;
   })
@@ -640,7 +564,7 @@ useEffect(() => {
 
   const HandleSendMessage  =  (e) => {
     e.preventDefault();
-    console.log("Fetching the room id !")
+    // console.log("Fetching the room id !")
     FetchRoomId();
 
   }
@@ -671,13 +595,12 @@ useEffect(() => {
     // console.log("B4" + userState['nickname'] + params.nickname);
     return (
       <div className='FriendProfile'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         {errorMessage && <div className="error"> {errorMessage} </div>}
   
     {allgood ? (
       <>
           <>
-       <img src={userState.avatar} height="80" />
+       <img src={userState.avatar} height="80" alt="FriendAvatar"/>
         <h2>{userState.nickname}</h2>
         <h3> Number Of Wins : </h3>
         <h2>{userState.wins}</h2>
@@ -754,7 +677,7 @@ useEffect(() => {
                  
                   </>
                 )}
-                {action == "addFriend" ? (
+                {String(action) === "addFriend" ? (
                   <>
                   <br/>
                     <button type="button" className='button-displayuser' onClick={HandleBlockUser}>

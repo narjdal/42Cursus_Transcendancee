@@ -20,7 +20,7 @@ export const createAuthProvider = () => {
     };
 
     const login: typeof tokenProvider.setToken = (newTokens) => {
-        console.log("Currently login using the Auth provider , setting a new token => " + newTokens)
+        // console.log("Currently login using the Auth provider , setting a new token => " + newTokens)
         tokenProvider.setToken(newTokens);
     };
     
