@@ -35,12 +35,12 @@ export class PlayerController {
         res.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         })
-        return toFileStream(res, otpauth_url);
-        // return response.send(
-        //     {
-        //         "message": "2FA enabled"
-        //     }
-        // );
+        // return toFileStream(res, otpauth_url);
+        return res.status(200).send(
+            {
+                "message": "2FA enabled"
+            }
+        );
     }
 
     @Get('/2fa/disable')
@@ -49,10 +49,10 @@ export class PlayerController {
         // const user = await this.playerService.findPlayerById(request.user.id);
         const user = await this.playerService.disable2fa(request.user.playerId);
 
-        // response.set({
-        //     'Access-Control-Allow-Origin': 'http://localhost:3000'
-        // })
-        return res.send(
+        res.set({
+            'Access-Control-Allow-Origin': 'http://localhost:3000'
+        })
+        return res.status(200).send(
             {
                 "message": "2FA disabled"
             }
@@ -64,7 +64,7 @@ export class PlayerController {
     async login(@Req() request, @Res() response) //:Promise<Profile>
     {
         // console.log("----------------- myprofile -----------------", request.user.playerId);
-        const profile = await this.playerService.findPlayerById(request.user.playerId);
+        const profile = await this.playerService.getPlayerById(request.user.playerId);
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -135,7 +135,7 @@ export class PlayerController {
     async getProfile(@Param() nickname: string, @Req() request, @Res() response) //:Promise<Profile>
     {
         // console.log("----------------- Profile of this nickname -----------------", request.user.playerId, " ", nickname);
-        const profile = await this.playerService.findPlayerByNickname(nickname['id']);
+        const profile = await this.playerService.getPlayerByNickname(nickname['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         })
@@ -209,7 +209,7 @@ export class PlayerController {
             throw new UnauthorizedException("Already Exist")
         }
 
-        const friend = await this.playerService.createFriendship(request.user.playerId, login['id']);
+        await this.playerService.createFriendship(request.user.playerId, login['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
@@ -360,6 +360,7 @@ export class PlayerController {
         // 4- Get list of members to add in this room, and check if I am member of this room
         const friends = await this.playerService.getListOfFriendsToAddinThisRoom(request.user.playerId, id_room['id']); /// PRRRRRRR
 
+        // console.dir(friends, { depth: null });
 
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
@@ -407,33 +408,33 @@ export class PlayerController {
         });
     }
 
-    @Get('/listOfSetAdmin/:id') // check if id room exists
-    async GetListOfSetAdmin(@Param() id_room: string, @Req() request, @Res() response) {
-        // console.log("-------------- List of Friends to Set Admin ----------------");
+    // @Get('/listOfSetAdmin/:id') // check if id room exists
+    // async GetListOfSetAdmin(@Param() id_room: string, @Req() request, @Res() response) {
+    //     // console.log("-------------- List of Friends to Set Admin ----------------");
 
-        // 1- check if id_room exists and is not a DM
-        const room = await this.playerService.findRoomById(id_room['id']);
-        if (room.is_dm === true) {
-            throw new NotFoundException("Is a DM");
-        }
-        // 2- check permission of user is owner or admin
-        const permission = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
-        if (permission === null) {
-            throw new NotFoundException("You are not a member of this room");
-        }
-        if (permission.statusMember === "member") {
-            throw new NotFoundException("You are not an admin or owner of this room");
-        }
-        // 3- Get list of members to add in this room, and check if I am member of this room
-        const friends = await this.playerService.getListOfFriendsToUpgradeAdmininThisRoom(request.user.playerId, id_room['id']);
+    //     // 1- check if id_room exists and is not a DM
+    //     const room = await this.playerService.findRoomById(id_room['id']);
+    //     if (room.is_dm === true) {
+    //         throw new NotFoundException("Is a DM");
+    //     }
+    //     // 2- check permission of user is owner or admin
+    //     const permission = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
+    //     if (permission === null) {
+    //         throw new NotFoundException("You are not a member of this room");
+    //     }
+    //     if (permission.statusMember === "member") {
+    //         throw new NotFoundException("You are not an admin or owner of this room");
+    //     }
+    //     // 3- Get list of members to add in this room, and check if I am member of this room
+    //     const friends = await this.playerService.getListOfFriendsToUpgradeAdmininThisRoom(request.user.playerId, id_room['id']);
 
-        response.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }
-        )
-        // console.log("-------------- Finish List of Friends to Set Admin------------------");
-        response.status(200).send(friends);
-    }
+    //     response.set({
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //     }
+    //     )
+    //     // console.log("-------------- Finish List of Friends to Set Admin------------------");
+    //     response.status(200).send(friends);
+    // }
 
     // //endpoint for setting a member as admin
     @Get('/setAdmin/:id1/:id2')
@@ -514,31 +515,31 @@ export class PlayerController {
         });
     }
 
-    @Get('/listToMute/:id') // check if id room exists
-    async GetListOfMembersToMute(@Param() id_room: string, @Req() request, @Res() response) {
-        // console.log("-------------- List to Mute ----------------");
+    // @Get('/listToMute/:id') // check if id room exists
+    // async GetListOfMembersToMute(@Param() id_room: string, @Req() request, @Res() response) {
+    //     // console.log("-------------- List to Mute ----------------");
 
-        // 1- check if room_id exists
-        const room = await this.playerService.findRoomById(id_room['id']);
-        // 2- check if room_id is not a dm
-        if (room.is_dm === true) {
-            throw new NotFoundException("Is a DM");
-        }
-        // 3- check if the user is in the room
-        const permision = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
-        if (permision === null) {
-            throw new NotFoundException("You are not in this room");
-        }
-        // 3- get list of members to mute
-        const friends = await this.playerService.getListOfFriendsToMuteinThisRoom(request.user.playerId, id_room['id']);
+    //     // 1- check if room_id exists
+    //     const room = await this.playerService.findRoomById(id_room['id']);
+    //     // 2- check if room_id is not a dm
+    //     if (room.is_dm === true) {
+    //         throw new NotFoundException("Is a DM");
+    //     }
+    //     // 3- check if the user is in the room
+    //     const permision = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
+    //     if (permision === null) {
+    //         throw new NotFoundException("You are not in this room");
+    //     }
+    //     // 3- get list of members to mute
+    //     const friends = await this.playerService.getListOfFriendsToMuteinThisRoom(request.user.playerId, id_room['id']);
 
-        response.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }
-        )
-        // console.log("-------------- Finish List to Mute-------");
-        response.status(200).send(friends);
-    }
+    //     response.set({
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //     }
+    //     )
+    //     // console.log("-------------- Finish List to Mute-------");
+    //     response.status(200).send(friends);
+    // }
 
     // //endpoint for muting member
     @Post('/muteMember')  //    @Get('/muteMember/:id1/:id2')
@@ -598,38 +599,38 @@ export class PlayerController {
         });
     }
 
-    @Get('/listOfUnmute/:id') // check if room exists
-    async GetListOfMembersToUnmute(@Param() id_room: string, @Req() request, @Res() response) {
-        // console.log("---------------List to Unmute ----------------");
-        // 1- check if room_id exists
-        const room = await this.playerService.findRoomById(id_room['id']);
-        // 2- check if room_id is not a dm
-        if (room.is_dm === true) {
-            throw new NotFoundException("Is a DM");
-        }
-        // 3- check if the user is in the room
-        const permision = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
-        if (permision === null) {
-            throw new NotFoundException("You are not in this room");
-        }
-        // 4- check permission of user admin or owner
-        const admin = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
-        if (admin === null) {
-            throw new NotFoundException("You are not a member of this room");
-        }
-        if (admin.statusMember !== "admin" && admin.statusMember !== "owner") {
-            throw new NotFoundException("You cannot unmute this player");
-        }
-        // 5- get list of members to mute
-        const friends = await this.playerService.getListOfFriendsToUnmuteinThisRoom(request.user.playerId, id_room['id']);
+    // @Get('/listOfUnmute/:id') // check if room exists
+    // async GetListOfMembersToUnmute(@Param() id_room: string, @Req() request, @Res() response) {
+    //     // console.log("---------------List to Unmute ----------------");
+    //     // 1- check if room_id exists
+    //     const room = await this.playerService.findRoomById(id_room['id']);
+    //     // 2- check if room_id is not a dm
+    //     if (room.is_dm === true) {
+    //         throw new NotFoundException("Is a DM");
+    //     }
+    //     // 3- check if the user is in the room
+    //     const permision = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
+    //     if (permision === null) {
+    //         throw new NotFoundException("You are not in this room");
+    //     }
+    //     // 4- check permission of user admin or owner
+    //     const admin = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
+    //     if (admin === null) {
+    //         throw new NotFoundException("You are not a member of this room");
+    //     }
+    //     if (admin.statusMember !== "admin" && admin.statusMember !== "owner") {
+    //         throw new NotFoundException("You cannot unmute this player");
+    //     }
+    //     // 5- get list of members to mute
+    //     const friends = await this.playerService.getListOfFriendsToUnmuteinThisRoom(request.user.playerId, id_room['id']);
 
-        response.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }
-        )
-        // console.log("----------- Finish List to Unmute-----------");
-        response.status(200).send(friends);
-    }
+    //     response.set({
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //     }
+    //     )
+    //     // console.log("----------- Finish List to Unmute-----------");
+    //     response.status(200).send(friends);
+    // }
 
     @Get('/unmuteMember/:id1/:id2')
     async unmuteMember(@Param() nickname: string, @Param() room_id: string, @Req() request, @Res() response) {
@@ -679,38 +680,38 @@ export class PlayerController {
         });
     }
 
-    @Get('/listToBan/:id') // check if room exists
-    async GetListOfMembersToBan(@Param() id_room: string, @Req() request, @Res() response) {
-        // console.log("---------------List To Ban -----------------");
-        // 1- check if room_id exists
-        const room = await this.playerService.findRoomById(id_room['id']);
-        // 2- check if room_id is not a dm
-        if (room.is_dm === true) {
-            throw new NotFoundException("Is a DM");
-        }
-        // 3- check if the user is in the room
-        const permision = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
-        if (permision === null) {
-            throw new NotFoundException("You are not in this room");
-        }
-        // 4- check permission of user admin or owner
-        const admin = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
-        if (admin === null) {
-            throw new NotFoundException("You are not a member of this room");
-        }
-        if (admin.statusMember !== "admin" && admin.statusMember !== "owner") {
-            throw new NotFoundException("You cannot unmute this player");
-        }
-        // 5- get list of members to ban
-        const friends = await this.playerService.getListOfFriendsToBaninThisRoom(request.user.playerId, id_room['id']);
+    // @Get('/listToBan/:id') // check if room exists
+    // async GetListOfMembersToBan(@Param() id_room: string, @Req() request, @Res() response) {
+    //     // console.log("---------------List To Ban -----------------");
+    //     // 1- check if room_id exists
+    //     const room = await this.playerService.findRoomById(id_room['id']);
+    //     // 2- check if room_id is not a dm
+    //     if (room.is_dm === true) {
+    //         throw new NotFoundException("Is a DM");
+    //     }
+    //     // 3- check if the user is in the room
+    //     const permision = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
+    //     if (permision === null) {
+    //         throw new NotFoundException("You are not in this room");
+    //     }
+    //     // 4- check permission of user admin or owner
+    //     const admin = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
+    //     if (admin === null) {
+    //         throw new NotFoundException("You are not a member of this room");
+    //     }
+    //     if (admin.statusMember !== "admin" && admin.statusMember !== "owner") {
+    //         throw new NotFoundException("You cannot unmute this player");
+    //     }
+    //     // 5- get list of members to ban
+    //     const friends = await this.playerService.getListOfFriendsToBaninThisRoom(request.user.playerId, id_room['id']);
 
-        response.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        }
-        )
-        // console.log("---------- Finish List To Ban-----------------");
-        response.status(200).send(friends);
-    }
+    //     response.set({
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //     }
+    //     )
+    //     // console.log("---------- Finish List To Ban-----------------");
+    //     response.status(200).send(friends);
+    // }
 
     //endpoint for banning member
     @Get('/banMember/:id1/:id2')
@@ -751,7 +752,7 @@ export class PlayerController {
             throw new NotFoundException("owner can not ban himself");
         }
         //6- ban
-        const ban = await this.playerService.banMember(login['id1'], room['id2']);
+        const ban = await this.playerService.banMember(login['id1'], room_id['id2']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         }
@@ -815,8 +816,9 @@ export class PlayerController {
 
     @Get('/Permission/:id') //POST REQUEST // id is roon id 
     async GetPermission(@Param() id_room: string, @Req() request, @Res() response) {
-        // console.log("------------------- Get Permission-------------------");
+        console.log("------------------- Get Permission-------------------");
         const permission = await this.playerService.getPermissions(request.user.playerId, id_room['id']);
+        console.log(permission)
         if (permission == null) {
             throw new NotFoundException("Permission denied, you are not a member of this room");
         }
@@ -851,7 +853,9 @@ export class PlayerController {
         }
         )
         // console.log("----------------- Finish Create Public Chat Room ------------------");
-        response.status(200).send(room);
+        response.status(200).send({
+            message: "Public chat room created"
+        });
     }
 
     @Post('/SetPwdToPublicChatRoom') // no check if name exist choose another name 
@@ -863,7 +867,9 @@ export class PlayerController {
         }
         )
         // console.log("----------------- Finish Create Public Chat Room ------------------");
-        response.status(200).send(room);
+        response.status(200).send({
+            message: "pwd set to public chat room"
+        });
     }
 
     @Post('/createChatRoom/Private')
@@ -875,7 +881,9 @@ export class PlayerController {
         }
         )
         // console.log("---------------- Finish Create Private Chat Room ------------------");
-        response.status(200).send(room);
+        response.status(200).send({
+            message: "Private chat room created"
+        });
     }
 
     ///////////////////////////////////////// New //////////////////////////////////////////////////////////
@@ -889,7 +897,9 @@ export class PlayerController {
         }
         )
         // console.log("-------------Finish Creatte Protected Chat Room-----------");
-        response.status(200).send(room);
+        response.status(200).send({
+            message: "Protected chat room created"
+        });
     }
 
     @Post('/UpdatePwdProtectedChatRoom')
@@ -905,7 +915,9 @@ export class PlayerController {
         }
         )
         // console.log("-------------Finish Creatte Protected Chat Room-----------");
-        response.status(200).send(room);
+        response.status(200).send({
+            message: "pwd of Protected chat room updated"
+        });
     }
 
     @Post('/DeletePwdProtectedChatRoom')
@@ -917,7 +929,9 @@ export class PlayerController {
         }
         )
         // console.log("-------------Finish Creatte Protected Chat Room-----------");
-        response.status(200).send(room);
+        response.status(200).send({
+            message: "pwd of Protected chat room deleted"
+        });
     }
 
 
@@ -935,18 +949,18 @@ export class PlayerController {
         response.status(200).send(type);
     }
 
-    @Get('/GetRoomById/:id')
-    async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
-        // console.log("-------------- Get Room By Id --------------");
+    // @Get('/GetRoomById/:id')
+    // async GetRoomById(@Param() id_room: string, @Req() request, @Res() response) {
+    //     // console.log("-------------- Get Room By Id --------------");
 
-        const room = await this.playerService.getRoomById(request.user.playerId, id_room['id']);
+    //     const room = await this.playerService.getRoomById(request.user.playerId, id_room['id']);
 
-        response.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        })
-        // console.log("-------------Finish Get Room By Id-------------");
-        response.status(200).send(room);
-    }
+    //     response.set({
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //     })
+    //     // console.log("-------------Finish Get Room By Id-------------");
+    //     response.status(200).send(room);
+    // }
 
     // //endpoint for leaving a room
     @Get('/leaveRoom/:id')
@@ -1033,41 +1047,41 @@ export class PlayerController {
         response.status(200).send(room.id);
     }
 
-    @Get('/joinRoom/:id')
-    async joinRoom(@Param() room_id: string, @Req() request, @Res() response) {
-        // console.log("---------------- Join Room ----------------", room_id['id']);
+    // @Get('/joinRoom/:id')
+    // async joinRoom(@Param() room_id: string, @Req() request, @Res() response) {
+    //     console.log("---------------- Join Room ----------------", room_id['id']);
 
-        // // 1- check if room_id exists
-        // const room = await this.playerService.findRoomById(room_id['id']);
+    //     // // 1- check if room_id exists
+    //     // const room = await this.playerService.findRoomById(room_id['id']);
 
-        // // 2- check if The Room is not a dm
-        // if(room.is_dm === true)
-        // {
-        //     throw new NotFoundException("Cannot join a DM");
-        // }
-        // // 3- check if room is public
-        // if(room.is_public === false)
-        // {
-        //     throw new NotFoundException("cannot join a private room");
-        // }
-        // // 3- check if user is member of this room
-        // const member = await this.playerService.getPermissions(request.user.playerId, room_id['id']);
-        // // console.log("member: ", member);
-        // if(member)
-        // {
-        //     throw new NotFoundException("Already a member");
-        // }
+    //     // // 2- check if The Room is not a dm
+    //     // if(room.is_dm === true)
+    //     // {
+    //     //     throw new NotFoundException("Cannot join a DM");
+    //     // }
+    //     // // 3- check if room is public
+    //     // if(room.is_public === false)
+    //     // {
+    //     //     throw new NotFoundException("cannot join a private room");
+    //     // }
+    //     // // 3- check if user is member of this room
+    //     // const member = await this.playerService.getPermissions(request.user.playerId, room_id['id']);
+    //     // // console.log("member: ", member);
+    //     // if(member)
+    //     // {
+    //     //     throw new NotFoundException("Already a member");
+    //     // }
 
-        // 4- then join room
-        const join = await this.playerService.joinRoom(request.user.playerId, room_id['id']);
-        response.set({
-            'Access-Control-Allow-Origin': 'http://localhost:3000'
-        })
-        // console.log("--------------  Finish Join Room--------------------");
-        return response.status(200).send({
-            message: "Player joined the room successfully"
-        });
-    }
+    //     // 4- then join room
+    //     const join = await this.playerService.joinRoom(request.user.playerId, room_id['id']);
+    //     response.set({
+    //         'Access-Control-Allow-Origin': 'http://localhost:3000'
+    //     })
+    //     // console.log("--------------  Finish Join Room--------------------");
+    //     return response.status(200).send({
+    //         message: "Player joined the room successfully"
+    //     });
+    // }
 
     @Get('joinDM/:id')
     async joinDM(@Param() room_id: string, @Req() request, @Res() response) {
@@ -1142,16 +1156,16 @@ export class PlayerController {
     }
 
     @Get('/gameHistoryById/:id')
-    async gameHistoryById(@Param() id: string, @Req() request, @Res() response){
-        console.log("---------------- Game History ById ----------------",id['id']);
+    async gameHistoryById(@Param() id: string, @Req() request, @Res() response) {
+        console.log("---------------- Game History ById ----------------", id['id']);
         console.log("Game History ById, login: ", request.user.playerId);
 
         const history = await this.playerService.getGamesHistoryByUser(id['id']);
         response.set({
             'Access-Control-Allow-Origin': 'http://localhost:3000'
         });
-        
-        console.log("--------------  Finish Game History ById--------------------",history);
+
+        console.log("--------------  Finish Game History ById--------------------", history);
         return response.status(200).send({ history });
     }
 
@@ -1168,4 +1182,3 @@ export class PlayerController {
         return response.status(200).send({ getAchivements });
     }
 }
-

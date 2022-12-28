@@ -1,0 +1,17 @@
+the same env file in each backend and frontend and root
+IP_URL must change to ip address 10.12.2.1 rn on school or keep it as localhost
+
+try to change all to this variable => IP_URL
+and also:
+
+FRONT_PORT
+BACK_PORT
+
+
+i dont use MakeFile 
+so to start run : docker-compose up --build
+so close run : docker-compose down
+
+need .gitignore to set file we dont need to push
+
+pefore push change all MODE dev to MODE prod

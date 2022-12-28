@@ -1,13 +1,14 @@
 import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { PrismaService } from 'src/prisma.service';
-import Pong from './pong';
+import Pong from './Pong';
 import { v4 as uuidv4 } from 'uuid';
 import { HttpException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 // import { Player } from '@prisma/client';
 import { Socket } from 'socket.io';
 // import pong from './pong';
+import { Game } from './entities/game.entity';
 
 const replacerFunc = () => {
   const visited = new WeakSet();
@@ -24,13 +25,13 @@ const replacerFunc = () => {
 
 @Injectable()
 export class GameService {
-  private games: Map<string, Pong> = new Map();
+  private games: Map<string, Game> = new Map();
   private queue: any[] = [];
   private PlayersGames: any = [];
   private currentGames: any = [];
   private invitationArray: any = [];
 
-  private PlayerInGame: Map<string, Pong> = new Map();
+  private PlayerInGame: Map<string, Game> = new Map();
 
 
 
@@ -57,9 +58,6 @@ export class GameService {
         console.log( " 1st User is not in the queue qnymore ! ")
         this.queue.shift();
         return ;
-
-    
-
       }
       // if(!PlayersInQueue[this.queue.at(1).client.id])
       // {
@@ -76,7 +74,7 @@ export class GameService {
 
       const playerLeft = this.queue.shift();
       const playerRight = this.queue.shift();
-      const game = new Pong(
+      const game = new Game(
         gameId,
         JSON.parse(playerLeft.user).nickname,
         JSON.parse(playerRight.user).nickname,
@@ -391,6 +389,11 @@ export class GameService {
       this.currentGames[user] = null;
       console.log('-----------------------------------------------');
     }
+    // if (this.queue.includes({ user: user, client })){
+    //   this.queue.splice(this.queue.indexOf({ user: user, client }), 1);
+    //   console.log("Removing from Queue !")
+    // }
+
     // client.id.client(this.roomPrefix + gameId).forEach((s: any) =>
     // {
     //   s.leave(this.roomPrefix + gameId);

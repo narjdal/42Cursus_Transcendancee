@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import { Player } from "@prisma/client";
+// import { Player } from "@prisma/client";
 import { IsNotEmpty, IsString } from "class-validator";
 
 export class VeriftyTfaDto {

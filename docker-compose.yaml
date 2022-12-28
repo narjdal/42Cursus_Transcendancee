@@ -1,42 +1,80 @@
-version: '3.8'
+# version: '3.8'
+# services:
+#   db:
+#     image: postgres:14.1-alpine
+#     restart: always
+#     ports:
+#       - 5432:5432
+#     environment:
+#       - POSTGRES_USER=${POSTGRES_USER}
+#       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#       - POSTGRES_DB=${POSTGRES_DB}
+#   frontend:
+#     build:
+#         context: ./Frontend
+#         dockerfile: Dockerfile
+#     # image: react
+#     restart: always
+#     ports:
+#         - "3000:3000"
+#     volumes:
+#         - /app
+#         - /app/node_modules
+#   backend:
+#     container_name: backend
+#     build:
+#         context: ./tmpBackend
+#         dockerfile: Dockerfile
+#     image: server
+#     command: npx prisma migrate dev --name init --preview-feature
+#     ports:
+#         - "5000:5000"
+#     volumes:
+#         - ./server:/app
+#     depends_on:
+#         - db
+
+
+version: '3'
+
 services:
+
   db:
-    image: postgres:14.1-alpine
-    restart: always
+    container_name: database
+    image: 'postgres:latest'
     ports:
       - 5432:5432
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-
-  frontend:
-    image: frontend
-    restart: always
-    ports:
-      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
-    container_name: frontend
-    build:
-      context: ./Frontend
-      dockerfile: Dockerfile
     env_file:
-      - .env
-    command: "npx prisma migrate dev && npm start"
-    networks:
-      - transcendence
+      - Backend/.env
 
   backend:
     container_name: backend
     build:
-      context: ./tmpBackend
+      context: ./Backend
       dockerfile: Dockerfile
-    restart: always
-    env_file:
-      - .env
-    ports:
-      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    volumes:
+      - ./backend:/backend
+      - ./backend/uploads:/backend/uploads
     depends_on:
       - db
-networks:
-  transcendence:
-    driver: bridge
+    ports:
+      - 5000:5000
+    environment:
+      - MODE=dev
+      - PORT=5000
+      - BACKEND_HOST=http://localhost:5000
+      - FRONTEND_HOST=http://localhost:3000
+
+  frontend:
+    container_name: frontend
+    build:
+      context: Frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/frontend
+    ports:
+      - 3000:3000
+    environment:
+      - MODE=dev
+      - PORT=3000
+      - BACKEND_HOST=http://localhost:5000

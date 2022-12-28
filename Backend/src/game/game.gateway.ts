@@ -3,7 +3,8 @@ import {
   WebSocketGateway,
   SubscribeMessage
 } from '@nestjs/websockets';
-import Pong from './pong';
+// import Pong from './pong';
+import  {Game} from './entities/game.entity';
 
 import { Socket } from "socket.io";
 import { GameService } from './game.service';
@@ -47,7 +48,7 @@ export class GameGateway {
 
 
 
-  private PlayerInGame: Map<string, Pong> = new Map();
+  private PlayerInGame: Map<string, Game> = new Map();
 
 
   // private PlayerInGame: Map<string, Pong> = new Map();
